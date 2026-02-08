@@ -1,0 +1,35 @@
+{
+  "name": "humainos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Operating System for Human-AI Workflows",
+  "author": "HumanAIOS Team",
+  "license": "PROPRIETARY",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:api": "chmod +x test-api.sh && ./test-api.sh",
+    "simulate": "npx tsx agent-simulator.ts",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "db:setup": "cd infrastructure && docker-compose up -d",
+    "db:migrate": "cd apps/api && npm run migrate",
+    "db:seed": "cd apps/api && npm run seed"
+  },
+  "devDependencies": {
+    "node-fetch": "^2.7.0",
+    "prettier": "^3.2.5",
+    "turbo": "^1.12.4",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
