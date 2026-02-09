@@ -6,7 +6,6 @@
 -- ============================================
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "postgis";
 CREATE EXTENSION IF NOT EXISTS "timescaledb";
 
 -- ============================================
@@ -150,7 +149,8 @@ CREATE TABLE human_tasks (
     assigned_at TIMESTAMP WITH TIME ZONE,
     
     -- Location (for physical tasks)
-    location GEOGRAPHY(POINT),
+    location_lat DECIMAL(10, 8),
+    location_lng DECIMAL(11, 8),
     address TEXT,
     
     -- Budget and cost
@@ -181,7 +181,6 @@ CREATE INDEX idx_human_tasks_agent_id ON human_tasks(agent_id);
 CREATE INDEX idx_human_tasks_status ON human_tasks(status);
 CREATE INDEX idx_human_tasks_assigned_to ON human_tasks(assigned_to);
 CREATE INDEX idx_human_tasks_created_at ON human_tasks(created_at DESC);
-CREATE INDEX idx_human_tasks_location ON human_tasks USING GIST(location);
 
 -- Task Status History (Audit trail)
 CREATE TABLE task_status_history (

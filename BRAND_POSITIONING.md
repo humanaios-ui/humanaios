@@ -6,7 +6,10 @@
 **Tagline**: "The Operating System for Human-AI Workflows"
 
 **Elevator Pitch** (30 seconds):
-"HumanAIOS is the mission control for companies running AI agents. We're the only platform that monitors your AI agents AND orchestrates the human tasks they can't do themselves. See everything your agents are doing, track costs in real-time, and seamlessly hand off physical-world tasks to humans - all in one dashboard."
+"HumanAIOS is the only platform that orchestrates BOTH AI agents AND human workers. While others just monitor what your AI does, we help when your AI can't do it alone. Monitor every agent action, track costs in real-time, and automatically delegate physical-world tasks to humans - all in one system."
+
+**Key Differentiator** (vs Competitors):
+"Braintrust, Arize, and Maxim monitor AI agents. RentAHuman connects you to humans. We're the ONLY platform that integrates both - giving you complete orchestration of hybrid AI-human workflows."
 
 **Problem Statement**:
 "Companies are deploying AI agents but have no visibility into what they're doing, how much they're costing, or how to handle the tasks AI can't complete. When agents need someone to verify a location, pick up a package, or attend a meeting, there's no system to manage these handoffs."
@@ -145,6 +148,154 @@
 - SLA guarantees
 
 **Key Insight**: We charge for VALUE (agents monitored, tasks orchestrated) not just seats.
+
+**Competitive Pricing Analysis** (Feb 2026):
+- Braintrust Pro: $249/month (AI monitoring only)
+- Langfuse Cloud: $29/month (open source, basic)
+- AgentOps: Usage-based (developer-focused)
+- Our pricing is competitive AND includes human orchestration (unique value)
+
+---
+
+## Competitive Landscape (Updated Feb 2026)
+
+### Major Announcement: OpenAI Frontier (Launched Feb 5, 2026)
+**What**: Enterprise platform for building/managing AI agent "fleets"
+**Key Features**: Identity, governance, permissions for agents
+**Our Position**: They focus on building/deploying. We focus on monitoring + human orchestration.
+**Opportunity**: Validates the market! Shows enterprise need for agent management.
+
+### AI Agent Monitoring Competitors
+
+**1. Braintrust** - "Best overall" monitoring
+- **What they do**: Agent traces, evaluations, cost analytics
+- **Pricing**: $249/month Pro
+- **Strengths**: Eval-driven, comprehensive monitoring
+- **Weakness**: NO human task orchestration ❌
+- **How we win**: "They tell you what your AI did. We help when AI can't do it."
+
+**2. Arize AI** - Enterprise ML observability
+- **What they do**: Extend ML monitoring to LLM/agents
+- **Customers**: PepsiCo, Siemens, Fortune 50
+- **Strengths**: Established, trusted, enterprise sales
+- **Weakness**: NO human workflows ❌
+- **How we win**: "They monitor AI performance. We orchestrate AI + human work."
+
+**3. Maxim AI** - Full lifecycle platform (launched 2025)
+- **What they do**: Simulation, evaluation, production monitoring
+- **Claim**: "Ship AI 5x faster"
+- **Strengths**: Comprehensive, all-in-one
+- **Weakness**: NO human marketplace ❌
+- **How we win**: "They optimize AI. We bridge AI to the real world."
+
+**4. AgentOps** - Developer platform
+- **What they do**: Lightweight monitoring for 400+ frameworks
+- **Strengths**: Easy integration, developer-friendly
+- **Weakness**: NO human task system ❌
+- **How we win**: "They log events. We complete workflows - with humans when needed."
+
+**5. CrewAI AMP** - Multi-agent orchestration
+- **What they do**: Build and deploy multi-agent systems
+- **Customers**: DocuSign, PwC, Fortune 500
+- **Strengths**: Agent-to-agent coordination
+- **Weakness**: NO human execution ❌
+- **How we win**: "They coordinate AI agents. We coordinate AI + human teams."
+
+**6. Langfuse** - Open source observability
+- **What they do**: Self-hosted traces, prompt management
+- **Pricing**: $29/month cloud, free self-hosted
+- **Strengths**: Open source, data control
+- **Weakness**: NO human orchestration ❌
+- **How we win**: "They give you visibility. We give you action."
+
+### Human Task Marketplaces
+
+**RentAHuman.ai** - Human task marketplace FOR AI agents
+- **What they do**: AI agents hire humans for physical tasks
+- **Pricing**: $50-175/hour for tasks
+- **Strengths**: Proven marketplace, worker supply
+- **Weakness**: NO AI monitoring, separate system ❌
+- **Our strategy**: PARTNER + INTEGRATE (not compete)
+- **How we win together**: "RentAHuman finds workers. HumanAIOS integrates them into your AI workflows."
+
+### The Gap We Fill
+
+**What EVERYONE does**:
+✅ Monitor AI agents
+✅ Track costs and tokens
+✅ Debug agent failures
+✅ Log activities
+
+**What NOBODY does** (OUR MOAT):
+❌ Integrate human task marketplace
+❌ Orchestrate AI-to-human handoffs
+❌ Route decisions (use AI vs hire human)
+❌ Physical world task delegation
+❌ Unified dashboard for AI + human work
+
+### Positioning Matrix
+
+```
+                    AI Monitoring
+                         ↑
+                         |
+      Braintrust ●       |
+      Arize ●            |
+      Maxim ●       HumanAIOS ★
+      AgentOps ●         |
+                         |
+        ←────────────────┼────────────────→
+                         |           Human Tasks
+                         |
+                  RentAHuman ●
+                         |
+                         ↓
+```
+
+**We're the ONLY player in the top-right quadrant!**
+
+### Competitive Threats Assessment
+
+**Short-term (0-6 months): LOW**
+- No one building human orchestration yet
+- Focus on shipping MVP and getting customers
+
+**Medium-term (6-12 months): MODERATE**
+- AgentOps or Langfuse could add human tasks (fast-moving startups)
+- RentAHuman could add AI monitoring (but harder)
+- Mitigation: Network effects, first-mover advantage, integration partnerships
+
+**Long-term (12+ months): HIGHER**
+- OpenAI Frontier could add human delegation
+- Microsoft/Google could bundle it
+- Mitigation: Customer lock-in, deep integrations, marketplace liquidity
+
+### Our Moat Strategy
+
+**1. First-Mover Advantage** (Now - Month 3)
+- Ship MVP before anyone copies
+- Get first 25 customers
+- Build case studies
+
+**2. Network Effects** (Month 3-6)
+- More agents = better benchmarks
+- More humans = faster task completion
+- More customers = more integrations
+
+**3. Integration Partnerships** (Month 2-4)
+- RentAHuman integration (exclusive partnership?)
+- MCP protocol leadership
+- CrewAI, LangChain partnerships
+
+**4. Data Advantage** (Month 6+)
+- AI-human routing intelligence
+- Cost optimization models
+- Task completion predictions
+
+**5. Two-Sided Marketplace** (Month 6-12)
+- Build our own human worker supply
+- Agent network + Human network = defensible
+- Hard to replicate liquidity
 
 ---
 

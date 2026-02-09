@@ -13,6 +13,8 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
+    "test:api": "chmod +x test-api.sh && ./test-api.sh",
+    "simulate": "npx tsx agent-simulator.ts",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "db:setup": "cd infrastructure && docker-compose up -d",
@@ -20,8 +22,10 @@
     "db:seed": "cd apps/api && npm run seed"
   },
   "devDependencies": {
+    "node-fetch": "^2.7.0",
     "prettier": "^3.2.5",
     "turbo": "^1.12.4",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "engines": {
