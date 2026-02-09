@@ -5,7 +5,7 @@ services:
     image: timescale/timescaledb:latest-pg15
     container_name: humainos-postgres
     environment:
-      POSTGRES_DB: humainos
+      POSTGRES_DB: humanaios
       POSTGRES_USER: humainos
       POSTGRES_PASSWORD: humainos_dev_password
     ports:
