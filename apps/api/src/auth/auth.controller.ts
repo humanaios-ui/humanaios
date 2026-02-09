@@ -5,10 +5,15 @@ import { CreateUserDto, LoginDto } from '../users/user.entity';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    console.log('AuthController constructor - authService:', !!this.authService);
+  }
 
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
+    console.log('Register endpoint - authService:', !!this.authService);
+    console.log('authService type:', typeof this.authService);
+    console.log('authService keys:', this.authService ? Object.keys(this.authService) : 'undefined');
     return this.authService.register(createUserDto);
   }
 

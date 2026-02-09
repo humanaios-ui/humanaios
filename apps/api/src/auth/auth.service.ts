@@ -1,14 +1,26 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException, Inject, forwardRef, OnModuleInit } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { CreateUserDto, LoginDto, User } from '../users/user.entity';
+import { CreateUserDto, User } from '../users/user.entity';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
+  private jwtService: JwtService;
+
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
-    private jwtService: JwtService
-  ) {}
+    private moduleRef: ModuleRef,
+  ) {
+    console.log('AuthService constructor called!');
+    console.log('  - usersService:', !!this.usersService);
+  }
+
+  async onModuleInit() {
+    this.jwtService = this.moduleRef.get(JwtService, { strict: false });
+    console.log('AuthService onModuleInit - jwtService:', !!this.jwtService);
+  }
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
@@ -42,16 +54,12 @@ export class AuthService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    // Check if user already exists
     const existingUser = await this.usersService.findByEmail(createUserDto.email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
 
-    // Create user
     const user = await this.usersService.create(createUserDto);
-
-    // Auto-login after registration
     return this.login(user);
   }
 }
