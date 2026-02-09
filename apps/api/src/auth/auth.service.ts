@@ -1,26 +1,14 @@
-import { Injectable, ConflictException, Inject, forwardRef, OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto, User } from '../users/user.entity';
 
 @Injectable()
-export class AuthService implements OnModuleInit {
-  private jwtService: JwtService;
-
+export class AuthService {
   constructor(
-    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
-    private moduleRef: ModuleRef,
-  ) {
-    console.log('AuthService constructor called!');
-    console.log('  - usersService:', !!this.usersService);
-  }
-
-  async onModuleInit() {
-    this.jwtService = this.moduleRef.get(JwtService, { strict: false });
-    console.log('AuthService onModuleInit - jwtService:', !!this.jwtService);
-  }
+    private jwtService: JwtService
+  ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);

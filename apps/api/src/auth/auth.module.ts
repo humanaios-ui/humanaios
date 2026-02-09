@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
@@ -8,20 +8,20 @@ import { DatabaseModule } from '../database/database.module';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
-const jwtModule = JwtModule.register({
-  secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
-  signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
-});
-
 @Module({
   imports: [
     DatabaseModule,
-    forwardRef(() => UsersModule),
+    UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    jwtModule,
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
+        signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
+      }),
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, jwtModule],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

@@ -1,69 +1,44 @@
-/**
- * HumanAIOS - The Operating System for Human-AI Workflows
- * Copyright (c) 2026 HumanAIOS
- * All rights reserved.
- */
-
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Query,
-  UseGuards,
-  Request
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { AgentsService } from './agents.service';
-import { CreateAgentDto, CreateActivityDto } from './agent.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateAgentDto, LogActivityDto } from './agent.entity';
 
-@Controller('api/v1/agents')
-@UseGuards(JwtAuthGuard)
+@Controller('agents')
 export class AgentsController {
-  constructor(private readonly agentsService: AgentsService) {}
+  constructor(private agentsService: AgentsService) {}
 
   @Post()
-  async create(@Request() req, @Body() createAgentDto: CreateAgentDto) {
-    const orgId = req.user.org_id;
-    return this.agentsService.createAgent(orgId, createAgentDto);
+  async createAgent(@Body() createAgentDto: CreateAgentDto) {
+    return this.agentsService.createAgent(createAgentDto, 'test-user-id');
   }
 
   @Get()
-  async findAll(@Request() req) {
-    const orgId = req.user.org_id;
-    return this.agentsService.findAllByOrg(orgId);
+  async getAgents() {
+    return this.agentsService.getAgents('test-user-id');
   }
 
   @Get(':id')
-  async findOne(@Request() req, @Param('id') id: string) {
-    const orgId = req.user.org_id;
-    return this.agentsService.findOne(id, orgId);
+  async getAgent(@Param('id') id: string) {
+    return this.agentsService.getAgent(id, 'test-user-id');
   }
 
   @Post(':id/activities')
-  async createActivity(
-    @Request() req,
+  async logActivity(
     @Param('id') agentId: string,
-    @Body() createActivityDto: CreateActivityDto
+    @Body() logActivityDto: LogActivityDto
   ) {
-    const orgId = req.user.org_id;
-    return this.agentsService.createActivity(agentId, orgId, createActivityDto);
+    return this.agentsService.logActivity(agentId, logActivityDto);
   }
 
   @Get(':id/activities')
-  async findActivities(
-    @Request() req,
+  async getActivities(
     @Param('id') agentId: string,
-    @Query('limit') limit?: string,
-    @Query('offset') offset?: string
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number
   ) {
-    const orgId = req.user.org_id;
-    return this.agentsService.findActivities(
+    return this.agentsService.getActivities(
       agentId,
-      orgId,
-      limit ? parseInt(limit) : 100,
-      offset ? parseInt(offset) : 0
+      limit ? parseInt(limit.toString()) : 100,
+      offset ? parseInt(offset.toString()) : 0
     );
   }
 }
