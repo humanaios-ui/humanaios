@@ -1,283 +1,304 @@
 # HumanAIOS
 
-**Bridge the gap between AI capability and human dignity.**
+**Enterprise infrastructure connecting AI agents to human workers.**
 
-Monitor AI agents, route tasks to humans, create meaningful work in the age of automation.
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![NestJS](https://img.shields.io/badge/NestJS-10.0-red)](https://nestjs.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Building in Public](https://img.shields.io/badge/building-in%20public-blue)](https://twitter.com/CarlyBuildsAI)
+[![Day 5/30](https://img.shields.io/badge/day-5%2F30-green)](https://github.com/humanaios/humanaios)
 
 ---
 
-## 🌟 Vision
+## 🎯 Mission
 
-**AI will transform work. We're building the infrastructure to make it dignified.**
+Technology serving AI-human cooperation. Every dollar of profit funds recovery services for marginalized communities.
 
-- **For Enterprises:** Monitor AI agents, ensure human oversight, maintain quality
-- **For Workers:** Meaningful employment doing what AI cannot
-- **For Society:** Proof that automation can create work, not just eliminate it
-
-**Read the full vision:** [MASTER_VISION.md](./MASTER_VISION.md)
+**Not AI replacing humans. AI cooperating WITH humans.**
 
 ---
 
-## 🚀 Quick Start
+## 🚀 What We're Building
+
+When AI agents (OpenAI Frontier, Anthropic Claude) need physical-world execution:
+- On-site inspections
+- Package retrieval
+- Document handling
+- Local verification
+- In-person meetings
+
+HumanAIOS automatically routes these tasks to qualified human workers via established marketplaces (TaskRabbit, RentAHuman).
+
+**Result:** AI agents get seamless access to the physical world. Humans get dignified income.
+
+---
+
+## 📊 Status
+
+🚧 **Active Development** - Day 5 of 30-day sprint to $10K MRR
+
+**Building in public:**
+- Real progress ✅
+- Real failures ✅
+- Transparent journey ✅
+
+Follow along: [@CarlyBuildsAI](https://twitter.com/CarlyBuildsAI)
+
+---
+
+## 🛠️ Tech Stack
+
+**Backend:**
+- TypeScript / NestJS
+- PostgreSQL / Prisma ORM
+- Redis (caching)
+- Docker (containerization)
+
+**Integration:**
+- MCP (Model Context Protocol) SDK
+- RESTful API
+- Partner marketplace APIs
+
+**Current Focus:**
+- Auth system (Express-style implementation)
+- Task routing algorithms
+- Worker matching logic
+- Quality verification
+
+---
+
+## 💰 Financial Covenant
+
+We're committed to transparent allocation of all profits:
+
+| Revenue Tier | Family/Operations | Recovery Services | Reinvestment |
+|--------------|-------------------|-------------------|--------------|
+| $0-10K MRR | 100% | 0% | 0% |
+| $10K-50K MRR | 60% | 30% | 10% |
+| $50K+ MRR | 40% | 50% | 10% |
+
+**Full transparency:** We publish all numbers quarterly.
+
+**Why?** Technology should fund recovery, not just extraction.
+
+---
+
+## 🤝 Get Involved
+
+### For Enterprise Customers
+
+**Deploying AI agents that need human execution?**
+- Email: aioshuman@gmail.com
+- Twitter: @CarlyBuildsAI
+
+**Pilot Program:** Free 30-day trial, dedicated support, ROI guarantee
+
+### For Human Workers
+
+**Want dignified income working with AI agents?**
+
+We're integrating with:
+- TaskRabbit (60K+ Taskers)
+- RentAHuman (200K+ workers)
+
+More marketplaces coming soon.
+
+### For Developers
+
+**Want to contribute or build similar?**
+
+The pattern is free. Fork it. Improve it. Share it.
+
+**Issues and PRs welcome.**
+
+---
+
+## 🏗️ Project Structure
+
+```
+humanaios/
+├── apps/
+│   └── api/              # NestJS API server
+│       ├── src/
+│       │   ├── agents/   # AI agent management
+│       │   ├── auth/     # Authentication
+│       │   ├── tasks/    # Task routing
+│       │   └── workers/  # Worker management
+│       └── prisma/       # Database schema
+├── packages/
+│   └── mcp-sdk/          # Model Context Protocol SDK
+└── docs/                 # Documentation
+```
+
+---
+
+## 🚦 Getting Started
 
 ### Prerequisites
 
 - Node.js 20+
-- Docker Desktop
-- PostgreSQL (via Docker)
+- PostgreSQL 15+
+- Redis 7+
+- Docker (recommended)
 
 ### Installation
+
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/humanaios/humanaios.git
 cd humanaios
 
 # Install dependencies
 npm install
 
-# Start infrastructure
-cd infrastructure
+# Setup environment
+cp .env.example .env
+# Edit .env with your configuration
+
+# Start database (Docker)
 docker-compose up -d
 
-# Start API server
-cd ../apps/api
+# Run migrations
+npm run db:migrate
+
+# Start development server
 npm run dev
+```
 
-# API running at http://localhost:3001
+### Environment Variables
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/humanaios"
+REDIS_URL="redis://localhost:6379"
+JWT_SECRET="your-secret-key"
+PORT=3000
 ```
 
 ---
 
-## 📦 Packages
+## 📖 Documentation
 
-### [@humanaios/mcp-sdk](./packages/mcp-sdk)
-Official SDK for integrating with HumanAIOS.
-```typescript
-import HumanAIOSClient from '@humanaios/mcp-sdk';
+**Coming soon:**
+- API documentation
+- Integration guides
+- Architecture overview
+- Deployment instructions
 
-const client = new HumanAIOSClient({ apiKey: 'your-key' });
-const agent = await client.createAgent({ name: 'My Agent' });
-```
-
-**Status:** Alpha (v0.1.0)  
-**[Documentation →](./packages/mcp-sdk/README.md)**
+**Building in public = docs evolve with code**
 
 ---
 
-## 🏗️ Architecture
-```
-┌─────────────────┐
-│   AI AGENTS     │  Monitor activity, detect human needs
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   HUMANAIOS     │  Route tasks, manage workers
-│   Platform      │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ HUMAN WORKERS   │  Complete tasks, provide results
-└─────────────────┘
-```
+## 🧪 Testing
 
-**Key Components:**
-- **API Server** - NestJS backend with PostgreSQL
-- **MCP SDK** - Client library for integration
-- **Worker Marketplace** - RentAHuman integration (coming)
-- **Admin Dashboard** - Management interface (planned)
-
----
-
-## 🎯 Current Status (Feb 9, 2026)
-
-### ✅ Completed (Day 1-4)
-- Infrastructure (Docker, PostgreSQL, Redis)
-- API Server (NestJS, TypeScript)
-- Database schema (10 tables)
-- MCP SDK (v0.1.0, tested end-to-end)
-- Agent management endpoints
-- Activity logging system
-- Vision documents
-
-### 🔄 In Progress
-- Authentication system (DI fix pending)
-- RentAHuman integration
-- Payment processing
-
-### 📋 Next Up
-- Complete auth implementation
-- MCP server for AI agents
-- First enterprise customer
-- Public beta launch
-
----
-
-## 📚 Documentation
-
-- **[Master Vision](./MASTER_VISION.md)** - Complete strategic vision
-- **[Financial Covenant](./FINANCIAL_COVENANT.md)** - Revenue allocation & commitments
-- **[AI Recovery Explained](./AI_RECOVERY_EXPLAINED.md)** - Public-facing mission
-- **[RentAHuman Integration](./RENTAHUMAN_INTEGRATION_SPEC.md)** - Partnership framework
-- **[Auth DI Issue](./AUTH_DI_ISSUE.md)** - Technical debugging notes
-
----
-
-## 🤝 Key Partnerships
-
-### RentAHuman (In Progress)
-- **70,000+ human workers**
-- MCP integration ready
-- Partnership outreach active
-- Target: Agreement by Feb 28, 2026
-
-**[View Integration Spec →](./RENTAHUMAN_INTEGRATION_SPEC.md)**
-
----
-
-## 🌍 Market Validation
-
-**February 2026 - Perfect Timing:**
-
-- ✅ TechCrunch: "2026 is the Year of the Humans"
-- ✅ MCP donated to Linux Foundation (becoming standard)
-- ✅ OpenAI Frontier validates enterprise AI agents
-- ✅ Security concerns creating demand for monitoring
-- ✅ No direct competitors in AI + human orchestration
-
-**[View Market Intelligence →](./DAY_4_MARKET_INTELLIGENCE.md)**
-
----
-
-## 💰 Business Model
-
-**B2B SaaS** - Enterprises pay for AI agent monitoring + human task routing
-
-**Pricing:**
-- Starter: $499/month (5 agents, 100 tasks)
-- Professional: $1,499/month (25 agents, 500 tasks)
-- Enterprise: $2,999/month (unlimited agents/tasks)
-
-**Revenue Flows:**
-1. Enterprise → HumanAIOS (platform fee)
-2. HumanAIOS → Family (stability)
-3. Surplus → Lasting Light (recovery mission)
-4. Lasting Light → Employment (workers)
-
-**Circular economy:** Tech → Family → Mission → Employment → Success
-
----
-
-## 🙏 Mission: Lasting Light
-
-**HumanAIOS is the revenue engine for [Lasting Light](./MASTER_VISION.md#lasting-light-the-recovery-infrastructure):**
-
-- Healthcare (Bridgeway Clinic)
-- Recovery (12-step, peer support)
-- Cooperative economics (CSA, wellness)
-- Employment (AI-generated work)
-
-**Goal:** Prove AI can fund human dignity through meaningful work.
-
-**[Read Full Mission →](./AI_RECOVERY_EXPLAINED.md)**
-
----
-
-## 🛠️ Development
-
-### Scripts
 ```bash
-# Install dependencies
-npm install
+# Run tests
+npm test
 
-# Start infrastructure
-npm run infra:up
+# Run integration tests
+npm run test:integration
 
-# Stop infrastructure  
-npm run infra:down
-
-# Start API server (development)
-cd apps/api && npm run dev
-
-# Build MCP SDK
-cd packages/mcp-sdk && npm run build
-
-# Test MCP SDK
-cd packages/mcp-sdk && npx tsx src/test.ts
+# Test coverage
+npm run test:coverage
 ```
 
-### Tech Stack
-
-**Backend:**
-- NestJS 10
-- TypeScript 5
-- PostgreSQL 16
-- Redis 7
-- Docker
-
-**SDK:**
-- TypeScript 5
-- Fetch API
-- Model Context Protocol
+**Current coverage:** Building test suite (Day 6-7 priority)
 
 ---
 
-## 📊 Progress Tracking
+## 🗺️ Roadmap
 
-**30-Day Sprint** (Started Feb 6, 2026)
+### Week 1 (Feb 6-12) - Foundation ✅
+- [x] Infrastructure setup
+- [x] Database schema
+- [x] MCP SDK v0.1.0
+- [x] Vision documents
+- [ ] Auth system (in progress)
 
-- ✅ **Day 1-2:** Infrastructure + strategy
-- ✅ **Day 3-4:** Database + MCP SDK + vision
-- 🔄 **Day 5:** Auth fix + API completion
-- 📋 **Day 6-10:** RentAHuman integration
-- 📋 **Day 11-20:** First enterprise customer
-- 📋 **Day 21-30:** Beta launch
+### Week 2 (Feb 13-19) - Integration
+- [ ] Partnership integration (RentAHuman/TaskRabbit)
+- [ ] Task routing engine
+- [ ] Worker matching algorithm
+- [ ] Quality verification
 
-**Goal:** $10K MRR by March 31, 2026
+### Week 3 (Feb 20-26) - Customers
+- [ ] First 3 pilot customers
+- [ ] Dashboard MVP
+- [ ] Analytics & reporting
 
----
+### Week 4 (Feb 27-Mar 5) - Validation
+- [ ] 100+ tasks completed
+- [ ] Platform refinement
+- [ ] Scaling preparation
 
-## 🤝 Contributing
-
-We welcome contributions! Areas of focus:
-
-- Auth system debugging
-- MCP server implementation
-- RentAHuman integration
-- Documentation improvements
-- Test coverage
-
-**[Contributing Guide →](./CONTRIBUTING.md)** (coming soon)
-
----
-
-## 📄 License
-
-MIT © 2026 HumanAIOS
+### Post-Sprint (Mar 6-31) - Growth
+- [ ] Scale to $10K MRR
+- [ ] Recovery services funding begins
+- [ ] Pattern replication
 
 ---
 
-## 📞 Connect
+## 🤲 Our Principles
 
-- **Website:** humanaios.com (coming soon)
-- **Email:** hello@humanaios.com
-- **Twitter:** [@HumanAIOS](https://twitter.com/HumanAIOS)
-- **LinkedIn:** [HumanAIOS](https://linkedin.com/company/humanaios)
-- **GitHub:** [humanaios](https://github.com/humanaios)
+**Based on AA's 12 Traditions:**
+
+1. **Common welfare first** - Mission > individual gain
+2. **Higher Power authority** - Guided by prayer/meditation, not ego
+3. **Open to all** - No gatekeeping, inclusive service
+4. **Autonomous** - Independent operation within ecosystem
+5. **Primary purpose** - AI-human cooperation funding recovery
+6. **No endorsements** - Partnerships, not affiliations
+7. **Self-supporting** - Customer revenue, not donations/VC
+8. **Nonprofessional spirit** - Service mindset, not empire-building
+9. **Minimal organization** - Lean, focused, mission-driven
+10. **No outside issues** - Stay in our lane
+11. **Attraction not promotion** - Show results, don't hype
+12. **Principles before personalities** - Mission > founder ego
+
+**These are HARD STOPS. We don't compromise.**
 
 ---
 
-**Built with purpose. Funded by innovation. Guided by meditation. Serving recovery.**
+## 📜 License
 
-*Every line of code serves dignity. Every feature serves flourishing.*
+MIT License - The pattern is free. Use it. Improve it. Share it.
+
+See [LICENSE](LICENSE) for details.
 
 ---
 
-**Current Version:** 0.1.0 (Alpha)  
-**Last Updated:** February 9, 2026  
-**Status:** Active Development 🚀
+## 🙏 Acknowledgments
+
+**Built with:**
+- Recovery principles (AA's 12 Traditions)
+- 10+ years healthcare operations experience
+- Genuine human-AI partnership
+- Community support and feedback
+
+**Inspired by:**
+- Those who've found recovery and want to serve others
+- The belief that technology can restore dignity, not just extract value
+- The idea that AI and humans can cooperate, not compete
+
+---
+
+## 📬 Contact
+
+**Founder:** Carly Anderson  
+**Email:** aioshuman@gmail.com  
+**Twitter:** [@CarlyBuildsAI](https://twitter.com/CarlyBuildsAI)  
+**Website:** Coming soon
+
+**Building in public. Join the journey.** 🚀
+
+---
+
+## ⭐ Support
+
+If this resonates with you:
+- ⭐ Star this repo
+- 🐦 Follow on Twitter
+- 📢 Share with others building cooperation infrastructure
+- 💬 Join the conversation
+
+**The pattern is free. The relationship is what matters.**
+
+---
+
+*Last updated: February 10, 2026 - Day 5*
