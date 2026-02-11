@@ -13,6 +13,30 @@ Technology serving AI-human cooperation. Every dollar of profit funds recovery s
 
 **Not AI replacing humans. AI cooperating WITH humans.**
 
+## 🎯 For Enterprise AI Agent Teams
+
+If you're deploying **OpenAI Frontier** or **Anthropic Cowork** at enterprise scale, you've discovered AI agents can't execute physical-world tasks:
+
+❌ Property inspections  
+❌ Document pickups  
+❌ Equipment verifications  
+❌ In-person meetings  
+
+**HumanAIOS provides the enterprise-grade physical execution layer:**
+
+✅ 374K verified workers (via RentAHuman partnership)  
+✅ Fiat payment infrastructure (unlock 87% crypto-blocked workers)  
+✅ Quality SLA (photo/GPS/rating verification)  
+✅ MCP integration (seamless Frontier/Cowork connectivity)  
+
+**Early customers include Fortune 500 companies in:**
+- Insurance (claims inspections)
+- Technology (product testing)  
+- Healthcare (lab sample logistics)
+- Finance (document verification)
+
+📧 **Enterprise inquiries:** aioshuman@gmail.com
+
 ---
 
 ## 🚀 What We're Building
