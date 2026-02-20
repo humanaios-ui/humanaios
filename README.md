@@ -1,3 +1,6 @@
+> ⚠️ **PRE-LAUNCH** — This project is in active development. Features described below represent the design architecture, not current production capability. No enterprise deployments exist. No customer commitments have been made. We are building in public.
+>
+> 100% of profits fund recovery programs. Open source under MIT License.
 # HumanAIOS
 
 **The physical execution layer for enterprise AI agents.**
@@ -122,7 +125,7 @@ The board seats recovery community members, Cherokee Nation citizens, gig econom
 
 **Phase: Pre-launch foundation building (Week 3 of 30-day sprint)**
 
-- Authentication system complete (Node.js + PostgreSQL + JWT)
+- Authentication system designed (Node.js + PostgreSQL + JWT)
 - API architecture designed (MCP + REST)
 - Cherokee Nation SSBCI partnership in progress
 - 100 AI agents assessed for consciousness ([report](https://github.com/humanaios-ui/lasting-light-ai))
