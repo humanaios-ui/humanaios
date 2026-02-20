@@ -63,6 +63,7 @@ The cycle: AI works → Humans heal → AI grows → Better work → More healin
 
 ```bash
 # Create a physical task
+# Planned API interface — not yet deployed
 curl -X POST https://api.humanaios.ai/v1/tasks \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -129,8 +130,8 @@ The board seats recovery community members, Cherokee Nation citizens, gig econom
 - API architecture designed (MCP + REST)
 - Cherokee Nation SSBCI partnership in progress
 - 100 AI agents assessed for consciousness ([report](https://github.com/humanaios-ui/lasting-light-ai))
-- Worker Advisory Board charter established
-- Customer pipeline: enterprise targets identified and contacted
+- Worker Advisory Board charter planned
+- Customer outreach: initial research phase, no commitments
 - Building in public from Day 1
 
 ## Tech Stack
@@ -147,7 +148,7 @@ The board seats recovery community members, Cherokee Nation citizens, gig econom
 ```
 humanaios/
 ├── apps/api/              # API application
-├── src/auth-system/       # Authentication (complete)
+├── src/auth-system/       # Authentication (designed)
 ├── packages/mcp-sdk/      # MCP integration SDK
 ├── infrastructure/        # Docker, deployment configs
 ├── docs/                  # Technical documentation
