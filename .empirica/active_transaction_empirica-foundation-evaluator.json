@@ -1,0 +1,12 @@
+{
+  "transaction_id": "bedba404-fbc1-49b8-bcb7-b553a146b947",
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "claude_session_id": null,
+  "preflight_timestamp": 1782485281.0600362,
+  "status": "open",
+  "project_path": "/Users/andersonfamily/practices/empirica-foundation-evaluator",
+  "updated_at": 1782485281.060195,
+  "work_type": "design",
+  "cascade_profile": "exploratory",
+  "avg_turns": 0
+}

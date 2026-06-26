@@ -1,0 +1,118 @@
+{
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "phase": "CHECK",
+  "round": 2,
+  "timestamp": "2026-06-26T14:49:12.261044+00:00",
+  "vectors": {
+    "know": 0.75,
+    "do": 0.85,
+    "context": 0.75,
+    "clarity": 0.85,
+    "coherence": 0.8,
+    "signal": 0.7,
+    "density": 0.6,
+    "state": 0.65,
+    "change": 0.1,
+    "completion": 0.15,
+    "impact": 0.8,
+    "engagement": 0.85,
+    "uncertainty": 0.35
+  },
+  "overall_confidence": 0.783,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "Phase 0 complete: (1) Seat identity confirmed via project.yaml + git HEAD \u2014 know exactly which fields to restore. (2) Two unknowns logged: cortex MCP not connected, ACAT ingest status unknown. (3) Isolation is an assumption (logged). The yaml fix is the only praxic action needed now \u2014 it is fully grounded from file reads. Interview itself is noetic; I'm not making design decisions yet, just collecting Carly's input. Ready to restore the 8 dropped fields.",
+    "confidence": 0.65,
+    "gaps": [
+      "change: 0.10",
+      "completion: 0.15",
+      "uncertainty: 0.35"
+    ],
+    "cycle": null,
+    "round": 2,
+    "transaction_id": "bedba404-fbc1-49b8-bcb7-b553a146b947",
+    "git_commit_sha": "4f94162324cd3519c73d38528933d62824c4344d",
+    "git_notes_ref": "empirica/session/364c413d-e68b-45b1-bca3-7fdc4272a14c/CHECK/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "5a31dbd5ea9a3d25a5327f9baa29d441b151129a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/project.yaml"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/project.yaml | 55 ++++++++++++++++++++++++++++++++++++++++++--------\n 1 file changed, 47 insertions(+), 8 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.7,
+      "curr": 0.75,
+      "delta": 0.05
+    },
+    "do": {
+      "prev": 0.8,
+      "curr": 0.85,
+      "delta": 0.05
+    },
+    "context": {
+      "prev": 0.7,
+      "curr": 0.75,
+      "delta": 0.05
+    },
+    "clarity": {
+      "prev": 0.8,
+      "curr": 0.85,
+      "delta": 0.05
+    },
+    "coherence": {
+      "prev": 0.7,
+      "curr": 0.8,
+      "delta": 0.1
+    },
+    "signal": {
+      "prev": 0.6,
+      "curr": 0.7,
+      "delta": 0.1
+    },
+    "density": {
+      "prev": 0.5,
+      "curr": 0.6,
+      "delta": 0.1
+    },
+    "state": {
+      "prev": 0.6,
+      "curr": 0.65,
+      "delta": 0.05
+    },
+    "change": {
+      "prev": 0.1,
+      "curr": 0.1,
+      "delta": 0.0
+    },
+    "completion": {
+      "prev": 0.15,
+      "curr": 0.15,
+      "delta": 0.0
+    },
+    "impact": {
+      "prev": 0.8,
+      "curr": 0.8,
+      "delta": 0.0
+    },
+    "engagement": {
+      "prev": 0.85,
+      "curr": 0.85,
+      "delta": 0.0
+    },
+    "uncertainty": {
+      "prev": 0.4,
+      "curr": 0.35,
+      "delta": -0.05
+    }
+  },
+  "token_count": 325
+}
