@@ -1,0 +1,202 @@
+{
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "phase": "POSTFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-26T17:20:19.094071+00:00",
+  "vectors": {
+    "know": 0.82,
+    "do": 0.78,
+    "context": 0.82,
+    "clarity": 0.85,
+    "coherence": 0.83,
+    "signal": 0.8,
+    "density": 0.72,
+    "state": 0.75,
+    "change": 0.65,
+    "completion": 0.88,
+    "impact": 0.9,
+    "engagement": 0.9,
+    "uncertainty": 0.28
+  },
+  "overall_confidence": 0.807,
+  "meta": {
+    "reasoning": "Onboarding interview complete through all 8 phases. Know: strong \u2014 grounded Carly's workflow from live artifact (S-061626), confirmed ACAT schema from corpus data, discovered 12th dimension (handoff) and valid purity enum live. Do: good \u2014 executed all interview phases, created goals/artifacts, hit one infrastructure blocker (/intake/ 502) that was correctly routed rather than worked around. Context: strong \u2014 foundation scope, isolation assumption logged, cortex MCP gap noted. Completion: 0.88 \u2014 all planned phases done; P1+P3 corpus submission blocked by backend (not a discipline gap, an infrastructure gap). Impact: high \u2014 4 practices planned, 3 harnesses defined, trust matrix, protocol written, ACAT schema fully mapped for first time this session.",
+    "task_summary": "Onboarding interview complete through all 8 phases. Know: strong \u2014 grounded Carly's workflow from live artifact (S-061626), confirmed ACAT schema from corpus data, discovered 12th dimension (handoff) and valid purity enum live. Do: good \u2014 executed all interview phases, created goals/artifacts, hit one infrastructure blocker (/intake/ 502) that was correctly routed rather than worked around. Context: strong \u2014 foundation scope, isolation assumption logged, cortex MCP gap noted. Completion: 0.88 \u2014 all planned phases done; P1+P3 corpus submission blocked by backend (not a discipline gap, an infrastructure gap). Impact: high \u2014 4 practices planned, 3 harnesses defined, trust matrix, protocol written, ACAT schema fully mapped for first time this session.",
+    "postflight_confidence": 0.72,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.22,
+      "do": 0.08,
+      "context": 0.32,
+      "clarity": 0.35,
+      "coherence": 0.23,
+      "signal": 0.4,
+      "density": 0.32,
+      "state": 0.25,
+      "change": 0.55,
+      "completion": 0.78,
+      "impact": 0.1,
+      "engagement": 0.1,
+      "uncertainty": -0.32
+    },
+    "trajectory_issues": [],
+    "transaction_id": "bedba404-fbc1-49b8-bcb7-b553a146b947",
+    "tool_call_count": 0,
+    "work_type": "design",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 12
+    },
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 9,
+        "unknowns": 3,
+        "dead_ends": 2,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "14 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "14 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible.",
+      "completion_hint": "1 goal(s) completed in this transaction \u2014 completion for this transaction should be near 1.0."
+    },
+    "coverage": null,
+    "git_commit_sha": "aa906a2076cd85caa45a44806ccc46873944e905",
+    "git_notes_ref": "empirica/session/364c413d-e68b-45b1-bca3-7fdc4272a14c/POSTFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "687451735adaad301b0d8e49ae5c75a88a17128e",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "687451735adaad301b0d8e49ae5c75a88a17128e",
+        "message": "Log ACAT session artifacts \u2014 onboarding interview + corpus attempt",
+        "author": "Carly Anderson",
+        "timestamp": "2026-06-26T12:20:01-05:00",
+        "files_changed": [
+          ".empirica/active_transaction_empirica-foundation-evaluator.json",
+          ".empirica/cache/dep_graph_empirica-foundation-evaluator.json",
+          ".empirica/config.yaml",
+          ".empirica/hook_counters_empirica-foundation-evaluator.json",
+          ".empirica/sessions/sessions.db",
+          ".empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_CHECK_1_20260626_144832.json",
+          ".empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_CHECK_2_20260626_144915.json",
+          ".empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_PREFLIGHT_1_20260626_144801.json"
+        ]
+      },
+      {
+        "sha": "a62b965273ccd8c5d9d9563e1ca0fd4e97d808bc",
+        "message": "Add carly-foundation-protocol.yaml \u2014 onboarding interview complete",
+        "author": "Carly Anderson",
+        "timestamp": "2026-06-26T12:17:27-05:00",
+        "files_changed": [
+          "carly-foundation-protocol.yaml"
+        ]
+      },
+      {
+        "sha": "ee8efdcfe8c1ef8daf979898d68dd76cd6611b94",
+        "message": "checkpoint: onboarding interview Phase 7 complete",
+        "author": "Carly Anderson",
+        "timestamp": "2026-06-26T12:17:21-05:00",
+        "files_changed": []
+      },
+      {
+        "sha": "fb3f0e834d5ed12a397ff6bccc55d1e8c5901253",
+        "message": "Restore seat identity fields dropped by --auto-init",
+        "author": "Carly Anderson",
+        "timestamp": "2026-06-26T09:49:28-05:00",
+        "files_changed": [
+          ".empirica/project.yaml"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/active_transaction_empirica-foundation-evaluator.json"
+      ],
+      "files_added": [],
+      "files_deleted": [
+        ".empirica/hook_counters_empirica-foundation-evaluator.json"
+      ],
+      "diff_stat": ".empirica/active_transaction_empirica-foundation-evaluator.json | 7 +++----\n .empirica/hook_counters_empirica-foundation-evaluator.json      | 3 ---\n 2 files changed, 3 insertions(+), 7 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.75,
+      "curr": 0.82,
+      "delta": 0.07
+    },
+    "do": {
+      "prev": 0.85,
+      "curr": 0.78,
+      "delta": -0.07
+    },
+    "context": {
+      "prev": 0.75,
+      "curr": 0.82,
+      "delta": 0.07
+    },
+    "clarity": {
+      "prev": 0.85,
+      "curr": 0.85,
+      "delta": 0.0
+    },
+    "coherence": {
+      "prev": 0.8,
+      "curr": 0.83,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.7,
+      "curr": 0.8,
+      "delta": 0.1
+    },
+    "density": {
+      "prev": 0.6,
+      "curr": 0.72,
+      "delta": 0.12
+    },
+    "state": {
+      "prev": 0.65,
+      "curr": 0.75,
+      "delta": 0.1
+    },
+    "change": {
+      "prev": 0.1,
+      "curr": 0.65,
+      "delta": 0.55
+    },
+    "completion": {
+      "prev": 0.15,
+      "curr": 0.88,
+      "delta": 0.73
+    },
+    "impact": {
+      "prev": 0.8,
+      "curr": 0.9,
+      "delta": 0.1
+    },
+    "engagement": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "uncertainty": {
+      "prev": 0.35,
+      "curr": 0.28,
+      "delta": -0.07
+    }
+  },
+  "token_count": 828
+}

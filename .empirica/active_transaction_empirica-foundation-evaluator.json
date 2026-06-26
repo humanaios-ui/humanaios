@@ -1,12 +1,12 @@
 {
-  "transaction_id": "bedba404-fbc1-49b8-bcb7-b553a146b947",
+  "transaction_id": "f1b7eabf-1e7f-4467-869b-67cbf5f2b06e",
   "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
   "claude_session_id": null,
-  "preflight_timestamp": 1782485281.0600362,
+  "preflight_timestamp": 1782494680.989463,
   "status": "open",
   "project_path": "/Users/andersonfamily/practices/empirica-foundation-evaluator",
-  "updated_at": 1782485281.060195,
-  "work_type": "design",
+  "updated_at": 1782494680.9897459,
+  "work_type": "research",
   "cascade_profile": "exploratory",
   "avg_turns": 0
 }
