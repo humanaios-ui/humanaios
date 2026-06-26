@@ -1,0 +1,12 @@
+version: "2.0"
+name: empirica-foundation-evaluator
+description: "Carly R. Anderson — empirica-foundation Admiral + first Evaluator seat. Onboarding interview home."
+ai_id: empirica-foundation-evaluator
+type: operations
+domain: evaluation
+classification: internal
+status: active
+org_id: org-empirica-foundation
+tenant_slug: carly
+mesh_id_prefix: empirica_foundation.carly
+canonical_seat: empirica_foundation.carly.empirica-foundation-evaluator
