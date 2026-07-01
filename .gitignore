@@ -40,3 +40,21 @@ Thumbs.db
 # Misc
 *.tsbuildinfo
 .turbo/
+
+# Empirica practice files (local, never committed)
+.empirica/
+.breadcrumbs.yaml
+.claude/
+.empirica_inaugural_sid
+.empirica_reflex_logs/
+*.zip
+
+# Workspace sub-repos (separate git histories, not submodules)
+operations/
+lasting-light-ai/
+humanaios-internal/
+empirica-foundation/
+
+# Inbox/scratch
+_inbox_files3/
+HAIOS.mermaid
