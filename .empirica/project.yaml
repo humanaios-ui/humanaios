@@ -7,8 +7,8 @@ type: operations
 domain: evaluation
 org_id: org-empirica-foundation
 tenant_slug: carly
-mesh_id_prefix: empirica_foundation.carly
-canonical_seat: empirica_foundation.carly.empirica-foundation-evaluator
+mesh_id_prefix: empirica-foundation.carly
+canonical_seat: empirica-foundation.carly.empirica-foundation-evaluator
 classification: internal
 status: active
 evidence_profile: auto
