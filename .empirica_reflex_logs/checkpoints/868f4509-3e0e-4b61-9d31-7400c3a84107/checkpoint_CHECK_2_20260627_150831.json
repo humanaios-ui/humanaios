@@ -1,0 +1,58 @@
+{
+  "session_id": "868f4509-3e0e-4b61-9d31-7400c3a84107",
+  "phase": "CHECK",
+  "round": 2,
+  "timestamp": "2026-06-27T15:08:20.366917+00:00",
+  "vectors": {
+    "know": 0.8,
+    "uncertainty": 0.22,
+    "context": 0.85,
+    "scope": 0.85
+  },
+  "overall_confidence": 0.717,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "Research fork returned comprehensive data: all practice project.yaml fields, full skills catalog, complete hook map, statusline spec, governance structure. No /btw command exists (will note). scratch-1/scratch-2 don't exist (will note as planned). mesh-support/outreach/website are Cortex-only (no local dirs). Have enough to write a complete manual. PDFs still need poppler \u2014 will install after CHECK passes.",
+    "confidence": 0.78,
+    "gaps": [
+      "uncertainty: 0.22"
+    ],
+    "cycle": null,
+    "round": 2,
+    "transaction_id": "f4f140c3-53c1-4fc2-b3f7-60c57d544832",
+    "git_commit_sha": "ceff24317eb2f2c3630ed87e8f069d7f6d6d4c9e",
+    "git_notes_ref": "empirica/session/868f4509-3e0e-4b61-9d31-7400c3a84107/CHECK/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "2d28f2da657e16bac3f0b943a596c6eb2f3ca35a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml              |  57 ++++++++++++++++++++++++++---------------\n .empirica/sessions/sessions.db | Bin 1335296 -> 1376256 bytes\n 2 files changed, 36 insertions(+), 21 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.65,
+      "curr": 0.8,
+      "delta": 0.15
+    },
+    "uncertainty": {
+      "prev": 0.45,
+      "curr": 0.22,
+      "delta": -0.23
+    },
+    "context": {
+      "prev": 0.6,
+      "curr": 0.85,
+      "delta": 0.25
+    }
+  },
+  "token_count": 188
+}

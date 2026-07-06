@@ -1,0 +1,169 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "POSTFLIGHT",
+  "round": 2,
+  "timestamp": "2026-07-02T08:52:41.227994+00:00",
+  "vectors": {
+    "know": 0.93,
+    "uncertainty": 0.1,
+    "context": 0.94,
+    "clarity": 0.91,
+    "coherence": 0.92,
+    "signal": 0.93,
+    "density": 0.9,
+    "state": 0.93,
+    "change": 0.88,
+    "completion": 1.0,
+    "impact": 0.92,
+    "do": 0.9,
+    "engagement": 0.97
+  },
+  "overall_confidence": 0.923,
+  "meta": {
+    "reasoning": "T2 Mesh Architecture transaction complete. PRACTICE_COORDINATION_MAP.md (327 lines, commit d861290) authored and ratified. All 6 foundation practices assigned to SER 1 (assessment) + SER 2 (execution routing). Roles crystal clear: Evaluator independent assessor, autonomy proposes work, humanaios/outreach/website execute + respond, mesh-support coordinates both SERs. Canonical seats corrected (hyphen form per cortex authorization). SER payloads designed with participant lists + escalation rules (13h / 8h). F-50 firewall rules explicit in PRACTICE_COORDINATION_MAP.md. All 5 T2 tasks completed with evidence. Ready for T3 (ACAT-empirica integration protocol).",
+    "task_summary": "T2 Mesh Architecture transaction complete. PRACTICE_COORDINATION_MAP.md (327 lines, commit d861290) authored and ratified. All 6 foundation practices assigned to SER 1 (assessment) + SER 2 (execution routing). Roles crystal clear: Evaluator independent assessor, autonomy proposes work, humanaios/outreach/website execute + respond, mesh-support coordinates both SERs. Canonical seats corrected (hyphen form per cortex authorization). SER payloads designed with participant lists + escalation rules (13h / 8h). F-50 firewall rules explicit in PRACTICE_COORDINATION_MAP.md. All 5 T2 tasks completed with evidence. Ready for T3 (ACAT-empirica integration protocol).",
+    "postflight_confidence": 0.9,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.08,
+      "uncertainty": -0.12,
+      "context": 0.04,
+      "clarity": 0.09,
+      "coherence": 0.07,
+      "signal": 0.05,
+      "density": 0.07,
+      "state": 0.05,
+      "change": 0.78,
+      "completion": 0.95,
+      "impact": 0.0,
+      "do": 0.1,
+      "engagement": 0.02
+    },
+    "trajectory_issues": [],
+    "transaction_id": "f2cfc699-aa6d-49b7-a019-22104d1d909b",
+    "tool_call_count": 0,
+    "work_type": "research",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 1
+    },
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 8,
+        "unknowns": 0,
+        "dead_ends": 1,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 1
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "10 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "10 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible."
+    },
+    "coverage": null,
+    "git_commit_sha": "d8c3f2068b05ed672af69c8843c538ec6f1a5722",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/POSTFLIGHT/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "ad803eb35631f71529470270f524359b4e18de30",
+        "message": "fix: update canonical_seat to hyphen form (empirica-foundation.carly.*)",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-02T03:51:22-05:00",
+        "files_changed": [
+          ".empirica/project.yaml"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 144 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1617920 bytes\n 3 files changed, 113 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "uncertainty": {
+      "prev": 0.15,
+      "curr": 0.1,
+      "delta": -0.05
+    },
+    "context": {
+      "prev": 0.92,
+      "curr": 0.94,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.88,
+      "curr": 0.91,
+      "delta": 0.03
+    },
+    "coherence": {
+      "prev": 0.89,
+      "curr": 0.92,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "density": {
+      "prev": 0.87,
+      "curr": 0.9,
+      "delta": 0.03
+    },
+    "state": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "change": {
+      "prev": 0.2,
+      "curr": 0.88,
+      "delta": 0.68
+    },
+    "completion": {
+      "prev": 0.2,
+      "curr": 1.0,
+      "delta": 0.8
+    },
+    "impact": {
+      "prev": 0.92,
+      "curr": 0.92,
+      "delta": 0.0
+    },
+    "do": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "engagement": {
+      "prev": 0.96,
+      "curr": 0.97,
+      "delta": 0.01
+    }
+  },
+  "token_count": 674
+}

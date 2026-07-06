@@ -1,0 +1,44 @@
+{
+  "session_id": "15ec2d25-bc09-4cd7-96f6-4ce73c083269",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-28T14:36:30.720913+00:00",
+  "vectors": {
+    "know": 0.88,
+    "do": 0.85,
+    "context": 0.82,
+    "clarity": 0.9,
+    "coherence": 0.85,
+    "signal": 0.88,
+    "density": 0.8,
+    "state": 0.82,
+    "change": 0.1,
+    "completion": 0.1,
+    "impact": 0.55,
+    "engagement": 0.88,
+    "uncertainty": 0.18
+  },
+  "overall_confidence": 0.85,
+  "meta": {
+    "reasoning": "Post-compact. Canvas read confirms HAIOS workspace, charter day 73, WGS session note format. acat-corpus-session committed (28d1435, fix/acat-scoring-integrity). EVALUATOR_MANUAL updated (6d939b4). Need to post a brief WGS-style session update to channel C0AND66PT7U. DM D0AGT4Y2119 returned channel_not_found. Work is comms \u2014 post to Slack.",
+    "prompt": "Post-compact. Canvas read confirms HAIOS workspace, charter day 73, WGS session note format. acat-corpus-session committed (28d1435, fix/acat-scoring-integrity). EVALUATOR_MANUAL updated (6d939b4). Need to post a brief WGS-style session update to channel C0AND66PT7U. DM D0AGT4Y2119 returned channel_not_found. Work is comms \u2014 post to Slack.",
+    "transaction_id": "0593fa7e-841f-4a30-ab93-5c8ba04f268d",
+    "git_commit_sha": "cac5300d6942f386ad898d3be1d5babb71c8fdbb",
+    "git_notes_ref": "empirica/session/15ec2d25-bc09-4cd7-96f6-4ce73c083269/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "6d939b4a7e3cbfba547ba745661c2fe920cd0f3e",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/sessions/sessions.db | Bin 1335296 -> 1343488 bytes\n 1 file changed, 0 insertions(+), 0 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 204
+}

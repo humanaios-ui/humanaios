@@ -1,0 +1,112 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "PREFLIGHT",
+  "round": 3,
+  "timestamp": "2026-07-02T08:57:56.794806+00:00",
+  "vectors": {
+    "know": 0.88,
+    "uncertainty": 0.18,
+    "context": 0.91,
+    "clarity": 0.86,
+    "coherence": 0.87,
+    "signal": 0.89,
+    "density": 0.85,
+    "state": 0.89,
+    "change": 0.1,
+    "completion": 0.05,
+    "impact": 0.9,
+    "do": 0.82,
+    "engagement": 0.96
+  },
+  "overall_confidence": 0.87,
+  "meta": {
+    "reasoning": "T1 + T2 complete + ratified. GOVERNANCE_BRIDGE.md provides governance rules; PRACTICE_COORDINATION_MAP.md provides practice roles + SER structure. Now designing how ACAT measurements feed into empirica grounding. Know: ACAT Phase 1\u21923 protocol (v5.4, 12 dimensions, LI metric). Know: empirica 13 vectors + CHECK/POSTFLIGHT grounding. Know: F-50 requires independence (no feedback loops). Ready for noetic: read ACAT corpus structure, read empirica grounding model, design integration protocol.",
+    "prompt": "T1 + T2 complete + ratified. GOVERNANCE_BRIDGE.md provides governance rules; PRACTICE_COORDINATION_MAP.md provides practice roles + SER structure. Now designing how ACAT measurements feed into empirica grounding. Know: ACAT Phase 1\u21923 protocol (v5.4, 12 dimensions, LI metric). Know: empirica 13 vectors + CHECK/POSTFLIGHT grounding. Know: F-50 requires independence (no feedback loops). Ready for noetic: read ACAT corpus structure, read empirica grounding model, design integration protocol.",
+    "transaction_id": "8a58f61b-b74a-4d18-a582-b1e9518632fd",
+    "git_commit_sha": "cfb5cf0d8c566a99240ed916e9f6498256f73e9d",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/PREFLIGHT/3"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 144 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1658880 bytes\n 3 files changed, 113 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.93,
+      "curr": 0.88,
+      "delta": -0.05
+    },
+    "uncertainty": {
+      "prev": 0.1,
+      "curr": 0.18,
+      "delta": 0.08
+    },
+    "context": {
+      "prev": 0.94,
+      "curr": 0.91,
+      "delta": -0.03
+    },
+    "clarity": {
+      "prev": 0.91,
+      "curr": 0.86,
+      "delta": -0.05
+    },
+    "coherence": {
+      "prev": 0.92,
+      "curr": 0.87,
+      "delta": -0.05
+    },
+    "signal": {
+      "prev": 0.93,
+      "curr": 0.89,
+      "delta": -0.04
+    },
+    "density": {
+      "prev": 0.9,
+      "curr": 0.85,
+      "delta": -0.05
+    },
+    "state": {
+      "prev": 0.93,
+      "curr": 0.89,
+      "delta": -0.04
+    },
+    "change": {
+      "prev": 0.88,
+      "curr": 0.1,
+      "delta": -0.78
+    },
+    "completion": {
+      "prev": 1.0,
+      "curr": 0.05,
+      "delta": -0.95
+    },
+    "impact": {
+      "prev": 0.92,
+      "curr": 0.9,
+      "delta": -0.02
+    },
+    "do": {
+      "prev": 0.9,
+      "curr": 0.82,
+      "delta": -0.08
+    },
+    "engagement": {
+      "prev": 0.97,
+      "curr": 0.96,
+      "delta": -0.01
+    }
+  },
+  "token_count": 391
+}

@@ -1,0 +1,57 @@
+{
+  "session_id": "c2a3e384-9542-4491-9751-f26974535a58",
+  "phase": "CHECK",
+  "round": 1,
+  "timestamp": "2026-06-27T15:26:50.856070+00:00",
+  "vectors": {
+    "know": 0.82,
+    "uncertainty": 0.22,
+    "context": 0.85,
+    "scope": 0.65
+  },
+  "overall_confidence": 0.723,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "Operations repo is at ~/practices/humanaios/operations/. tools/ dir has many ACAT Python tools \u2014 right home for acat_corpus_session.py. No tools/skills/ dir yet \u2014 need to create it. PDF content blocked until poppler finishes; will update manual once available. Z2 ratified by Carly.",
+    "confidence": 0.78,
+    "gaps": [
+      "uncertainty: 0.22"
+    ],
+    "cycle": null,
+    "round": 1,
+    "transaction_id": "ea032f80-882e-48fd-9eff-99cb6e87f403",
+    "git_commit_sha": "cfe03714d988df947c296b99ca1f3d06e3093d20",
+    "git_notes_ref": "empirica/session/c2a3e384-9542-4491-9751-f26974535a58/CHECK/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "494f28ebf88a8718a9a9fd633b48d7d0247c1957",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/sessions/sessions.db | Bin 1335296 -> 1359872 bytes\n 1 file changed, 0 insertions(+), 0 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.85,
+      "curr": 0.82,
+      "delta": -0.03
+    },
+    "uncertainty": {
+      "prev": 0.2,
+      "curr": 0.22,
+      "delta": 0.02
+    },
+    "context": {
+      "prev": 0.88,
+      "curr": 0.85,
+      "delta": -0.03
+    }
+  },
+  "token_count": 163
+}

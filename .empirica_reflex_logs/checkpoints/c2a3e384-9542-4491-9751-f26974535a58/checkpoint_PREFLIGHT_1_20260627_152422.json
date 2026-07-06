@@ -1,0 +1,35 @@
+{
+  "session_id": "c2a3e384-9542-4491-9751-f26974535a58",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-27T15:24:13.814059+00:00",
+  "vectors": {
+    "know": 0.85,
+    "uncertainty": 0.2,
+    "context": 0.88,
+    "engagement": 0.92
+  },
+  "overall_confidence": 0.743,
+  "meta": {
+    "reasoning": "User ratified acat-corpus-session (Z2 approval). Operations repo found at ~/practices/humanaios/operations/. Poppler installing. Need to read PDFs, update manual, write tool files, commit.",
+    "prompt": "User ratified acat-corpus-session (Z2 approval). Operations repo found at ~/practices/humanaios/operations/. Poppler installing. Need to read PDFs, update manual, write tool files, commit.",
+    "transaction_id": "ea032f80-882e-48fd-9eff-99cb6e87f403",
+    "git_commit_sha": "7be8fee0200a4c96cf18f09a3891920413ac5671",
+    "git_notes_ref": "empirica/session/c2a3e384-9542-4491-9751-f26974535a58/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "494f28ebf88a8718a9a9fd633b48d7d0247c1957",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/sessions/sessions.db | Bin 1335296 -> 1359872 bytes\n 1 file changed, 0 insertions(+), 0 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 128
+}

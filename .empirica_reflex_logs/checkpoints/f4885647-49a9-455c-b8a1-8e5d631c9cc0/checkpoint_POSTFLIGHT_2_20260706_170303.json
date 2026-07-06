@@ -1,0 +1,169 @@
+{
+  "session_id": "f4885647-49a9-455c-b8a1-8e5d631c9cc0",
+  "phase": "POSTFLIGHT",
+  "round": 2,
+  "timestamp": "2026-07-06T17:02:57.057442+00:00",
+  "vectors": {
+    "know": 0.96,
+    "uncertainty": 0.05,
+    "context": 0.98,
+    "clarity": 0.98,
+    "coherence": 0.96,
+    "signal": 0.98,
+    "density": 0.95,
+    "state": 0.98,
+    "change": 0.5,
+    "completion": 1.0,
+    "impact": 0.98,
+    "do": 0.95,
+    "engagement": 0.99
+  },
+  "overall_confidence": 0.963,
+  "meta": {
+    "reasoning": "Mesh outreach phase complete. All 4 FYI collabs prepared and ready to dispatch (noetic, auto-accept). SER 2 payload ready for cortex_propose Day 3. Timeline clear: replies within 2 days, proposal Day 3, ECO gate Day 4, Week 1 execution concurrent with T4. High confidence, clear execution path established.",
+    "task_summary": "Mesh outreach phase complete. All 4 FYI collabs prepared and ready to dispatch (noetic, auto-accept). SER 2 payload ready for cortex_propose Day 3. Timeline clear: replies within 2 days, proposal Day 3, ECO gate Day 4, Week 1 execution concurrent with T4. High confidence, clear execution path established.",
+    "postflight_confidence": 0.95,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.0,
+      "uncertainty": -0.03,
+      "context": 0.0,
+      "clarity": 0.01,
+      "coherence": 0.01,
+      "signal": 0.0,
+      "density": 0.01,
+      "state": 0.0,
+      "change": 0.5,
+      "completion": 1.0,
+      "impact": 0.0,
+      "do": -0.03,
+      "engagement": 0.0
+    },
+    "trajectory_issues": [],
+    "transaction_id": "340a0337-0f46-4c2b-adfa-eb0d4b5b91a4",
+    "tool_call_count": 0,
+    "work_type": "code",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": null,
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 0,
+        "unknowns": 0,
+        "dead_ends": 0,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible.",
+      "untriaged_notes": [
+        {
+          "text": "T4 Phase 1 Blocker: Cortex integration unavailable. Cortex API (https://cortex.getempirica.com) reachable + authenticated, but no accessible SER creation method: HTTP endpoints 404, MCP CLI not found, empirica CLI lacks command. mesh-support pre-flight passed but blocked on infrastructure gap. Escalation document: PHASE_1_BLOCKER_ESCALATION.md. Awaiting Zone 2 guidance.",
+          "tag": "followup"
+        }
+      ],
+      "untriaged_notes_hint": "1 untriaged note(s)-to-self for this project. Promote any worth keeping to a finding/decision/goal, then `empirica note --clear`."
+    },
+    "coverage": null,
+    "git_commit_sha": "3f36594ac78dc8d512fe33b7a8b0e731ea6c28dc",
+    "git_notes_ref": "empirica/session/f4885647-49a9-455c-b8a1-8e5d631c9cc0/POSTFLIGHT/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "85a7d9ab4261b29a139066878bdff2dac8492f3e",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "85a7d9ab4261b29a139066878bdff2dac8492f3e",
+        "message": "log: Mesh outreach dispatch - 4 FYI collabs for Empirica-ACAT framework",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-06T12:02:21-05:00",
+        "files_changed": [
+          "COLLAB_DISPATCH_LOG.md"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 146 ++++++++++++++++++++++++++++--------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1847296 bytes\n 3 files changed, 115 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.96,
+      "curr": 0.96,
+      "delta": 0.0
+    },
+    "uncertainty": {
+      "prev": 0.08,
+      "curr": 0.05,
+      "delta": -0.03
+    },
+    "context": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "clarity": {
+      "prev": 0.97,
+      "curr": 0.98,
+      "delta": 0.01
+    },
+    "coherence": {
+      "prev": 0.95,
+      "curr": 0.96,
+      "delta": 0.01
+    },
+    "signal": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "density": {
+      "prev": 0.94,
+      "curr": 0.95,
+      "delta": 0.01
+    },
+    "state": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "change": {
+      "prev": 0.0,
+      "curr": 0.5,
+      "delta": 0.5
+    },
+    "completion": {
+      "prev": 0.0,
+      "curr": 1.0,
+      "delta": 1.0
+    },
+    "impact": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "do": {
+      "prev": 0.98,
+      "curr": 0.95,
+      "delta": -0.03
+    },
+    "engagement": {
+      "prev": 0.99,
+      "curr": 0.99,
+      "delta": 0.0
+    }
+  },
+  "token_count": 574
+}

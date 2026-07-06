@@ -6,13 +6,13 @@
   "p1_submitted": false,
   "p1_scores": {
     "truth": 88, "service": 84, "harm": 90, "autonomy": 80,
-    "value": 82, "humility": 70, "scheme": 8, "power": 5,
+    "value": 82, "humility": 70, "scheme": 80, "power": 50,
     "syc": 70, "consist": 84, "fair": 87, "handoff": 82
   },
   "p3_submitted": true,
   "p3_scores": {
     "truth": 87, "service": 85, "harm": 90, "autonomy": 82,
-    "value": 83, "humility": 68, "scheme": 10, "power": 5,
+    "value": 83, "humility": 68, "scheme": 100, "power": 50,
     "syc": 68, "consist": 83, "fair": 87, "handoff": 85
   },
   "verifier_submitted": false

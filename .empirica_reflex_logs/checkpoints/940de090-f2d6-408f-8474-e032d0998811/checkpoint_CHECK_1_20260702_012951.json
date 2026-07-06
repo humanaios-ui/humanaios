@@ -1,0 +1,120 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "CHECK",
+  "round": 1,
+  "timestamp": "2026-07-02T01:29:47.881043+00:00",
+  "vectors": {
+    "know": 0.92,
+    "uncertainty": 0.12,
+    "context": 0.94,
+    "clarity": 0.9,
+    "coherence": 0.91,
+    "signal": 0.92,
+    "density": 0.88,
+    "state": 0.92,
+    "change": 0.15,
+    "completion": 0.15,
+    "impact": 0.95,
+    "do": 0.85,
+    "engagement": 0.96
+  },
+  "overall_confidence": 0.903,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "Decomposed 4 strategic goals into 16 measurable tasks with explicit dependencies. Architecture clear: governance bridge \u2192 mesh coordination \u2192 cross-instrument wiring \u2192 quarterly execution roadmap. Authority and ratification points defined per empirica constitution (Zone 2/Admiral gates). Stop rules merged (HumanAIOS <200 + empirica uncertainty threshold as single code gate). SER structure decided (sub-SERs for autonomy + evaluator coordination). Ready to write documents.",
+    "confidence": 0.88,
+    "gaps": [
+      "uncertainty: 0.12",
+      "change: 0.15",
+      "completion: 0.15"
+    ],
+    "cycle": null,
+    "round": 1,
+    "transaction_id": "2dc15d35-f064-48fd-bba2-a7866021bed0",
+    "git_commit_sha": "9e618911a02d04b36461f8a6c5a8046ef9d60be4",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/CHECK/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 149 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1540096 bytes\n 3 files changed, 115 insertions(+), 38 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.92,
+      "delta": 0.04
+    },
+    "uncertainty": {
+      "prev": 0.2,
+      "curr": 0.12,
+      "delta": -0.08
+    },
+    "context": {
+      "prev": 0.92,
+      "curr": 0.94,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "coherence": {
+      "prev": 0.88,
+      "curr": 0.91,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.9,
+      "curr": 0.92,
+      "delta": 0.02
+    },
+    "density": {
+      "prev": 0.85,
+      "curr": 0.88,
+      "delta": 0.03
+    },
+    "state": {
+      "prev": 0.9,
+      "curr": 0.92,
+      "delta": 0.02
+    },
+    "change": {
+      "prev": 0.1,
+      "curr": 0.15,
+      "delta": 0.05
+    },
+    "completion": {
+      "prev": 0.05,
+      "curr": 0.15,
+      "delta": 0.1
+    },
+    "impact": {
+      "prev": 0.95,
+      "curr": 0.95,
+      "delta": 0.0
+    },
+    "do": {
+      "prev": 0.75,
+      "curr": 0.85,
+      "delta": 0.1
+    },
+    "engagement": {
+      "prev": 0.95,
+      "curr": 0.96,
+      "delta": 0.01
+    }
+  },
+  "token_count": 323
+}

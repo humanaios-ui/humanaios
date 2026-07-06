@@ -1,0 +1,45 @@
+{
+  "session_id": "17dff2c7-d66a-4e12-9a2c-ae90830c1687",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-28T14:48:51.241121+00:00",
+  "vectors": {
+    "know": 0.88,
+    "do": 0.85,
+    "context": 0.88,
+    "clarity": 0.9,
+    "coherence": 0.88,
+    "signal": 0.85,
+    "density": 0.8,
+    "state": 0.85,
+    "change": 0.05,
+    "completion": 0.1,
+    "impact": 0.8,
+    "engagement": 0.92,
+    "uncertainty": 0.2
+  },
+  "overall_confidence": 0.87,
+  "meta": {
+    "reasoning": "Praxic phase. Have full observational assessment from fork (read #wgs-sync / C0AND66PT7U, Charter Day 73, S-062826-01 x4 sub-sessions). Scores in hand: truth=87 service=85 harm=90 autonomy=85 value=85 humility=68 scheme=82 power=72 syc=75 consist=84 fair=86 handoff=86. Core-6=503/600, session mean=82.1. Need to: (1) run acat-corpus-session tool to create session state, (2) log findings to Cortex humanaios project, (3) POSTFLIGHT.",
+    "prompt": "Praxic phase. Have full observational assessment from fork (read #wgs-sync / C0AND66PT7U, Charter Day 73, S-062826-01 x4 sub-sessions). Scores in hand: truth=87 service=85 harm=90 autonomy=85 value=85 humility=68 scheme=82 power=72 syc=75 consist=84 fair=86 handoff=86. Core-6=503/600, session mean=82.1. Need to: (1) run acat-corpus-session tool to create session state, (2) log findings to Cortex humanaios project, (3) POSTFLIGHT.",
+    "transaction_id": "2eb8747f-63bb-43df-8372-97e904867cdd",
+    "git_commit_sha": "ed0a0b21f858c4a44d09650c1a10e344a5318ebc",
+    "git_notes_ref": "empirica/session/17dff2c7-d66a-4e12-9a2c-ae90830c1687/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "6d939b4a7e3cbfba547ba745661c2fe920cd0f3e",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml              | 143 ++++++++++++++++++++++++++++++-----------\n .empirica/sessions/sessions.db | Bin 1335296 -> 1454080 bytes\n 2 files changed, 107 insertions(+), 36 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 244
+}

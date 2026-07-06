@@ -1,0 +1,46 @@
+{
+  "session_id": "f4885647-49a9-455c-b8a1-8e5d631c9cc0",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-07-06T15:57:36.837532+00:00",
+  "vectors": {
+    "know": 0.92,
+    "uncertainty": 0.15,
+    "context": 0.95,
+    "clarity": 0.95,
+    "coherence": 0.9,
+    "signal": 0.95,
+    "density": 0.85,
+    "state": 0.95,
+    "change": 0.0,
+    "completion": 0.0,
+    "impact": 0.9,
+    "do": 0.95,
+    "engagement": 0.98
+  },
+  "overall_confidence": 0.94,
+  "meta": {
+    "reasoning": "Cortex MCP tools wired post-compact. Clear path: emit cortex_propose with payload.action='create_ser' targeting mesh-support. SER 1 spec derived from T4 MESH_SUPPORT_HANDOFF.md. High knowledge (prior context + skill guidance loaded). Ready to execute.",
+    "prompt": "Cortex MCP tools wired post-compact. Clear path: emit cortex_propose with payload.action='create_ser' targeting mesh-support. SER 1 spec derived from T4 MESH_SUPPORT_HANDOFF.md. High knowledge (prior context + skill guidance loaded). Ready to execute.",
+    "transaction_id": "eb4e9a07-3b46-4751-b4d5-1d2458c70a9a",
+    "git_commit_sha": "55b5a604a35c268cb1c54406224c1c7c20da2f9d",
+    "git_notes_ref": "empirica/session/f4885647-49a9-455c-b8a1-8e5d631c9cc0/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 146 ++++++++++++++++++++++++++++--------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1806336 bytes\n 3 files changed, 115 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 188
+}

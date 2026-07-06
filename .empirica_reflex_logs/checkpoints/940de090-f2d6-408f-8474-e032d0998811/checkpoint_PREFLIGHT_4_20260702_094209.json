@@ -1,0 +1,112 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "PREFLIGHT",
+  "round": 4,
+  "timestamp": "2026-07-02T09:42:03.623700+00:00",
+  "vectors": {
+    "know": 0.82,
+    "uncertainty": 0.25,
+    "context": 0.88,
+    "clarity": 0.8,
+    "coherence": 0.83,
+    "signal": 0.85,
+    "density": 0.82,
+    "state": 0.87,
+    "change": 0.05,
+    "completion": 0.02,
+    "impact": 0.93,
+    "do": 0.78,
+    "engagement": 0.97
+  },
+  "overall_confidence": 0.827,
+  "meta": {
+    "reasoning": "T1+T2+T3 complete. Know cortex mailbox primitives (collab/propose/SER from /cortex-mailbox-send skill). Know practice roles + SER 1/2 structure from PRACTICE_COORDINATION_MAP.md. Know canonical seat format (hyphen). Uncertain: exact SER payload structure for cortex implementation, listener loop configuration details. Ready to investigate cortex integration.",
+    "prompt": "T1+T2+T3 complete. Know cortex mailbox primitives (collab/propose/SER from /cortex-mailbox-send skill). Know practice roles + SER 1/2 structure from PRACTICE_COORDINATION_MAP.md. Know canonical seat format (hyphen). Uncertain: exact SER payload structure for cortex implementation, listener loop configuration details. Ready to investigate cortex integration.",
+    "transaction_id": "06d04da0-7b4d-462c-93e7-b82444e0b390",
+    "git_commit_sha": "025aa879f7bcf2a7e38ba9dc30f28ad78482d0be",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/PREFLIGHT/4"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 145 ++++++++++++++++++++++++++++--------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1736704 bytes\n 3 files changed, 114 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.94,
+      "curr": 0.82,
+      "delta": -0.12
+    },
+    "uncertainty": {
+      "prev": 0.08,
+      "curr": 0.25,
+      "delta": 0.17
+    },
+    "context": {
+      "prev": 0.95,
+      "curr": 0.88,
+      "delta": -0.07
+    },
+    "clarity": {
+      "prev": 0.92,
+      "curr": 0.8,
+      "delta": -0.12
+    },
+    "coherence": {
+      "prev": 0.93,
+      "curr": 0.83,
+      "delta": -0.1
+    },
+    "signal": {
+      "prev": 0.94,
+      "curr": 0.85,
+      "delta": -0.09
+    },
+    "density": {
+      "prev": 0.91,
+      "curr": 0.82,
+      "delta": -0.09
+    },
+    "state": {
+      "prev": 0.94,
+      "curr": 0.87,
+      "delta": -0.07
+    },
+    "change": {
+      "prev": 0.92,
+      "curr": 0.05,
+      "delta": -0.87
+    },
+    "completion": {
+      "prev": 0.95,
+      "curr": 0.02,
+      "delta": -0.93
+    },
+    "impact": {
+      "prev": 0.91,
+      "curr": 0.93,
+      "delta": 0.02
+    },
+    "do": {
+      "prev": 0.93,
+      "curr": 0.78,
+      "delta": -0.15
+    },
+    "engagement": {
+      "prev": 0.97,
+      "curr": 0.97,
+      "delta": 0.0
+    }
+  },
+  "token_count": 331
+}

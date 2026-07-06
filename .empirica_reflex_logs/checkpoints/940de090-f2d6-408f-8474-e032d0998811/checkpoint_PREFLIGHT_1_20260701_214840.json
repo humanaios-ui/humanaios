@@ -1,0 +1,46 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-07-01T21:48:36.965250+00:00",
+  "vectors": {
+    "know": 0.88,
+    "uncertainty": 0.2,
+    "context": 0.92,
+    "clarity": 0.85,
+    "coherence": 0.88,
+    "signal": 0.9,
+    "density": 0.85,
+    "state": 0.9,
+    "change": 0.1,
+    "completion": 0.05,
+    "impact": 0.95,
+    "do": 0.75,
+    "engagement": 0.95
+  },
+  "overall_confidence": 0.85,
+  "meta": {
+    "reasoning": "Loaded HumanAIOS SEED + PRINCIPLES; empirica constitution + transaction discipline. Clear alignment between behavioral gap measurement (ACAT) + epistemic calibration (empirica). Authority structure is defined (Zone 1/2/3, Sentinel CHECK gates). Ready to decompose into structured goal plan. High impact: this is the founding charter for cross-org collaboration.",
+    "prompt": "Loaded HumanAIOS SEED + PRINCIPLES; empirica constitution + transaction discipline. Clear alignment between behavioral gap measurement (ACAT) + epistemic calibration (empirica). Authority structure is defined (Zone 1/2/3, Sentinel CHECK gates). Ready to decompose into structured goal plan. High impact: this is the founding charter for cross-org collaboration.",
+    "transaction_id": "2dc15d35-f064-48fd-bba2-a7866021bed0",
+    "git_commit_sha": "b05bec7ad4d4bab1ec2a72ee497e694067598fd6",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 149 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1490944 bytes\n 3 files changed, 115 insertions(+), 38 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 230
+}

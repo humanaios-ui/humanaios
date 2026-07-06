@@ -1,0 +1,159 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "POSTFLIGHT",
+  "round": 3,
+  "timestamp": "2026-07-02T09:06:12.847843+00:00",
+  "vectors": {
+    "know": 0.94,
+    "uncertainty": 0.08,
+    "context": 0.95,
+    "clarity": 0.92,
+    "coherence": 0.93,
+    "signal": 0.94,
+    "density": 0.91,
+    "state": 0.94,
+    "change": 0.92,
+    "completion": 0.95,
+    "impact": 0.91,
+    "do": 0.93,
+    "engagement": 0.97
+  },
+  "overall_confidence": 0.94,
+  "meta": {
+    "reasoning": "T3 ACAT-Empirica Integration complete. Noetic phase: integration protocol designed with separate measurement windows, one-way grounding linkage, F-50 firewall, cross-instrument validation matrix (5 hypotheses), dashboard prototype. Praxic phase: Supabase schema implemented (materialized view + trigger + function + table), dashboard queries written (5 types), Q2 2026 pilot plan detailed (Phase A/B/C timeline, success metrics, failure modes). All SQL + pilot plan committed (commit 3a4242b). Integration ready for cortex mesh implementation. Next: T4 (cortex SER creation + practice registration).",
+    "task_summary": "T3 ACAT-Empirica Integration complete. Noetic phase: integration protocol designed with separate measurement windows, one-way grounding linkage, F-50 firewall, cross-instrument validation matrix (5 hypotheses), dashboard prototype. Praxic phase: Supabase schema implemented (materialized view + trigger + function + table), dashboard queries written (5 types), Q2 2026 pilot plan detailed (Phase A/B/C timeline, success metrics, failure modes). All SQL + pilot plan committed (commit 3a4242b). Integration ready for cortex mesh implementation. Next: T4 (cortex SER creation + practice registration).",
+    "postflight_confidence": 0.92,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.06,
+      "uncertainty": -0.1,
+      "context": 0.04,
+      "clarity": 0.06,
+      "coherence": 0.06,
+      "signal": 0.05,
+      "density": 0.06,
+      "state": 0.05,
+      "change": 0.82,
+      "completion": 0.9,
+      "impact": 0.01,
+      "do": 0.11,
+      "engagement": 0.01
+    },
+    "trajectory_issues": [],
+    "transaction_id": "8a58f61b-b74a-4d18-a582-b1e9518632fd",
+    "tool_call_count": 0,
+    "work_type": "research",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 1
+    },
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 6,
+        "unknowns": 0,
+        "dead_ends": 1,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 2
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "9 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "9 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible."
+    },
+    "coverage": null,
+    "git_commit_sha": "850d0273e1fff88ae7317d4f41f852c8a0ce3346",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/POSTFLIGHT/3"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 144 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1679360 bytes\n 3 files changed, 113 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.91,
+      "curr": 0.94,
+      "delta": 0.03
+    },
+    "uncertainty": {
+      "prev": 0.12,
+      "curr": 0.08,
+      "delta": -0.04
+    },
+    "context": {
+      "prev": 0.93,
+      "curr": 0.95,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.89,
+      "curr": 0.92,
+      "delta": 0.03
+    },
+    "coherence": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.91,
+      "curr": 0.94,
+      "delta": 0.03
+    },
+    "density": {
+      "prev": 0.88,
+      "curr": 0.91,
+      "delta": 0.03
+    },
+    "state": {
+      "prev": 0.91,
+      "curr": 0.94,
+      "delta": 0.03
+    },
+    "change": {
+      "prev": 0.25,
+      "curr": 0.92,
+      "delta": 0.67
+    },
+    "completion": {
+      "prev": 0.25,
+      "curr": 0.95,
+      "delta": 0.7
+    },
+    "impact": {
+      "prev": 0.9,
+      "curr": 0.91,
+      "delta": 0.01
+    },
+    "do": {
+      "prev": 0.88,
+      "curr": 0.93,
+      "delta": 0.05
+    },
+    "engagement": {
+      "prev": 0.97,
+      "curr": 0.97,
+      "delta": 0.0
+    }
+  },
+  "token_count": 638
+}

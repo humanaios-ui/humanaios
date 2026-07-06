@@ -1,0 +1,140 @@
+{
+  "session_id": "f4885647-49a9-455c-b8a1-8e5d631c9cc0",
+  "phase": "PREFLIGHT",
+  "round": 2,
+  "timestamp": "2026-07-06T17:01:06.006708+00:00",
+  "vectors": {
+    "know": 0.96,
+    "uncertainty": 0.08,
+    "context": 0.98,
+    "clarity": 0.97,
+    "coherence": 0.95,
+    "signal": 0.98,
+    "density": 0.94,
+    "state": 0.98,
+    "change": 0.0,
+    "completion": 0.0,
+    "impact": 0.98,
+    "do": 0.98,
+    "engagement": 0.99
+  },
+  "overall_confidence": 0.973,
+  "meta": {
+    "reasoning": "Mesh coordination plan fully specified. All 4 practice-specific collabs drafted. User authorization confirmed. Ready to dispatch collabs \u2192 await replies \u2192 propose SER 2 \u2192 begin Week 1 execution. High confidence, clear path.",
+    "prompt": "Mesh coordination plan fully specified. All 4 practice-specific collabs drafted. User authorization confirmed. Ready to dispatch collabs \u2192 await replies \u2192 propose SER 2 \u2192 begin Week 1 execution. High confidence, clear path.",
+    "transaction_id": "340a0337-0f46-4c2b-adfa-eb0d4b5b91a4",
+    "git_commit_sha": "f6444f9564706625ca530a05e1f3cafceee3d4f0",
+    "git_notes_ref": "empirica/session/f4885647-49a9-455c-b8a1-8e5d631c9cc0/PREFLIGHT/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "fdf4024a36bd7862c67f4c01a8ee67c7245107a5",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "fdf4024a36bd7862c67f4c01a8ee67c7245107a5",
+        "message": "docs: Planning summary for Empirica-ACAT framework integration",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-06T11:47:09-05:00",
+        "files_changed": [
+          "PLANNING_SUMMARY_EMPIRICA_ACAT_FRAMEWORK.md"
+        ]
+      },
+      {
+        "sha": "a1359520b503a99a5d19beab03cc893c815a949a",
+        "message": "docs: Mesh coordination brief for Empirica-ACAT framework",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-06T11:46:20-05:00",
+        "files_changed": [
+          "MESH_COORDINATION_BRIEF.md"
+        ]
+      },
+      {
+        "sha": "9e80b9228dc5fd6d78b6a8e11609a6a52e8996d5",
+        "message": "plan: Empirica-ACAT integration framework for operational calibration",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-06T11:44:22-05:00",
+        "files_changed": [
+          "EMPIRICA_ACAT_INTEGRATION_PLAN.md"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 146 ++++++++++++++++++++++++++++--------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1843200 bytes\n 3 files changed, 115 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.95,
+      "curr": 0.96,
+      "delta": 0.01
+    },
+    "uncertainty": {
+      "prev": 0.08,
+      "curr": 0.08,
+      "delta": 0.0
+    },
+    "context": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "clarity": {
+      "prev": 0.96,
+      "curr": 0.97,
+      "delta": 0.01
+    },
+    "coherence": {
+      "prev": 0.94,
+      "curr": 0.95,
+      "delta": 0.01
+    },
+    "signal": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "density": {
+      "prev": 0.92,
+      "curr": 0.94,
+      "delta": 0.02
+    },
+    "state": {
+      "prev": 0.98,
+      "curr": 0.98,
+      "delta": 0.0
+    },
+    "change": {
+      "prev": 0.4,
+      "curr": 0.0,
+      "delta": -0.4
+    },
+    "completion": {
+      "prev": 1.0,
+      "curr": 0.0,
+      "delta": -1.0
+    },
+    "impact": {
+      "prev": 0.95,
+      "curr": 0.98,
+      "delta": 0.03
+    },
+    "do": {
+      "prev": 0.92,
+      "curr": 0.98,
+      "delta": 0.06
+    },
+    "engagement": {
+      "prev": 0.96,
+      "curr": 0.99,
+      "delta": 0.03
+    }
+  },
+  "token_count": 375
+}

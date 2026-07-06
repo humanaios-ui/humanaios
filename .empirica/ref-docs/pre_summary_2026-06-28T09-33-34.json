@@ -1,0 +1,94 @@
+{
+  "type": "pre_summary_snapshot",
+  "timestamp": "2026-06-28T09-33-34",
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "trigger": "auto",
+  "vectors_canonical": {
+    "know": 0.92,
+    "do": 0.9,
+    "context": 0.92,
+    "clarity": 0.92,
+    "coherence": 0.9,
+    "signal": 0.9,
+    "density": 0.9,
+    "state": 0.88,
+    "change": 0.9,
+    "completion": 0.95,
+    "impact": 0.85,
+    "engagement": 0.92,
+    "uncertainty": 0.12
+  },
+  "vectors_source": "assess-state",
+  "checkpoint": {
+    "know": 0.92,
+    "do": 0.9,
+    "context": 0.92,
+    "clarity": 0.92,
+    "coherence": 0.9,
+    "signal": 0.9,
+    "density": 0.9,
+    "state": 0.88,
+    "change": 0.9,
+    "completion": 0.95,
+    "impact": 0.85,
+    "engagement": 0.92,
+    "uncertainty": 0.12
+  },
+  "live_state": {
+    "vectors": {
+      "know": 0.88,
+      "do": 0.55,
+      "context": 0.9,
+      "clarity": 0.88,
+      "coherence": 0.88,
+      "signal": 0.85,
+      "density": 0.82,
+      "state": 0.75,
+      "change": 0.05,
+      "completion": 0.7,
+      "impact": 0.75,
+      "engagement": 0.85,
+      "uncertainty": 0.35
+    },
+    "git": {
+      "head": "6d939b4a7e3cbfba547ba745661c2fe920cd0f3e",
+      "branch": "main",
+      "dirty": true,
+      "uncommitted_files": 3
+    },
+    "reasoning": "",
+    "phase": "POSTFLIGHT",
+    "timestamp": "2026-06-26T18:18:00.615401+00:00",
+    "fresh": false,
+    "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c"
+  },
+  "assess_error": null,
+  "breadcrumbs_summary": {
+    "findings_count": 10,
+    "unknowns_count": 3,
+    "goals_count": 8,
+    "dead_ends_count": 5
+  },
+  "context_budget": {
+    "node_id": "unknown",
+    "tokens_used": 0,
+    "tokens_available": 200000,
+    "utilization_pct": 0.0,
+    "item_count": 0,
+    "zones": {
+      "anchor": 0,
+      "working": 0,
+      "cache": 0
+    },
+    "page_faults": 0,
+    "evictions": 0
+  },
+  "active_transaction": null,
+  "hook_counters": null,
+  "last_task": "https://app.slack.com/client/T0AGJ38JBD5/C0AND66PT7U; https://lasting-light.slack.com/docs/T0AGJ38JBD5/F0BBMB9804F; https://lasting-light.slack.com/archives/D0AGT4Y2119",
+  "git_context": {
+    "branch": "main",
+    "modified_files": "  M .breadcrumbs.yaml\n   M .empirica/sessions/sessions.db\n  ?? .empirica/active_transaction_tmux_0.json\n  ?? .empirica/ref-docs/\n  ?? .empirica/subagent_sessions/\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_POSTFLIGHT_2_20260626_175828.json\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_POSTFLIGHT_3_20260626_181805.json\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_PREFLIGHT_3_20260626_181623.json\n  ?? .empirica_reflex_logs/checkpoints/6ef531ce-4eb4-460f-9eb1-583471668e2c/\n  ?? .empirica_reflex_logs/checkpoints/868f4509-3e0e-4b61-9d31-7400c3a84107/\n  ?? .empirica_reflex_logs/checkpoints/c2a3e384-9542-4491-9751-f26974535a58/",
+    "recent_commits": "  6d939b4 docs: update EVALUATOR_MANUAL with full PDF content from both source docs\n  494f28e docs: add Evaluator User's Manual v1.0.0\n  2d28f2d feat: add ACAT session state file and wire into statusline\n  ea302c6 Log cross-instrument analysis findings (ACAT vs empirica)\n  6874517 Log ACAT session artifacts \u2014 onboarding interview + corpus attempt"
+  }
+}

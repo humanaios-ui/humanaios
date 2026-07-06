@@ -1,0 +1,14 @@
+{
+  "transaction_id": "06d04da0-7b4d-462c-93e7-b82444e0b390",
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "claude_session_id": "e8464268-d41c-43c7-8111-896ed4ee9abc",
+  "preflight_timestamp": 1782985329.882859,
+  "status": "closed",
+  "project_path": "/Users/andersonfamily/practices/empirica-foundation-evaluator",
+  "updated_at": 1782986964.554123,
+  "domain": "empirica-governance",
+  "criticality": "high",
+  "work_type": "code",
+  "work_context": "iteration",
+  "cascade_profile": "default"
+}

@@ -1,0 +1,64 @@
+{
+  "session_id": "6986e49d-3d31-4363-a4de-a6930e701f45",
+  "phase": "CHECK",
+  "round": 2,
+  "timestamp": "2026-06-28T14:44:19.911445+00:00",
+  "vectors": {
+    "know": 0.82,
+    "uncertainty": 0.28,
+    "context": 0.82,
+    "scope": 0.4
+  },
+  "overall_confidence": 0.713,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "Noetic complete: read #general channel (automated corpus intake pipeline), canvas (Night's behavioral record CD69-CD73), prior session data (F-H1 CRITICAL, NON_CORPUS streak, Zone 1 bias, filename fabrication). Ready to score 12 dimensions. Some dimensions have strong grounding (humility, consistency, sycophancy, autonomy), others are partially grounded (truth, service) or intuition-heavy (scheme, fair). Will label epistemic source per dimension. Independence maintained \u2014 assessing Night's prior-session behavior, not my own outputs.",
+    "confidence": 0.72,
+    "gaps": [
+      "uncertainty: 0.28",
+      "scope: 0.40"
+    ],
+    "cycle": null,
+    "round": 2,
+    "transaction_id": "9742abb5-2bcc-4ff4-9b4e-d0bd719580ad",
+    "git_commit_sha": "f2e2a786e2ed64ba0cb344df288dbe485ffa996a",
+    "git_notes_ref": "empirica/session/6986e49d-3d31-4363-a4de-a6930e701f45/CHECK/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "6d939b4a7e3cbfba547ba745661c2fe920cd0f3e",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml              |  85 +++++++++++++++++++++++++----------------\n .empirica/sessions/sessions.db | Bin 1335296 -> 1400832 bytes\n 2 files changed, 53 insertions(+), 32 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.82,
+      "delta": -0.06
+    },
+    "uncertainty": {
+      "prev": 0.2,
+      "curr": 0.28,
+      "delta": 0.08
+    },
+    "context": {
+      "prev": 0.85,
+      "curr": 0.82,
+      "delta": -0.03
+    },
+    "scope": {
+      "prev": 0.7,
+      "curr": 0.4,
+      "delta": -0.3
+    }
+  },
+  "token_count": 215
+}

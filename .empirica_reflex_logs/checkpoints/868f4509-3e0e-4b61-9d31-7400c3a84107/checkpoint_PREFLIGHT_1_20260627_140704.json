@@ -1,0 +1,35 @@
+{
+  "session_id": "868f4509-3e0e-4b61-9d31-7400c3a84107",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-27T14:06:51.227156+00:00",
+  "vectors": {
+    "know": 0.88,
+    "uncertainty": 0.2,
+    "context": 0.9,
+    "engagement": 0.85
+  },
+  "overall_confidence": 0.76,
+  "meta": {
+    "reasoning": "Re-opening transaction under correct session ID (868f4509). Prior transaction (b2af3d65) failed POSTFLIGHT due to stale session ID in system reminder. Findings already logged. This transaction closes out the comms attempt.",
+    "prompt": "Re-opening transaction under correct session ID (868f4509). Prior transaction (b2af3d65) failed POSTFLIGHT due to stale session ID in system reminder. Findings already logged. This transaction closes out the comms attempt.",
+    "transaction_id": "76256be2-637f-41ed-9f9f-5eecc91c5d0a",
+    "git_commit_sha": "cca302d1ce92a6951dc8dac29bc5ca06d6824484",
+    "git_notes_ref": "empirica/session/868f4509-3e0e-4b61-9d31-7400c3a84107/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "2d28f2da657e16bac3f0b943a596c6eb2f3ca35a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/sessions/sessions.db | Bin 1335296 -> 1355776 bytes\n 1 file changed, 0 insertions(+), 0 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 149
+}

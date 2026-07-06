@@ -1,0 +1,57 @@
+{
+  "session_id": "868f4509-3e0e-4b61-9d31-7400c3a84107",
+  "phase": "PREFLIGHT",
+  "round": 2,
+  "timestamp": "2026-06-27T14:47:02.838725+00:00",
+  "vectors": {
+    "know": 0.65,
+    "uncertainty": 0.45,
+    "context": 0.6,
+    "engagement": 0.9
+  },
+  "overall_confidence": 0.583,
+  "meta": {
+    "reasoning": "User confirmed both ACAT corpus and HumanAIOS teaching interface uses for curriculum fork. Asked me to review humanaios channel for integration context. Need to explore humanaios project state, mesh content, and advise on curriculum integration approach.",
+    "prompt": "User confirmed both ACAT corpus and HumanAIOS teaching interface uses for curriculum fork. Asked me to review humanaios channel for integration context. Need to explore humanaios project state, mesh content, and advise on curriculum integration approach.",
+    "transaction_id": "f4f140c3-53c1-4fc2-b3f7-60c57d544832",
+    "git_commit_sha": "bc0e1e77c335eaf91415ba6c27221e9b601ac1e0",
+    "git_notes_ref": "empirica/session/868f4509-3e0e-4b61-9d31-7400c3a84107/PREFLIGHT/2"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "2d28f2da657e16bac3f0b943a596c6eb2f3ca35a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml              |  57 ++++++++++++++++++++++++++---------------\n .empirica/sessions/sessions.db | Bin 1335296 -> 1372160 bytes\n 2 files changed, 36 insertions(+), 21 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.65,
+      "delta": -0.23
+    },
+    "uncertainty": {
+      "prev": 0.22,
+      "curr": 0.45,
+      "delta": 0.23
+    },
+    "context": {
+      "prev": 0.9,
+      "curr": 0.6,
+      "delta": -0.3
+    },
+    "engagement": {
+      "prev": 0.9,
+      "curr": 0.9,
+      "delta": 0.0
+    }
+  },
+  "token_count": 206
+}

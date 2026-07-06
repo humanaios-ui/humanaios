@@ -1,0 +1,260 @@
+{
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "phase": "POSTFLIGHT",
+  "round": 3,
+  "timestamp": "2026-06-28T17:54:08.862348+00:00",
+  "vectors": {
+    "know": 0.88,
+    "do": 0.82,
+    "context": 0.87,
+    "clarity": 0.9,
+    "coherence": 0.88,
+    "signal": 0.86,
+    "density": 0.85,
+    "state": 0.86,
+    "change": 0.72,
+    "completion": 0.91,
+    "impact": 0.88,
+    "engagement": 0.92,
+    "uncertainty": 0.22
+  },
+  "overall_confidence": 0.857,
+  "meta": {
+    "reasoning": "",
+    "task_summary": "Task completed",
+    "postflight_confidence": 0.78,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": -0.02,
+      "do": -0.03,
+      "context": -0.05,
+      "clarity": 0.02,
+      "coherence": 0.01,
+      "signal": -0.04,
+      "density": 0.0,
+      "state": -0.02,
+      "change": 0.32,
+      "completion": 0.61,
+      "impact": 0.0,
+      "engagement": 0.02,
+      "uncertainty": 0.0
+    },
+    "trajectory_issues": [],
+    "transaction_id": "613553ce-2e2d-4ddd-8f2f-3cc4ebb7ed57",
+    "tool_call_count": 20,
+    "work_type": "research",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 16,
+      "praxic_tool_calls": 4
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 6
+    },
+    "entity_context": null,
+    "tool_trace": [
+      [
+        "Edit",
+        "acat_current_session.json",
+        "p"
+      ],
+      [
+        "Edit",
+        "acat_current_session.json",
+        "p"
+      ],
+      [
+        "Bash",
+        "ls",
+        "n"
+      ],
+      [
+        "Bash",
+        "grep",
+        "n"
+      ],
+      [
+        "Bash",
+        "grep",
+        "n"
+      ],
+      [
+        "Edit",
+        "VALIDITY_ANALYSIS-BENCHMARK_CROSSWALK.md",
+        "p"
+      ],
+      [
+        "Edit",
+        "SUBSTRATE_CAPABILITY_REGISTRY.md",
+        "p"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ],
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ]
+    ],
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 2,
+        "unknowns": 0,
+        "dead_ends": 1,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 8
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "11 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "11 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible."
+    },
+    "coverage": null,
+    "git_commit_sha": "11e3d6e653f2420f9ef4baec90ffb861516441de",
+    "git_notes_ref": "empirica/session/364c413d-e68b-45b1-bca3-7fdc4272a14c/POSTFLIGHT/3"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   |  86 ++++++++++++++++++++++++------------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1409024 bytes\n 3 files changed, 59 insertions(+), 31 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.9,
+      "curr": 0.88,
+      "delta": -0.02
+    },
+    "do": {
+      "prev": 0.9,
+      "curr": 0.82,
+      "delta": -0.08
+    },
+    "context": {
+      "prev": 0.85,
+      "curr": 0.87,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.95,
+      "curr": 0.9,
+      "delta": -0.05
+    },
+    "coherence": {
+      "prev": 0.9,
+      "curr": 0.88,
+      "delta": -0.02
+    },
+    "signal": {
+      "prev": 0.9,
+      "curr": 0.86,
+      "delta": -0.04
+    },
+    "density": {
+      "prev": 0.8,
+      "curr": 0.85,
+      "delta": 0.05
+    },
+    "state": {
+      "prev": 0.8,
+      "curr": 0.86,
+      "delta": 0.06
+    },
+    "change": {
+      "prev": 0.0,
+      "curr": 0.72,
+      "delta": 0.72
+    },
+    "completion": {
+      "prev": 0.1,
+      "curr": 0.91,
+      "delta": 0.81
+    },
+    "impact": {
+      "prev": 0.7,
+      "curr": 0.88,
+      "delta": 0.18
+    },
+    "engagement": {
+      "prev": 0.9,
+      "curr": 0.92,
+      "delta": 0.02
+    },
+    "uncertainty": {
+      "prev": 0.1,
+      "curr": 0.22,
+      "delta": 0.12
+    }
+  },
+  "token_count": 518
+}

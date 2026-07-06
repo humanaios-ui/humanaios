@@ -1,0 +1,176 @@
+{
+  "session_id": "f4885647-49a9-455c-b8a1-8e5d631c9cc0",
+  "phase": "POSTFLIGHT",
+  "round": 1,
+  "timestamp": "2026-07-06T16:13:18.925268+00:00",
+  "vectors": {
+    "know": 0.95,
+    "uncertainty": 0.08,
+    "context": 0.98,
+    "clarity": 0.96,
+    "coherence": 0.94,
+    "signal": 0.98,
+    "density": 0.92,
+    "state": 0.98,
+    "change": 0.4,
+    "completion": 1.0,
+    "impact": 0.95,
+    "do": 0.92,
+    "engagement": 0.96
+  },
+  "overall_confidence": 0.95,
+  "meta": {
+    "reasoning": "Phase 1 SER creation unblocked. Cortex MCP infrastructure wired. Formal actionable proposal documented for mesh-support to execute. T4 timeline ready to commence once mesh-support creates SER 1.",
+    "task_summary": "Phase 1 SER creation unblocked. Cortex MCP infrastructure wired. Formal actionable proposal documented for mesh-support to execute. T4 timeline ready to commence once mesh-support creates SER 1.",
+    "postflight_confidence": 0.92,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.03,
+      "uncertainty": -0.07,
+      "context": 0.03,
+      "clarity": 0.01,
+      "coherence": 0.04,
+      "signal": 0.03,
+      "density": 0.07,
+      "state": 0.03,
+      "change": 0.4,
+      "completion": 1.0,
+      "impact": 0.05,
+      "do": -0.03,
+      "engagement": -0.02
+    },
+    "trajectory_issues": [],
+    "transaction_id": "eb4e9a07-3b46-4751-b4d5-1d2458c70a9a",
+    "tool_call_count": 0,
+    "work_type": "code",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 2
+    },
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 1,
+        "unknowns": 0,
+        "dead_ends": 1,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "2 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "2 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible.",
+      "untriaged_notes": [
+        {
+          "text": "T4 Phase 1 Blocker: Cortex integration unavailable. Cortex API (https://cortex.getempirica.com) reachable + authenticated, but no accessible SER creation method: HTTP endpoints 404, MCP CLI not found, empirica CLI lacks command. mesh-support pre-flight passed but blocked on infrastructure gap. Escalation document: PHASE_1_BLOCKER_ESCALATION.md. Awaiting Zone 2 guidance.",
+          "tag": "followup"
+        }
+      ],
+      "untriaged_notes_hint": "1 untriaged note(s)-to-self for this project. Promote any worth keeping to a finding/decision/goal, then `empirica note --clear`."
+    },
+    "coverage": null,
+    "git_commit_sha": "f71c22123c3243f05b821657430d1125cdb26968",
+    "git_notes_ref": "empirica/session/f4885647-49a9-455c-b8a1-8e5d631c9cc0/POSTFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "69bf515b62c5b440671657a9fbcdaed0dc9a3adc",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "69bf515b62c5b440671657a9fbcdaed0dc9a3adc",
+        "message": "docs: T4 SER 1 proposal for mesh-support action",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-06T11:12:55-05:00",
+        "files_changed": [
+          "T4_SER1_PROPOSAL_FOR_MESH_SUPPORT.md"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 146 ++++++++++++++++++++++++++++--------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1810432 bytes\n 3 files changed, 115 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.92,
+      "curr": 0.95,
+      "delta": 0.03
+    },
+    "uncertainty": {
+      "prev": 0.15,
+      "curr": 0.08,
+      "delta": -0.07
+    },
+    "context": {
+      "prev": 0.95,
+      "curr": 0.98,
+      "delta": 0.03
+    },
+    "clarity": {
+      "prev": 0.95,
+      "curr": 0.96,
+      "delta": 0.01
+    },
+    "coherence": {
+      "prev": 0.9,
+      "curr": 0.94,
+      "delta": 0.04
+    },
+    "signal": {
+      "prev": 0.95,
+      "curr": 0.98,
+      "delta": 0.03
+    },
+    "density": {
+      "prev": 0.85,
+      "curr": 0.92,
+      "delta": 0.07
+    },
+    "state": {
+      "prev": 0.95,
+      "curr": 0.98,
+      "delta": 0.03
+    },
+    "change": {
+      "prev": 0.0,
+      "curr": 0.4,
+      "delta": 0.4
+    },
+    "completion": {
+      "prev": 0.0,
+      "curr": 1.0,
+      "delta": 1.0
+    },
+    "impact": {
+      "prev": 0.9,
+      "curr": 0.95,
+      "delta": 0.05
+    },
+    "do": {
+      "prev": 0.95,
+      "curr": 0.92,
+      "delta": -0.03
+    },
+    "engagement": {
+      "prev": 0.98,
+      "curr": 0.96,
+      "delta": -0.02
+    }
+  },
+  "token_count": 617
+}

@@ -1,0 +1,14 @@
+{
+  "transaction_id": "340a0337-0f46-4c2b-adfa-eb0d4b5b91a4",
+  "session_id": "f4885647-49a9-455c-b8a1-8e5d631c9cc0",
+  "claude_session_id": "e8464268-d41c-43c7-8111-896ed4ee9abc",
+  "preflight_timestamp": 1783357270.3840482,
+  "status": "closed",
+  "project_path": "/Users/andersonfamily/practices/empirica-foundation-evaluator",
+  "updated_at": 1783357376.815735,
+  "domain": "mesh_coordination",
+  "criticality": "high",
+  "work_type": "code",
+  "work_context": "iteration",
+  "cascade_profile": "default"
+}

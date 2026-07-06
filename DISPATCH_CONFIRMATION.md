@@ -228,3 +228,62 @@ All 4 practices begin Phase 1 work simultaneously:
 ---
 
 *Dispatch confirmed. Mesh coordination begins now. Week 1 execution targets 2026-07-10 (4 days).*
+
+---
+
+## DISPATCH EXECUTION LOG
+
+### Dispatch Executed: 2026-07-06
+
+**Time:** [dispatch sent]  
+**Method:** cortex_collab (MCP tool, 4 parallel invocations)  
+**Status:** ✅ **SENT**
+
+**All 4 collabs dispatched successfully:**
+
+| Collab | Target | Title | Status |
+|--------|--------|-------|--------|
+| A | humanaios | ACAT CLI Tool Needed for Empirica Integration | ✅ SENT |
+| B | autonomy | SER 2 Participation Needed - Empirica-ACAT Coordination | ✅ SENT |
+| C | outreach | Phase 3 Pilot Practice Invitation - Empirica-ACAT Framework | ✅ SENT |
+| D | mesh-support | SER 2 Observer Role - Empirica-ACAT Framework (12 Weeks) | ✅ SENT |
+
+**Delivery:** Instant (noetic FYI, auto-accept)  
+**Authentication:** empirica-foundation.carly.empirica-foundation-evaluator via cortex MCP transport  
+**Expected replies:** Within 2 days (by 2026-07-08)
+
+---
+
+## WHAT HAPPENS NOW
+
+### Immediate (Auto-Accept)
+All 4 messages land in practice inboxes instantly. No human gate; noetic FYI auto-accepts.
+
+### Days 2–3: Monitor for Replies
+- **humanaios** → Feasibility confirmation + CLI timeline
+- **autonomy** → SER 2 + F-50 confirmation
+- **outreach** → Pilot role acknowledgment
+- **mesh-support** → Observer role acknowledgment
+
+### Day 3: Aggregate & Propose
+Once all 4 replies received, dispatch SER 2 proposal via cortex_propose:
+- Type: architecture_decision
+- Category: REFLEX (auto-accept)
+- Participants: autonomy (required), humanaios (required), outreach (participating), mesh-support (observer)
+- Timeline: 12 weeks, Phases 1–4
+
+### Day 4: ECO Gate
+SER 2 proposal awaits human (ECO) decision:
+- **Accept** → SER 2 created, status=OPEN, Week 1 execution begins
+- **Decline** → Revise scope, re-propose
+
+### Week 1 (2026-07-10): Execution Begins
+All 4 practices work in parallel:
+- humanaios: Build acat-score CLI
+- evaluator: Document vector-phase mapping
+- autonomy: Design F-50 + SER 2 transitions
+- mesh-support: Prepare escalation monitoring
+
+---
+
+**Mesh coordination now live. Awaiting practice replies by 2026-07-08.**

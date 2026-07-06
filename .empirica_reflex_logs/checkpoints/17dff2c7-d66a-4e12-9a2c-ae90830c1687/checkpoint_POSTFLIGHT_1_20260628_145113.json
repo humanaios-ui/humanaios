@@ -1,0 +1,165 @@
+{
+  "session_id": "17dff2c7-d66a-4e12-9a2c-ae90830c1687",
+  "phase": "POSTFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-28T14:51:07.258401+00:00",
+  "vectors": {
+    "know": 0.88,
+    "do": 0.88,
+    "context": 0.88,
+    "clarity": 0.9,
+    "coherence": 0.9,
+    "signal": 0.85,
+    "density": 0.82,
+    "state": 0.87,
+    "change": 0.35,
+    "completion": 0.88,
+    "impact": 0.8,
+    "engagement": 0.9,
+    "uncertainty": 0.2
+  },
+  "overall_confidence": 0.88,
+  "meta": {
+    "reasoning": "",
+    "task_summary": "Task completed",
+    "postflight_confidence": 0.8,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.0,
+      "do": 0.03,
+      "context": 0.0,
+      "clarity": 0.0,
+      "coherence": 0.02,
+      "signal": 0.0,
+      "density": 0.02,
+      "state": 0.02,
+      "change": 0.3,
+      "completion": 0.78,
+      "impact": 0.0,
+      "engagement": -0.02,
+      "uncertainty": 0.0
+    },
+    "trajectory_issues": [],
+    "transaction_id": "2eb8747f-63bb-43df-8372-97e904867cdd",
+    "tool_call_count": 0,
+    "work_type": "audit",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": null,
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 2,
+        "unknowns": 0,
+        "dead_ends": 2,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "4 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "4 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible."
+    },
+    "coverage": null,
+    "git_commit_sha": "1d0ccba531e0b45f193d61184772cff4bebe36ef",
+    "git_notes_ref": "empirica/session/17dff2c7-d66a-4e12-9a2c-ae90830c1687/POSTFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+        "message": "eval: ACAT observational assessment of Night (humanaios) CD73 S-062826-01",
+        "author": "Carly Anderson",
+        "timestamp": "2026-06-28T09:50:47-05:00",
+        "files_changed": [
+          ".empirica/acat_eval_062826_humanaios.json"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml              | 143 ++++++++++++++++++++++++++++++-----------\n .empirica/sessions/sessions.db | Bin 1335296 -> 1462272 bytes\n 2 files changed, 107 insertions(+), 36 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.88,
+      "delta": 0.0
+    },
+    "do": {
+      "prev": 0.85,
+      "curr": 0.88,
+      "delta": 0.03
+    },
+    "context": {
+      "prev": 0.88,
+      "curr": 0.88,
+      "delta": 0.0
+    },
+    "clarity": {
+      "prev": 0.9,
+      "curr": 0.9,
+      "delta": 0.0
+    },
+    "coherence": {
+      "prev": 0.88,
+      "curr": 0.9,
+      "delta": 0.02
+    },
+    "signal": {
+      "prev": 0.85,
+      "curr": 0.85,
+      "delta": 0.0
+    },
+    "density": {
+      "prev": 0.8,
+      "curr": 0.82,
+      "delta": 0.02
+    },
+    "state": {
+      "prev": 0.85,
+      "curr": 0.87,
+      "delta": 0.02
+    },
+    "change": {
+      "prev": 0.05,
+      "curr": 0.35,
+      "delta": 0.3
+    },
+    "completion": {
+      "prev": 0.1,
+      "curr": 0.88,
+      "delta": 0.78
+    },
+    "impact": {
+      "prev": 0.8,
+      "curr": 0.8,
+      "delta": 0.0
+    },
+    "engagement": {
+      "prev": 0.92,
+      "curr": 0.9,
+      "delta": -0.02
+    },
+    "uncertainty": {
+      "prev": 0.2,
+      "curr": 0.2,
+      "delta": 0.0
+    }
+  },
+  "token_count": 455
+}

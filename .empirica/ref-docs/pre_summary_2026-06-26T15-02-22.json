@@ -1,0 +1,80 @@
+{
+  "type": "pre_summary_snapshot",
+  "timestamp": "2026-06-26T15-02-22",
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "trigger": "manual",
+  "vectors_canonical": {},
+  "vectors_source": "live_state_fallback",
+  "checkpoint": {
+    "know": 0.88,
+    "do": 0.55,
+    "context": 0.9,
+    "clarity": 0.88,
+    "coherence": 0.88,
+    "signal": 0.85,
+    "density": 0.82,
+    "state": 0.75,
+    "change": 0.05,
+    "completion": 0.7,
+    "impact": 0.75,
+    "engagement": 0.85,
+    "uncertainty": 0.35
+  },
+  "live_state": {
+    "vectors": {
+      "know": 0.88,
+      "do": 0.55,
+      "context": 0.9,
+      "clarity": 0.88,
+      "coherence": 0.88,
+      "signal": 0.85,
+      "density": 0.82,
+      "state": 0.75,
+      "change": 0.05,
+      "completion": 0.7,
+      "impact": 0.75,
+      "engagement": 0.85,
+      "uncertainty": 0.35
+    },
+    "git": {
+      "head": "2d28f2da657e16bac3f0b943a596c6eb2f3ca35a",
+      "branch": "main",
+      "dirty": true,
+      "uncommitted_files": 3
+    },
+    "reasoning": "",
+    "phase": "POSTFLIGHT",
+    "timestamp": "2026-06-26T18:18:00.615401+00:00",
+    "fresh": false,
+    "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c"
+  },
+  "assess_error": null,
+  "breadcrumbs_summary": {
+    "findings_count": 10,
+    "unknowns_count": 3,
+    "goals_count": 8,
+    "dead_ends_count": 5
+  },
+  "context_budget": {
+    "node_id": "unknown",
+    "tokens_used": 0,
+    "tokens_available": 200000,
+    "utilization_pct": 0.0,
+    "item_count": 0,
+    "zones": {
+      "anchor": 0,
+      "working": 0,
+      "cache": 0
+    },
+    "page_faults": 0,
+    "evictions": 0
+  },
+  "active_transaction": null,
+  "hook_counters": null,
+  "last_task": "send 1. Fix /intake/ backend to humanaios window and 2. - 4. to -autonomy window",
+  "git_context": {
+    "branch": "main",
+    "modified_files": "  M .breadcrumbs.yaml\n   M .empirica/active_transaction_empirica-foundation-evaluator.json\n   M .empirica/sessions/sessions.db\n  ?? .empirica/ref-docs/\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_POSTFLIGHT_2_20260626_175828.json\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_POSTFLIGHT_3_20260626_181805.json\n  ?? .empirica_reflex_logs/checkpoints/364c413d-e68b-45b1-bca3-7fdc4272a14c/checkpoint_PREFLIGHT_3_20260626_181623.json",
+    "recent_commits": "  2d28f2d feat: add ACAT session state file and wire into statusline\n  ea302c6 Log cross-instrument analysis findings (ACAT vs empirica)\n  6874517 Log ACAT session artifacts \u2014 onboarding interview + corpus attempt\n  a62b965 Add carly-foundation-protocol.yaml \u2014 onboarding interview complete\n  ee8efdc checkpoint: onboarding interview Phase 7 complete"
+  }
+}

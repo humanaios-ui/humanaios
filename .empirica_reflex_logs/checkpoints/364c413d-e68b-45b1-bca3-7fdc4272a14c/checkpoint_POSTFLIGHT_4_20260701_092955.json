@@ -1,0 +1,115 @@
+{
+  "session_id": "364c413d-e68b-45b1-bca3-7fdc4272a14c",
+  "phase": "POSTFLIGHT",
+  "round": 4,
+  "timestamp": "2026-07-01T09:29:52.852351+00:00",
+  "vectors": {
+    "know": 0.88,
+    "do": 0.9,
+    "context": 0.88,
+    "clarity": 0.9,
+    "coherence": 0.88,
+    "signal": 0.85,
+    "density": 0.82,
+    "state": 0.88,
+    "change": 0.82,
+    "completion": 0.9,
+    "impact": 0.85,
+    "engagement": 0.9,
+    "uncertainty": 0.18
+  },
+  "overall_confidence": 0.887,
+  "meta": {
+    "reasoning": "",
+    "task_summary": "Task completed",
+    "postflight_confidence": 0.8200000000000001,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.16,
+      "do": 0.02,
+      "context": 0.06,
+      "clarity": 0.1,
+      "coherence": 0.03,
+      "signal": 0.07,
+      "density": 0.07,
+      "state": 0.08,
+      "change": 0.77,
+      "completion": 0.85,
+      "impact": 0.0,
+      "engagement": -0.02,
+      "uncertainty": -0.12
+    },
+    "trajectory_issues": [],
+    "transaction_id": "8a3482b6-b53f-463a-989b-b9a08e71e90e",
+    "tool_call_count": 1,
+    "work_type": "research",
+    "phase_tool_counts": {
+      "noetic_tool_calls": 1,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 20,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 2
+    },
+    "entity_context": null,
+    "tool_trace": [
+      [
+        "Bash",
+        "empirica",
+        "n"
+      ]
+    ],
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 2,
+        "unknowns": 0,
+        "dead_ends": 2,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "4 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "4 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible."
+    },
+    "coverage": null,
+    "git_commit_sha": "1d6d6bca0381a9103b247fcd40bdc72cd0c0a9ec",
+    "git_notes_ref": "empirica/session/364c413d-e68b-45b1-bca3-7fdc4272a14c/POSTFLIGHT/4"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "b0ac0ea94160a845b5cea1c7bd44f9b183eb0705",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 138 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1449984 bytes\n 3 files changed, 106 insertions(+), 36 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.88,
+      "delta": 0.0
+    },
+    "context": {
+      "prev": 0.9,
+      "curr": 0.88,
+      "delta": -0.02
+    },
+    "uncertainty": {
+      "prev": 0.18,
+      "curr": 0.18,
+      "delta": 0.0
+    }
+  },
+  "token_count": 353
+}

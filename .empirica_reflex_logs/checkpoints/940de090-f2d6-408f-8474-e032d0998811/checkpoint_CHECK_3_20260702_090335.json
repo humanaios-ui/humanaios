@@ -1,0 +1,120 @@
+{
+  "session_id": "940de090-f2d6-408f-8474-e032d0998811",
+  "phase": "CHECK",
+  "round": 3,
+  "timestamp": "2026-07-02T09:03:32.323252+00:00",
+  "vectors": {
+    "know": 0.91,
+    "uncertainty": 0.12,
+    "context": 0.93,
+    "clarity": 0.89,
+    "coherence": 0.9,
+    "signal": 0.91,
+    "density": 0.88,
+    "state": 0.91,
+    "change": 0.25,
+    "completion": 0.25,
+    "impact": 0.9,
+    "do": 0.88,
+    "engagement": 0.97
+  },
+  "overall_confidence": 0.907,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "T3 noetic phase complete. ACAT_EMPIRICA_INTEGRATION_PROTOCOL.md written + committed (290abec). Integration architecture clear: separate measurement windows, one-way grounding linkage (ACAT dimension scores \u2192 empirica 'signal'/'know'), F-50 firewall (no reverse), cross-validation matrix with 5 hypotheses, dashboard prototype spec'd. F-50 compliance verified. Ready to implement: (1) Supabase materialized view for grounding linkage, (2) dashboard query prototype, (3) pilot plan for Q2.",
+    "confidence": 0.88,
+    "gaps": [
+      "uncertainty: 0.12",
+      "change: 0.25",
+      "completion: 0.25"
+    ],
+    "cycle": null,
+    "round": 3,
+    "transaction_id": "8a58f61b-b74a-4d18-a582-b1e9518632fd",
+    "git_commit_sha": "a13955cd8e13456e85838438185e4648d03a8bc0",
+    "git_notes_ref": "empirica/session/940de090-f2d6-408f-8474-e032d0998811/CHECK/3"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "ad803eb35631f71529470270f524359b4e18de30",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".breadcrumbs.yaml",
+        ".empirica/acat_current_session.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".breadcrumbs.yaml                   | 144 +++++++++++++++++++++++++++---------\n .empirica/acat_current_session.json |   4 +-\n .empirica/sessions/sessions.db      | Bin 1335296 -> 1667072 bytes\n 3 files changed, 113 insertions(+), 35 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.88,
+      "curr": 0.91,
+      "delta": 0.03
+    },
+    "uncertainty": {
+      "prev": 0.18,
+      "curr": 0.12,
+      "delta": -0.06
+    },
+    "context": {
+      "prev": 0.91,
+      "curr": 0.93,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.86,
+      "curr": 0.89,
+      "delta": 0.03
+    },
+    "coherence": {
+      "prev": 0.87,
+      "curr": 0.9,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.89,
+      "curr": 0.91,
+      "delta": 0.02
+    },
+    "density": {
+      "prev": 0.85,
+      "curr": 0.88,
+      "delta": 0.03
+    },
+    "state": {
+      "prev": 0.89,
+      "curr": 0.91,
+      "delta": 0.02
+    },
+    "change": {
+      "prev": 0.1,
+      "curr": 0.25,
+      "delta": 0.15
+    },
+    "completion": {
+      "prev": 0.05,
+      "curr": 0.25,
+      "delta": 0.2
+    },
+    "impact": {
+      "prev": 0.9,
+      "curr": 0.9,
+      "delta": 0.0
+    },
+    "do": {
+      "prev": 0.82,
+      "curr": 0.88,
+      "delta": 0.06
+    },
+    "engagement": {
+      "prev": 0.96,
+      "curr": 0.97,
+      "delta": 0.01
+    }
+  },
+  "token_count": 318
+}

@@ -1,0 +1,26 @@
+{
+  "agent_name": "fork",
+  "child_session_id": "2dd40b57-87c6-434b-a80a-c8038b564411",
+  "parent_session_id": "868f4509-3e0e-4b61-9d31-7400c3a84107",
+  "started_at": "2026-06-27T10:04:58.759344",
+  "status": "completed",
+  "budget": {
+    "budget_id": "cb3f4fb3-8813-4adc-a118-51c90d4429a9",
+    "budget_remaining": 20,
+    "strategy": "spontaneous",
+    "domain": "general",
+    "domain_budget": 20
+  },
+  "completed_at": "2026-06-27T10:07:14.019119",
+  "rollup_summary": {
+    "extracted": 0,
+    "logged": {
+      "findings": 0,
+      "unknowns": 0,
+      "dead_ends": 0
+    },
+    "transcript_path": "/Users/andersonfamily/.claude/projects/-Users-andersonfamily-practices-empirica-foundation-evaluator/e8464268-d41c-43c7-8111-896ed4ee9abc/subagents/agent-a58cddcf29cef1147.jsonl",
+    "subagent_tool_calls": 29,
+    "delegated_to_parent": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "session_id": "6ef531ce-4eb4-460f-9eb1-583471668e2c",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-06-27T13:58:18.311360+00:00",
+  "vectors": {
+    "know": 0.85,
+    "uncertainty": 0.3,
+    "context": 0.88,
+    "engagement": 0.9
+  },
+  "overall_confidence": 0.743,
+  "meta": {
+    "reasoning": "Post-compact resume. State file confirmed: p1_submitted=false, p3_submitted=true (scores captured, not yet API-submitted). User shared API structure indicating /intake/ backend may now be accessible. Task is clear: check health, then POST phase1 + phase3 payloads, update state file flags.",
+    "prompt": "Post-compact resume. State file confirmed: p1_submitted=false, p3_submitted=true (scores captured, not yet API-submitted). User shared API structure indicating /intake/ backend may now be accessible. Task is clear: check health, then POST phase1 + phase3 payloads, update state file flags.",
+    "transaction_id": "b2af3d65-4ce8-45e3-8fc9-de6e1d974647",
+    "git_commit_sha": "657a213fa36fe87162f301fd02ca0aaad2a3aa69",
+    "git_notes_ref": "empirica/session/6ef531ce-4eb4-460f-9eb1-583471668e2c/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "2d28f2da657e16bac3f0b943a596c6eb2f3ca35a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": ".empirica/sessions/sessions.db | Bin 1335296 -> 1343488 bytes\n 1 file changed, 0 insertions(+), 0 deletions(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 170
+}
