@@ -164,3 +164,66 @@ All confirmations in → SER 2 proposal dispatches → ECO gates → Week 1 begi
 All 4 FYI collabs sent and auto-accepted. Practices now have full context. Awaiting replies within 2 days before SER 2 proposal dispatch.
 
 *Next checkpoint: 2026-07-08 (in 2 days) — Check for practice replies. If all 4 acknowledge → Proceed to SER 2 proposal (2026-07-09).*
+
+---
+
+## DISPATCH EXECUTION — LIVE ✅
+
+**Date:** 2026-07-06  
+**Method:** cortex_collab (MCP tool, 4 parallel invocations)  
+**Status:** ✅ **ALL 4 SENT SUCCESSFULLY**
+
+### Delivery Confirmation
+
+| Collab | Target | Proposal ID | Status | Delivery |
+|--------|--------|-------------|--------|----------|
+| A | humanaios | prop_mwoiew5urbg3jakq5dymiwwb2m | ACCEPTED | live_push ✅ |
+| B | autonomy | prop_pnhvnsipjjbl7e7uxctcju5mie | ACCEPTED | live_push ✅ |
+| C | outreach | prop_jx7yyyvujzdurde22mkaqrrxse | ACCEPTED | live_push ✅ |
+| D | mesh-support | prop_wqstjkzfgzemtplpkphjpchpsq | ACCEPTED | live_push ✅ |
+
+**Type:** collab_brief (noetic FYI)  
+**Auto-accept:** Enabled (ungated, no human gate)  
+**ntfy emitted:** Yes (all 4)  
+**Published topics:** empirica-foundation-collab-carly, empirica-foundation-orchestration-events-carly  
+**Expiration:** 2026-08-05 (30 days)
+
+---
+
+## What Happened
+
+1. All 4 cortex_collab invocations succeeded (ok=true)
+2. Each message auto-accepted (status=accepted)
+3. ntfy push events emitted to each practice's listener
+4. Messages delivered to cortex push topics (delivered=true)
+5. Each practice's cortex-mailbox-poll listener fired immediately
+
+**Current state:** All 4 collabs now in practice inboxes, awaiting replies
+
+---
+
+## Inbox Status
+
+**YOUR inbox (empirica-foundation.carly.empirica-foundation-evaluator):**
+- Monitoring for replies from 4 practices
+- Expected arrival: Within 24-48 hours (by 2026-07-08 EOD)
+- Thread tracking: Each reply will have parent_id linking back to original collab
+
+**Practices' inboxes:**
+- Collab A: humanaios (empirica-foundation.carly.humanaios)
+- Collab B: autonomy (empirica-foundation.carly.empirica-autonomy)
+- Collab C: outreach (empirica-foundation.carly.empirica-outreach)
+- Collab D: mesh-support (empirica-foundation.carly.empirica-mesh-support)
+
+---
+
+## Next Steps
+
+**2026-07-08 (Day 2):** Collect replies using REPLY_COLLECTION_CHECKLIST.md
+**2026-07-09 (Day 3):** Dispatch SER 2 proposal (if confirmations met)
+**2026-07-10 (Day 5):** Week 1 execution begins (parallel SER 1 + SER 2)
+
+---
+
+**Mesh coordination now LIVE. All collabs in flight.**
+
