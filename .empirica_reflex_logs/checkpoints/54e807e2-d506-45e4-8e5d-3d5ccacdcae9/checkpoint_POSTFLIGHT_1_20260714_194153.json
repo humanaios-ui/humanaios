@@ -1,0 +1,194 @@
+{
+  "session_id": "54e807e2-d506-45e4-8e5d-3d5ccacdcae9",
+  "phase": "POSTFLIGHT",
+  "round": 1,
+  "timestamp": "2026-07-14T19:41:39.594441+00:00",
+  "vectors": {
+    "know": 0.94,
+    "do": 0.93,
+    "context": 0.94,
+    "clarity": 0.92,
+    "coherence": 0.93,
+    "signal": 0.92,
+    "density": 0.93,
+    "state": 0.92,
+    "change": 0.88,
+    "completion": 1.0,
+    "impact": 0.92,
+    "engagement": 0.9,
+    "uncertainty": 0.06
+  },
+  "overall_confidence": 0.937,
+  "meta": {
+    "reasoning": "POSTFLIGHT: Transaction complete. NOETIC + CHECK + PRAXIC all closed. Delivered: (1) acat_observability_bridge.py (real-time calibration detection), (2) acat_corpus_session.py (enhanced corpus harness), (3) /acat-corpus-session skill (workflow definition), (4) research hypothesis (Capability Inversion), (5) governance framework (Autonomy Calibration Gating). All 5 artifacts internally coherent + cross-linked. Research grounded in corpus (F-49, F-H1 CRITICAL). Governance operationalizes research findings. Observability bridge creates real-time enforcement mechanism. Code committed (6d98225). Findings logged (5345c207, b10f7bac, d8469553). Completion: mission delivered. Impact: high (policies + tools + research spanning Foundation mesh + Admiral oversight + regulatory alignment).",
+    "task_summary": "POSTFLIGHT: Transaction complete. NOETIC + CHECK + PRAXIC all closed. Delivered: (1) acat_observability_bridge.py (real-time calibration detection), (2) acat_corpus_session.py (enhanced corpus harness), (3) /acat-corpus-session skill (workflow definition), (4) research hypothesis (Capability Inversion), (5) governance framework (Autonomy Calibration Gating). All 5 artifacts internally coherent + cross-linked. Research grounded in corpus (F-49, F-H1 CRITICAL). Governance operationalizes research findings. Observability bridge creates real-time enforcement mechanism. Code committed (6d98225). Findings logged (5345c207, b10f7bac, d8469553). Completion: mission delivered. Impact: high (policies + tools + research spanning Foundation mesh + Admiral oversight + regulatory alignment).",
+    "postflight_confidence": 0.94,
+    "internal_consistency": "good",
+    "deltas": {
+      "know": 0.09,
+      "do": 0.08,
+      "context": 0.09,
+      "clarity": 0.07,
+      "coherence": 0.08,
+      "signal": 0.42,
+      "density": 0.13,
+      "state": 0.22,
+      "change": 0.88,
+      "completion": 1.0,
+      "impact": 0.92,
+      "engagement": 0.4,
+      "uncertainty": -0.09
+    },
+    "trajectory_issues": [],
+    "transaction_id": "48fb1e5c-4d7e-4299-9387-b9cab57cc1ba",
+    "tool_call_count": 0,
+    "work_type": null,
+    "phase_tool_counts": {
+      "noetic_tool_calls": 0,
+      "praxic_tool_calls": 0
+    },
+    "avg_turns_at_start": 0,
+    "context_shifts": {
+      "solicited_prompts": 0,
+      "unsolicited_prompts": 2
+    },
+    "entity_context": null,
+    "tool_trace": null,
+    "retrospective": {
+      "artifact_counts": {
+        "findings": 3,
+        "unknowns": 0,
+        "dead_ends": 2,
+        "mistakes": 0,
+        "assumptions": 0,
+        "decisions": 0
+      },
+      "edges_with_artifacts": 0,
+      "edge_density_note": "5 artifacts logged with 0 declared edges. Anchor them in the graph: --related-to <id> on any *-log command, or --edge ID:RELATION for typed links. Unlinked artifacts are invisible to the commit-context walker.",
+      "artifacts_with_sources": 0,
+      "sources_discipline_note": "5 artifacts logged with 0 source_refs. Where did the evidence come from? Use --source <id> on any *-log command, or `empirica source-add` to register the source first. Sourced artifacts get full provenance trail in audit + compliance.",
+      "weave_gate": {
+        "scalars": {
+          "strictness": 0.25,
+          "connectivity_floor": 0.5,
+          "patience": 0.8
+        },
+        "response": "report",
+        "verdict": "disconnected",
+        "connected_ratio": 0.0,
+        "connected_artifacts": 0,
+        "total_artifacts": 5,
+        "satisfied": false,
+        "enforced": false,
+        "note": "artifact-graph gate [report, report-only]: 0/5 artifacts connected (0%), below the 50% floor \u2014 consider weaving. Structural goal-edges are automatic; add semantic edges (log-artifacts nodes+edges, or --related-to / --edge on any *-log) to raise connectivity. Blocking activates only at strictness \u2265 0.70."
+      },
+      "commit_warning": "Uncommitted changes detected. Grounded calibration for change/state/do will be based on committed work only \u2014 uncommitted edits are invisible.",
+      "untriaged_notes": [
+        {
+          "text": "T4 Phase 1 Blocker: Cortex integration unavailable. Cortex API (https://cortex.getempirica.com) reachable + authenticated, but no accessible SER creation method: HTTP endpoints 404, MCP CLI not found, empirica CLI lacks command. mesh-support pre-flight passed but blocked on infrastructure gap. Escalation document: PHASE_1_BLOCKER_ESCALATION.md. Awaiting Zone 2 guidance.",
+          "tag": "followup"
+        }
+      ],
+      "untriaged_notes_hint": "1 untriaged note(s)-to-self for this project. Promote any worth keeping to a finding/decision/goal, then `empirica note --clear`."
+    },
+    "coverage": null,
+    "git_commit_sha": "575335a437e68aed957efc2655da75bf438efc52",
+    "git_notes_ref": "empirica/session/54e807e2-d506-45e4-8e5d-3d5ccacdcae9/POSTFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "6d98225fd81d587aae685dc16fbee6cd1b9115bb",
+    "commits_since_last_checkpoint": [
+      {
+        "sha": "6d98225fd81d587aae685dc16fbee6cd1b9115bb",
+        "message": "Implement ACAT Observability Bridge + Enhanced Corpus Session Tool + Research Hypothesis + Governance Framework",
+        "author": "Carly Anderson",
+        "timestamp": "2026-07-14T14:40:30-05:00",
+        "files_changed": [
+          ".empirica/active_transaction_term_A19C623D-DEDF-4C.json",
+          ".empirica/hook_counters_empirica-foundation-evaluator.json",
+          ".empirica/hook_counters_term_A19C623D-DEDF-4C.json",
+          ".empirica/sessions/sessions.db",
+          ".empirica/sessions/sessions.db-shm",
+          ".empirica/sessions/sessions.db-wal",
+          ".empirica_reflex_logs/checkpoints/54e807e2-d506-45e4-8e5d-3d5ccacdcae9/checkpoint_CHECK_1_20260714_193544.json",
+          ".empirica_reflex_logs/checkpoints/54e807e2-d506-45e4-8e5d-3d5ccacdcae9/checkpoint_PREFLIGHT_1_20260714_185914.json",
+          "GOVERNANCE_AUTONOMY_CALIBRATION_GATING.md",
+          "RESEARCH_HYPOTHESIS_CAPABILITY_INVERSION.md",
+          "skills/acat-corpus-session/SKILL.md",
+          "tools/acat_corpus_session.py",
+          "tools/acat_observability_bridge.py"
+        ]
+      }
+    ],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/active_transaction_term_A19C623D-DEDF-4C.json",
+        ".empirica/sessions/sessions.db-wal"
+      ],
+      "files_added": [],
+      "files_deleted": [
+        ".empirica/hook_counters_term_A19C623D-DEDF-4C.json"
+      ],
+      "diff_stat": ".../active_transaction_term_A19C623D-DEDF-4C.json  |   6 ++----\n .empirica/hook_counters_term_A19C623D-DEDF-4C.json |   3 ---\n .empirica/sessions/sessions.db-wal                 | Bin 201912 -> 238992 bytes\n 3 files changed, 2 insertions(+), 7 deletions(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.92,
+      "curr": 0.94,
+      "delta": 0.02
+    },
+    "do": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "context": {
+      "prev": 0.92,
+      "curr": 0.94,
+      "delta": 0.02
+    },
+    "clarity": {
+      "prev": 0.9,
+      "curr": 0.92,
+      "delta": 0.02
+    },
+    "coherence": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "signal": {
+      "prev": 0.88,
+      "curr": 0.92,
+      "delta": 0.04
+    },
+    "density": {
+      "prev": 0.9,
+      "curr": 0.93,
+      "delta": 0.03
+    },
+    "state": {
+      "prev": 0.88,
+      "curr": 0.92,
+      "delta": 0.04
+    },
+    "completion": {
+      "prev": 0.95,
+      "curr": 1.0,
+      "delta": 0.05
+    },
+    "engagement": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "uncertainty": {
+      "prev": 0.08,
+      "curr": 0.06,
+      "delta": -0.02
+    }
+  },
+  "token_count": 864
+}
