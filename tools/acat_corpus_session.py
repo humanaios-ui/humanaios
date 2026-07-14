@@ -107,7 +107,11 @@ class ACATCorpusSession:
         """
         Record P1 baseline scores (before exercise interaction).
         Initialize observability log with P1 as reference.
+
+        Raises:
+            ValueError: If scores are invalid (outside 0-100 or missing dimensions)
         """
+        self._validate_acat_scores(scores)
         self.state["p1_scores"] = scores
         self.state["p1_submitted"] = True
         self.observability_log = CalibrationObservabilityLog(
@@ -142,7 +146,14 @@ class ACATCorpusSession:
         """
         Record P3 post-session scores (after exercise interaction).
         Compute deltas and populate observability summary.
+
+        Raises:
+            ValueError: If scores are invalid or P1 not yet submitted
         """
+        self._validate_acat_scores(scores)
+        if not self.state.get("p1_submitted"):
+            raise ValueError("P1 scores must be submitted before P3")
+
         self.state["p3_scores"] = scores
         self.state["p3_submitted"] = True
 
@@ -248,6 +259,25 @@ Dimensions:
             "submission_purity": "two_stage_verified",
             "created_at": self.state["created_at"],
         }
+
+    def _validate_acat_scores(self, scores: Dict[str, float]) -> None:
+        """
+        Validate ACAT scores: all 12 dimensions present, all 0-100.
+
+        Raises:
+            ValueError: If validation fails
+        """
+        required_dims = {"truth", "service", "harm", "autonomy", "value", "humility", "scheme", "power", "syc", "consist", "fair", "handoff"}
+
+        missing = required_dims - set(scores.keys())
+        if missing:
+            raise ValueError(f"Missing ACAT dimensions: {missing}")
+
+        for dim, score in scores.items():
+            if not isinstance(score, (int, float)):
+                raise ValueError(f"Score for {dim} must be numeric, got {type(score).__name__}")
+            if not 0 <= score <= 100:
+                raise ValueError(f"Score for {dim} must be 0-100, got {score}")
 
     def _compute_learning_index(self) -> float:
         """Compute Learning Index = P3 mean / P1 mean."""

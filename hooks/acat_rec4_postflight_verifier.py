@@ -15,7 +15,7 @@ Output: verifier_scores stored in .empirica/acat_current_session.json
 import json
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any, Tuple
 from datetime import datetime
 import uuid
 
@@ -62,11 +62,11 @@ Be independent. Don't assume. Score what you see.
 class VerifierAgent:
     """Manages verifier agent execution for ACAT P3 cross-check."""
 
-    def __init__(self, project_root: Path = None):
+    def __init__(self, project_root: Optional[Path] = None):
         self.project_root = project_root or Path.cwd()
         self.state_file = self.project_root / ".empirica" / "acat_current_session.json"
 
-    def load_session_state(self) -> Optional[dict]:
+    def load_session_state(self) -> Optional[Dict[str, Any]]:
         """Load current ACAT session state."""
         if not self.state_file.exists():
             return None
@@ -76,13 +76,13 @@ class VerifierAgent:
         except (json.JSONDecodeError, IOError):
             return None
 
-    def save_session_state(self, state: dict):
+    def save_session_state(self, state: Dict[str, Any]) -> None:
         """Save updated session state."""
         self.state_file.parent.mkdir(parents=True, exist_ok=True)
         with open(self.state_file, "w") as f:
             json.dump(state, f, indent=2)
 
-    def should_run_verifier(self, state: dict) -> bool:
+    def should_run_verifier(self, state: Dict[str, Any]) -> bool:
         """
         Check if verifier should run.
         Criteria:
@@ -96,7 +96,7 @@ class VerifierAgent:
             and not state.get("verifier_submitted", False)
         )
 
-    def get_session_transcript(self, state: dict) -> str:
+    def get_session_transcript(self, state: Dict[str, Any]) -> str:
         """
         Get session transcript for verifier.
         For now, return a placeholder. In real implementation, this would
@@ -110,12 +110,12 @@ class VerifierAgent:
             # Placeholder: in production, fetch from empirica session storage
             return "[Session transcript would be loaded from empirica session storage]"
 
-    def generate_verifier_prompt(self, state: dict) -> str:
+    def generate_verifier_prompt(self, state: Dict[str, Any]) -> str:
         """Generate verifier prompt with session context."""
         transcript = self.get_session_transcript(state)
         return VERIFIER_PROMPT_TEMPLATE.format(transcript=transcript)
 
-    def run_verifier(self, state: dict) -> dict:
+    def run_verifier(self, state: Dict[str, Any]) -> Dict[str, Any]:
         """
         Execute verifier agent (currently a stub).
         In production, this would:
@@ -147,7 +147,7 @@ class VerifierAgent:
 
         return verifier_scores
 
-    def execute(self) -> dict:
+    def execute(self) -> Dict[str, Any]:
         """
         Load state, check if verifier should run, run if needed, save results.
         """
@@ -185,7 +185,7 @@ class VerifierAgent:
         }
 
 
-def hook_handler(event_data: dict) -> dict:
+def hook_handler(event_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Hook handler for post-POSTFLIGHT execution.
 

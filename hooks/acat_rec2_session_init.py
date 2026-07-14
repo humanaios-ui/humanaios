@@ -16,6 +16,7 @@ import os
 import uuid
 from pathlib import Path
 from datetime import datetime
+from typing import Dict, Any, Optional
 
 
 BLANK_ACAT_STATE = {
@@ -44,7 +45,7 @@ BLANK_ACAT_STATE = {
 }
 
 
-def create_acat_session_state(project_root: Path = None) -> dict:
+def create_acat_session_state(project_root: Optional[Path] = None) -> Dict[str, Any]:
     """
     Create a new ACAT session state file at project root.
 
@@ -98,7 +99,7 @@ def create_acat_session_state(project_root: Path = None) -> dict:
         }
 
 
-def hook_handler(event_data: dict) -> dict:
+def hook_handler(event_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Hook handler for SessionStart:startup|resume events.
 

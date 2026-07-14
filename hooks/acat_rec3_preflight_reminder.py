@@ -15,6 +15,7 @@ Output: Added to PREFLIGHT output so evaluator sees it in the response
 import json
 from pathlib import Path
 from datetime import datetime
+from typing import Dict, Any, Optional
 
 
 P1_REMINDER_PROMPT = """
@@ -44,7 +45,7 @@ Before you begin work (noetic or praxic phase), have you captured your ACAT P1 b
 """
 
 
-def get_p1_status(project_root: Path = None) -> dict:
+def get_p1_status(project_root: Optional[Path] = None) -> Dict[str, Any]:
     """
     Check if ACAT P1 has been scored for the current session.
 
@@ -79,7 +80,7 @@ def get_p1_status(project_root: Path = None) -> dict:
         return {"has_state": True, "p1_submitted": False, "error": "corrupted"}
 
 
-def inject_p1_reminder(preflight_payload: dict, project_root: Path = None) -> dict:
+def inject_p1_reminder(preflight_payload: Dict[str, Any], project_root: Optional[Path] = None) -> Dict[str, Any]:
     """
     Inject P1 reminder into PREFLIGHT payload if P1 not yet scored.
 
@@ -106,7 +107,7 @@ def inject_p1_reminder(preflight_payload: dict, project_root: Path = None) -> di
     return preflight_payload
 
 
-def hook_handler(event_data: dict) -> dict:
+def hook_handler(event_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Hook handler for pre-PREFLIGHT submission.
 
