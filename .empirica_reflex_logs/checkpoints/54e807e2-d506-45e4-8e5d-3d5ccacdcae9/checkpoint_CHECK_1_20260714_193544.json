@@ -1,0 +1,105 @@
+{
+  "session_id": "54e807e2-d506-45e4-8e5d-3d5ccacdcae9",
+  "phase": "CHECK",
+  "round": 1,
+  "timestamp": "2026-07-14T19:35:35.835851+00:00",
+  "vectors": {
+    "know": 0.92,
+    "do": 0.9,
+    "context": 0.92,
+    "clarity": 0.9,
+    "coherence": 0.9,
+    "signal": 0.88,
+    "density": 0.9,
+    "state": 0.88,
+    "completion": 0.95,
+    "engagement": 0.85,
+    "uncertainty": 0.08
+  },
+  "overall_confidence": 0.913,
+  "meta": {
+    "decision": "proceed",
+    "reasoning": "NOETIC PHASE COMPLETE. Grounded investigation: full manual audit (EVALUATOR_MANUAL.md + MESH_COORDINATION_BRIEF.md), all 6 foundation practices mapped, ACAT methodology + regulatory framework understood, existing gaps + opportunities identified, novel proposal (observability bridge) scoped. Research hypothesis emerging: Capability Inversion in Behavioral Calibration (more capable \u2192 worse humility/calibration). Governance application: autonomy gating based on demonstrated calibration, not claimed capability. Ready for PRAXIC: implement acat-corpus-session + observability bridge, draft research hypothesis document, create governance framework.",
+    "confidence": 0.92,
+    "gaps": [
+      "uncertainty: 0.08"
+    ],
+    "cycle": null,
+    "round": 1,
+    "transaction_id": "48fb1e5c-4d7e-4299-9387-b9cab57cc1ba",
+    "git_commit_sha": "310ec53ef7e82744be7caa09a7f6ef42f1d6b1c4",
+    "git_notes_ref": "empirica/session/54e807e2-d506-45e4-8e5d-3d5ccacdcae9/CHECK/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "494f5da0aa71698dabe6a1a409ba85af6e13629a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/hook_counters_empirica-foundation-evaluator.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": "...ook_counters_empirica-foundation-evaluator.json |   2 +-\n .empirica/sessions/sessions.db                     | Bin 1867776 -> 1880064 bytes\n 2 files changed, 1 insertion(+), 1 deletion(-)"
+    }
+  },
+  "learning_delta": {
+    "know": {
+      "prev": 0.85,
+      "curr": 0.92,
+      "delta": 0.07
+    },
+    "do": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "context": {
+      "prev": 0.85,
+      "curr": 0.92,
+      "delta": 0.07
+    },
+    "clarity": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "coherence": {
+      "prev": 0.85,
+      "curr": 0.9,
+      "delta": 0.05
+    },
+    "signal": {
+      "prev": 0.5,
+      "curr": 0.88,
+      "delta": 0.38
+    },
+    "density": {
+      "prev": 0.8,
+      "curr": 0.9,
+      "delta": 0.1
+    },
+    "state": {
+      "prev": 0.7,
+      "curr": 0.88,
+      "delta": 0.18
+    },
+    "completion": {
+      "prev": 0.0,
+      "curr": 0.95,
+      "delta": 0.95
+    },
+    "engagement": {
+      "prev": 0.5,
+      "curr": 0.85,
+      "delta": 0.35
+    },
+    "uncertainty": {
+      "prev": 0.15,
+      "curr": 0.08,
+      "delta": -0.07
+    }
+  },
+  "token_count": 300
+}

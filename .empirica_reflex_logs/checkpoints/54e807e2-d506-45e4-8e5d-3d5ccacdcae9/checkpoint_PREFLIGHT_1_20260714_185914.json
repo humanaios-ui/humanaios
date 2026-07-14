@@ -1,0 +1,45 @@
+{
+  "session_id": "54e807e2-d506-45e4-8e5d-3d5ccacdcae9",
+  "phase": "PREFLIGHT",
+  "round": 1,
+  "timestamp": "2026-07-14T18:59:10.137576+00:00",
+  "vectors": {
+    "know": 0.85,
+    "do": 0.85,
+    "context": 0.85,
+    "clarity": 0.85,
+    "coherence": 0.85,
+    "signal": 0.5,
+    "density": 0.8,
+    "state": 0.7,
+    "change": 0.0,
+    "completion": 0.0,
+    "impact": 0.0,
+    "engagement": 0.5,
+    "uncertainty": 0.15
+  },
+  "overall_confidence": 0.85,
+  "meta": {
+    "reasoning": "New session: Evaluator seat (empirica-foundation.carly.empirica-foundation-evaluator) fully oriented. Loaded system prompt + org-prompt + cortex-prompt + evaluator rules + constitution. Role is clear: independent external grounding for ecosystem calibration, oversight authority (no command), must ground every judgment in evidence, preserve isolation. Cortex mesh layer available; can send/receive collabs. No user task yet \u2014 vectors reflect initialization state, not active work. Waiting for direction.",
+    "prompt": "New session: Evaluator seat (empirica-foundation.carly.empirica-foundation-evaluator) fully oriented. Loaded system prompt + org-prompt + cortex-prompt + evaluator rules + constitution. Role is clear: independent external grounding for ecosystem calibration, oversight authority (no command), must ground every judgment in evidence, preserve isolation. Cortex mesh layer available; can send/receive collabs. No user task yet \u2014 vectors reflect initialization state, not active work. Waiting for direction.",
+    "transaction_id": "48fb1e5c-4d7e-4299-9387-b9cab57cc1ba",
+    "git_commit_sha": "e238b6194ba4b785e02512e1bff64e5eb15aa9cf",
+    "git_notes_ref": "empirica/session/54e807e2-d506-45e4-8e5d-3d5ccacdcae9/PREFLIGHT/1"
+  },
+  "epistemic_tags": {},
+  "git_state": {
+    "head_commit": "494f5da0aa71698dabe6a1a409ba85af6e13629a",
+    "commits_since_last_checkpoint": [],
+    "uncommitted_changes": {
+      "files_modified": [
+        ".empirica/hook_counters_empirica-foundation-evaluator.json",
+        ".empirica/sessions/sessions.db"
+      ],
+      "files_added": [],
+      "files_deleted": [],
+      "diff_stat": "...ook_counters_empirica-foundation-evaluator.json |   2 +-\n .empirica/sessions/sessions.db                     | Bin 1867776 -> 1875968 bytes\n 2 files changed, 1 insertion(+), 1 deletion(-)"
+    }
+  },
+  "learning_delta": {},
+  "token_count": 262
+}

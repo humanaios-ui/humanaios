@@ -1,0 +1,11 @@
+{
+  "transaction_id": "48fb1e5c-4d7e-4299-9387-b9cab57cc1ba",
+  "session_id": "54e807e2-d506-45e4-8e5d-3d5ccacdcae9",
+  "claude_session_id": "0266706f-950f-4656-8e7e-8154708941cf",
+  "preflight_timestamp": 1784055554.0584471,
+  "status": "open",
+  "project_path": "/Users/andersonfamily/practices/empirica-foundation-evaluator",
+  "updated_at": 1784055554.0585852,
+  "avg_turns": 0,
+  "preflight_pattern_count": 0
+}
