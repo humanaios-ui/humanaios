@@ -88,22 +88,23 @@
 
 ---
 
-## Archive / Legacy Skills
+## Active Skills (Operational)
 
 ### carly-onboarding-interview
 
 | Attribute | Value |
 |-----------|-------|
 | **Location** | `skills/carly-onboarding-interview.md` |
-| **Version** | Unknown |
-| **Zone** | 0 (Legacy) |
-| **Status** | 📚 Documented, ❓ Current use unclear |
-| **Purpose** | First-session onboarding interview for Admiral seat |
-| **Trigger Phrases** | Unknown; no documented triggers |
-| **Activation Status** | ❓ Unknown — may be manual or automatic at session start |
-| **When to Invoke** | Unknown (first-session event?) |
-| **Last Updated** | Unknown (predates current audit) |
-| **SORT Decision** | **CONDITION** — Clarify current use and activation. If still active: document triggers. If legacy: archive. |
+| **Version** | 0.1.0 |
+| **Zone** | 1 (draft) |
+| **Status** | ✅ Active (clarified Week 2) |
+| **Purpose** | First-session onboarding workflow for Carly's Admiral seat. Discovers evaluation workflow, recommends practices, seeds epistemic profiles, defines demonstration harnesses. |
+| **Trigger Phrases** | Manual invocation (first session only, or re-onboarding); no auto-trigger documented |
+| **Activation Status** | ⚠️ Active but manual (not auto-triggered) |
+| **When to Invoke** | Carly's first session on empirica-foundation-evaluator seat, or when re-onboarding foundation practices |
+| **Last Updated** | 2026-07-14 (Week 2 clarification) |
+| **SORT Decision** | **KEEP** — Active, well-documented protocol. Zone 1. Needs trigger documentation + registry clarification (Week 3). |
+| **Notes** | This is the archetype for productized 1-hour onboarding (GTM vision). Structure generalizes to other onboardees; practice menu + demo content are what change. Emphasis on integrity: run under visible empirica discipline, make honest with/without demonstrations. |
 
 ---
 
@@ -152,7 +153,7 @@
 | `/empirica-constitution` | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | `/cortex-mailbox-send` | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | `/cortex-mailbox-poll` | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
-| `carly-onboarding-interview` | ❓ Unknown | ❓ Unknown | ⚠️ Partial | ❓ Unknown |
+| `carly-onboarding-interview` | ⚠️ Unclear | ⚠️ Manual | ✅ Yes | ⚠️ First-session only |
 
 ---
 
