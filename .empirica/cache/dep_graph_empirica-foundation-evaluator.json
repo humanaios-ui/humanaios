@@ -2,6 +2,12 @@
   "packages": [],
   "hotspots": [],
   "external_deps": [],
-  "entry_points": [],
-  "module_count": 0
+  "entry_points": [
+    "hooks.acat_rec2_session_init",
+    "hooks.acat_rec3_preflight_reminder",
+    "hooks.acat_rec4_postflight_verifier",
+    "tools.acat_corpus_session",
+    "tools.acat_observability_bridge"
+  ],
+  "module_count": 5
 }
