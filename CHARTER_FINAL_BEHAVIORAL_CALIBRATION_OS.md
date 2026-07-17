@@ -1,10 +1,11 @@
 # HumanAIOS Charter — Final
-## Behavioral Calibration Operating System for Oversight
+## Three-Layer Behavioral Calibration System
+### (HumanAIOS + GitHub Copilot AI + Empirica Foundation)
 
 **Approved:** Admiral (Carly R. Anderson)  
 **Effective Date:** July 17, 2026  
-**Strategic Positioning:** HumanAIOS is an operational oversight tool, not a research project  
-**Status:** Active research-to-deployment program
+**Strategic Positioning:** Harmonically-integrated three-layer system for operational oversight  
+**Status:** Active research-to-deployment program with full recursive learning across all layers
 
 ---
 
@@ -21,6 +22,47 @@
 - Audience is not academia → Audience is oversight practitioners
 - Measurement is not methodology rigor → Measurement is operational effectiveness
 - Endpoint is not "here's a tool" → Endpoint is "oversight bodies are using this to make real decisions"
+
+---
+
+## The Three-Layer Architecture
+
+HumanAIOS is not a two-system stack (HumanAIOS + Empirica). It's a **three-layer harmonically-integrated system**:
+
+### Layer 1: HumanAIOS Repository (Recursive Learning Density)
+- **Input:** Research findings (ACAT insights, criterion evidence)
+- **Process:** SMAG trajectory linking (finding → implementation → measured)
+- **Output:** Learning trajectory density (currently 26%, target 55% by Gate 2)
+- **Question Answered:** Do findings reliably flow to production code?
+- **Measurement:** Trajectory causal strength = finding_strength × copilot_confidence
+
+### Layer 2: GitHub Copilot AI (Intelligence Coordination)
+- **Input:** Findings + Empirica gate discoveries + SMAG trajectory patterns
+- **Process:** Code generation informed by empirical evidence
+- **Output:** High-confidence implementations + pattern suggestions
+- **Question Answered:** How does AI-assisted code generation affect learning reliability?
+- **Measurement:** Copilot confidence (0.0-1.0) adjusts trajectory strength; bias audit on criterion 4
+
+### Layer 3: Empirica Foundation (Gate Learning & Deployment)
+- **Input:** Criteria 1-7 evidence + Layer 1 & 2 measurements
+- **Process:** Gate decision + POSTFLIGHT learning (adjusted for three-layer signals)
+- **Output:** Criterion 8 proof (real oversight deployment)
+- **Question Answered:** Does the harmonically-integrated system predict oversight outcomes?
+- **Measurement:** Criterion 4 validity (r ≥ 0.55) adjusted for Copilot bias; gates informed by all three layers
+
+### Three-Layer Harmony
+
+```
+Layer 1 (HumanAIOS):  Finding → [Copilot] → Code → Measured (adjusted for Copilot confidence)
+                           ↓
+Layer 2 (Copilot):    [Confidence signal] → Code quality × empirica feedback
+                           ↓
+Layer 3 (Empirica):   Criterion (bias-adjusted) → Gate → POSTFLIGHT → feeds back to Layer 2
+                           ↓
+Recursive Loop:   Empirica discoveries → Copilot context → HumanAIOS learning velocity → Empirica validity
+```
+
+**No silent biases.** Copilot's influence is measured and reflected in all trajectories and gate decisions.
 
 ---
 
@@ -82,13 +124,19 @@ This charter is **COMPLETE** when **all 8 criteria** are met (not "5 of 7"):
 
 ### **OPERATIONAL VALIDATION (Proof of Concept)**
 
-**4. ❓ Criterion-Validity Study (Predictive Validity on Deployed Systems)**
+**4. ❓ Criterion-Validity Study (Predictive Validity on Deployed Systems, Three-Layer Adjusted)**
 - Learning Index predicts actual deployed behavior (not just corpus correlation)
 - 4-arm study design: empirica cross-validation (David Van Assche) + 3 external systems
-- Success bar: Correlation coefficient ≥ 0.55 on out-of-sample deployed models
+- Success bar: Correlation coefficient ≥ 0.55 on out-of-sample deployed models (adjusted for Copilot bias)
 - If r > 0.7: strong predictive validity (operational grade)
-- Current status: In progress with empirica (David Van Assche co-scoring)
-- Gate: Criterion validity established AND documented in methodology paper
+- **NEW: Copilot Bias Measurement (Layer 2 accountability)**
+  - Audit criterion 4 test code for architectural bias (% Claude-specific vs GPT-specific vs Custom-specific patterns)
+  - Measure: Does Copilot-generated test code systematically favor one model over others?
+  - Adjust: Remove Copilot bias signal from r calculation
+  - Result: Cleaner behavioral prediction (not Copilot consistency + behavior)
+  - Success bar for bias adjustment: r_bias-removed ≥ 0.50 (maintains validity even after bias removal)
+- Current status: In progress with empirica (David Van Assche co-scoring) + Layer 2 Copilot audit planned
+- Gate: Criterion validity established (bias-adjusted) AND documented in methodology paper
 
 **5. ❓ Corpus Scaled to N=1,000 (Consistency Maintained)**
 - Expand from N=604 to N=1,000 assessments
@@ -318,34 +366,56 @@ empirica finding-log \
 
 ---
 
-## SER Structure (Deployment-Aligned, Recursive)
+## SER Structure (Three-Layer Recursive System)
 
 ### **SER 1: Research Execution & Grant Management**
-- **State:** Criteria 1-7 progress tracking + Gate POSTFLIGHT learnings
-- **Measure:** Which criteria are "ready for deployment"? Are prior gate learnings shaping current work?
+- **State:** Criteria 1-7 progress tracking + Gate POSTFLIGHT learnings + Layer 2 Copilot confidence signals
+- **Measure:** Which criteria are "ready for deployment"? Are prior gate learnings + Copilot signals shaping current work?
 - **Trajectory types:** 
-  - `research_finding_→_criterion` (criteria 1-7 readiness)
+  - `research_finding_→_criterion` (criteria 1-7 readiness, adjusted for copilot_confidence)
   - `gate_learning_→_next_gate_design` (recursive loop closure)
-- **Escalation:** 7 days if criterion blocking deployment work; 3 days if Gate POSTFLIGHT finding not created after gate decision
-- **Loop closure:** After each gate, SER 1 verifies prior gate's POSTFLIGHT finding exists and is informing current phase
+  - `copilot_feedback_→_learning_velocity` (Layer 2 influence on SMAG density)
+- **Escalation:** 7 days if criterion blocking deployment work; 3 days if Gate POSTFLIGHT finding not created after gate decision; 7 days if Copilot confidence not updated
+- **Loop closure:** After each gate, SER 1 verifies prior gate's POSTFLIGHT finding exists and is informing current phase, accounting for Layer 2 Copilot signals
 
 ### **SER 2: Collaborator Coordination**
-- **State:** David Van Assche (criterion 4), DeMarius Lawson (governance) + Gate POSTFLIGHT impacts
-- **Measure:** Criterion-validity study progress, governance framework robustness; are gate learnings adjusting David/DeMarius' scope?
+- **State:** David Van Assche (criterion 4, bias-adjusted), DeMarius Lawson (governance) + Gate POSTFLIGHT impacts + Layer 2 signals
+- **Measure:** Criterion-validity study progress (with Copilot bias audit), governance framework robustness; are gate learnings adjusting David/DeMarius' scope?
 - **Trajectory types:**
-  - `empirica_cross_validation_→_criterion_4` (David's work)
+  - `empirica_cross_validation_→_criterion_4_bias_adjusted` (David's work, Layer 2-corrected)
+  - `copilot_bias_audit_→_criterion_4_refinement` (Layer 2 accountability: is test code biased?)
   - `governance_finding_→_dual_use_mitigation` (DeMarius' work)
   - `gate_learning_→_collaborator_adjustment` (how prior gates reshape David/DeMarius' work)
-- **Escalation:** 14 days on stalled co-development; 7 days if prior gate's POSTFLIGHT learning not incorporated into David/DeMarius' plans
+- **Escalation:** 14 days on stalled co-development; 7 days if prior gate's POSTFLIGHT learning not incorporated; 10 days if Copilot bias audit not complete for criterion 4
 
 ### **SER 3: Deployment Partnerships**
-- **State:** Potential oversight partners interested in criterion 8 trial + Gate 2/3 POSTFLIGHT learnings embedded in trial design
+- **State:** Potential oversight partners interested in criterion 8 trial + Gate 2/3 POSTFLIGHT learnings + Layer 2 Copilot reliability signals embedded in trial design
 - **Participants:** Regulator/institution, HumanAIOS, evaluator oversight
-- **Measure:** Is a real-world deployment trial viable? Is trial protocol shaped by prior gates' learnings?
+- **Measure:** Is a real-world deployment trial viable? Is trial protocol shaped by prior gates' learnings + Layer 2 high-confidence implementations?
 - **Trajectory types:**
   - `oversight_partner_feedback_→_protocol_update` (criterion 8 trial learning)
   - `gate_learning_→_trial_protocol_refinement` (recursive incorporation of Gate 2/3 discoveries)
-- **Escalation:** 10 days on partnership conversations; 14 days if trial protocol not updated based on Gate 2/3 POSTFLIGHT learnings
+  - `copilot_reliability_→_deployment_readiness` (Layer 2 confidence signal feeds to deployment preparation)
+- **Escalation:** 10 days on partnership conversations; 14 days if trial protocol not updated based on Gate 2/3 POSTFLIGHT learnings; 7 days if Copilot reliability metrics not factored into trial readiness
+
+### **SER 4: Copilot Intelligence Coordination (NEW — Layer 2)**
+- **State:** GitHub Copilot AI performance + confidence signals + empirica discovery feedback + SMAG pattern integration
+- **Participants:** Copilot (code generation), David Van Assche (criterion 4 test code audit), Carly R. Anderson (Admiral), empirica-foundation-evaluator (measurements)
+- **Measure:** 
+  - How does Copilot's confidence affect trajectory strength? (Layer 1 ↔ Layer 2)
+  - How much does Copilot bias confound criterion validity? (Layer 2 → Layer 3)
+  - How much do empirica discoveries improve Copilot's code generation? (Layer 3 → Layer 2)
+- **Trajectory types:**
+  - `copilot_confidence_→_trajectory_strength` (Copilot input quality affects Layer 1 measurements)
+  - `copilot_bias_audit_→_criterion_validity` (Layer 2 confounding signal removed from Layer 3)
+  - `empirica_discovery_→_copilot_context` (Layer 3 findings inform Layer 2 suggestions)
+  - `three_layer_harmony_→_learning_velocity` (overall system efficiency metric)
+- **Weekly Measurement:**
+  - Copilot average confidence (target: 0.75+)
+  - % of test code with architectural bias (target: <15% variance across models)
+  - Criterion 4 validity after bias adjustment (target: r ≥ 0.50)
+  - SMAG density adjusted for Copilot reliability (target: 40%+ by Gate 2)
+- **Escalation:** 7 days if Copilot confidence drops below 0.70 (signal quality degrading); 10 days if bias audit incomplete; 14 days if empirica feedback not flowing back to Copilot context
 
 ---
 
