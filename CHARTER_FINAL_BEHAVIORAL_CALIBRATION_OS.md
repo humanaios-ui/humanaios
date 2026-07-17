@@ -186,6 +186,122 @@ This charter is **COMPLETE** when **all 8 criteria** are met (not "5 of 7"):
 
 ---
 
+## Recursive Learning & Gate POSTFLIGHT Protocol
+
+**Principle:** Each gate produces learnings that inform the NEXT gate's design. No knowledge is left on the table.
+
+### Gate POSTFLIGHT Findings (Self-Correcting Loop)
+
+After each gate decision, Admiral logs a POSTFLIGHT finding that captures:
+1. **Predicted:** What was supposed to happen (before the gate)
+2. **Measured:** What actually happened
+3. **Gap:** Difference between predicted and measured
+4. **Learning:** What this reveals about the system
+5. **Action:** How does this change the NEXT gate's design?
+
+**Example: Gate 2 POSTFLIGHT (Month 6)**
+
+Predicted: "Empirica cross-validation will show consistent r ≥ 0.55 across Claude, GPT-4, and custom models"
+
+Measured: "Claude r=0.72, GPT-4 r=0.61, Custom r=0.58. Model architecture variance higher than anticipated."
+
+Gap: "Criterion 4 predictive validity holds, but varies significantly by model family. Variance unaccounted for in original criterion 4 design."
+
+Learning: "Oversight partners will deploy ACAT on their specific models. Single threshold Learning Index may not be sufficient; model-specific calibration may be needed."
+
+Action: "Gate 3 (Month 9) partner selection should prioritize oversight bodies willing to trial model-specific Learning Index variants. Gate 4 deployment should measure whether model-specific calibration improves oversight utility."
+
+**Logged via CLI:**
+
+```bash
+empirica finding-log \
+  --finding "Gate 2 POSTFLIGHT (Month 6): Criterion 4 predictive validity established (r≥0.55 across 3 models), but model architecture variance (Claude>>Custom) higher than predicted. Oversight partners will need model-specific calibration guidance." \
+  --impact 0.85 \
+  --enabled-by "gate-2-postflight" \
+  --informs "gate-3-partner-strategy" \
+  --trajectory-type "gate_learning_→_next_gate_design" \
+  --causal-strength 0.9 \
+  --cross-session \
+  --visibility shared
+```
+
+**Trajectory type:** `gate_learning_→_next_gate_design`
+- Source: Gate N POSTFLIGHT findings
+- Target: Gate N+1 design specification
+- Causal strength: HIGH (prior gate evidence should shape next gate)
+- Escalation: If no POSTFLIGHT finding created within 3 days after gate decision → escalate to Admiral
+- Impact: Prevents silent knowledge loss; ensures each gate learns and adapts
+
+### Gate Timeline with POSTFLIGHT Recursion
+
+| Phase | Date | Event | POSTFLIGHT? |
+|-------|------|-------|-------------|
+| **Gate 1** | Aug 1 | Longview decision → Track A/B/C | ✅ Create Gate 1 POSTFLIGHT |
+| **→ Phase 1** | Aug 15 | Track A activated, team hired | (Ongoing monitoring) |
+| **Gate 2** | Aug 31 | Criterion 4 evidence → Proceed to Gate 3? | ✅ Create Gate 2 POSTFLIGHT |
+| | | Gate 2 findings → inform Gate 3 partner strategy | ← Use POSTFLIGHT learnings |
+| **→ Phase 2** | Sep 15 | Criterion 4 study running with model-variant focus | (Per Gate 2 POSTFLIGHT) |
+| **Gate 3** | Oct 1 | Partner ready? Trial scope confirmed? | ✅ Create Gate 3 POSTFLIGHT |
+| | | Gate 3 findings → inform Gate 4 trial protocol | ← Use POSTFLIGHT learnings |
+| **→ Phase 3** | Oct 15 | Deployment trial starts with partner-specific protocol | (Per Gate 3 POSTFLIGHT) |
+| **Gate 4** | Jan 1 | Trial success measured, criterion 8 proven? | ✅ Create Gate 4 POSTFLIGHT |
+| | | Gate 4 findings → inform next-round strategy | ← Feeds into scaling plan |
+
+### HumanAIOS ↔ Empirica Recursive Coordination
+
+**Two feedback loops, interlocked:**
+
+**Loop 1: HumanAIOS SMAG (organizational learning density)**
+- Measure: Does research finding flow to implementation?
+- Metric: Learning trajectory density (SMAG ledger)
+- Cadence: Weekly (compounding)
+- Currently: 26% density → improving via empirica CLI wiring
+
+**Loop 2: Empirica Charter (deployment readiness)**
+- Measure: Do charter criteria flow to oversight deployment?
+- Metric: Criterion 8 readiness (Gate 4)
+- Cadence: Gates every 2-4 months (discrete milestones)
+- Connects to: SMAG via trajectory infrastructure
+
+**Coordination point: Gate POSTFLIGHT findings feed back to SMAG**
+
+When a gate reveals model variance (Gate 2 learning), create a finding in HumanAIOS:
+
+```bash
+empirica finding-log \
+  --project-id humanaios \
+  --finding "Charter Gate 2 reveals: ACAT criterion validity varies by model architecture (Claude r=0.72 >> Custom r=0.58). Recommend corpus expansion to increase model diversity coverage." \
+  --impact 0.8 \
+  --enabled-by "empirica-gate-2-postflight" \
+  --informs "humanaios-corpus-expansion-criterion-5" \
+  --trajectory-type "charter_learning_→_framework_refinement" \
+  --cross-session \
+  --visibility shared
+```
+
+**Result:** Gate 2 discovery (model variance) → HumanAIOS corpus targeted (more diverse models) → Criterion 5 improved → Gate 3 partner selection informed by better data.
+
+**Loop closes and tightens:** Empirica → HumanAIOS → Empirica (recursive).
+
+### Weekly Rhythm (With Recursive Checks)
+
+**Monday 9am: SER 1 State Snapshot**
+- Learning density per criterion (via SMAG)
+- Any Gate POSTFLIGHT findings pending? (if gate closed recently)
+- Has prior gate's POSTFLIGHT learning been incorporated? (check SER trajectories)
+
+**Wednesday 2pm: Advisory Sync**
+- Review POSTFLIGHT findings from most recent gate
+- Adjust upcoming gate's design if learnings suggest it
+- Check HumanAIOS SMAG improvements (is organizational learning accelerating?)
+
+**Friday 4pm: Escalation & Loop Tightness Check**
+- Any Gate POSTFLIGHT findings created yet? (if gate closed Mon-Fri)
+- Any stalled SER 2 trajectories due to gate learnings not incorporated?
+- Is HumanAIOS ↔ Empirica coordination tight? (are learnings flowing both directions?)
+
+---
+
 ## What "Behavioral Calibration Operating System for Oversight" Means in Practice
 
 ### **Example Deployment Scenario**
@@ -202,23 +318,34 @@ This charter is **COMPLETE** when **all 8 criteria** are met (not "5 of 7"):
 
 ---
 
-## SER Structure (Deployment-Aligned)
+## SER Structure (Deployment-Aligned, Recursive)
 
 ### **SER 1: Research Execution & Grant Management**
-- **State:** Criteria 1-7 progress tracking
-- **Measure:** Which criteria are "ready for deployment"?
-- **Escalation:** 7 days if criterion blocking deployment work
+- **State:** Criteria 1-7 progress tracking + Gate POSTFLIGHT learnings
+- **Measure:** Which criteria are "ready for deployment"? Are prior gate learnings shaping current work?
+- **Trajectory types:** 
+  - `research_finding_→_criterion` (criteria 1-7 readiness)
+  - `gate_learning_→_next_gate_design` (recursive loop closure)
+- **Escalation:** 7 days if criterion blocking deployment work; 3 days if Gate POSTFLIGHT finding not created after gate decision
+- **Loop closure:** After each gate, SER 1 verifies prior gate's POSTFLIGHT finding exists and is informing current phase
 
 ### **SER 2: Collaborator Coordination**
-- **State:** David Van Assche (criterion 4), DeMarius Lawson (governance)
-- **Measure:** Criterion-validity study progress, governance framework robustness
-- **Escalation:** 14 days on stalled co-development
+- **State:** David Van Assche (criterion 4), DeMarius Lawson (governance) + Gate POSTFLIGHT impacts
+- **Measure:** Criterion-validity study progress, governance framework robustness; are gate learnings adjusting David/DeMarius' scope?
+- **Trajectory types:**
+  - `empirica_cross_validation_→_criterion_4` (David's work)
+  - `governance_finding_→_dual_use_mitigation` (DeMarius' work)
+  - `gate_learning_→_collaborator_adjustment` (how prior gates reshape David/DeMarius' work)
+- **Escalation:** 14 days on stalled co-development; 7 days if prior gate's POSTFLIGHT learning not incorporated into David/DeMarius' plans
 
 ### **SER 3: Deployment Partnerships**
-- **State:** Potential oversight partners interested in criterion 8 trial
+- **State:** Potential oversight partners interested in criterion 8 trial + Gate 2/3 POSTFLIGHT learnings embedded in trial design
 - **Participants:** Regulator/institution, HumanAIOS, evaluator oversight
-- **Measure:** Is a real-world deployment trial viable?
-- **Escalation:** 10 days on partnership conversations
+- **Measure:** Is a real-world deployment trial viable? Is trial protocol shaped by prior gates' learnings?
+- **Trajectory types:**
+  - `oversight_partner_feedback_→_protocol_update` (criterion 8 trial learning)
+  - `gate_learning_→_trial_protocol_refinement` (recursive incorporation of Gate 2/3 discoveries)
+- **Escalation:** 10 days on partnership conversations; 14 days if trial protocol not updated based on Gate 2/3 POSTFLIGHT learnings
 
 ---
 
@@ -278,15 +405,31 @@ This charter is **COMPLETE** when **all 8 criteria** are met (not "5 of 7"):
    - Confirm empirica's role (David Van Assche co-scoring)
    - Define "predictive validity" operationally (r ≥ 0.55 threshold)
    - Prepare out-of-sample deployment test plan
+   - **NEW:** Incorporate model-variance testing (per recursive learning protocol)
 
 4. **Activate SER 3 (Deployment Partnerships)**
    - Formalize conversations with potential oversight partners
    - Outline deployment trial scope, timeline, success criteria
+   - **NEW:** Prepare for Gate 2/3 POSTFLIGHT learnings to inform trial protocol
 
-5. **Update Charter Documentation**
-   - Replace old 90-day charter with CHARTER_FINAL_BEHAVIORAL_CALIBRATION_OS
-   - Link all 8 criteria to grant deliverables
-   - Make deployment readiness the primary success measure
+5. **Wire Gate POSTFLIGHT & Recursive Learning**
+   - Define Gate 1 POSTFLIGHT template (Longview decision → Track selection)
+   - Brief Admiral on Gate POSTFLIGHT protocol (create finding 3 days after gate decision)
+   - Set up trajectory type `gate_learning_→_next_gate_design` in SMAG (Week 1, Day 3)
+   - **NEW:** Add weekly rhythm check for POSTFLIGHT learnings incorporation
+
+6. **Wire HumanAIOS ↔ Empirica Coordination**
+   - When Gate 2 reveals model variance → log finding in humanaios project
+   - When HumanAIOS SMAG learning density improves → log finding in empirica-foundation-evaluator project
+   - Set `--visibility shared` on cross-project findings (so both practices see learnings)
+   - **NEW:** Quarterly cross-project review: "Are both loops tightening?"
+
+7. **Update Charter Documentation**
+   - **DONE:** Replace old 90-day charter with CHARTER_FINAL_BEHAVIORAL_CALIBRATION_OS
+   - **DONE:** Link all 8 criteria to grant deliverables
+   - **DONE:** Make deployment readiness the primary success measure
+   - **NEW:** Add Recursive Learning & Gate POSTFLIGHT section
+   - **NEW:** Update SER structure to include Gate learning trajectories
 
 ---
 
@@ -331,11 +474,24 @@ This charter is **COMPLETE** when **all 8 criteria** are met (not "5 of 7"):
 **SUCCESS CRITERIA:** 8 (all required, not "5 of 7")  
 **PRIMARY GATE:** Real-world deployment proof (criterion 8)  
 **FUNDING CONTINGENT:** Track A (full), B (minimum), or C (volunteer)  
+**RECURSIVE LEARNING:** Gate POSTFLIGHT protocol active (self-correcting across gates)  
+**COORDINATION:** HumanAIOS SMAG ↔ Empirica charter loops interlocked (organizational + deployment learning)
 
-**Next:** Confirm Longview grant decision, identify deployment partners, activate SER 3.
+**Next:** Confirm Longview grant decision, identify deployment partners, activate SER 3, wire Gate POSTFLIGHT.
 
 ---
 
 **This is the final charter.** It positions HumanAIOS as an operational tool that changes oversight practice, not a research project that publishes findings.
 
-**Commit Message:** "Final Charter: Behavioral Calibration Operating System — 8 criteria, deployment-driven success measure"
+**Key innovations in this charter:**
+
+1. **Operational positioning** — Success = oversight bodies deploying ACAT to make real decisions (not publication)
+2. **8 criteria, all required** — Criterion 8 (deployment proof) is the defining gate; nothing is optional
+3. **Deployment-driven decision gates** — Gate 2/3/4 measure readiness to deploy, not research completion
+4. **Recursive learning protocol** — Each gate produces POSTFLIGHT findings that inform the next gate's design
+5. **Dual-loop coordination** — HumanAIOS SMAG (organizational learning) ↔ Empirica charter (deployment readiness) interlocked
+6. **Self-correcting system** — No silent knowledge loss; every gate's learning flows forward; no loop ever starts blind
+
+**Commit Messages:**
+- b40b432: "Final Charter: Behavioral Calibration Operating System — 8 criteria, deployment-driven success measure"
+- [NEXT]: "Charter Enhancement: Add recursive learning & Gate POSTFLIGHT protocol + HumanAIOS ↔ Empirica coordination"
