@@ -13,6 +13,34 @@ metadata:
   purpose: "Master registry for all Z2 ratification decisions, governance gates, and specification approvals"
   canonical_location: "empirica-foundation-evaluator/GOVERNANCE_RATIFICATIONS_REGISTRY.yaml"
 
+  parent_registries:
+    - name: "CONTROLLED_DOCUMENTS.md"
+      location: "humanaios-ui/operations/CONTROLLED_DOCUMENTS.md"
+      purpose: "Master registry of all controlled documents across HumanAIOS ecosystem (34 approved, 37 excluded)"
+      relationship: "This registry is a CHILD of the parent CONTROLLED_DOCUMENTS registry"
+      integration_date: "2026-07-18"
+
+  related_master_documents:
+    - name: "MOLT_STATE.md"
+      location: "humanaios-ui/operations/MOLT_STATE.md"
+      purpose: "Current biological state of system (Layer transitions, mid-molt status)"
+      relationship: "Ratifications drive molt transitions; molt state informs ratification scope"
+
+    - name: "RECURSIVE_IMPROVEMENT_SEED.md"
+      location: "humanaios-ui/operations/RECURSIVE_IMPROVEMENT_SEED.md"
+      purpose: "5S lean audit of operations (7 Z2 items ratified)"
+      relationship: "Improvement findings feed into ratification decisions"
+
+    - name: "SYSTEM_HEALTH.md"
+      location: "humanaios-ui/operations/SYSTEM_HEALTH.md"
+      purpose: "System vitals monitoring (5 body systems scoring)"
+      relationship: "Health metrics inform ratification scope (what needs fixing)"
+
+    - name: "HUMANAIOS_OPERATIONS_ARCHITECTURE.md"
+      location: "humanaios-ui/operations/HUMANAIOS_OPERATIONS_ARCHITECTURE.md"
+      purpose: "Integrated architecture (research + funding + proposals)"
+      relationship: "Architecture drives governance ratification priorities"
+
   versioning:
     schema_version: "1.0"
     breaking_changes: []
@@ -377,7 +405,37 @@ z2_ratification_template: |
 
 ---
 
+# ============================================================================
+# CRITICAL INTEGRATION NOTE
+# ============================================================================
+# This registry is a CHILD of the parent CONTROLLED_DOCUMENTS.md in operations repo.
+#
+# The operations repo maintains the authoritative CONTROLLED_DOCUMENTS.md registry.
+# This GOVERNANCE_RATIFICATIONS_REGISTRY.yaml should be registered there as:
+#
+#   doc_id: HAIOS-GOV-001
+#   title: Governance Ratifications Registry
+#   repo: empirica-foundation-evaluator
+#   canonical_path: GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+#   status: approved (needs registration in CONTROLLED_DOCUMENTS.md)
+#
+# Parent registry maintains the single source of truth for ALL document control
+# across the HumanAIOS ecosystem, including:
+# - CONTROLLED_DOCUMENTS.md (master index)
+# - GOVERNANCE_RATIFICATIONS_REGISTRY.yaml (this file — Z2 decisions)
+# - MOLT_STATE.md (biological system state)
+# - SYSTEM_HEALTH.md (system vitals)
+# - RECURSIVE_IMPROVEMENT_SEED.md (operations improvements)
+#
+# TODO (Admiral action):
+# 1. Register this registry in operations/CONTROLLED_DOCUMENTS.md
+# 2. Link back from CONTROLLED_DOCUMENTS.md to this registry
+# 3. Establish bidirectional cross-referencing
+#
+# ============================================================================
+
 # END OF GOVERNANCE_RATIFICATIONS_REGISTRY v1.0
 # Last Updated: 2026-07-18
 # Next Review: Post M3.5 ratification (2026-07-20 expected)
+# Parent Registry: humanaios-ui/operations/CONTROLLED_DOCUMENTS.md
 # Contact: empirica-foundation Admiral (Carly R. Anderson)
