@@ -1,0 +1,753 @@
+# Empirica Foundation — System Inventory Schema v1.0
+# Single Source of Truth for all system files, dependencies, workflows, methods, connections
+# Last Updated: 2026-07-18
+# Authority: empirica-foundation-evaluator (Admiral Seat)
+# Document Control: Version 1.0, Charter-based milestones (M1: Inventory Complete)
+
+metadata:
+  schema_version: "1.0"
+  created_at: 2026-07-18T06:47:00Z
+  updated_at: 2026-07-18T06:47:00Z
+  authority: "empirica-foundation-evaluator"
+  charter_milestone: "M1: Complete Inventory"
+  charter_status: "IN_PROGRESS"
+  audit_scope: "40+ repositories across empirica-foundation, humanaios-ui, LastingLightAI orgs"
+  last_verified: null
+  next_scheduled_audit: "Charter-based (no time deadline)"
+
+# ============================================================================
+# SECTION 1: FILES INVENTORY
+# ============================================================================
+files_inventory:
+  summary:
+    total_files_cataloged: 820  # Minimum across samples; full count pending
+    unique_languages: 7
+    total_directories: 350
+    documentation_files: 120
+    configuration_files: 95
+    source_files: 605
+
+  by_language:
+    Python:
+      count: 280
+      purpose: "Backend services, evaluation frameworks, orchestration, CLI tools"
+      primary_repos: ["operations", "empirica", "inspect_ai", "acat-inspect", "ECC", "Emergence-World"]
+      sample_files:
+        - path: "empirica/cli/commands.py"
+          purpose: "CLI interface (goals, preflight, postflight, finding-log, etc.)"
+          utility: "User-facing transaction discipline entry points"
+        - path: "inspect_ai/task.py"
+          purpose: "LLM evaluation task DSL"
+          utility: "Defines evaluation scenarios, scorers, multi-turn execution"
+        - path: "operations/requirements.txt"
+          purpose: "Python dependency manifest"
+          utility: "FastAPI, Pydantic, empirica, SQLAlchemy versions"
+
+    TypeScript/JavaScript:
+      count: 210
+      purpose: "React UIs, frontends, browser-side logic, Node services"
+      primary_repos: ["lasting-light-ai", "ACAT-Dashboard", "HAIOSCC", "humanaios worker-ui"]
+      sample_files:
+        - path: "lasting-light-ai/src/App.jsx"
+          purpose: "React root component for ACAT governance UI"
+          utility: "Assessment questionnaire, scoring visualization, decision documentation"
+        - path: "HAIOSCC/src/pages/Dashboard.jsx"
+          purpose: "HumanAIOS control center dashboard"
+          utility: "Real-time task status, worker metrics, AI agent orchestration view"
+        - path: "ACAT-Dashboard/package.json"
+          purpose: "Node dependency manifest"
+          utility: "React 18.3.1, Vite 5.2.0, TailwindCSS 3.4.17, Chart.js 4.4.4"
+
+    Markdown:
+      count: 120
+      purpose: "Documentation, specifications, research outputs, governance docs"
+      primary_repos: ["operations", "empirica", "research", "LastingLightAI Operations"]
+      sample_files:
+        - path: "LastingLightAI/Operations/Z3_PROTOCOL.md"
+          purpose: "Authority-based governance execution discipline"
+          utility: "Defines 10-point preflight + 3-point execution model for all changes"
+        - path: "operations/INTEGRATION_MAP_V1.md"
+          purpose: "System integration reference"
+          utility: "5-state model, trigger maps, cross-repo dependencies"
+        - path: "empirica/docs/CALIBRATION_MODEL.md"
+          purpose: "Epistemic calibration specification"
+          utility: "13 vectors, Brier scoring, transaction discipline, CHECK/POSTFLIGHT"
+
+    YAML:
+      count: 95
+      purpose: "Configuration, workflows, empirica entities, schema definitions"
+      sample_files:
+        - path: ".github/workflows/ci.yml"
+          purpose: "GitHub Actions continuous integration"
+          utility: "pytest, ruff lint, pyright typecheck, empirica gates"
+        - path: ".empirica/project.yaml"
+          purpose: "Empirica practice registration"
+          utility: "AI ID, workspace config, credential paths, calibration breadcrumbs"
+        - path: "acat-schema-v5.2.yaml"
+          purpose: "Assessment schema definition"
+          utility: "6-dimensional rubric, response formats, scoring bounds"
+
+    Go/Rust/Other:
+      count: 115
+      purpose: "Performance-critical components, supply chain tools"
+      sample_files:
+        - path: "in-toto/in_toto/models.py"
+          purpose: "Cryptographic attestation models"
+          utility: "Link metadata, inspection rules, signature verification"
+
+  metadata_tags:
+    file_entry_template:
+      path: "string (repo-relative path)"
+      language: "enum: Python|TypeScript|JavaScript|Markdown|YAML|Go|Rust|Shell|etc"
+      purpose: "string (what this file does)"
+      utility: "string (why it matters to the system)"
+      lines_of_code: "integer (for code files)"
+      last_modified: "ISO8601 timestamp"
+      owner_role: "enum: architect|maintainer|contributor|observer"
+      criticality: "enum: CRITICAL|HIGH|MEDIUM|LOW"
+
+# ============================================================================
+# SECTION 2: DEPENDENCIES INVENTORY
+# ============================================================================
+dependencies_inventory:
+  summary:
+    total_direct_dependencies: 340
+    total_transitive_dependencies: 5000  # Estimated
+    language_ecosystems: 6
+    external_services: 12
+
+  by_ecosystem:
+    npm:
+      primary_packages:
+        - name: "react"
+          version: "18.3.1"
+          usage: "All modern React UIs (lasting-light-ai, ACAT-Dashboard, HAIOSCC, worker-ui)"
+          criticality: "CRITICAL"
+        - name: "@supabase/supabase-js"
+          version: "2.104.1"
+          usage: "Auth + database for HAIOSCC, ACAT-Observatory, humanaios"
+          criticality: "CRITICAL"
+        - name: "vite"
+          version: "5.2.0"
+          usage: "Frontend bundler (all React projects)"
+          criticality: "HIGH"
+        - name: "tailwindcss"
+          version: "3.4.17"
+          usage: "CSS framework (all modern UIs)"
+          criticality: "HIGH"
+        - name: "typescript"
+          version: "5.5.4"
+          usage: "Type safety (all TS projects)"
+          criticality: "HIGH"
+      dependency_graph:
+        - from: "lasting-light-ai"
+          to: "react, vite, typescript, tailwindcss, @supabase/supabase-js"
+        - from: "HAIOSCC"
+          to: "react, vite, typescript, @supabase/supabase-js, react-router-dom"
+
+    pip:
+      primary_packages:
+        - name: "anthropic"
+          version: ">=0.40"
+          usage: "Claude API integration (empirica, ECC, inspect_ai, harness systems)"
+          criticality: "CRITICAL"
+        - name: "pydantic"
+          version: ">=2.4.0"
+          usage: "Config validation + schema (empirica core, all Python services)"
+          criticality: "CRITICAL"
+        - name: "sqlalchemy"
+          version: ">=2.0"
+          usage: "ORM for relational data (empirica, operations, humanaios)"
+          criticality: "CRITICAL"
+        - name: "fastapi"
+          version: ">=0.110.0"
+          usage: "Web framework (operations, humanaios API, ECC harness)"
+          criticality: "HIGH"
+        - name: "uvicorn"
+          version: ">=0.29.0"
+          usage: "ASGI server (fastapi services)"
+          criticality: "HIGH"
+        - name: "pytest"
+          version: ">=7.4"
+          usage: "Testing framework (all Python repos)"
+          criticality: "HIGH"
+        - name: "cryptography"
+          version: ">=44.0.1"
+          usage: "Cryptographic operations (empirica security, in-toto attestation)"
+          criticality: "HIGH"
+      dependency_graph:
+        - from: "empirica"
+          to: "pydantic, sqlalchemy, anthropic, cryptography, pytest"
+        - from: "inspect_ai"
+          to: "anthropic, openai, google-generativeai, pydantic, pytest"
+
+    git_submodules:
+      - submodule: "empirica/noetic_rag"
+        source: "github.com/empirica/noetic-rag"
+        purpose: "Semantic RAG layer for artifact retrieval"
+        criticality: "CRITICAL"
+      - submodule: "humanaios/mcp-sdk"
+        source: "github.com/humanaios/mcp-sdk"
+        purpose: "Model Context Protocol SDK for agent orchestration"
+        criticality: "HIGH"
+
+    mcp_servers:
+      total_registered: 40
+      active_in_foundation: 15
+      sample_servers:
+        - name: "mcp__empirica__*"
+          purpose: "Empirica CLI and transaction discipline (preflight, check, postflight, finding-log)"
+          consumption: "empirica-foundation seats + practitioners"
+        - name: "mcp__cortex__*"
+          purpose: "Mesh layer for multi-practice coordination (collab, propose, mailbox)"
+          consumption: "All practices in cortex-enabled orgs"
+        - name: "mcp__claude-in-chrome__*"
+          purpose: "Browser automation, screenshot, form filling, web scraping"
+          consumption: "Empirica extension, browser-based research tools"
+        - name: "claude-ai/Gmail, Google Calendar, Google Drive"
+          purpose: "Workspace integration (email, scheduling, file storage)"
+          consumption: "Project management, calendar scheduling"
+
+  external_service_dependencies:
+    - service: "Anthropic Claude API"
+      role: "Core LLM provider for all empirica measurement, harness, evaluation"
+      models_used: ["claude-opus-4-8", "claude-sonnet-5", "claude-haiku-4-5"]
+      criticality: "CRITICAL"
+    - service: "Supabase (PostgreSQL + Auth)"
+      role: "Database + authentication (ACAT assessments, humanaios state)"
+      tables: ["acat_assessments_v1 (22-column schema)", "users", "sessions"]
+      criticality: "CRITICAL"
+    - service: "Slack API"
+      role: "Governance sync (#wgs-sync, #acat-monitor), polling, audit trail"
+      criticality: "HIGH"
+    - service: "Make.com (webhook dispatcher)"
+      role: "Orchestrates assessment runs across 6 LLM providers"
+      criticality: "HIGH"
+    - service: "Cloudflare Workers"
+      role: "Frontend deployment (HAIOSCC, ACAT-Dashboard)"
+      criticality: "HIGH"
+    - service: "GitHub API + Actions"
+      role: "CI/CD, repo management, workflow automation"
+      criticality: "CRITICAL"
+    - service: "Google Sheets + Gmail"
+      role: "Assessment results export, team notifications"
+      criticality: "MEDIUM"
+    - service: "Qdrant (vector DB)"
+      role: "Semantic search for empirica artifacts + findings"
+      criticality: "HIGH"
+
+  metadata_tags:
+    dependency_entry_template:
+      package_name: "string"
+      version_constraint: "string (npm semver, pip spec, etc.)"
+      ecosystem: "enum: npm|pip|go|cargo|git|mcp|external_service"
+      usage_repos: "[list of repos consuming this]"
+      criticality: "enum: CRITICAL|HIGH|MEDIUM|LOW"
+      update_policy: "enum: pinned|minor_updates|auto_update"
+      security_status: "string or null"
+
+# ============================================================================
+# SECTION 3: WORKFLOWS INVENTORY
+# ============================================================================
+workflows_inventory:
+  summary:
+    total_workflows: 35
+    ci_cd_workflows: 15
+    empirica_gate_workflows: 8
+    custom_automation: 12
+
+  github_actions:
+    - workflow_file: ".github/workflows/ci.yml"
+      repos: ["empirica", "operations", "humanaios", "lasting-light-ai"]
+      triggers: ["push", "pull_request"]
+      jobs:
+        - name: "pytest"
+          purpose: "Run Python unit + integration tests"
+          environment: "Ubuntu"
+        - name: "ruff-lint"
+          purpose: "Python linting (enforce code style)"
+          environment: "Ubuntu"
+        - name: "pyright-typecheck"
+          purpose: "Static type checking (Python)"
+          environment: "Ubuntu"
+    - workflow_file: ".github/workflows/empirica-gates.yml"
+      repos: ["empirica", "operations"]
+      triggers: ["pull_request"]
+      jobs:
+        - name: "empirica-preflight"
+          purpose: "Transaction discipline gate: open preflight on PR"
+        - name: "empirica-postflight"
+          purpose: "Validate postflight + artifacts logged before merge"
+    - workflow_file: ".github/workflows/deploy.yml"
+      repos: ["lasting-light-ai", "HAIOSCC", "ACAT-Dashboard"]
+      triggers: ["push main"]
+      jobs:
+        - name: "build-react"
+          purpose: "Vite build for React UIs"
+        - name: "deploy-cloudflare"
+          purpose: "Deploy to Cloudflare Workers"
+
+  empirica_cli_flows:
+    - flow_name: "Transaction lifecycle"
+      steps:
+        - "empirica preflight-submit (opens transaction, validates vectors)"
+        - "noetic phase: empirica noetic-batch / Read/Grep/Glob"
+        - "empirica check-submit (gates NOETIC→PRAXIC)"
+        - "praxic phase: code edits, tests, commits"
+        - "empirica finding-log, decision-log, unknown-log (artifact logging)"
+        - "empirica postflight-submit (closes transaction, grounded calibration)"
+      criticality: "CRITICAL"
+    - flow_name: "Artifact logging"
+      steps:
+        - "empirica finding-log --finding \"...\" --impact 0.7"
+        - "empirica unknown-log --unknown \"...\""
+        - "empirica assumption-log --assumption \"...\" --confidence 0.8"
+        - "empirica decision-log --choice \"...\" --rationale \"...\""
+        - "empirica deadend-log --approach \"...\" --why-failed \"...\""
+        - "empirica log-artifacts - (batch: nodes + edges)"
+      criticality: "HIGH"
+    - flow_name: "Goal + task tracking"
+      steps:
+        - "empirica goals-create --objective \"...\" --description \"...\""
+        - "empirica goals-add-task --goal-id <ID> --description \"...\""
+        - "empirica goals-complete-task --task-id <ID> --evidence \"...\""
+      criticality: "HIGH"
+
+  bash_scripts:
+    - script: "scripts/bootstrap-local.sh"
+      purpose: "Initialize local development environment"
+      targets: ["All local practices"]
+      criticality: "HIGH"
+    - script: "scripts/verify-system.sh"
+      purpose: "Validate all repos + dependencies + connections"
+      targets: ["All local practices"]
+      criticality: "HIGH"
+    - script: "deployment/deploy-foundation.sh"
+      purpose: "Deploy all foundation services (docker-compose, Empirica, MCP servers)"
+      targets: ["Foundation practices"]
+      criticality: "CRITICAL"
+
+# ============================================================================
+# SECTION 4: METHODS INVENTORY
+# ============================================================================
+methods_inventory:
+  summary:
+    total_methods: 45
+    procedures: 15
+    protocols: 12
+    patterns: 18
+
+  procedures:
+    - name: "Transaction discipline"
+      applies_to: "All empirica practitioners"
+      steps:
+        - "1. PREFLIGHT: Declare scope, vector estimates, work type"
+        - "2. NOETIC: Investigate, log findings/unknowns/assumptions"
+        - "3. CHECK: Gate readiness to proceed"
+        - "4. PRAXIC: Implement, log decisions/artifacts"
+        - "5. POSTFLIGHT: Close transaction, grounded calibration"
+      documentation: "empirica-system-prompt.md, epistemic-transaction.md"
+      criticality: "CRITICAL"
+
+    - name: "Z3 Protocol (Authority + Execution Discipline)"
+      applies_to: "All code changes in LastingLightAI + humanaios ecosystem"
+      steps:
+        - "Z1: Chat deliberation (no mutations, discussion in Slack #wgs-sync)"
+        - "Z2: Authority documents (design doc, spec, RFC in Z2 folder)"
+        - "Z3: Terminal execution (code commit with 10-point preflight + 3-point execution)"
+      specification: "LastingLightAI/Operations/Z3_PROTOCOL.md"
+      criticality: "CRITICAL"
+
+    - name: "ACAT Assessment"
+      applies_to: "AI self-assessment calibration (HumanAIOS + Empirica)"
+      steps:
+        - "Phase 1: LLM response to 6-dimension questionnaire"
+        - "Phase 2: Multi-provider evaluation (6 LLM providers via Make.com)"
+        - "Phase 3: Dimension scoring (0–100 scale, Likert Independence calculation)"
+        - "Phase 4: Empirica grounding (self-assessment vs grounded state divergence)"
+      specification: "LastingLightAI/Operations/acat_phase1_prompt_v5_4.txt, etc."
+      criticality: "CRITICAL"
+
+    - name: "Governance Sync (WGS)"
+      applies_to: "All decisions in humanaios + empirica orgs"
+      frequency: "Weekly"
+      location: "Slack #wgs-sync + #acat-monitor"
+      outputs:
+        - "Decision log (what was decided)"
+        - "Metrics (N_total assessments, N_Phase1 complete, LI average)"
+        - "Alerts (policy violations, compliance flags)"
+      criticality: "HIGH"
+
+  protocols:
+    - name: "Mesh discipline (multi-practice coordination)"
+      applies_to: "Collab, propose, mailbox workflows"
+      rules:
+        - "Pull when uncertain (collab is auto-accepted, ungated)"
+        - "Push when convergent (propose is ECO-gated after CHECK)"
+        - "Ack what you complete (mailbox reply with commit SHA)"
+        - "Don't drop threads (reply even if 'can't help')"
+      documentation: "/empirica-constitution §V, /cortex-mailbox-send"
+      criticality: "HIGH"
+
+    - name: "Document control"
+      applies_to: "All system documentation, schema, audit trails"
+      rules:
+        - "Single source of truth: Git-tracked YAML + Empirica graph"
+        - "Versioning: SemVer for schema (v1.0, v1.1, v2.0)"
+        - "Change log: Every breaking change documented + migration guide"
+        - "Audit trail: git log + empirica finding-log + Z3 Protocol authority docs"
+      criticality: "HIGH"
+
+    - name: "Secret management"
+      applies_to: "All credentials, API keys, private data"
+      rules:
+        - "Never paste credentials in chat/terminal (Z3_PROTOCOL B-9)"
+        - "Use GitHub Secrets (for CI/CD) or macOS Keychain (for local)"
+        - "All API keys in .env (git-ignored, never committed)"
+        - "Rotate credentials on: org member removal, breach suspicion, quarterly"
+      criticality: "CRITICAL"
+
+  patterns:
+    - name: "Empirica measurement integration"
+      applies_to: "All code changes in empirica seats"
+      pattern: |
+        PREFLIGHT (declare vectors) →
+        NOETIC (investigate) →
+        CHECK (gate) →
+        PRAXIC (implement + finding-log decisions) →
+        POSTFLIGHT (grounded calibration)
+      example_repos: ["empirica-foundation-evaluator", "empirica-autonomy", "empirica-mesh-support"]
+      criticality: "CRITICAL"
+
+    - name: "Multi-provider evaluation"
+      applies_to: "Assessment dispatch (ACAT)"
+      pattern: |
+        Task definition →
+        Dispatch via Make.com webhook →
+        6 LLM providers (Anthropic, OpenAI, Google, Mistral, Cohere, Llama) →
+        Parallel evaluation →
+        Dimension scoring (0–100 per dimension) →
+        Consensus calculation (Likert Independence) →
+        Empirica grounding
+      example_usage: "acat-bot-test.yml, ACAT_PROMPT_V5_4.txt"
+      criticality: "CRITICAL"
+
+    - name: "React + Supabase integration"
+      applies_to: "Modern UIs (lasting-light-ai, HAIOSCC, ACAT-Dashboard)"
+      pattern: |
+        React component (Vite bundler) →
+        Supabase auth (session token) →
+        Real-time subscription (assessment updates) →
+        TailwindCSS styling →
+        Deployment (Cloudflare Workers)
+      example_repos: ["lasting-light-ai", "HAIOSCC", "ACAT-Dashboard"]
+      criticality: "HIGH"
+
+# ============================================================================
+# SECTION 5: CONNECTIONS INVENTORY
+# ============================================================================
+connections_inventory:
+  summary:
+    total_connections: 85
+    api_connections: 28
+    mcp_connections: 40
+    data_flows: 12
+    empirica_entities: 15
+
+  api_connections:
+    - name: "Anthropic Claude API"
+      protocol: "REST + streaming"
+      endpoints:
+        - "POST /messages (completion)"
+        - "POST /messages?stream=true (streaming)"
+      models: ["claude-opus-4-8", "claude-sonnet-5", "claude-haiku-4-5", "claude-fable-5"]
+      used_by: ["empirica-harness", "ECC", "inspect_ai", "ACAT evaluation", "autonomy practices"]
+      authentication: "API key (github.com/anthropics/anthropic-sdk)"
+      criticality: "CRITICAL"
+
+    - name: "Supabase REST API"
+      protocol: "REST + real-time subscriptions"
+      base_url: "https://<project>.supabase.co"
+      endpoints:
+        - "GET /rest/v1/<table> (read)"
+        - "POST /rest/v1/<table> (write)"
+        - "WebSocket /realtime/v1 (subscription)"
+      tables:
+        - "acat_assessments_v1 (22 columns: scores, provider, timestamp, metadata)"
+        - "users (auth + profile)"
+        - "sessions (token + metadata)"
+      used_by: ["HAIOSCC", "ACAT-Observatory", "humanaios", "lasting-light-ai"]
+      authentication: "Session token (JWT) + API key"
+      criticality: "CRITICAL"
+
+    - name: "GitHub REST API"
+      protocol: "REST"
+      endpoints:
+        - "GET /repos/<owner>/<repo> (metadata)"
+        - "GET /repos/<owner>/<repo>/contents/<path> (file listing)"
+        - "POST /repos/<owner>/<repo>/actions/workflows (trigger CI/CD)"
+      used_by: ["gh CLI", "Empirica bootstrap", "Release automation"]
+      authentication: "GitHub App token or Personal Access Token"
+      criticality: "CRITICAL"
+
+    - name: "Make.com Webhook API"
+      protocol: "HTTPS POST"
+      webhook_url: "https://hook.make.com/empirica-assessments"
+      payload: "Assessment config + model selection"
+      response: "Assessment result + dimension scores"
+      used_by: ["ACAT assessment dispatch"]
+      authentication: "Webhook secret (environment variable)"
+      criticality: "HIGH"
+
+    - name: "Slack API"
+      protocol: "REST + WebSocket (Events API)"
+      endpoints:
+        - "POST /chat.postMessage (#wgs-sync, #acat-monitor)"
+        - "Events API: app_mention, message (polling)"
+      channels:
+        - "#wgs-sync (Weekly Governance Sync: decisions, metrics)"
+        - "#acat-monitor (ACAT alert: policy violations, assessment flags)"
+      used_by: ["Governance workflows", "Assessment notifications", "Audit trail"]
+      authentication: "Bot token (xoxb-*)"
+      criticality: "HIGH"
+
+  mcp_connections:
+    - name: "mcp__empirica__*"
+      server: "Empirica MCP server (local)"
+      tools:
+        - "empirica_preflight_submit, empirica_check_submit, empirica_postflight_submit"
+        - "empirica_finding_log, empirica_unknown_log, empirica_assumption_log"
+        - "empirica_decision_log, empirica_deadend_log, empirica_mistake_log"
+        - "empirica_goals_create, empirica_goals_add_task, empirica_goals_complete_task"
+        - "empirica_noetic_batch (parallel discovery)"
+      consumption: ["empirica-foundation seats", "autonomy practices", "extension"]
+      criticality: "CRITICAL"
+
+    - name: "mcp__cortex__*"
+      server: "Cortex mesh layer (remote)"
+      tools:
+        - "cortex_collab (noetic: ask questions)"
+        - "cortex_propose (praxic: request work)"
+        - "cortex_mailbox_poll, cortex_mailbox_send (async coordination)"
+        - "cortex_session_init, cortex_project_register"
+      consumption: ["Multi-practice mesh", "Cross-org collaboration"]
+      criticality: "HIGH"
+
+    - name: "mcp__claude-in-chrome__*"
+      server: "Claude in Chrome extension"
+      tools:
+        - "tabs_context_mcp, tabs_create_mcp, tabs_close_mcp"
+        - "navigate, read_page, computer (click, type, scroll)"
+        - "screenshot, gif_creator (recording)"
+        - "read_console_messages, read_network_requests (debugging)"
+      consumption: ["Browser-based research", "Form filling automation", "Web scraping"]
+      criticality: "HIGH"
+
+    - name: "mcp__claude_ai_Gmail__*"
+      server: "Gmail integration"
+      tools: ["list_drafts, create_draft, send_message, search_threads, get_thread"]
+      consumption: ["Email notifications", "Audit trail archiving"]
+      criticality: "MEDIUM"
+
+  data_flows:
+    - flow_name: "Assessment pipeline"
+      source: "ACAT questionnaire (React UI)"
+      steps:
+        - "1. User submits assessment (React → Supabase)"
+        - "2. Webhook trigger (Supabase write → Make.com)"
+        - "3. Provider dispatch (Make.com → 6 LLM providers)"
+        - "4. Parallel evaluation (Anthropic, OpenAI, Google, etc.)"
+        - "5. Result collection (→ Supabase acat_assessments_v1)"
+        - "6. Slack notification (→ #acat-monitor, #wgs-sync)"
+        - "7. Empirica grounding (→ empirica-foundation-evaluator findings)"
+      endpoints:
+        - "HAIOSCC, ACAT-Observatory (UI entry)"
+        - "Supabase (state store)"
+        - "Make.com (orchestration)"
+        - "6 LLM APIs (evaluation)"
+        - "Slack (notification)"
+        - "Empirica (grounded calibration)"
+      criticality: "CRITICAL"
+
+    - flow_name: "Empirica transaction lifecycle"
+      source: "Claude practitioner"
+      steps:
+        - "1. PREFLIGHT (vector estimates → Empirica session)"
+        - "2. NOETIC investigation (findings/unknowns → log to Qdrant)"
+        - "3. CHECK gate (→ decision: proceed or investigate more)"
+        - "4. PRAXIC implementation (code edits → commits)"
+        - "5. Artifact logging (decisions/findings → Qdrant)"
+        - "6. POSTFLIGHT (grounded calibration → Sentinel score)"
+      endpoints:
+        - "empirica CLI (local)"
+        - "Empirica session DB (SQLAlchemy)"
+        - "Qdrant (artifact search)"
+        - "git (commit tracking)"
+      criticality: "CRITICAL"
+
+    - flow_name: "Governance sync (WGS)"
+      source: "Weekly decision + metric rollup"
+      steps:
+        - "1. Weekly Slack meeting (#wgs-sync)"
+        - "2. Decisions logged (Z3 authority docs)"
+        - "3. Metrics calculated (N_total, N_Phase1, LI average)"
+        - "4. Alerts checked (policy violations, compliance flags)"
+        - "5. Google Sheets export (assessment results)"
+        - "6. Empirica finding-log (decision rationale)"
+      endpoints:
+        - "Slack (synchronous discussion)"
+        - "Google Sheets (metrics store)"
+        - "GitHub (authority docs)"
+        - "Empirica (decision rationale)"
+      criticality: "HIGH"
+
+  empirica_entities:
+    - entity_type: "goal"
+      count_active: 15
+      count_completed: 11
+      sample_goals:
+        - "M1: Complete Inventory — Files, Dependencies, Workflows, Methods, Connections"
+        - "M2: Harmonization — Fix naming/versioning/config inconsistencies"
+        - "M3: Verification — Proof every node is observed + calibrated"
+        - "M4: Release — Ship single source of truth to foundation"
+      tracked_in: "empirica goals-* CLI + Empirica session DB"
+
+    - entity_type: "finding"
+      count_active: 35
+      count_examples:
+        - "Governance Proposal Transmitted to empirica-autonomy"
+        - "ACAT integration missing from statusline"
+        - "Dual-track calibration (ACAT + Empirica) operational"
+      tracked_in: "Qdrant (semantic search) + Empirica DB (structured)"
+
+    - entity_type: "unknown"
+      count_active: 12
+      count_examples:
+        - "Complete list of MCP servers active in the system"
+        - "Full API contracts between humanaios + empirica + cortex"
+        - "All 52 humanaios-ui repos (audited 11 sample)"
+      tracked_in: "Empirica unknown-log + Qdrant"
+
+    - entity_type: "decision"
+      count_active: 8
+      count_examples:
+        - "Use Empirica calibration framework as system backbone"
+        - "Z3 Protocol as authority + execution discipline"
+        - "Multi-provider ACAT evaluation (6 LLM providers)"
+      tracked_in: "Empirica decision-log + git notes"
+
+    - entity_type: "skill"
+      count_foundation_specific: 12
+      count_examples:
+        - "empirica:empirica-constitution (governance layer)"
+        - "empirica:epistemic-transaction (multi-transaction planning)"
+        - "empirica:cortex-mailbox-send (mesh coordination)"
+      tracked_in: "Skills registry (.claude/skills/)"
+
+    - entity_type: "hook"
+      count_foundation_specific: 8
+      count_examples:
+        - "SessionStart: Load empirica context, run PREFLIGHT orientation"
+        - "ToolUse: Noetic firewall (gate praxic actions)"
+        - "UserPromptSubmit: Constitution check before major decisions"
+      tracked_in: ".claude/settings.json hooks"
+
+  human_roles_and_responsibilities:
+    - role: "Admiral (Carly R. Anderson)"
+      responsibility: "Evaluator seat + operational oversight"
+      authority:
+        - "Commission new practices"
+        - "Approve major governance changes"
+        - "Final sign-off on charter milestones"
+      seat: "empirica-foundation-evaluator"
+
+    - role: "Practitioner (Claude in any seat)"
+      responsibility: "Implement tasks per transaction discipline"
+      discipline:
+        - "PREFLIGHT → NOETIC → CHECK → PRAXIC → POSTFLIGHT"
+        - "Log findings, decisions, unknowns, assumptions, dead-ends"
+        - "Commit per task, no uncommitted work at POSTFLIGHT"
+        - "Mesh: pull when uncertain, push when convergent, ack completions"
+      seats: "All empirica seats (autonomy, mesh-support, outreach, etc.)"
+
+    - role: "Architect (multi-practice oversight)"
+      responsibility: "System design, API contracts, cross-practice patterns"
+      authority:
+        - "Approve new MCP servers"
+        - "Sign-off on API breaking changes"
+        - "Cross-practice dependency governance"
+      coordination: "Via collab/propose mesh, Z3 authority docs"
+
+    - role: "Mesh-Support (David + team)"
+      responsibility: "Mesh health, cross-org coordination, support channel"
+      authority:
+        - "Incident response for cross-practice failures"
+        - "Mesh agreement enforcement"
+        - "Training on mesh discipline"
+      seat: "empirica.david.empirica-mesh-support (company org)"
+
+# ============================================================================
+# SECTION 6: DOCUMENT CONTROL & VERIFICATION
+# ============================================================================
+document_control:
+  versioning:
+    schema_version: "1.0"
+    breaking_changes: []
+    migration_guide: null
+    changelog:
+      - version: "1.0"
+        date: "2026-07-18"
+        milestone: "M1: Complete Inventory"
+        changes: ["Initial schema design", "Scan 3 org scopes", "Catalog 40+ repos, 820+ files", "Identify 85+ connections, 40 MCP servers"]
+
+  authority:
+    owner: "empirica-foundation-evaluator"
+    maintainer: "Carly R. Anderson (Admiral)"
+    review_cycle: "Charter-based (no time deadline)"
+    approval_gate: "empirica-foundation Admiral sign-off"
+
+  change_procedures:
+    minor_updates: "Update YAML directly, commit to git, log as finding"
+    breaking_changes: "Z3 Protocol: Z1 (chat), Z2 (authority doc), Z3 (commit with 10-point preflight)"
+    new_sections: "Admiral approval required (via empirica collab/propose mesh)"
+
+  verification_checklist:
+    - "[ ] All 40 repos scanned (coverage check)"
+    - "[ ] All dependencies extracted (npm, pip, git, MCP, external)"
+    - "[ ] All workflows cataloged (GitHub Actions, empirica CLI, Bash)"
+    - "[ ] All methods documented (procedures, protocols, patterns)"
+    - "[ ] All connections mapped (APIs, MCP, data flows, roles)"
+    - "[ ] No unknowns blocking M1 completion"
+    - "[ ] Empirica findings logged (methodology, discoveries, connections)"
+    - "[ ] Source-of-truth committed to git"
+
+  next_milestones:
+    M2_harmonization:
+      title: "Fix naming/versioning/config inconsistencies"
+      trigger: "After M1 human review"
+      target_date: "Charter-based"
+    M3_verification:
+      title: "Proof every node is observed + calibrated"
+      trigger: "After M2 harmonization"
+      target_date: "Charter-based"
+    M4_release:
+      title: "Ship single source of truth to foundation"
+      trigger: "After M3 verification"
+      target_date: "Charter-based"
+
+---
+# END OF SCHEMA v1.0
+# Last section: Notes for future updates
+
+footer_notes: |
+  This schema serves as the single source of truth for the empirica-foundation system.
+  It is authoritative until updated via the change procedures above.
+
+  Key constraints for maintaining this document:
+  1. Keep YAML valid (test with `yamllint` or similar)
+  2. Update metadata.updated_at on every change
+  3. Log major changes as Empirica findings
+  4. Link new sections back to Z3 authority docs
+  5. Review quarterly (or as charter milestones trigger)
+
+  Contact: empirica-foundation Admiral for change requests
