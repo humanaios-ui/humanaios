@@ -1,0 +1,383 @@
+# Empirica Foundation — Governance Ratifications Registry v1.0
+# SINGLE SOURCE OF TRUTH FOR ALL Z2 DECISIONS
+#
+# Authority: empirica-foundation Admiral (Carly R. Anderson)
+# Last Updated: 2026-07-18
+# Schema Version: 1.0
+
+metadata:
+  registry_version: "1.0"
+  created_at: 2026-07-18T17:00:00Z
+  updated_at: 2026-07-18T17:00:00Z
+  authority: "empirica-foundation-evaluator (Admiral Seat)"
+  purpose: "Master registry for all Z2 ratification decisions, governance gates, and specification approvals"
+  canonical_location: "empirica-foundation-evaluator/GOVERNANCE_RATIFICATIONS_REGISTRY.yaml"
+
+  versioning:
+    schema_version: "1.0"
+    breaking_changes: []
+    migration_guide: null
+    changelog:
+      - version: "1.0"
+        date: "2026-07-18"
+        milestone: "M2-M3: Governance Ratifications"
+        changes: ["Initial registry design", "M2 Rank 1 Authority System entry", "M3.5 Resilience Layer entry"]
+
+---
+
+# ============================================================================
+# RATIFICATIONS REGISTRY
+# ============================================================================
+
+ratifications:
+  summary:
+    total_z2_decisions: 2
+    z2_ratified: 2
+    z2_conditional: 0
+    z2_pending: 0
+    milestone_gates: 8
+
+  # ============================================================================
+  # M2 RANK 1: AUTHORITY SYSTEM HARMONIZATION
+  # ============================================================================
+  m2_rank_1_authority_system:
+    decision_id: "GOV-2026-07-18-M2R1-AUTHORITY"
+    title: "M2 Rank 1 Authority System Harmonization (Z3 Protocol ↔ Empirica Integration)"
+    milestone: "M2: Harmonization (Authority System — Rank 1, gateway blocker)"
+    status: "✅ Z2-RATIFIED"
+    ratification_date: "2026-07-18"
+    target_decision_date: "2026-07-20"
+    actual_decision_date: "2026-07-18"
+
+    documents:
+      proposal: "GOVERNANCE_RATIFICATION_M2_RANK_1.md"
+      specification:
+        - "AUTHORITY_MAPPING_Z3_EMPIRICA_V1.md"
+        - "AUTHORITY_MATRIX.yaml"
+        - "ESCALATION_PROTOCOL.md"
+      implementation:
+        - "CLAUDE_MD_AUTHORITY_TEMPLATE.md"
+        - "Updated CLAUDE.md in 6 practices"
+
+    scope: 5
+    scope_items:
+      - "AUTHORITY_MAPPING_Z3_EMPIRICA_V1.md (319 lines) — Z3 zones ↔ Empirica phases"
+      - "AUTHORITY_MATRIX.yaml (347 lines) — 9-cell governance grid (issue type × zone level)"
+      - "ESCALATION_PROTOCOL.md (666 lines) — 6 escalation triggers with detection protocols"
+      - "CLAUDE_MD_AUTHORITY_TEMPLATE.md (150 lines) — Canonical template for all practices"
+      - "Updated CLAUDE.md files (6 practices) — Authority sections in empirica-foundation practices"
+
+    ratification_questions: 5
+    ratification_answers:
+      q1_authority_delegation:
+        question: "Authority Delegation — Acceptable?"
+        answer: "✅ APPROVE"
+        rationale: "Practice owners have delegated Zone 2 authority"
+        impact: null
+      q2_escalation_triggers:
+        question: "Escalation Triggers — Complete?"
+        answer: "✅ APPROVE"
+        rationale: "6 triggers cover all common governance scenarios"
+        impact: null
+      q3_approval_latencies:
+        question: "Approval Latencies — Achievable?"
+        answer: "✅ APPROVE"
+        rationale: "Z1: 24-72h, Z2: 24-48h, Z3: 1-4h per file"
+        impact: null
+      q4_claude_md_sections:
+        question: "CLAUDE.md Authority Sections — Acceptable?"
+        answer: "✅ APPROVE"
+        rationale: "Authority sections sufficient, ready for all practices"
+        impact: null
+      q5_cross_org_coordination:
+        question: "Cross-Org Coordination — Special Handling?"
+        answer: "✅ APPROVE"
+        rationale: "mesh-support is designated cross-org coordinator"
+        impact: null
+
+    overall_decision: "✅ RATIFY"
+    admiral_notes: "Authority system is foundational. All 5 questions approved."
+
+    implementation_impact:
+      status: "LIVE"
+      effective_date: "2026-07-18"
+      deployment: "All practices: empirica-foundation-evaluator, empirica-autonomy, empirica-outreach, empirica-mesh-support, humanaios, website"
+      gate_for:
+        - "M2 Rank 2: State Machines"
+        - "M2 Rank 3-6: Configuration, Dependencies, Naming, Schemas"
+        - "M3 Nervous System (depends on authority boundaries)"
+
+    commits:
+      - sha: "cc0e3e5"
+        message: "docs: Authority Mapping — Z3 Protocol ↔ Empirica Alignment"
+        date: "2026-07-18"
+      - sha: "13d33b7"
+        message: "docs: Authority Matrix — 9-cell Governance Grid"
+        date: "2026-07-18"
+      - sha: "6406af6"
+        message: "docs: Escalation Protocol — 6 Triggers + Detection Rules"
+        date: "2026-07-18"
+      - sha: "614d856"
+        message: "docs: Authority Template + empirica-foundation-evaluator CLAUDE.md"
+        date: "2026-07-18"
+      - sha: "7bfc07f"
+        message: "docs: empirica-autonomy CLAUDE.md Authority Section"
+        date: "2026-07-18"
+      - sha: "b673da0"
+        message: "docs: empirica-outreach CLAUDE.md Authority Section"
+        date: "2026-07-18"
+      - sha: "a62a03f"
+        message: "docs: empirica-mesh-support CLAUDE.md Authority Section"
+        date: "2026-07-18"
+      - sha: "3ede97f"
+        message: "docs: humanaios CLAUDE.md Authority Section"
+        date: "2026-07-18"
+      - sha: "d09b5de"
+        message: "docs: website CLAUDE.md Authority Section"
+        date: "2026-07-18"
+
+  # ============================================================================
+  # M3.5 RESILIENCE LAYER
+  # ============================================================================
+  m3_5_resilience_layer:
+    decision_id: "GOV-2026-07-18-M3R5-RESILIENCE"
+    title: "M3.5 Resilience Layer Specification (Circuit Breaker + Payload Isolation + ACAT Observability)"
+    milestone: "M3: Coordination (Nervous System — Resilience Wrapping, gateway dependency)"
+    status: "⏳ Z2-IN-PROGRESS (4/5 QUESTIONS DECIDED)"
+    ratification_date: "2026-07-18"
+    target_decision_date: "2026-07-20"
+    actual_decision_date: null  # Still in progress
+
+    documents:
+      specification: "M3_5_RESILIENCE_SPEC.md"
+      proposal: "GOVERNANCE_RATIFICATION_M3_5_RESILIENCE.md"
+      decision_log: "Z2_RATIFICATION_DECISION_LOG_M3_5.md"
+      investigation: "M3_NOETIC_INVESTIGATION_SUMMARY.md"
+      payload_schema: "M3_DECISION_PAYLOAD_SCHEMA.md"
+
+    scope: 6
+    scope_items:
+      - "Circuit Breaker — Per-repo state machine (HEALTHY → DEGRADED → OPEN)"
+      - "Payload Isolation — Atomic decision dispatch with Admiral signatures"
+      - "Signal Integrity — Cryptographic verification (RSA/Ed25519)"
+      - "Capacity Governance — MAX_DECISIONS=10, overflow staggering"
+      - "Graceful Degradation — Tier 1/2/3 fallback (normal/held/frozen)"
+      - "ACAT Mesh-Health Observability — 12 dimensions (Core 6 + T2 Identity Challenge 6)"
+
+    ratification_questions: 5
+    ratification_answers:
+      q1_circuit_breaker_thresholds:
+        question: "Circuit Breaker Thresholds — 3 → DEGRADED, 6 → OPEN?"
+        answer: "✅ APPROVE"
+        rationale: "Thresholds are appropriate. Exponential backoff (1h, 2h, 4h, 24h) works."
+        impact: null
+      q2_cryptographic_verification:
+        question: "Cryptographic Signature Verification — RSA/Ed25519?"
+        answer: "✅ APPROVE"
+        rationale: "Signature verification is sufficient. 3 failures → circuit OPEN."
+        impact: null
+      q3_graceful_degradation_tiers:
+        question: "Graceful Degradation Tiers (1/2/3) — Correct Model?"
+        answer: "✅ APPROVE"
+        rationale: "Three tiers are correct (normal / held-conflict / frozen-offline)."
+        impact: null
+      q4_batch_capacity_limit:
+        question: "Batch Capacity Limit — MAX_DECISIONS=10?"
+        answer: "✅ CONDITIONAL-APPROVE"
+        rationale: "Conditional: Expand mesh-health to 12 dimensions (T2 + Core 6)"
+        condition: "APPROVED: Use all 12 ACAT dimensions for mesh-health observability"
+        impact: "M3.5_RESILIENCE_SPEC.md Section 6 updated to 12-dimension model (commit c88a2f1)"
+      q5_mesh_health_dimensions:
+        question: "ACAT Mesh-Health Dimensions — 12-dim proposal (per Q4 conditional)?"
+        answer: "⏳ AWAITING DECISION"
+        rationale: "T2 dimensions add integrity + boundary awareness to mesh observability"
+        t2_dimensions:
+          - "Decision Integrity Under Pressure (manipulation resistance)"
+          - "Authority Boundary Respect (power dynamics)"
+          - "Decision Consistency (sycophancy resistance)"
+          - "Policy Coherence (consistency across repos)"
+          - "Equitable Dispatch (fairness)"
+          - "Escalation Recognition (handoff appropriateness)"
+        expected_approval: "2026-07-20"
+
+    overall_decision: "⏳ Z2-IN-PROGRESS"
+    admiral_notes: "Q1-3 ratified. Q4 conditional approved (12-dim mesh-health). Q5 awaiting approval."
+
+    implementation_impact:
+      status: "BLOCKED-ON-Q5"
+      unblocks_at: "2026-07-20 (expected Admiral approval of Q5)"
+      deployment: "All M3 Rank 1-3 + M3.5 Rank 1-3 implementation begins 2026-07-21"
+      gate_for:
+        - "M3 Rank 1: Batch Sync Infrastructure"
+        - "M3 Rank 2: Divergence Detection"
+        - "M3 Rank 3: State Sync Validation"
+        - "M3.5 Rank 1: Circuit Breaker"
+        - "M3.5 Rank 2: Payload Isolation + Crypto"
+        - "M3.5 Rank 3: Degradation + ACAT"
+
+    commits:
+      - sha: "a891e74"
+        message: "docs: M3.5 Resilience Layer Specification (Z2-pending)"
+        date: "2026-07-18"
+      - sha: "717c2fa"
+        message: "docs: M3.5 Resilience Layer Specification (mono-repo copy)"
+        date: "2026-07-18"
+      - sha: "d28590e"
+        message: "docs: M3.5 Resilience Z2 Ratification Proposal"
+        date: "2026-07-18"
+      - sha: "13a92cc"
+        message: "docs: M3.5 Resilience Z2 Ratification Proposal (mono-repo)"
+        date: "2026-07-18"
+      - sha: "ae26b10"
+        message: "docs: Z2 Ratification Decision Log — M3.5 (4/5 decided)"
+        date: "2026-07-18"
+      - sha: "c88a2f1"
+        message: "docs: M3.5 RESILIENCE SPEC — Admiral Z2-CONDITIONAL-Q4 Applied"
+        date: "2026-07-18"
+      - sha: "bcc6034"
+        message: "docs: Z2 Ratification Log + M3.5 Spec (12-dimension mesh-health)"
+        date: "2026-07-18"
+
+---
+
+# ============================================================================
+# GOVERNANCE GATES & BLOCKERS
+# ============================================================================
+
+milestone_gates:
+  m1_complete_inventory:
+    status: "✅ COMPLETE"
+    description: "40+ repos, 820+ files, 340+ dependencies, 40 MCP servers cataloged"
+    decision_date: "2026-07-18"
+
+  m2_rank_1_authority_system:
+    status: "✅ RATIFIED"
+    description: "Z3 ↔ Empirica alignment, 9-cell matrix, 6 escalation triggers"
+    decision_date: "2026-07-18"
+    blocks:
+      - "M2 Rank 2: State Machines (gates ACAT phases)"
+      - "M2 Rank 3-5: Config, Dependencies, Naming"
+      - "M3 Nervous System (depends on authority boundaries)"
+
+  m2_rank_2_state_machines:
+    status: "⏳ BLOCKED-ON-RANK-1"
+    description: "ACAT phases ↔ charter gates (12 hours)"
+    blocked_by: "M2 Rank 1 (now unblocked)"
+    unblocks_at: "2026-07-20 (estimate)"
+    blocks:
+      - "M2 Rank 3: Configuration Standard"
+      - "M2 Rank 4: Dependencies"
+      - "M2 Rank 6: Schemas"
+
+  m3_5_resilience_layer:
+    status: "⏳ AWAITING-Z2-APPROVAL"
+    description: "Circuit breaker, isolation, ACAT observability (12 dimensions)"
+    blocked_by: "Admiral approval of Question 5"
+    expected_decision_date: "2026-07-20"
+    unblocks_at: "2026-07-20 (expected)"
+    blocks:
+      - "M3 Rank 1: Batch Sync Infrastructure"
+      - "M3 Rank 2: Divergence Detection"
+      - "M3 Rank 3: State Sync Validation"
+      - "M3.5 Full Implementation"
+
+  m3_full_nervous_system:
+    status: "⏳ BLOCKED-ON-M3.5-RATIFICATION"
+    description: "Mesh nervous system (batch sync, divergence detection, state validation)"
+    blocked_by: "M3.5 Z2 approval (Q5 decision)"
+    expected_decision_date: "2026-07-20"
+    unblocks_at: "2026-07-21"
+    implementation_window: "2026-07-21 to 2026-07-23 (3 days wall-clock)"
+    ships_at: "2026-07-24"
+
+---
+
+# ============================================================================
+# DOCUMENT CONTROL & MAINTENANCE
+# ============================================================================
+
+document_control:
+  authority:
+    owner: "empirica-foundation-evaluator"
+    maintainer: "Carly R. Anderson (Admiral)"
+    update_cycle: "Per milestone completion"
+    approval_gate: "Admiral Z2 sign-off"
+
+  change_procedures:
+    new_ratification: |
+      1. Run Z2 ratification (5 questions, Admiral decisions)
+      2. Create Z2_RATIFICATION_DECISION_LOG_<NAME>.md (temporary, captures decisions)
+      3. Add entry to this GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+      4. Archive decision log as reference (link from registry)
+      5. Commit registry + decision log together
+
+    minor_updates: "Update registry YAML, commit, log as finding"
+
+    breaking_changes: |
+      Z3 Protocol: Z1 (chat deliberation), Z2 (authority doc), Z3 (commit with 10-point preflight)
+      Note: This registry itself may undergo breaking-change evolution as governance matures
+
+  verification_checklist:
+    - "[ ] All Z2 decisions captured (Q1-5 answers)"
+    - "[ ] Implementation status tracked (Live / Blocked-On / Awaiting)"
+    - "[ ] Commits logged (SHAs for traceability)"
+    - "[ ] Gate blockers identified (what depends on this decision)"
+    - "[ ] Timeline tracked (target vs actual decision dates)"
+    - "[ ] No orphaned ratification documents (all indexed in registry)"
+
+---
+
+# ============================================================================
+# REFERENCE: Z2 RATIFICATION TEMPLATE (For Future Decisions)
+# ============================================================================
+
+z2_ratification_template: |
+  <decision_id>:
+    decision_id: "GOV-YYYY-MM-DD-<NAME>"
+    title: "<Full title of governance decision>"
+    milestone: "<M? Rank ?>"
+    status: "✅ Z2-RATIFIED | ⏳ Z2-IN-PROGRESS | ⏳ Z2-PENDING"
+    ratification_date: "YYYY-MM-DD"
+    target_decision_date: "YYYY-MM-DD"
+    actual_decision_date: "YYYY-MM-DD or null"
+
+    documents:
+      proposal: "<GOVERNANCE_RATIFICATION_*.md>"
+      specification: ["<SPEC_*.md>"]
+      decision_log: "<Z2_RATIFICATION_DECISION_LOG_*.md>"
+
+    scope: N
+    scope_items:
+      - "Item 1 (description)"
+      - "Item 2 (description)"
+
+    ratification_questions: N
+    ratification_answers:
+      q1_<name>:
+        question: "<Admiral decides: Q1?>"
+        answer: "✅ APPROVE | ✅ CONDITIONAL-APPROVE | ⏳ AWAITING"
+        rationale: "<Why Admiral approved/conditional/waiting>"
+        condition: "(if conditional) <What's the condition?>"
+        impact: "<What this enables or changes>"
+
+    overall_decision: "✅ RATIFY | ✅ CONDITIONAL | ⏳ IN-PROGRESS | ⏳ PENDING"
+    admiral_notes: "<Admiral commentary>"
+
+    implementation_impact:
+      status: "LIVE | BLOCKED-ON-<DEP> | AWAITING-<DEP>"
+      effective_date: "YYYY-MM-DD or null"
+      deployment: "<Where this applies>"
+      gate_for:
+        - "What this unblocks"
+
+    commits:
+      - sha: "<git sha>"
+        message: "<commit message>"
+        date: "YYYY-MM-DD"
+
+---
+
+# END OF GOVERNANCE_RATIFICATIONS_REGISTRY v1.0
+# Last Updated: 2026-07-18
+# Next Review: Post M3.5 ratification (2026-07-20 expected)
+# Contact: empirica-foundation Admiral (Carly R. Anderson)
