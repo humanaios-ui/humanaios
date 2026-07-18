@@ -1,0 +1,21 @@
+# HumanAIOS Documentation Index
+
+## Architecture
+
+- TECHNICAL_ARCHITECTURE.md
+- SECURITY.md
+- TESTING_GUIDE.md
+
+## Strategic Documents
+
+- BRAND_POSITIONING.md
+- COMPETITIVE_MATRIX.md
+- CHEROKEE_NATION_PARTNERSHIP_ANALYSIS.md
+
+## Governance
+
+- 12_TRADITIONS_DECISION_FILTER.md
+
+## Operational
+
+- QUICKSTART.md
