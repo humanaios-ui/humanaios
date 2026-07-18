@@ -1,0 +1,347 @@
+---
+# AUTHORITY_MATRIX — Unified Governance Model for empirica-foundation
+#
+# Version: 1.0
+# Status: M2 Rank 1 (DRAFT — awaiting Admiral ratification)
+# Authority: empirica-foundation Admiral (Carly R. Anderson)
+# Date: 2026-07-18
+#
+# This matrix defines approval chains, evidence requirements, and escalation
+# triggers for all governance decisions across the 9 local empirica-foundation
+# practices.
+#
+# Structure: issue_type × zone_level → {decision_maker, approval_rule, evidence, escalation_trigger}
+
+matrix:
+  issue_type:
+    - name: "configuration_change"
+      description: "Changes to project.yaml, CLAUDE.md, environment variables, or local practice configuration"
+      low_risk: true
+
+      zone_1:
+        phase_name: "Chat Deliberation"
+        empirica_phase: "PREFLIGHT + NOETIC"
+        decision_maker: "Practice owner or mesh participants"
+        approval_rule: |
+          Collab proposal or informal Slack discussion in #wgs-sync.
+          24h review period. Auto-approved if zero objections.
+          If objections, resolve in chat or escalate to Zone 2.
+        evidence_required:
+          - "Collab message or thread ID"
+          - "Duration >= 24h"
+          - "Objection count == 0"
+        escalation_trigger: "Objections raised in Zone 1 discussion"
+        escalation_target: "Zone 2 (Authority Document)"
+
+      zone_2:
+        phase_name: "Authority Documents"
+        empirica_phase: "CHECK Gate"
+        decision_maker: "Zone 2 authority delegate (practice owner or Admiral)"
+        approval_rule: |
+          Short RFC or design doc in `.authority/` folder (max 2 pages).
+          48h review window. Admiral approval required for cross-practice impact.
+          Zone 2 approval allows progression to Zone 3.
+        evidence_required:
+          - "Authority document URL or file path"
+          - "Admiral review completed"
+          - "CHECK gate passed (empirica vectors: know >= 0.7, uncertainty < 0.4)"
+          - "No blockers from affected practices"
+        escalation_trigger: "Admiral veto or major objection"
+        escalation_target: "Return to Zone 1 (revise proposal)"
+
+      zone_3:
+        phase_name: "Terminal Execution"
+        empirica_phase: "PRAXIC + POSTFLIGHT"
+        decision_maker: "Authorized practitioner (signed Zone 2 authority)"
+        approval_rule: |
+          Execute per Z3 Sections B-C (pre-flight checklist, execution discipline).
+          One file at a time. Diff before staging. Commit per Z3 standard.
+          P3 verification (curl raw.githubusercontent.com, confirm change landed).
+          Immediate push after each commit.
+        evidence_required:
+          - "Z3 pre-flight checklist B-1 through B-10 signed off"
+          - "Commit SHA referencing authority document § section"
+          - "P3 verification log (curl + grep results)"
+          - "goals-complete-task with commit evidence"
+          - "POSTFLIGHT submitted with grounded vectors"
+        escalation_trigger: "P3 verification failure or grounded calibration divergence > 0.3"
+        escalation_target: "Zone 2 (Admiral review + decision log)"
+
+    - name: "authority_document_change"
+      description: "Updates to CLAUDE.md, EVALUATOR_RULES.md, charter docs, Z3_PROTOCOL, or governance specs"
+      low_risk: false
+
+      zone_1:
+        phase_name: "Mesh Discussion"
+        empirica_phase: "PREFLIGHT + NOETIC"
+        decision_maker: "Admiral + affected practice owners"
+        approval_rule: |
+          Collab mesh discussion across all affected practices (if multi-practice).
+          For Admiral-only changes: direct proposal.
+          72h review period (longer than config due to governance impact).
+          Concerns raised → escalate immediately to Zone 2 (no auto-approval).
+        evidence_required:
+          - "Collab IDs from all affected practices"
+          - "Duration >= 72h"
+          - "Concerns documented in findings log"
+        escalation_trigger: "Any concern raised or proposal ready for approval"
+        escalation_target: "Zone 2 (Authority Document + ratification)"
+
+      zone_2:
+        phase_name: "Authority Ratification"
+        empirica_phase: "CHECK Gate"
+        decision_maker: "Admiral (serial gate, no delegation)"
+        approval_rule: |
+          Full design doc required (4–8 pages minimum).
+          Specifies: current state, proposed change, rationale, impact, migration path.
+          Admiral reviews + decides: APPROVE / CONDITIONAL / BLOCK.
+          If CONDITIONAL: requester revises, Admiral re-reviews.
+          Admiral sign-off required before Zone 3 execution.
+          Cross-org impact: mesh-support collab (may require company-level approval).
+        evidence_required:
+          - "Full design document (URL or committed)"
+          - "Impact assessment (affected practices, backward compat, migration)"
+          - "Admiral written approval + timestamp"
+          - "All CONDITIONAL requirements addressed (if any)"
+          - "CHECK gate vectors (know >= 0.8, uncertainty < 0.3)"
+        escalation_trigger: "Admiral blocks or requires major revisions"
+        escalation_target: "Return to Zone 1 (proposal re-framing)"
+
+      zone_3:
+        phase_name: "Ratified Execution"
+        empirica_phase: "PRAXIC + POSTFLIGHT"
+        decision_maker: "Admiral + designated executor"
+        approval_rule: |
+          Execute per Z3 Sections B-C + authority-specific rules.
+          Authority doc changes require Admiral presence during execution.
+          Test the change in a feature branch first (if governance doc allows rollback).
+          Commit with full traceability: authority doc + § + Admiral sign-off date.
+          POSTFLIGHT + grounded calibration mandatory.
+        evidence_required:
+          - "Z3 pre-flight checklist B-1 through B-10"
+          - "Feature branch verification (if applicable)"
+          - "Commit message: <verb> <subject> per <AUTHORITY_DOC> §<n> (Admiral: <sign-off date>)"
+          - "P3 verification log"
+          - "goals-complete-task with commit evidence"
+          - "POSTFLIGHT + calibration grounded"
+        escalation_trigger: "Discovered unauthorized governance change or grounded calibration divergence"
+        escalation_target: "Admiral immediate escalation + decision-log (mistake)"
+
+    - name: "code_commit"
+      description: "Production code changes, schema migrations, dependency updates, or feature deployments"
+      low_risk: false
+
+      zone_1:
+        phase_name: "Proposal & Discussion"
+        empirica_phase: "PREFLIGHT + NOETIC"
+        decision_maker: "Practice team + peer reviewers (via collab mesh)"
+        approval_rule: |
+          Collab proposal with findings log (grounded investigation mandatory).
+          Peer practices review findings (async, no hard deadline).
+          If significant cross-practice impact: include affected practice owners.
+          Aim for 48–72h feedback window, shorter for critical fixes.
+          Findings must include: why, what, expected impact, testing plan.
+        evidence_required:
+          - "Collab proposal with finding-log references"
+          - "Investigation complete (READ code, GREP patterns, INVESTIGATE codebase)"
+          - "Testing plan documented"
+          - "No critical unknowns remaining"
+        escalation_trigger: "Peer objections or critical unknowns unresolved"
+        escalation_target: "Zone 2 (Authority Design Doc)"
+
+      zone_2:
+        phase_name: "Authority & Code Review"
+        empirica_phase: "CHECK Gate"
+        decision_maker: "Practice owner + code reviewer (often Admiral for critical changes)"
+        approval_rule: |
+          Design doc + spec required (describe what, why, testing strategy).
+          Code review: at least one peer review (can be async, but must be grounded).
+          CHECK gate: empirica vectors (know >= 0.75, uncertainty < 0.35).
+          Approval: "Code approved per <spec_doc> §<n>. Ready for Zone 3."
+          If breaking changes: cross-practice approval required (Admiral gates).
+        evidence_required:
+          - "Design/spec document URL"
+          - "Code review comments + approval"
+          - "CHECK gate passed (empirica)"
+          - "Test coverage confirmed (unit + integration if applicable)"
+          - "Breaking changes documented (if any)"
+        escalation_trigger: "Code review finds issues or CHECK gate fails"
+        escalation_target: "Return to Zone 1 (revise proposal or findings)"
+
+      zone_3:
+        phase_name: "Deployment & Verification"
+        empirica_phase: "PRAXIC + POSTFLIGHT"
+        decision_maker: "Authorized practitioner (from approved team)"
+        approval_rule: |
+          Commit per Z3 Sections B-C (pre-flight, execution discipline, verification).
+          One commit per task (not batched). Diff before staging (C-2).
+          Commit message: <verb> <subject> per <SPEC_DOC> §<n>.
+          Test the change (unit tests, integration tests, staging validation).
+          P3 verification: run CI/CD, confirm all checks pass, code live.
+          POSTFLIGHT + grounded calibration mandatory.
+        evidence_required:
+          - "Z3 pre-flight checklist B-1 through B-10"
+          - "Commit SHA + message with authority reference"
+          - "All CI/CD checks passing (if GitHub Actions enabled)"
+          - "P3 verification log (test results, staging confirmation)"
+          - "goals-complete-task with commit evidence"
+          - "POSTFLIGHT with grounded vectors (know, do, completion)"
+        escalation_trigger: "CI/CD fails or grounded calibration shows major divergence"
+        escalation_target: "HALT deployment. Admiral review + decision log."
+
+decision_matrix:
+  # The 9-cell matrix: issue_type × zone_level
+  # Serves as a lookup table for practitioners
+
+  config_change:
+    zone_1:
+      approval_latency: "24h"
+      auto_approve: true
+      escalation_probability: "5%"
+
+    zone_2:
+      approval_latency: "48h"
+      auto_approve: false
+      escalation_probability: "15%"
+
+    zone_3:
+      approval_latency: "1h (per file)"
+      auto_approve: false
+      escalation_probability: "2%"
+
+  authority_doc_change:
+    zone_1:
+      approval_latency: "72h"
+      auto_approve: false
+      escalation_probability: "40%"
+
+    zone_2:
+      approval_latency: "variable (Admiral decides)"
+      auto_approve: false
+      escalation_probability: "20%"
+
+    zone_3:
+      approval_latency: "1–2h (Admiral present)"
+      auto_approve: false
+      escalation_probability: "5%"
+
+  code_commit:
+    zone_1:
+      approval_latency: "48–72h"
+      auto_approve: false
+      escalation_probability: "30%"
+
+    zone_2:
+      approval_latency: "24h (code review + CHECK)"
+      auto_approve: false
+      escalation_probability: "25%"
+
+    zone_3:
+      approval_latency: "1–4h (per commit, depends on testing)"
+      auto_approve: false
+      escalation_probability: "8%"
+
+escalation_rules:
+  rule_1:
+    name: "Objection in Zone 1"
+    trigger: "Any participant objects or raises concerns"
+    action: "Escalate to Zone 2 immediately (do NOT auto-approve)"
+    latency: "same day"
+
+  rule_2:
+    name: "Veto in Zone 2"
+    trigger: "Authority decision-maker (Admiral) blocks approval"
+    action: "Return to Zone 1 with revision request + rationale"
+    latency: "within 24h"
+
+  rule_3:
+    name: "Verification Failure in Zone 3"
+    trigger: "P3 verification fails (change didn't land) or CI/CD error"
+    action: "HALT. Admiral review required. Revert + root cause analysis"
+    latency: "immediate"
+
+  rule_4:
+    name: "Cross-practice Impact Detected"
+    trigger: "Change affects multiple practices or shared systems"
+    action: "Escalate to Admiral for cross-practice coordination"
+    latency: "within 24h of discovery"
+
+  rule_5:
+    name: "Grounded Calibration Divergence"
+    trigger: "POSTFLIGHT vectors diverge > 0.3 from predicted"
+    action: "Log decision-log or mistake-log. Admiral reviews. Adjust procedure if systematic"
+    latency: "within 48h of POSTFLIGHT"
+
+  rule_6:
+    name: "Unknown Discovered During Execution"
+    trigger: "C-6 violation: unknown file discovered needing change"
+    action: "HALT. Do NOT edit file. Surface as Z2 question for next session"
+    latency: "immediately"
+
+per_practice_delegation:
+  # How authority flows within each of the 9 local practices
+
+  practice_template:
+    zone_1:
+      primary: "Practice owner"
+      secondary: "Any practice member (can propose)"
+
+    zone_2:
+      primary: "Practice owner OR Admiral-delegated authority"
+      secondary: "Admiral (always available for escalation)"
+
+    zone_3:
+      primary: "Authorized practitioner (from practice team)"
+      secondary: "Admiral (for critical/security changes)"
+
+  empirica_foundation_evaluator:
+    zone_1_primary: "Carly (Admiral seat)"
+    zone_2_primary: "Carly"
+    zone_3_primary: "Carly or delegated Claude practitioner"
+
+  empirica_autonomy:
+    zone_1_primary: "autonomy team owner"
+    zone_2_primary: "autonomy owner OR Carly"
+    zone_3_primary: "autonomy practitioner (Carly gates critical changes)"
+
+  empirica_mesh_support:
+    zone_1_primary: "mesh-support team owner"
+    zone_2_primary: "mesh-support owner OR Carly"
+    zone_3_primary: "mesh-support practitioner (coordinates cross-org)"
+
+  empirica_outreach:
+    zone_1_primary: "outreach team owner"
+    zone_2_primary: "outreach owner OR Carly"
+    zone_3_primary: "outreach practitioner"
+
+  humanaios:
+    zone_1_primary: "humanaios lead"
+    zone_2_primary: "humanaios lead OR Carly"
+    zone_3_primary: "humanaios practitioner"
+
+  website:
+    zone_1_primary: "website owner"
+    zone_2_primary: "website owner OR Carly"
+    zone_3_primary: "website practitioner"
+
+  # (4 more practices follow same pattern)
+
+implementation_notes:
+  - "This matrix is the single source of truth for all governance decisions across empirica-foundation."
+  - "Every change follows the path: Zone 1 → Zone 2 (approval) → Zone 3 (execution)."
+  - "No skipping zones. No exceptions without Admiral written approval (documented via decision-log)."
+  - "Escalation rules are enforced by the Sentinel (empirica check-submit gates Zone 3 unless Zone 2 approves)."
+  - "Each practice's CLAUDE.md shall reference this matrix via `@docs/AUTHORITY_MATRIX.yaml`."
+  - "Quarterly review: Admiral audits for drift, updates matrix if needed (via authority-doc-change flow)."
+
+conformance_checklist:
+  - "[ ] All 9 practices CLAUDE.md includes authority section (per AUTHORITY_MAPPING_Z3_EMPIRICA_V1.md template)"
+  - "[ ] All practices have delegated Zone 2 authority (or explicitly delegate to Carly)"
+  - "[ ] CI/CD includes 'authority doc reference in commit message' linter (zone-3 enforcement)"
+  - "[ ] empirica finding-log integrated into Zone 1 proposals (evidence requirement)"
+  - "[ ] empirica check-submit gates Zone 3 (no merge without Zone 2 approved vectors)"
+  - "[ ] Monthly governance sync reviews: escalations, divergences, procedure updates"
+
+---
+status: "DRAFT — awaiting Admiral ratification"
+next_step: "Proceed to Task 3 (Escalation Protocol documentation)"
