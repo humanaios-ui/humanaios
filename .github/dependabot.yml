@@ -1,0 +1,27 @@
+# Dependabot configuration for humanaios.
+#
+# The npm manifests live in subdirectories (there is no root package.json).
+# A stray root package-lock.json previously caused Dependabot security updates
+# to fail with `dependency_file_not_found: "/ not found"`; that orphan lockfile
+# was removed and the real manifests are declared here so updates target them.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directories:
+      - "/apps/api"
+      - "/packages/mcp-sdk"
+      - "/src/auth-system"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
