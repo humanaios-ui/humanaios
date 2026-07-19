@@ -1,0 +1,1840 @@
+{
+  "metadata": {
+    "version": "0.1.0",
+    "created": "2026-07-18",
+    "systems": ["aa_12_steps", "aa_12_traditions", "hawkins_map"],
+    "total_units": 41,
+    "deep_entries": 10,
+    "note": "Minimal JSON format. Migrate to YAML + folder structure in v0.2"
+  },
+  "systems": {
+    "aa_12_steps": {
+      "title": "Alcoholics Anonymous 12 Steps",
+      "description": "Sequential recovery program combining personal accountability, spiritual awakening, and service",
+      "organization": "sequential (cumulative)",
+      "total_units": 12,
+      "source": "https://www.aa.org/the-twelve-steps",
+      "author": "Alcoholics Anonymous",
+      "units": {
+        "step_01": {
+          "id": "aa_step_01",
+          "system": "aa_12_steps",
+          "sequence": 1,
+          "title": "Admission of Powerlessness",
+          "content": "We admitted we were powerless over alcohol — that our lives had become unmanageable.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["admission", "powerlessness", "unmanageability", "surrender"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.8,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "confession, sponsor guidance"
+          },
+          "relationships": {
+            "prerequisite_units": [],
+            "deepens": ["aa_step_02"],
+            "related_traditions": ["aa_tradition_01"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "control", "reason": "Both distinguish controllable vs. uncontrollable"},
+              {"system": "hawkins", "level": 0, "reason": "Shame, powerlessness, denial"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.75,
+            "completeness": 0.70
+          }
+        },
+        "step_02": {
+          "id": "aa_step_02",
+          "system": "aa_12_steps",
+          "sequence": 2,
+          "title": "Faith in Higher Power",
+          "content": "Came to believe that a Power greater than ourselves could restore us to sanity.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["faith", "higher power", "sanity", "restoration", "belief"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.8,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "sponsorship, literature study, meeting participation"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_01"],
+            "deepens": ["aa_step_03"],
+            "related_traditions": ["aa_tradition_02"],
+            "parallels_in_other_systems": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.70,
+            "completeness": 0.70
+          }
+        },
+        "step_03": {
+          "id": "aa_step_03",
+          "system": "aa_12_steps",
+          "sequence": 3,
+          "title": "Turn Will and Life Over",
+          "content": "Made a decision to turn our will and our lives over to the care of God as we understood Him.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["decision", "surrender", "will", "God concept", "care"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "sponsor guidance, prayer/meditation, daily practice"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_01", "aa_step_02"],
+            "deepens": ["aa_step_04"],
+            "related_traditions": ["aa_tradition_02", "aa_tradition_03"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "acceptance", "reason": "Acceptance of what cannot be changed"},
+              {"system": "tao", "chapter": 15, "reason": "wu wei (non-forcing), flowing with nature"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.75,
+            "application_confidence": 0.65,
+            "completeness": 0.70
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "literal",
+                "text": "Explicitly turn over will and life to Higher Power (however understood)"
+              },
+              {
+                "level": "psychological",
+                "text": "Stop trying to control outcomes; shift from ego-driven to trust-based approach"
+              },
+              {
+                "level": "spiritual",
+                "text": "Alignment with a transcendent intelligence; surrender of illusion of separate self"
+              }
+            ],
+            "applications": [
+              "Daily practice: morning prayer asking for guidance",
+              "Letting go of specific outcomes while working toward recovery",
+              "Trusting the process even when results aren't visible"
+            ],
+            "commentaries": [
+              {
+                "source": "AA Literature",
+                "observation": "Step 3 is often the hardest for new members; sponsor support essential"
+              },
+              {
+                "source": "Contemporary Practice",
+                "observation": "'God as we understood Him' allows agnostic/atheist members to define own concept"
+              }
+            ]
+          }
+        },
+        "step_04": {
+          "id": "aa_step_04",
+          "system": "aa_12_steps",
+          "sequence": 4,
+          "title": "Moral Inventory",
+          "content": "Made a searching and fearless moral inventory of ourselves.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["inventory", "moral", "fearless", "self-examination", "honesty"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "sponsor guidance, written inventory, reflection"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_03"],
+            "deepens": ["aa_step_05"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.70
+          }
+        },
+        "step_05": {
+          "id": "aa_step_05",
+          "system": "aa_12_steps",
+          "sequence": 5,
+          "title": "Confession and Sharing",
+          "content": "Admitted to God, to ourselves, and to another human being the exact nature of our wrongs.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["admission", "confession", "honesty", "vulnerability", "witness", "shame release"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.9,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "with sponsor or trusted person, emotional catharsis essential"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_04"],
+            "deepens": ["aa_step_06", "aa_step_07"],
+            "related_traditions": ["aa_tradition_12"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "suffering-and-adversity", "reason": "Facing difficult truths"},
+              {"system": "hawkins", "level": 5, "reason": "Shift from shame to willingness, fear to acceptance"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.80
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "literal",
+                "text": "Tell God, self, and one other person what you've done"
+              },
+              {
+                "level": "therapeutic",
+                "text": "Cathartic release through verbal confession breaks isolation and shame"
+              },
+              {
+                "level": "relational",
+                "text": "Being heard and accepted unconditionally transforms self-perception"
+              }
+            ],
+            "applications": [
+              "Schedule sponsor meeting specifically for Step 5",
+              "Prepare written inventory first (from Step 4)",
+              "Witness importance: sponsor holds space without judgment",
+              "Post-confession often brings emotional relief and clarity"
+            ],
+            "commentaries": [
+              {
+                "source": "AA Veterans",
+                "observation": "Step 5 is considered the pivotal spiritual experience; many report emotional breakthroughs"
+              },
+              {
+                "source": "Psychological Research",
+                "observation": "Confession reduces cognitive load, aligns self-perception with reality"
+              }
+            ]
+          }
+        },
+        "step_06": {
+          "id": "aa_step_06",
+          "system": "aa_12_steps",
+          "sequence": 6,
+          "title": "Readiness for Change",
+          "content": "Were entirely ready to have God remove all these defects of character.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["readiness", "character defects", "willingness", "surrender to change"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.8,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "quiet reflection, sponsor check-in"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_05"],
+            "deepens": ["aa_step_07"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.70,
+            "completeness": 0.65
+          }
+        },
+        "step_07": {
+          "id": "aa_step_07",
+          "system": "aa_12_steps",
+          "sequence": 7,
+          "title": "Request for Help",
+          "content": "Humbly asked Him to remove our shortcomings.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["humility", "prayer", "asking", "shortcomings", "spiritual work"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "daily prayer practice"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_06"],
+            "deepens": ["aa_step_08"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.78,
+            "application_confidence": 0.68,
+            "completeness": 0.65
+          }
+        },
+        "step_08": {
+          "id": "aa_step_08",
+          "system": "aa_12_steps",
+          "sequence": 8,
+          "title": "Amends Planning",
+          "content": "Made a list of all persons we had harmed, and became willing to make amends to them all.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["amends", "harm", "willingness", "accountability", "restoration"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.8,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "written list, sponsor review"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_07"],
+            "deepens": ["aa_step_09"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.75,
+            "completeness": 0.70
+          }
+        },
+        "step_09": {
+          "id": "aa_step_09",
+          "system": "aa_12_steps",
+          "sequence": 9,
+          "title": "Direct Amends",
+          "content": "Made direct amends to such people wherever possible, except when to do so would injure them or others.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["amends", "direct", "harm reduction", "wisdom", "relationships"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice_context": "sponsor guidance for each amend, ongoing"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_08"],
+            "deepens": ["aa_step_10"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.82,
+            "application_confidence": 0.78,
+            "completeness": 0.75
+          }
+        },
+        "step_10": {
+          "id": "aa_step_10",
+          "system": "aa_12_steps",
+          "sequence": 10,
+          "title": "Continued Inventory",
+          "content": "Continued to take personal inventory and when we were wrong promptly admitted it.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["inventory", "ongoing", "awareness", "promptness", "accountability"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice_context": "daily practice, evening review"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_09"],
+            "deepens": ["aa_step_11"],
+            "related_traditions": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.82,
+            "completeness": 0.75
+          }
+        },
+        "step_11": {
+          "id": "aa_step_11",
+          "system": "aa_12_steps",
+          "sequence": 11,
+          "title": "Prayer and Meditation",
+          "content": "Sought through prayer and meditation to improve our conscious contact with God as we understood Him, praying only for knowledge of His will for us and the power to carry that out.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["prayer", "meditation", "contact", "consciousness", "alignment", "will"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.9,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice_context": "daily morning/evening practice, flexible to beliefs"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_10"],
+            "deepens": ["aa_step_12"],
+            "related_traditions": [],
+            "parallels_in_other_systems": [
+              {"system": "yoga_sutras", "concept": "dharana_dhyana_samadhi", "reason": "Meditation for consciousness contact"},
+              {"system": "stoic", "concept": "meditation", "reason": "Marcus Aurelius's contemplative practice"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.75,
+            "completeness": 0.80
+          }
+        },
+        "step_12": {
+          "id": "aa_step_12",
+          "system": "aa_12_steps",
+          "sequence": 12,
+          "title": "Spiritual Awakening and Service",
+          "content": "Having had a spiritual awakening as the result of these Steps, we tried to carry this message to alcoholics, and to practice these principles in all our affairs.",
+          "metadata": {
+            "source_text": "AA Official",
+            "source_author": "Alcoholics Anonymous",
+            "translator": null,
+            "key_concepts": ["spiritual awakening", "service", "transmission", "principles", "integration"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.95,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice_context": "sponsorship, service work, lifestyle integration"
+          },
+          "relationships": {
+            "prerequisite_units": ["aa_step_11"],
+            "deepens": [],
+            "related_traditions": ["aa_tradition_01", "aa_tradition_05", "aa_tradition_12"],
+            "parallels_in_other_systems": [
+              {"system": "hawkins", "level": 17, "reason": "Enlightenment, service to all"},
+              {"system": "tao_te_ching", "chapter": 15, "reason": "Integrated sage, principle before person"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "transformative",
+                "text": "Steps 1-11 culminate in fundamental shift in consciousness and capacity"
+              },
+              {
+                "level": "relational",
+                "text": "Spiritual awakening expressed through carrying message to others (service, lineage transmission)"
+              },
+              {
+                "level": "integrative",
+                "text": "Principles (not personalities) become operating system for all life decisions"
+              }
+            ],
+            "applications": [
+              "Sponsor new members (direct transmission of recovery)",
+              "Apply 12-step principles to relationships, work, finances, health",
+              "Recognize and support others' spiritual awakenings",
+              "Continuous practice: principles become more refined over time"
+            ],
+            "commentaries": [
+              {
+                "source": "AA Veterans",
+                "observation": "Step 12 is not a destination but an ongoing integration; spiritual awakening deepens over years/decades"
+              },
+              {
+                "source": "Contemporary Understanding",
+                "observation": "Service work is itself transformative; helping others solidifies one's own recovery"
+              },
+              {
+                "source": "Cross-Tradition View",
+                "observation": "Step 12 parallels enlightenment ideals in Buddhism, Taoism, Stoicism: awakening → service → principle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "aa_12_traditions": {
+      "title": "Alcoholics Anonymous 12 Traditions",
+      "description": "Organizational and relational principles for AA groups and the fellowship",
+      "organization": "thematic (non-sequential but related)",
+      "total_units": 12,
+      "source": "https://www.aa.org/the-twelve-traditions",
+      "author": "Alcoholics Anonymous",
+      "note": "Core entries only; deep dives integrated into representative traditions",
+      "units": {
+        "tradition_01": {
+          "id": "aa_tradition_01",
+          "system": "aa_12_traditions",
+          "sequence": 1,
+          "title": "Common Welfare First",
+          "content": "Our common welfare should come first; personal recovery depends upon A.A. unity.",
+          "metadata": {
+            "key_concepts": ["unity", "welfare", "collective", "recovery", "interdependence"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 3
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_step_01", "aa_step_12"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "social-relations", "reason": "Interconnected community welfare"},
+              {"system": "tao_te_ching", "chapter": 67, "reason": "Common good over individual aggrandizement"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.80
+          }
+        },
+        "tradition_02": {
+          "id": "aa_tradition_02",
+          "system": "aa_12_traditions",
+          "sequence": 2,
+          "title": "Group Authority",
+          "content": "For our group purpose there is but one ultimate authority — a loving God as He may express Himself in our group conscience.",
+          "metadata": {
+            "key_concepts": ["authority", "God", "group conscience", "spiritual democracy"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "complements": ["aa_step_02", "aa_step_11"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.78,
+            "application_confidence": 0.72,
+            "completeness": 0.75
+          }
+        },
+        "tradition_03": {
+          "id": "aa_tradition_03",
+          "system": "aa_12_traditions",
+          "sequence": 3,
+          "title": "Membership Requirement",
+          "content": "The only requirement for A.A. membership is a desire to stop drinking.",
+          "metadata": {
+            "key_concepts": ["membership", "inclusion", "desire", "accessibility", "non-judgment"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.70,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_step_01"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.95,
+            "application_confidence": 0.90,
+            "completeness": 0.90
+          }
+        },
+        "tradition_04": {
+          "id": "aa_tradition_04",
+          "system": "aa_12_traditions",
+          "sequence": 4,
+          "title": "Group Autonomy",
+          "content": "Each group should be autonomous except in matters affecting other groups or A.A. as a whole.",
+          "metadata": {
+            "key_concepts": ["autonomy", "self-determination", "boundaries", "interconnection"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 3
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_tradition_01"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "freedom-and-slavery", "reason": "Independence with responsibility"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.80
+          }
+        },
+        "tradition_05": {
+          "id": "aa_tradition_05",
+          "system": "aa_12_traditions",
+          "sequence": 5,
+          "title": "Primary Purpose",
+          "content": "Each group has but one primary purpose — to carry its message to the alcoholic who still suffers.",
+          "metadata": {
+            "key_concepts": ["primary purpose", "mission", "focus", "service", "clarity"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_step_12"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.90,
+            "application_confidence": 0.88,
+            "completeness": 0.85
+          }
+        },
+        "tradition_06": {
+          "id": "aa_tradition_06",
+          "system": "aa_12_traditions",
+          "sequence": 6,
+          "title": "Outside Enterprises",
+          "content": "An A.A. group ought never endorse, finance, or lend the A.A. name to any related facility or outside enterprise.",
+          "metadata": {
+            "key_concepts": ["separation", "purity", "integrity", "brand protection"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.70,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.82,
+            "completeness": 0.80
+          }
+        },
+        "tradition_07": {
+          "id": "aa_tradition_07",
+          "system": "aa_12_traditions",
+          "sequence": 7,
+          "title": "Self-Support",
+          "content": "Every A.A. group ought to be fully self-supporting, declining outside contributions.",
+          "metadata": {
+            "key_concepts": ["financial independence", "self-sufficiency", "funding", "autonomy"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.70,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_tradition_04"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.78
+          }
+        },
+        "tradition_08": {
+          "id": "aa_tradition_08",
+          "system": "aa_12_traditions",
+          "sequence": 8,
+          "title": "Non-Professional Status",
+          "content": "Alcoholics Anonymous should remain forever non-professional, but our service centers may employ special workers.",
+          "metadata": {
+            "key_concepts": ["non-professional", "volunteer", "peer support", "service"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": []
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.75,
+            "completeness": 0.75
+          }
+        },
+        "tradition_09": {
+          "id": "aa_tradition_09",
+          "system": "aa_12_traditions",
+          "sequence": 9,
+          "title": "Organization",
+          "content": "A.A., as such, ought never be organized; but we may create service boards or committees directly responsible to those they serve.",
+          "metadata": {
+            "key_concepts": ["non-organization", "service structure", "accountability", "minimalism"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "complements": ["aa_tradition_02"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.78,
+            "application_confidence": 0.72,
+            "completeness": 0.75
+          }
+        },
+        "tradition_10": {
+          "id": "aa_tradition_10",
+          "system": "aa_12_traditions",
+          "sequence": 10,
+          "title": "Outside Controversies",
+          "content": "Alcoholics Anonymous has no opinion on outside issues; hence the A.A. name ought never be drawn into public controversy.",
+          "metadata": {
+            "key_concepts": ["neutrality", "focus", "boundaries", "political non-alignment"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.75,
+            "interpretation_layers": 2
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_tradition_05"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.80
+          }
+        },
+        "tradition_11": {
+          "id": "aa_tradition_11",
+          "system": "aa_12_traditions",
+          "sequence": 11,
+          "title": "Public Relations",
+          "content": "Our public relations policy is based on attraction rather than promotion; we need always maintain personal anonymity at press, radio, and films.",
+          "metadata": {
+            "key_concepts": ["attraction", "no promotion", "anonymity", "humility", "stealth"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_tradition_12"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.85
+          }
+        },
+        "tradition_12": {
+          "id": "aa_tradition_12",
+          "system": "aa_12_traditions",
+          "sequence": 12,
+          "title": "Anonymity",
+          "content": "Anonymity is the spiritual foundation of all our traditions, ever reminding us to place principles before personalities.",
+          "metadata": {
+            "key_concepts": ["anonymity", "principles", "humility", "spiritual foundation", "ego-dissolution"]
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.90,
+            "interpretation_layers": 4
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "complements": ["aa_step_05", "aa_step_12"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "external-events", "reason": "Indifference to reputation, focus on principles"},
+              {"system": "tao_te_ching", "chapter": 70, "reason": "Deep simplicity, unknown sage"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.99,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "practical",
+                "text": "Protect individuals' privacy and dignity in fellowship"
+              },
+              {
+                "level": "spiritual",
+                "text": "Anonymity dissolves ego/personality into principles; unity > individuality"
+              },
+              {
+                "level": "systemic",
+                "text": "Anonymous 12-step structure enables non-hierarchical, leaderless organization"
+              }
+            ],
+            "applications": [
+              "Never identify another member publicly",
+              "Keep meeting confidences private",
+              "Share recovery 'I statements' not judgment/advice as authority",
+              "Focus on principles being lived, not personality of messenger"
+            ],
+            "commentaries": [
+              {
+                "source": "AA Foundation",
+                "observation": "Anonymity at the level of 'press, radio, films' protects AA as a whole; personal anonymity in meetings is sacred trust"
+              },
+              {
+                "source": "Cross-Tradition Parallel",
+                "observation": "Similar to Zen's emphasis on transmission beyond words, Taoism's nameless sage, Stoicism's focus on duty over reputation"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "hawkins_map": {
+      "title": "Hawkins Map of Consciousness",
+      "description": "17-level hierarchical scale of human consciousness levels, calibrated from 0-1000, with emotional, physiological, and spiritual correlates",
+      "organization": "hierarchical (ascending levels of consciousness)",
+      "total_units": 17,
+      "source": "Power vs. Force, David R. Hawkins",
+      "author": "David R. Hawkins",
+      "note": "Based on Hawkins's calibration methodology; levels represent energy attunement frequencies",
+      "units": {
+        "level_0": {
+          "id": "hawkins_level_00",
+          "system": "hawkins_map",
+          "sequence": 0,
+          "title": "Shame (Death)",
+          "calibration": 0,
+          "emotion": "Shame, humiliation, worthlessness",
+          "physiological": "Death of body; death of spirit in living persons; despair, suicidal ideation",
+          "psychological": "Complete loss of identity and will; no possibility of positive change perceived",
+          "metadata": {
+            "key_concepts": ["shame", "worthlessness", "death", "despair", "no-hope"],
+            "zone": "powerless",
+            "descriptor": "The bottom; ego destroyed or absent"
+          },
+          "structure": {
+            "hierarchy_level": "foundational",
+            "density": 0.9,
+            "interpretation_layers": 3,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "context": "Crisis intervention, trauma recovery, professional support essential"
+          },
+          "relationships": {
+            "deepens_into": ["hawkins_level_01"],
+            "parallels_in_other_systems": [
+              {"system": "aa_step_01", "reason": "Powerlessness, unmanageability, complete surrender"},
+              {"system": "stoic", "concept": "suffering", "reason": "Lowest point before transformation possible"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.90,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.70,
+            "completeness": 0.75
+          }
+        },
+        "level_1": {
+          "id": "hawkins_level_01",
+          "system": "hawkins_map",
+          "sequence": 1,
+          "title": "Guilt",
+          "calibration": 30,
+          "emotion": "Guilt, regret, self-condemnation",
+          "physiological": "Chronic stress, immune suppression, disease",
+          "psychological": "Self-blame, internal guilt orientation; beginning of will to change (passive)",
+          "metadata": {
+            "key_concepts": ["guilt", "regret", "self-blame", "victim mentality"],
+            "zone": "powerless",
+            "descriptor": "Shame internalized; willingness to admit wrong but not to act"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_00"],
+            "deepens_into": ["hawkins_level_02"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.90,
+            "interpretation_confidence": 0.82,
+            "application_confidence": 0.72,
+            "completeness": 0.75
+          }
+        },
+        "level_2": {
+          "id": "hawkins_level_02",
+          "system": "hawkins_map",
+          "sequence": 2,
+          "title": "Apathy",
+          "calibration": 50,
+          "emotion": "Despair, hopelessness, giving up",
+          "physiological": "Low energy, illness, poverty mindset, shutdown",
+          "psychological": "Victim consciousness; external locus of control; learned helplessness",
+          "metadata": {
+            "key_concepts": ["apathy", "despair", "hopelessness", "learned-helplessness"],
+            "zone": "powerless",
+            "descriptor": "Resignation; belief that effort is futile"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_01"],
+            "deepens_into": ["hawkins_level_03"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.90,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.75,
+            "completeness": 0.80
+          }
+        },
+        "level_3": {
+          "id": "hawkins_level_03",
+          "system": "hawkins_map",
+          "sequence": 3,
+          "title": "Fear",
+          "calibration": 75,
+          "emotion": "Fear, anxiety, worry, paranoia",
+          "physiological": "Hypervigilance, adrenal arousal, chronic stress, vigilance exhaustion",
+          "psychological": "External threats perceived; survival orientation; suspicion",
+          "metadata": {
+            "key_concepts": ["fear", "anxiety", "paranoia", "survival-mode"],
+            "zone": "powerless",
+            "descriptor": "First upward movement; fear motivates change"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Grounding, safety cultivation, threat assessment realism"
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_02"],
+            "deepens_into": ["hawkins_level_04"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "desires-and-aversions", "reason": "Fear as aversion to perceived threats"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.80,
+            "completeness": 0.82
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "survival",
+                "text": "Fear is appropriate to actual threats (predators, violence, scarcity)"
+              },
+              {
+                "level": "psychological",
+                "text": "Fear often exaggerated by imagination; anticipation of future threats"
+              },
+              {
+                "level": "spiritual",
+                "text": "Fear can catalyze spiritual seeking (Why am I afraid? What's the truth?)"
+              }
+            ],
+            "applications": [
+              "Identify actual vs. imagined threats",
+              "Build practical safety and security",
+              "Develop courage through small exposures",
+              "Recognize fear as motivation toward growth"
+            ],
+            "commentaries": [
+              {
+                "source": "Hawkins Research",
+                "observation": "Fear is calibrated 75 on scale of 0-1000; it's the first level with upward momentum (apathy at 50 is static)"
+              },
+              {
+                "source": "Psychology",
+                "observation": "Fear below 75 (shame-guilt-apathy-fear) are associated with disease; fear at 75+ begins movement toward health"
+              }
+            ]
+          }
+        },
+        "level_4": {
+          "id": "hawkins_level_04",
+          "system": "hawkins_map",
+          "sequence": 4,
+          "title": "Desire",
+          "calibration": 125,
+          "emotion": "Craving, wanting, lust, ambition",
+          "physiological": "Motivation, energy increase, dopamine activation",
+          "psychological": "External motivation; seeking satisfaction through acquisition; addictive patterns",
+          "metadata": {
+            "key_concepts": ["desire", "craving", "ambition", "motivation"],
+            "zone": "lower-power",
+            "descriptor": "Energy mobilized; driven by wants"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_03"],
+            "deepens_into": ["hawkins_level_05"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.80,
+            "completeness": 0.80
+          }
+        },
+        "level_5": {
+          "id": "hawkins_level_05",
+          "system": "hawkins_map",
+          "sequence": 5,
+          "title": "Anger",
+          "calibration": 150,
+          "emotion": "Rage, resentment, hate, defensiveness",
+          "physiological": "High arousal, mobilized energy, cardiovascular strain",
+          "psychological": "Blame externalized; righteousness; power-seeking; willingness to fight",
+          "metadata": {
+            "key_concepts": ["anger", "rage", "resentment", "blame"],
+            "zone": "lower-power",
+            "descriptor": "First level where 'I want to change things' appears; agency emerges"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_04"],
+            "deepens_into": ["hawkins_level_06"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "desires-and-aversions", "reason": "Anger as aversion + resistance"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.87,
+            "application_confidence": 0.82,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "reactionary",
+                "text": "Anger as response to violations of boundaries or desires thwarted"
+              },
+              {
+                "level": "transformative",
+                "text": "Anger mobilizes energy for change; can fuel protective action or resentment"
+              },
+              {
+                "level": "transcendent",
+                "text": "Righteous anger at injustice can fuel social change; personal anger blocks growth"
+              }
+            ],
+            "applications": [
+              "Channel anger into constructive action rather than blame",
+              "Distinguish healthy boundaries (anger at violation) from resentment (chronic blame)",
+              "Use anger's energy for motivation, not justification",
+              "Work toward forgiveness (not at Anger level but later)"
+            ],
+            "commentaries": [
+              {
+                "source": "Hawkins Research",
+                "observation": "Anger at 150 is the first level where 'I want to change' appears; shame/guilt/apathy are victim states"
+              },
+              {
+                "source": "Comparative Traditions",
+                "observation": "Stoics and Buddhists both counsel transcending anger; AA Step 6-7 address resentment transformation"
+              }
+            ]
+          }
+        },
+        "level_6": {
+          "id": "hawkins_level_06",
+          "system": "hawkins_map",
+          "sequence": 6,
+          "title": "Pride",
+          "calibration": 175,
+          "emotion": "Pride, self-esteem, arrogance, superiority",
+          "physiological": "Confidence, resilience, capacity for accomplishment",
+          "psychological": "Conditional self-worth based on achievement; comparison to others; fragile confidence",
+          "metadata": {
+            "key_concepts": ["pride", "self-esteem", "arrogance", "comparison"],
+            "zone": "lower-power",
+            "descriptor": "Still externally motivated; self-worth dependent on external validation"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.80,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_05"],
+            "deepens_into": ["hawkins_level_07"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.90,
+            "interpretation_confidence": 0.82,
+            "application_confidence": 0.75,
+            "completeness": 0.78
+          }
+        },
+        "level_7": {
+          "id": "hawkins_level_07",
+          "system": "hawkins_map",
+          "sequence": 7,
+          "title": "Courage",
+          "calibration": 200,
+          "emotion": "Empowerment, confidence, capability, optimism",
+          "physiological": "Vitality, resilience, health, action-ready state",
+          "psychological": "Self-determination; internal locus of control; willingness to take action",
+          "metadata": {
+            "key_concepts": ["courage", "empowerment", "self-determination", "capability"],
+            "zone": "power",
+            "descriptor": "First level above 200 where truth-seeking becomes possible; threshold level"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice": "Action-taking, risk-taking, learning from failure"
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_06"],
+            "deepens_into": ["hawkins_level_08"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "practical-wisdom", "reason": "Courage as virtue enabling right action"},
+              {"system": "aa_step_01", "reason": "Step 1 (admission) requires courage to face reality"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.95,
+            "interpretation_confidence": 0.90,
+            "application_confidence": 0.87,
+            "completeness": 0.85
+          }
+        },
+        "level_8": {
+          "id": "hawkins_level_08",
+          "system": "hawkins_map",
+          "sequence": 8,
+          "title": "Neutrality",
+          "calibration": 250,
+          "emotion": "Equanimity, balance, nonattachment, acceptance",
+          "physiological": "Homeostasis, calm alertness, resilience",
+          "psychological": "Acceptance of what is; perspective that all events have value",
+          "metadata": {
+            "key_concepts": ["neutrality", "equanimity", "acceptance", "nonattachment"],
+            "zone": "power",
+            "descriptor": "Transcendence of judgment; 'what is, is'; no resistance to reality"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.90,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice": "Detached observation, perspective-taking, acceptance practice"
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_07"],
+            "deepens_into": ["hawkins_level_09"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "control", "reason": "Focus on what is controllable, accept what isn't"},
+              {"system": "tao_te_ching", "concept": "wu_wei", "reason": "Non-resistance, flowing with nature"},
+              {"system": "yoga_sutras", "concept": "vairāgya", "reason": "Non-attachment to outcomes"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.93,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.83,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "emotional",
+                "text": "Equanimity; events don't trigger reactive emotions"
+              },
+              {
+                "level": "philosophical",
+                "text": "Non-judgment; seeing events as neutral, neither good nor bad"
+              },
+              {
+                "level": "spiritual",
+                "text": "Acceptance of divine/universal intelligence in all events"
+              }
+            ],
+            "applications": [
+              "Observe without judgment",
+              "Accept difficulties as opportunities for growth",
+              "Release attachment to specific outcomes",
+              "Maintain calm in midst of change"
+            ],
+            "commentaries": [
+              {
+                "source": "Hawkins Research",
+                "observation": "Neutrality at 250 is threshold where peace begins; lower levels driven by desire/fear"
+              },
+              {
+                "source": "Cross-Tradition Parallels",
+                "observation": "Stoicism (Epictetus), Taoism, Buddhism, Yoga all converge on equanimity as central practice"
+              }
+            ]
+          }
+        },
+        "level_9": {
+          "id": "hawkins_level_09",
+          "system": "hawkins_map",
+          "sequence": 9,
+          "title": "Willingness",
+          "calibration": 310,
+          "emotion": "Optimism, enthusiasm, cooperation, openness",
+          "physiological": "Energy, vitality, health improvement, healing",
+          "psychological": "Growth mindset; belief in possibility; cooperation with reality",
+          "metadata": {
+            "key_concepts": ["willingness", "optimism", "enthusiasm", "healing", "growth"],
+            "zone": "power",
+            "descriptor": "First level of growth orientation; openness to learning and change"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.85,
+            "interpretation_layers": 3,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_08"],
+            "deepens_into": ["hawkins_level_10"],
+            "parallels_in_other_systems": [
+              {"system": "aa_step_06", "reason": "Willingness to have character defects removed"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.93,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.82
+          }
+        },
+        "level_10": {
+          "id": "hawkins_level_10",
+          "system": "hawkins_map",
+          "sequence": 10,
+          "title": "Acceptance",
+          "calibration": 350,
+          "emotion": "Forgiveness, compassion, love (romantic/familial)",
+          "physiological": "Health, vitality, immune competence, healing acceleration",
+          "psychological": "Shift to love orientation; forgiveness of self and others; compassion",
+          "metadata": {
+            "key_concepts": ["acceptance", "forgiveness", "compassion", "love"],
+            "zone": "power",
+            "descriptor": "Significant jump; first level where love appears; unconditional positive regard"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.90,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice": "Forgiveness work, loving-kindness, compassion cultivation"
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_09"],
+            "deepens_into": ["hawkins_level_11"],
+            "parallels_in_other_systems": [
+              {"system": "aa_step_09", "reason": "Making amends and accepting wrongs"},
+              {"system": "stoic", "concept": "social-relations", "reason": "Understanding others' struggles with compassion"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.94,
+            "interpretation_confidence": 0.89,
+            "application_confidence": 0.86,
+            "completeness": 0.87
+          }
+        },
+        "level_11": {
+          "id": "hawkins_level_11",
+          "system": "hawkins_map",
+          "sequence": 11,
+          "title": "Reason",
+          "calibration": 400,
+          "emotion": "Intellection, understanding, clarity, wisdom",
+          "physiological": "Clear cognition, integrative functioning, peak efficiency",
+          "psychological": "Rational understanding; systemic thinking; integration of knowledge",
+          "metadata": {
+            "key_concepts": ["reason", "intellect", "wisdom", "clarity", "systems-thinking"],
+            "zone": "truth-revealing",
+            "descriptor": "Capacity for complex reasoning; science, philosophy, integrated knowledge"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.95,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_10"],
+            "deepens_into": ["hawkins_level_12"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "practical-wisdom", "reason": "Rational virtue aligned with nature"},
+              {"system": "yoga_sutras", "concept": "jnana_yoga", "reason": "Path of knowledge and understanding"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.87,
+            "application_confidence": 0.84,
+            "completeness": 0.85
+          }
+        },
+        "level_12": {
+          "id": "hawkins_level_12",
+          "system": "hawkins_map",
+          "sequence": 12,
+          "title": "Love",
+          "calibration": 500,
+          "emotion": "Unconditional love, joy, compassion, service",
+          "physiological": "Integrated health, radiance, longevity, healing others",
+          "psychological": "Transcendence of personal interest; universal compassion; joy independent of circumstances",
+          "metadata": {
+            "key_concepts": ["love", "unconditional", "joy", "service", "compassion"],
+            "zone": "truth-revealing",
+            "descriptor": "Unconditional; highest level accessible to most humans; transformative"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.98,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "context": "Contemplative practice, service work, spiritual transmission"
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_11"],
+            "deepens_into": ["hawkins_level_13"],
+            "parallels_in_other_systems": [
+              {"system": "aa_step_12", "reason": "Spiritual awakening expressed through love and service"},
+              {"system": "stoic", "concept": "social-relations", "reason": "Universal brotherhood of humanity"},
+              {"system": "tao_te_ching", "chapter": "throughout", "reason": "Love as wu wei aligned with universal flow"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.93,
+            "interpretation_confidence": 0.86,
+            "application_confidence": 0.80,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "emotional",
+                "text": "Unconditional positive regard for all beings; joy in others' wellbeing"
+              },
+              {
+                "level": "relational",
+                "text": "Compassion expressed through service; healing presence; witnessing others' growth"
+              },
+              {
+                "level": "spiritual",
+                "text": "Recognition of divine love/nature in all existence; merging of self and other"
+              }
+            ],
+            "applications": [
+              "Cultivate loving-kindness for all beings",
+              "Serve others without expectation of return",
+              "Feel genuine joy in others' success",
+              "Radiate unconditional acceptance"
+            ],
+            "commentaries": [
+              {
+                "source": "Hawkins Research",
+                "observation": "Love at 500 is a threshold shift; above reason (400), love is unconditional rather than analytical"
+              },
+              {
+                "source": "Mystical Traditions",
+                "observation": "All traditions (Christian, Islamic, Hindu, Buddhist, Taoist) point to love/compassion as essential realization"
+              }
+            ]
+          }
+        },
+        "level_13": {
+          "id": "hawkins_level_13",
+          "system": "hawkins_map",
+          "sequence": 13,
+          "title": "Joy",
+          "calibration": 540,
+          "emotion": "Ecstasy, bliss, joy independent of circumstances",
+          "physiological": "Radiance, cellular vitality, healing, miraculous recoveries",
+          "psychological": "Inner knowing; transcendence of personality; connection to infinite intelligence",
+          "metadata": {
+            "key_concepts": ["joy", "ecstasy", "bliss", "transcendence", "inner-knowing"],
+            "zone": "truth-revealing",
+            "descriptor": "Rare; independent of external circumstances; inner knowing"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.98,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_12"],
+            "deepens_into": ["hawkins_level_14"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.88,
+            "interpretation_confidence": 0.82,
+            "application_confidence": 0.75,
+            "completeness": 0.80
+          }
+        },
+        "level_14": {
+          "id": "hawkins_level_14",
+          "system": "hawkins_map",
+          "sequence": 14,
+          "title": "Peace",
+          "calibration": 600,
+          "emotion": "Serenity, absolute peace, inner stillness",
+          "physiological": "Cellular regeneration, timelessness, unity with all",
+          "psychological": "Pure consciousness; subject-object merger; witnessing awareness",
+          "metadata": {
+            "key_concepts": ["peace", "serenity", "stillness", "pure-consciousness"],
+            "zone": "godhead",
+            "descriptor": "Gateway to enlightenment; non-dual awareness; rare in embodied form"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.99,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_13"],
+            "deepens_into": ["hawkins_level_15"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.85,
+            "interpretation_confidence": 0.78,
+            "application_confidence": 0.70,
+            "completeness": 0.75
+          }
+        },
+        "level_15": {
+          "id": "hawkins_level_15",
+          "system": "hawkins_map",
+          "sequence": 15,
+          "title": "Enlightenment",
+          "calibration": 700,
+          "emotion": "Unity consciousness, infinite compassion, timeless presence",
+          "physiological": "Transcendence of body; no disease possible; eternal youth maintained",
+          "psychological": "Complete dissolution of ego; God-consciousness; all as self",
+          "metadata": {
+            "key_concepts": ["enlightenment", "unity-consciousness", "god-consciousness", "ego-death"],
+            "zone": "godhead",
+            "descriptor": "Permanent realization; avatars, saints, enlightened masters; rare in human form"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 1.0,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_14"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.82,
+            "interpretation_confidence": 0.75,
+            "application_confidence": 0.65,
+            "completeness": 0.70
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "non-dual",
+                "text": "No separation between self and other, observer and observed; all as one consciousness"
+              },
+              {
+                "level": "transcendent",
+                "text": "Direct knowledge of divine nature; beyond conceptual understanding"
+              },
+              {
+                "level": "actualized",
+                "text": "Permanent stability in this state; no regression; radiance affects all around"
+              }
+            ],
+            "exemplars": [
+              "Jesus Christ (Christian estimate: 700)",
+              "Buddha (700)",
+              "Krishna (700)",
+              "Sri Ramakrishna Paramahamsa (700+)"
+            ],
+            "commentaries": [
+              {
+                "source": "Hawkins Calibration",
+                "observation": "Only a handful of humans in recorded history have calibrated at enlightenment; most great teachers (saints, sages) calibrate 500-650"
+              },
+              {
+                "source": "Cross-Tradition",
+                "observation": "All traditions recognize enlightenment as final liberation; rare, permanent, irreversible"
+              }
+            ]
+          }
+        },
+        "level_16": {
+          "id": "hawkins_level_16",
+          "system": "hawkins_map",
+          "sequence": 16,
+          "title": "Self-Realization (900)",
+          "calibration": 900,
+          "emotion": "Infinite presence, omniscience, omnipotence",
+          "physiological": "Transcends human form; existence beyond physical law",
+          "psychological": "Identity with Godhead; all-knowing; all-powerful within spiritual realm",
+          "metadata": {
+            "key_concepts": ["self-realization", "godhead", "omniscience", "omnipotence"],
+            "zone": "godhead",
+            "descriptor": "Beyond human; divine manifestation; one or two in all of history"
+          },
+          "structure": {
+            "hierarchy_level": "transcendent",
+            "density": 1.0,
+            "interpretation_layers": 2,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_15"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.70,
+            "interpretation_confidence": 0.65,
+            "application_confidence": 0.50,
+            "completeness": 0.60
+          }
+        },
+        "level_17": {
+          "id": "hawkins_level_17",
+          "system": "hawkins_map",
+          "sequence": 17,
+          "title": "Source",
+          "calibration": 1000,
+          "emotion": "Infinite divinity; creation itself",
+          "physiological": "No embodiment; pure existence",
+          "psychological": "No separation; source of all consciousness; Godhead itself",
+          "metadata": {
+            "key_concepts": ["source", "godhead", "infinity", "pure-consciousness", "creation"],
+            "zone": "absolute",
+            "descriptor": "Theoretical endpoint; God/Brahman/Tao as source; beyond human experience"
+          },
+          "structure": {
+            "hierarchy_level": "absolute",
+            "density": 1.0,
+            "interpretation_layers": 1,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["hawkins_level_16"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.65,
+            "interpretation_confidence": 0.60,
+            "application_confidence": 0.40,
+            "completeness": 0.50
+          }
+        }
+      }
+    }
+  },
+  "summary": {
+    "total_systems": 3,
+    "total_units": 41,
+    "deep_dive_units": 10,
+    "coverage": "AA 12 Steps (12/12), AA 12 Traditions (12/12), Hawkins Map (17/17)",
+    "schema_status": "0.1.0 - Minimal JSON, ready for migration to YAML folders",
+    "next_phase": "Database structure + validation + web search expansion"
+  }
+}
