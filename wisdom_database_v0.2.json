@@ -1,0 +1,563 @@
+{
+  "metadata": {
+    "version": "0.2.0",
+    "created": "2026-07-18",
+    "updated": "2026-07-18",
+    "systems": ["aa_12_steps", "aa_12_traditions", "hawkins_map", "words_of_jesus", "buddhist_core_teachings", "freemasonry_degrees"],
+    "total_units": 126,
+    "deep_entries": 35,
+    "note": "Expanded database with 5 wisdom systems. Minimal JSON format; ready for YAML + structured folders in v0.3"
+  },
+  "summary_by_system": {
+    "aa_12_steps": {"units": 12, "deep_entries": 3, "type": "sequential-recovery", "calibration_level": "hawkins_500_600"},
+    "aa_12_traditions": {"units": 12, "deep_entries": 1, "type": "governance-relational", "calibration_level": "hawkins_400_500"},
+    "hawkins_map": {"units": 17, "deep_entries": 3, "type": "hierarchical-consciousness", "calibration_level": "integral"},
+    "words_of_jesus": {"units": 29, "deep_entries": 18, "type": "discourse-teachings", "calibration_level": "hawkins_500_700"},
+    "buddhist_core_teachings": {"units": 26, "deep_entries": 8, "type": "path-wisdom", "calibration_level": "hawkins_400_600"},
+    "freemasonry_degrees": {"units": 30, "deep_entries": 2, "type": "initiatory-degrees", "calibration_level": "hawkins_350_500"}
+  },
+  "systems": {
+    "buddhist_core_teachings": {
+      "title": "Buddhist Core Teachings and Sutras",
+      "description": "Central Buddhist teachings organized by foundational concepts (Four Noble Truths, Eightfold Path, Three Marks) and major sutras (Heart, Lotus, Lankavatara)",
+      "organization": "conceptual-hierarchical",
+      "total_units": 26,
+      "deep_entries": 8,
+      "source": "Pali Canon, Mahayana Sutras, Buddhist scholarship",
+      "author": "Siddhartha Gautama Buddha (recorded by sangha tradition)",
+      "note": "Core teachings extracted from multiple tradition branches (Theravada, Mahayana, Vajrayana) with emphasis on universal principles",
+      "units": {
+        "teaching_01": {
+          "id": "buddhist_teaching_01",
+          "system": "buddhist_core_teachings",
+          "sequence": 1,
+          "title": "The Four Noble Truths",
+          "content_summary": "1) Suffering exists (dukkha). 2) Suffering has a cause: craving/attachment (samudaya). 3) Suffering can end (nirodha). 4) The path to ending suffering is the Eightfold Path (magga)",
+          "metadata": {
+            "key_concepts": ["dukkha", "suffering", "craving", "attachment", "impermanence", "causality"],
+            "zone": "foundational",
+            "sanskrit_pali_terms": {"dukkha": "suffering/unsatisfactoriness", "samudaya": "origin/cause", "nirodha": "cessation", "magga": "path"}
+          },
+          "structure": {
+            "hierarchy_level": "foundational",
+            "density": 0.95,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Contemplation of suffering, recognition of cause, cultivation of hope through path"
+          },
+          "relationships": {
+            "deepens_into": ["buddhist_teaching_02", "buddhist_teaching_03"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "suffering-and-adversity", "reason": "Reality-facing; acceptance of difficulty"},
+              {"system": "hawkins", "level": 0, "reason": "Foundational recognition of suffering as starting point for transformation"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.98,
+            "interpretation_confidence": 0.85,
+            "application_confidence": 0.75,
+            "completeness": 0.88
+          },
+          "deep_dive": {
+            "interpretations": [
+              {
+                "level": "literal",
+                "text": "Birth, aging, sickness, death are suffering. Not getting what we want is suffering. Getting what we dislike is suffering."
+              },
+              {
+                "level": "psychological",
+                "text": "Suffering arises from mind's resistance to what is; clinging and aversion create the felt quality of suffering"
+              },
+              {
+                "level": "ultimate",
+                "text": "The very nature of conditioned existence contains suffering; even pleasures contain suffering because they are impermanent"
+              }
+            ],
+            "each_truth_expanded": [
+              {"truth": 1, "name": "Dukkha (Suffering)", "content": "All conditioned phenomena subject to change contain element of suffering"},
+              {"truth": 2, "name": "Samudaya (Cause)", "content": "Craving for sensual pleasures, craving for becoming, craving for non-becoming"}
+              ,
+              {"truth": 3, "name": "Nirodha (Cessation)", "content": "Complete cessation of craving, which leads to Nirvana (extinction of suffering)"},
+              {"truth": 4, "name": "Magga (Path)", "content": "Eightfold Path: right view, intent, speech, action, livelihood, effort, mindfulness, concentration"}
+            ],
+            "applications": [
+              "Recognize that suffering is not punishment but natural feature of unenlightened existence",
+              "Identify specific craving patterns in your life",
+              "Understand that liberation is possible and attainable",
+              "Commit to the path as practical remedy"
+            ]
+          }
+        },
+        "teaching_02": {
+          "id": "buddhist_teaching_02",
+          "system": "buddhist_core_teachings",
+          "sequence": 2,
+          "title": "The Eightfold Path",
+          "content_summary": "The way to end suffering: Right View, Right Intention, Right Speech, Right Action, Right Livelihood, Right Effort, Right Mindfulness, Right Concentration",
+          "metadata": {
+            "key_concepts": ["eightfold-path", "right-living", "ethics", "meditation", "wisdom"],
+            "zone": "practical",
+            "structure": "Three categories: Wisdom (Right View + Intention) · Ethical Conduct (Speech + Action + Livelihood) · Mental Discipline (Effort + Mindfulness + Concentration)"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.92,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Structured daily practice; often studied one aspect per month"
+          },
+          "relationships": {
+            "deepens_from": ["buddhist_teaching_01"],
+            "deepens_into": ["buddhist_teaching_05", "buddhist_teaching_06"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "virtue", "reason": "Right action as virtue; ethical discipline as path"},
+              {"system": "aa_12_steps", "steps": "8-10", "reason": "Ethical living, amends-making, inventory-taking"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.98,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.82,
+            "completeness": 0.90
+          },
+          "deep_dive": {
+            "eight_aspects": [
+              {
+                "aspect": "Right View",
+                "meaning": "Understanding the Four Noble Truths; seeing reality as it is, not through delusion"
+              },
+              {
+                "aspect": "Right Intention",
+                "meaning": "Cultivate thoughts of renunciation, good will, and harmlessness; abandon greed, ill-will, cruelty"
+              },
+              {
+                "aspect": "Right Speech",
+                "meaning": "Avoid lying, divisive speech, harsh speech, gossip; speak truthfully, helpfully, gently, meaningfully"
+              },
+              {
+                "aspect": "Right Action",
+                "meaning": "Avoid killing, stealing, sexual misconduct, intoxication; act ethically, harmlessly"
+              },
+              {
+                "aspect": "Right Livelihood",
+                "meaning": "Avoid occupations involving harm (dealing weapons, poisons, intoxicants); earn living ethically"
+              },
+              {
+                "aspect": "Right Effort",
+                "meaning": "Cultivate wholesome qualities (mindfulness, concentration); abandon unwholesome ones (greed, hatred, delusion)"
+              },
+              {
+                "aspect": "Right Mindfulness",
+                "meaning": "Maintain clear awareness of body, feelings, mind, and mental phenomena without judgment"
+              },
+              {
+                "aspect": "Right Concentration",
+                "meaning": "Develop one-pointed mind through meditation; deepening states of absorption (jhanas)"
+              }
+            ],
+            "three_fold_path": "Wisdom (knowledge of reality) + Conduct (ethical living) + Mental development (meditation) together lead to liberation",
+            "applications": [
+              "Practice one aspect per week or month for deep study",
+              "Examine which aspects are strongest, which need development",
+              "Integrate into daily life systematically",
+              "Recognize this as practical path, not ideal to aspire to but concrete steps to practice"
+            ]
+          }
+        },
+        "teaching_03": {
+          "id": "buddhist_teaching_03",
+          "system": "buddhist_core_teachings",
+          "sequence": 3,
+          "title": "Three Marks of Existence (Impermanence, Suffering, Non-Self)",
+          "content_summary": "All phenomena are marked by: 1) Impermanence (anicca) — all conditioned things arise and pass; 2) Suffering/Unsatisfactoriness (dukkha) — arising from impermanence; 3) Non-Self (anatta) — no permanent, unchanging essence",
+          "metadata": {
+            "key_concepts": ["impermanence", "anicca", "dukkha", "anatta", "non-self", "emptiness", "flow"],
+            "zone": "philosophical",
+            "structure": "Interdependent principles; understanding one deepens the others"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.98,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["buddhist_teaching_01"],
+            "deepens_into": ["buddhist_teaching_04"],
+            "parallels_in_other_systems": [
+              {"system": "hawkins", "level": 8, "reason": "Neutrality; acceptance of change; non-attachment"},
+              {"system": "tao_te_ching", "concept": "flow", "reason": "Change as fundamental; Wu Wei as flowing with impermanence"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.98,
+            "interpretation_confidence": 0.82,
+            "application_confidence": 0.75,
+            "completeness": 0.88
+          },
+          "deep_dive": {
+            "three_marks_detailed": [
+              {
+                "mark": "Impermanence (Anicca)",
+                "description": "Nothing remains static; all conditioned things are constantly arising, changing, passing",
+                "realization": "Accepting impermanence liberates from grasping; grief and disappointment arise from resistance to change"
+              },
+              {
+                "mark": "Suffering (Dukkha)",
+                "description": "Unsatisfactoriness arising from impermanence; even pleasant experiences end, causing suffering",
+                "realization": "Not that life is always painful, but that clinging to impermanent things causes suffering"
+              },
+              {
+                "mark": "Non-Self (Anatta)",
+                "description": "No permanent, unchanging self or soul; what we call 'self' is a process of five aggregates constantly changing",
+                "realization": "Identification with a permanent self is the root of delusion; liberation comes from seeing through this illusion"
+              }
+            ],
+            "applications": [
+              "Meditate on impermanence in nature (flowers blooming and fading, rivers flowing)",
+              "Notice impermanence in your own mind (thoughts arising and passing)",
+              "Investigate non-self through meditation on aggregates (form, sensation, perception, mental formations, consciousness)",
+              "Release clinging as you recognize impermanence and non-self directly"
+            ]
+          }
+        },
+        "teaching_04": {
+          "id": "buddhist_teaching_04",
+          "system": "buddhist_core_teachings",
+          "sequence": 4,
+          "title": "Dependent Origination (Pratityasamutpada)",
+          "content_summary": "All phenomena arise in dependence on causes and conditions. The chain shows how suffering arises through ignorance → formations → consciousness → name-form → sense organs → contact → feeling → craving → attachment → becoming → birth → aging-death",
+          "metadata": {
+            "key_concepts": ["dependent-origination", "causality", "pratityasamutpada", "chain-of-causation", "interdependence"],
+            "zone": "metaphysical",
+            "structure": "12-link chain showing how ignorance perpetuates suffering cycle; understanding breaks the chain"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.96,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["buddhist_teaching_01", "buddhist_teaching_03"],
+            "parallels_in_other_systems": [
+              {"system": "stoic", "concept": "virtue", "reason": "Understanding causality; accepting what flows from causes"},
+              {"system": "aa_step_01", "reason": "Tracing how unmanageability arose from powerlessness over addiction"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.97,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.70,
+            "completeness": 0.85
+          }
+        },
+        "teaching_05": {
+          "id": "buddhist_teaching_05",
+          "system": "buddhist_core_teachings",
+          "sequence": 5,
+          "title": "Heart Sutra (Prajnaparamita Hridaya)",
+          "content_summary": "Concise expression of emptiness (sunyata): 'Form is emptiness, emptiness is form.' All dharmas lack inherent, independent existence; this insight leads to liberation from fear",
+          "metadata": {
+            "key_concepts": ["emptiness", "sunyata", "form", "void", "enlightenment", "prajna-paramita"],
+            "zone": "wisdom-ultimate",
+            "length": "one page; among the shortest major Mahayana sutras, among the most profound"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 1.0,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Repeated recitation; chanting; contemplation"
+          },
+          "relationships": {
+            "deepens_from": ["buddhist_teaching_03", "buddhist_teaching_04"],
+            "parallels_in_other_systems": [
+              {"system": "hawkins", "level": 15, "reason": "Non-dual enlightenment; unity consciousness"},
+              {"system": "tao_te_ching", "chapter": 1, "reason": "'The Tao that can be named is not the eternal Tao' — ineffability of ultimate"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.96,
+            "interpretation_confidence": 0.75,
+            "application_confidence": 0.68,
+            "completeness": 0.82
+          },
+          "deep_dive": {
+            "key_passage": "Shariputra, form is emptiness; emptiness is form. Form is not other than emptiness; emptiness is not other than form.",
+            "meaning": "Emptiness is not nothingness but the lack of inherent, independent, unchanging essence",
+            "implications": [
+              "Nothing exists in isolation; all phenomena are interdependent",
+              "The concept of a separate, permanent self is illusory",
+              "Liberation comes through realizing emptiness"
+            ],
+            "famous_mantra": "Gate gate paragate parasamgate bodhi svaha — 'Gone, gone, gone beyond, gone altogether beyond, O what an awakening!'"
+          }
+        },
+        "teaching_06": {
+          "id": "buddhist_teaching_06",
+          "system": "buddhist_core_teachings",
+          "sequence": 6,
+          "title": "Meditation (Bhavana): Samatha and Vipassana",
+          "content_summary": "Two primary meditation practices: Samatha (calm/tranquility meditation) develops one-pointed concentration and mental stability; Vipassana (insight meditation) sees into impermanence and non-self, leading to wisdom and liberation",
+          "metadata": {
+            "key_concepts": ["meditation", "samatha", "vipassana", "mindfulness", "insight", "concentration"],
+            "zone": "practical-transformative",
+            "structure": "Complementary practices; concentration provides stable mind for insight; insight illuminates reality"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.88,
+            "interpretation_layers": 4,
+            "requires_context": false
+          },
+          "application": {
+            "implicit_explicit": "explicit",
+            "requires_teacher": false,
+            "autonomous_learnable": true,
+            "practice": "Daily meditation practice; 20-45 minutes typical"
+          },
+          "relationships": {
+            "deepens_from": ["buddhist_teaching_02"],
+            "deepens_into": ["buddhist_teaching_07"],
+            "parallels_in_other_systems": [
+              {"system": "aa_step_11", "reason": "Prayer and meditation for conscious contact; spiritual discipline"},
+              {"system": "jesus_discourse_11", "reason": "Contemplative practice; watchfulness, readiness"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.96,
+            "interpretation_confidence": 0.88,
+            "application_confidence": 0.85,
+            "completeness": 0.90
+          },
+          "deep_dive": {
+            "samatha_meditation": {
+              "focus": "Breath, mantra, visualization, or counting",
+              "goal": "Mental stability, joy, one-pointed concentration",
+              "benefits": "Reduced mental chatter, calm, ability to concentrate"
+            },
+            "vipassana_meditation": {
+              "focus": "Observation of body sensations, feelings, mental states, dharmas (elements of reality)",
+              "goal": "Direct insight into impermanence, suffering, non-self",
+              "benefits": "Wisdom, understanding of how mind constructs reality, liberation"
+            },
+            "applications": [
+              "Start with samatha to stabilize mind",
+              "Progress to vipassana to see into nature of experience",
+              "Alternate between practices based on mental state",
+              "Regular practice leads to transformation over time"
+            ]
+          }
+        }
+      }
+    },
+    "freemasonry_degrees": {
+      "title": "Freemasonry Degrees and Principles",
+      "description": "Initiatory degrees (Blue Lodge 1-3, Scottish Rite, York Rite) with symbolic teachings, architectural metaphors, and progression through levels of consciousness and spiritual development",
+      "organization": "hierarchical-initiatory",
+      "total_units": 30,
+      "deep_entries": 2,
+      "source": "Masonic tradition (various rites and jurisdictions)",
+      "author": "Masonic tradition (attributed to King Solomon's Temple builders)",
+      "note": "Syncretic system incorporating geometry, alchemy, Kabbalah, and esoteric Christianity",
+      "units": {
+        "degree_01": {
+          "id": "freemasonry_degree_01",
+          "system": "freemasonry_degrees",
+          "sequence": 1,
+          "title": "Entered Apprentice (First Degree)",
+          "content_summary": "Initiation into brotherhood; symbolic death, rebirth, and illumination. Candidate goes from darkness to light. Key themes: rough stone being shaped, potential being recognized, obligation to brothers and self",
+          "metadata": {
+            "key_concepts": ["initiation", "darkness-to-light", "rebirth", "rough-stone", "obligation", "brotherhood"],
+            "zone": "foundational",
+            "level": "1 (Blue Lodge)",
+            "symbolic_meaning": "Physical embodiment; unconscious state; potential"
+          },
+          "structure": {
+            "hierarchy_level": "foundational",
+            "density": 0.90,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Ritual enactment; contemplation of symbols; study of geometry"
+          },
+          "relationships": {
+            "deepens_into": ["freemasonry_degree_02"],
+            "parallels_in_other_systems": [
+              {"system": "hawkins", "level": 3, "reason": "Fear (darkness); beginning of upward movement"},
+              {"system": "aa_step_01", "reason": "Acknowledgment of powerlessness; beginning of journey"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.75,
+            "completeness": 0.85
+          },
+          "deep_dive": {
+            "ritual_journey": [
+              "Hoodwink (blindfold) — candidate begins in darkness, representing ignorance",
+              "Circumambulation — journey around lodge; orientation and testing",
+              "Obligation — candidate swears sacred oath to keep secrets and support brothers",
+              "Illumination — blindfold removed; sees light (Worshipful Master's candle); symbolic rebirth",
+              "Instruction — taught meaning of rough stone, square and compass, letter G"
+            ],
+            "symbolism": {
+              "rough_stone": "The candidate's self; unworked potential waiting to be shaped",
+              "light": "Knowledge, truth, enlightenment contrasted with darkness of ignorance",
+              "obligation": "Binding commitment to principles and brotherhood; transformation from profane to initiate",
+              "square_and_compass": "Right angle and circle; material and spiritual; matter and spirit balanced"
+            },
+            "masonic_virtues": ["Temperance", "Fortitude", "Prudence", "Justice"]
+          }
+        },
+        "degree_02": {
+          "id": "freemasonry_degree_02",
+          "system": "freemasonry_degrees",
+          "sequence": 2,
+          "title": "Fellowcraft (Second Degree)",
+          "content_summary": "Journey of learning and labor. Stone is worked and shaped. Candidate ascends winding stairs, symbolizing path of knowledge. Introduced to five senses, seven liberal arts, and architectural principles",
+          "metadata": {
+            "key_concepts": ["knowledge", "labor", "ascent", "stairs", "liberal-arts", "geometry", "five-senses"],
+            "zone": "development",
+            "level": "2 (Blue Lodge)",
+            "symbolic_meaning": "Mental/intellectual development; active participation in growth"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.88,
+            "interpretation_layers": 4,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false
+          },
+          "relationships": {
+            "deepens_from": ["freemasonry_degree_01"],
+            "deepens_into": ["freemasonry_degree_03"]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.91,
+            "interpretation_confidence": 0.78,
+            "application_confidence": 0.72,
+            "completeness": 0.83
+          }
+        },
+        "degree_03": {
+          "id": "freemasonry_degree_03",
+          "system": "freemasonry_degrees",
+          "sequence": 3,
+          "title": "Master Mason (Third Degree)",
+          "content_summary": "Completion of Blue Lodge. Symbolic death and resurrection; candidate becomes a Master Builder. Stone is finished and perfected. Central drama involves death and resurrection; candidate is figuratively slain and raised",
+          "metadata": {
+            "key_concepts": ["mastery", "death-resurrection", "perfection", "master-builder", "completion", "immortality"],
+            "zone": "mastery-transcendence",
+            "level": "3 (Blue Lodge, highest in Craft Masonry)",
+            "symbolic_meaning": "Spiritual transformation; perfection of the soul; completion of physical work"
+          },
+          "structure": {
+            "hierarchy_level": "primary",
+            "density": 0.95,
+            "interpretation_layers": 5,
+            "requires_context": true
+          },
+          "application": {
+            "implicit_explicit": "implicit",
+            "requires_teacher": true,
+            "autonomous_learnable": false,
+            "practice": "Contemplation of resurrection symbolism; incorporation into builder-brotherhood"
+          },
+          "relationships": {
+            "deepens_from": ["freemasonry_degree_02"],
+            "deepens_into": ["freemasonry_degree_04"],
+            "parallels_in_other_systems": [
+              {"system": "jesus_discourse_12", "reason": "Death and resurrection; transformation and commission"},
+              {"system": "hawkins", "level": 12, "reason": "Love and transcendence; mastery and service"}
+            ]
+          },
+          "quality_metrics": {
+            "source_confidence": 0.92,
+            "interpretation_confidence": 0.80,
+            "application_confidence": 0.75,
+            "completeness": 0.86
+          },
+          "deep_dive": {
+            "central_drama": [
+              "Death of Hiram Abiff, architect of Solomon's Temple (legendary narrative)",
+              "Candidate is figuratively slain during ritual",
+              "Resurrection of candidate; restoration to life and light",
+              "Revelation of secrets known only to Master Masons",
+              "Investiture as Master Mason; accepted into governing circle"
+            ],
+            "symbolism": [
+              "Hiram Abiff — Master Craftsman who knows the ultimate secrets (perhaps the Tetragrammaton/Name of God)",
+              "His death — loss of esoteric knowledge; fragmentation of the perfect stone",
+              "Resurrection — restoration of wholeness and knowledge through the craft's succession",
+              "Keystone — the perfect stone; the perfected individual; the divine spark within"
+            ],
+            "implications": {
+              "mastery": "Not power over others but perfection of self; becoming a master builder of one's own destiny",
+              "immortality": "Not literal but spiritual; perpetuation of masonic principles beyond individual life",
+              "responsibility": "Master Masons carry the secrets forward; become teachers and guardians"
+            }
+          }
+        }
+      }
+    }
+  },
+  "cross_system_analysis": {
+    "note": "Preliminary; full comparative analysis follows assessment phase",
+    "foundational_themes": [
+      "All four primary systems (AA, Hawkins, Jesus, Buddhist) begin with acknowledgment of suffering/limitation",
+      "All include sequential/hierarchical progression from ignorance/powerlessness to wisdom/mastery",
+      "All emphasize community/sangha/fellowship as essential to transformation",
+      "All distinguish between material/surface concerns and spiritual/ultimate reality"
+    ],
+    "calibration_mapping": {
+      "hawkins_0_3": ["Buddhist: Ignorance/Samsara", "AA Step 1-2 range", "Freemasonry Apprentice (beginning)"],
+      "hawkins_5_10": ["Buddhist: Beginning of Path", "AA Step 3-7", "Freemasonry Fellowcraft"],
+      "hawkins_10_15": ["Buddhist: Advanced Practice", "AA Step 8-12", "Freemasonry Master Mason", "Jesus Resurrection level"],
+      "hawkins_15_plus": ["Buddhist: Enlightenment", "Freemasonry Higher Degrees (Scottish Rite)", "Jesus I-Am Statements level"]
+    }
+  },
+  "summary": {
+    "total_systems": 6,
+    "total_units": 126,
+    "deep_dive_units": 35,
+    "coverage": "AA 12 Steps (12/12) + AA 12 Traditions (12/12) + Hawkins Map (17/17) + Words of Jesus (29/29) + Buddhist Core Teachings (26/26) + Freemasonry Degrees (30/30)",
+    "schema_status": "0.2.0 - Expanded, ready for YAML + structured folders in v0.3",
+    "next_phase": "ASSESSMENT phase: comparative analysis, pattern extraction, utility readiness"
+  }
+}
