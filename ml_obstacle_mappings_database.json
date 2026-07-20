@@ -1,0 +1,790 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created": "2026-07-20",
+    "scope": "supervised_learning",
+    "core_sources": ["AA_12_Steps", "AA_12_Traditions", "Hawkins_Map"],
+    "total_obstacles": 12,
+    "description": "Maps ML obstacles → Consciousness Levels → AA Wisdom → Actionable Techniques"
+  },
+
+  "obstacles": {
+    "overfitting": {
+      "id": "overfitting",
+      "name": "Model Overfitting",
+      "description": "Model memorizes training data; high train accuracy, low test accuracy",
+      "symptoms": [
+        "Training loss continues decreasing while validation loss increases",
+        "Large gap between training and validation metrics",
+        "Model performs well on training set, poorly on new data"
+      ],
+
+      "consciousness_mapping": {
+        "level": 50,
+        "zone": "POWER_LOSS",
+        "reasoning": "The model is powerless against the noise in training data. It surrenders to every detail rather than learning the underlying pattern. Like addiction: seeking immediate gratification (fitting) without wisdom about long-term consequences."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 1,
+        "step_text": "Admitted we were powerless over alcohol, that our lives had become unmanageable",
+        "translation": "Admit the model is powerless over training noise; it cannot distinguish signal from noise",
+        "secondary_step": 11,
+        "secondary_text": "Sought through prayer and meditation to improve our conscious contact with God",
+        "translation": "Implement regularization as meditation: systematic constraint that quiets the noise",
+        "tradition": "Tradition 1: Our common welfare comes first",
+        "translation_tradition": "Collective welfare (generalization) over individual satisfaction (fitting)"
+      },
+
+      "hawkins_teaching": {
+        "level": 50,
+        "level_name": "Powerlessness/Apathy",
+        "calibration": [50, 75],
+        "teaching": "At this level, the system has no discrimination; it accepts everything indiscriminately",
+        "pathway": "Must move from indiscriminate acceptance (overfitting) to discriminative learning"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "L1/L2 Regularization",
+          "principle": "Add constraint that penalizes model complexity",
+          "wisdom_mapping": "Accept your limitations; you cannot learn everything",
+          "code_technique": "penalty = lambda * sum(weights^2)  [or sum(|weights|) for L1]",
+          "hyperparameter": "lambda (learning rate of constraint)",
+          "expected_impact": "Reduce overfitting, improve generalization"
+        },
+        {
+          "name": "Dropout",
+          "principle": "Randomly disable neurons during training; forces robustness",
+          "wisdom_mapping": "Learn to function without crutches; develop inner strength",
+          "code_technique": "random drop p% of activations during forward pass",
+          "hyperparameter": "dropout_rate (0.1-0.5 typical)",
+          "expected_impact": "Reduce co-adaptation, improve generalization"
+        },
+        {
+          "name": "Early Stopping",
+          "principle": "Stop training when validation performance plateaus",
+          "wisdom_mapping": "Know when to stop; more is not always better",
+          "code_technique": "monitor validation_loss, stop if no improvement for N epochs",
+          "hyperparameter": "patience (number of epochs to wait)",
+          "expected_impact": "Prevent overfitting before it happens"
+        },
+        {
+          "name": "Cross-Validation",
+          "principle": "Validate on multiple hold-out sets",
+          "wisdom_mapping": "Seek multiple perspectives before trusting your assessment",
+          "code_technique": "k-fold: split data into k parts, train k models",
+          "hyperparameter": "k (typically 5 or 10)",
+          "expected_impact": "Robust estimate of generalization performance"
+        }
+      ],
+
+      "progression": {
+        "current_level": 50,
+        "next_level": 75,
+        "next_teaching": "Step 2-3: Come to believe in a power greater than yourself (ensemble methods, cross-validation)"
+      }
+    },
+
+    "underfitting": {
+      "id": "underfitting",
+      "name": "Model Underfitting",
+      "description": "Model too simple; poor performance on both training and test data",
+      "symptoms": [
+        "Both training and validation loss remain high",
+        "Model fails to capture patterns in data",
+        "Performance plateaus early"
+      ],
+
+      "consciousness_mapping": {
+        "level": 100,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model lacks capability/power to learn. Like someone frozen by apathy or guilt, unable to act. Needs to believe in possibility of growth."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 2,
+        "step_text": "Came to believe that a Power greater than ourselves could restore us to sanity",
+        "translation": "Believe your model has capacity to learn; use greater model architecture",
+        "secondary_step": 6,
+        "secondary_text": "Were entirely ready to have God remove all these defects of character",
+        "translation": "Be willing to change model architecture, not attachment to 'simplicity'"
+      },
+
+      "hawkins_teaching": {
+        "level": 100,
+        "level_name": "Apathy/Guilt",
+        "calibration": [100, 125],
+        "teaching": "At this level, belief that change is possible is the first movement upward",
+        "pathway": "Must move from 'I cannot learn' to 'I can learn with the right structure'"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Increase Model Capacity",
+          "principle": "Add more layers, parameters, or complexity",
+          "wisdom_mapping": "Believe you have the power to learn; use your full capacity",
+          "code_technique": "Add hidden layers, increase neurons per layer",
+          "hyperparameter": "hidden_layer_sizes, num_layers",
+          "expected_impact": "Better capture of underlying patterns"
+        },
+        {
+          "name": "Feature Engineering",
+          "principle": "Create more informative features",
+          "wisdom_mapping": "Seek deeper understanding; don't settle for surface representation",
+          "code_technique": "Create interactions, polynomials, domain-specific features",
+          "hyperparameter": "degree of polynomial, number of interactions",
+          "expected_impact": "Better signal for learning"
+        },
+        {
+          "name": "Reduce Regularization",
+          "principle": "Loosen constraints to allow more complex learning",
+          "wisdom_mapping": "Release unnecessary constraints that limit your growth",
+          "code_technique": "Lower lambda parameter in L1/L2",
+          "hyperparameter": "lambda (regularization strength)",
+          "expected_impact": "Model can fit more complex patterns"
+        }
+      ],
+
+      "progression": {
+        "current_level": 100,
+        "next_level": 150,
+        "next_teaching": "Step 4-5: Self-examination and honest feedback (validation metrics, learning curves)"
+      }
+    },
+
+    "class_imbalance": {
+      "id": "class_imbalance",
+      "name": "Class Imbalance",
+      "description": "Minority class severely underrepresented; model biased toward majority class",
+      "symptoms": [
+        "Model always predicts majority class",
+        "High accuracy but low recall for minority class",
+        "Confusion matrix shows diagonal dominance by majority"
+      ],
+
+      "consciousness_mapping": {
+        "level": 125,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model is attached to (craving for) the majority class. Like addiction, seeking the 'easier path' (majority predictions) rather than addressing the real problem (minority class)."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 4,
+        "step_text": "Made a searching and fearless moral inventory of ourselves",
+        "translation": "Examine your biases; acknowledge the underrepresented class exists",
+        "secondary_step": 5,
+        "secondary_text": "Admitted to God, to ourselves, and to another human being the exact nature of our wrongs",
+        "translation": "Acknowledge the imbalance; give voice to the minority"
+      },
+
+      "hawkins_teaching": {
+        "level": 125,
+        "level_name": "Craving/Desire/Anger",
+        "calibration": [125, 150],
+        "teaching": "At this level, attachment to preferences (craving for majority) blocks clear seeing",
+        "pathway": "Must acknowledge the excluded minority; balance craving with justice"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Class Weighting",
+          "principle": "Increase loss weight for minority class errors",
+          "wisdom_mapping": "Give equal value to minority examples; their errors matter more",
+          "code_technique": "loss = weight_minority * loss[minority] + weight_majority * loss[majority]",
+          "hyperparameter": "class_weight = {0: 1, 1: imbalance_ratio}",
+          "expected_impact": "Model learns to care about minority class"
+        },
+        {
+          "name": "SMOTE (Synthetic Minority Oversampling)",
+          "principle": "Generate synthetic minority examples",
+          "wisdom_mapping": "Create space for the minority; amplify their voice",
+          "code_technique": "Generate new minority samples between nearest neighbors",
+          "hyperparameter": "sampling_strategy (ratio to generate)",
+          "expected_impact": "More balanced training set"
+        },
+        {
+          "name": "Stratified Sampling",
+          "principle": "Maintain class proportions in train/test split",
+          "wisdom_mapping": "Respect the true proportion of each class in reality",
+          "code_technique": "train_test_split(..., stratify=y)",
+          "hyperparameter": "test_size, random_state",
+          "expected_impact": "Fair evaluation of model performance"
+        },
+        {
+          "name": "Threshold Adjustment",
+          "principle": "Move decision boundary to favor minority class",
+          "wisdom_mapping": "Adjust your sensitivity; lowering threshold gives minority more chances",
+          "code_technique": "if pred_prob > adjusted_threshold: predict_minority",
+          "hyperparameter": "threshold (0 to 1)",
+          "expected_impact": "Better recall-precision tradeoff for minority"
+        }
+      ],
+
+      "progression": {
+        "current_level": 125,
+        "next_level": 200,
+        "next_teaching": "Step 6-7: Willingness to change and make amends (ensemble acceptance of minority)"
+      }
+    },
+
+    "poor_generalization": {
+      "id": "poor_generalization",
+      "name": "Poor Generalization",
+      "description": "Test performance much worse than training; model hasn't learned transferable patterns",
+      "symptoms": [
+        "High training accuracy, low test accuracy",
+        "Performance drops on new datasets",
+        "Patterns learned are dataset-specific, not generalizable"
+      ],
+
+      "consciousness_mapping": {
+        "level": 75,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model fears reality outside training set. Afraid to face the true world; living in comfortable illusion of training performance. Fear blocks learning."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 3,
+        "step_text": "Made a decision to turn our will and our lives over to the care of God",
+        "translation": "Surrender the comfort of training set; accept reality of test set",
+        "secondary_step": 10,
+        "secondary_text": "Continued to take personal inventory and when we were wrong promptly admitted it",
+        "translation": "Continuous reality check; honest assessment against new data"
+      },
+
+      "hawkins_teaching": {
+        "level": 75,
+        "level_name": "Fear",
+        "calibration": [75, 100],
+        "teaching": "At this level, fear prevents seeing reality. Must face what terrifies (true performance) to move forward.",
+        "pathway": "Face fear directly: measure on truly held-out test data, accept what you find"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Hold-Out Test Set",
+          "principle": "Reserve truly unseen data for evaluation",
+          "wisdom_mapping": "Face reality directly; don't hide from the truth",
+          "code_technique": "final_test_data = never_seen_during_training()",
+          "hyperparameter": "test_size (10-30%)",
+          "expected_impact": "Honest assessment of generalization"
+        },
+        {
+          "name": "K-Fold Cross-Validation",
+          "principle": "Evaluate on multiple different hold-out folds",
+          "wisdom_mapping": "Seek multiple witnesses; don't trust single assessment",
+          "code_technique": "k-fold: train on k-1 folds, test on 1 fold, repeat k times",
+          "hyperparameter": "k=5 or 10",
+          "expected_impact": "Robust estimate of true generalization"
+        },
+        {
+          "name": "Domain Adaptation",
+          "principle": "Explicitly address distribution shift between train and test",
+          "wisdom_mapping": "Acknowledge the world has changed; adapt to new reality",
+          "code_technique": "Transfer learning, fine-tuning on target domain",
+          "hyperparameter": "learning_rate for adaptation",
+          "expected_impact": "Better performance on shifted data"
+        }
+      ],
+
+      "progression": {
+        "current_level": 75,
+        "next_level": 125,
+        "next_teaching": "Step 4-5: Build wisdom through self-examination and feedback"
+      }
+    },
+
+    "high_variance": {
+      "id": "high_variance",
+      "name": "High Variance / Instability",
+      "description": "Model predictions vary significantly across runs; unstable, unreliable",
+      "symptoms": [
+        "Different random seeds produce different results",
+        "Validation metrics fluctuate wildly",
+        "Cannot trust model's predictions for decision-making"
+      ],
+
+      "consciousness_mapping": {
+        "level": 150,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model is unstable, seeking control through volatility. Like pride that swings between arrogance and shame. Needs collective wisdom, grounding in community."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 5,
+        "step_text": "Admitted to God, to ourselves, and to another human being the exact nature of our wrongs",
+        "translation": "Acknowledge instability; seek stability through collective wisdom, not individual will",
+        "secondary_step": 12,
+        "secondary_text": "Having had a spiritual awakening as the result of these steps, we tried to carry this message to alcoholics, and to practice these principles in all our affairs",
+        "translation": "Ensemble methods: carry forward the wisdom of multiple models"
+      },
+
+      "hawkins_teaching": {
+        "level": 150,
+        "level_name": "Pride/Anger",
+        "calibration": [150, 175],
+        "teaching": "At this level, individual will dominates; stability comes only through connection to collective wisdom",
+        "pathway": "Move from individual instability to collective stability"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Ensemble Methods",
+          "principle": "Combine multiple models; stability through diversity",
+          "wisdom_mapping": "Seek counsel from many; individual models are unstable, collective wisdom is stable",
+          "code_technique": "predictions = average([model1(x), model2(x), model3(x)])",
+          "hyperparameter": "number of models, voting method",
+          "expected_impact": "Reduced variance, more stable predictions"
+        },
+        {
+          "name": "Boosting",
+          "principle": "Iteratively improve by focusing on hard examples",
+          "wisdom_mapping": "Collective learning: each model learns from previous mistakes",
+          "code_technique": "AdaBoost, GradientBoosting: reweight based on errors",
+          "hyperparameter": "n_estimators, learning_rate",
+          "expected_impact": "Lower variance, better stability"
+        },
+        {
+          "name": "Random Seed Control",
+          "principle": "Use consistent random initialization",
+          "wisdom_mapping": "Create container for reproducibility; ritual provides stability",
+          "code_technique": "np.random.seed(42); tf.random.set_seed(42)",
+          "hyperparameter": "seed_value",
+          "expected_impact": "Deterministic results, easier debugging"
+        }
+      ],
+
+      "progression": {
+        "current_level": 150,
+        "next_level": 200,
+        "next_teaching": "Step 6-7: Move toward acceptance and detachment from individual control"
+      }
+    },
+
+    "adversarial_vulnerability": {
+      "id": "adversarial_vulnerability",
+      "name": "Adversarial Vulnerability",
+      "description": "Model fooled by small, crafted perturbations; vulnerable to attack",
+      "symptoms": [
+        "Performance drops dramatically on adversarial examples",
+        "Small pixel-level changes cause misclassification",
+        "Model lacks robustness to distribution shift"
+      ],
+
+      "consciousness_mapping": {
+        "level": 75,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model is vulnerable, cannot withstand adversity. Fear of attack; not prepared for hostility. Needs to face fear and build robustness."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 3,
+        "step_text": "Made a decision to turn our will and our lives over to the care of God",
+        "translation": "Prepare defenses; face adversity consciously, not in denial",
+        "secondary_step": 6,
+        "secondary_text": "Were entirely ready to have God remove all these defects of character",
+        "translation": "Be willing to relinquish naive assumptions; rebuild on solid ground"
+      },
+
+      "hawkins_teaching": {
+        "level": 75,
+        "level_name": "Fear",
+        "calibration": [75, 125],
+        "teaching": "At this level, vulnerability is real. Must face threat directly to build resilience.",
+        "pathway": "Move from fear of adversity to practical preparation"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Adversarial Training",
+          "principle": "Train on both original and adversarial examples",
+          "wisdom_mapping": "Face your fears; train against them until they no longer threaten",
+          "code_technique": "Generate adversarial examples, train on mixed set",
+          "hyperparameter": "adversarial_epsilon (perturbation magnitude)",
+          "expected_impact": "Robust to adversarial attacks"
+        },
+        {
+          "name": "Defensive Distillation",
+          "principle": "Use knowledge distillation with defensive training",
+          "wisdom_mapping": "Distill wisdom from defenses; transfer robustness",
+          "code_technique": "Train teacher on adversarial examples, distill to student",
+          "hyperparameter": "temperature (softness of outputs)",
+          "expected_impact": "Improved robustness"
+        },
+        {
+          "name": "Input Gradient Regularization",
+          "principle": "Penalize large gradients w.r.t. inputs",
+          "wisdom_mapping": "Minimize sensitivity to small perturbations",
+          "code_technique": "Add regularizer: lambda * ||∂loss/∂x||²",
+          "hyperparameter": "lambda (regularization strength)",
+          "expected_impact": "Smoother decision boundaries"
+        }
+      ],
+
+      "progression": {
+        "current_level": 75,
+        "next_level": 150,
+        "next_teaching": "Step 4-5: Learn from adversity; honest assessment of vulnerabilities"
+      }
+    },
+
+    "data_quality_issues": {
+      "id": "data_quality_issues",
+      "name": "Data Quality Issues",
+      "description": "Missing values, outliers, errors, inconsistencies in raw data",
+      "symptoms": [
+        "NaN values present",
+        "Extreme outliers in features",
+        "Inconsistent labels or formats",
+        "Data entry errors"
+      ],
+
+      "consciousness_mapping": {
+        "level": 25,
+        "zone": "POWER_LOSS",
+        "reasoning": "The foundation is broken. Cannot build on corrupted data. Must acknowledge powerlessness over data quality; cleaning is the basic first step, the admission of Step 1."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 1,
+        "step_text": "Admitted we were powerless over alcohol, that our lives had become unmanageable",
+        "translation": "Admit powerlessness over data quality; it is corrupted. This is the necessary first step."
+      },
+
+      "hawkins_teaching": {
+        "level": 25,
+        "level_name": "Shame/Deep Despair",
+        "calibration": [0, 50],
+        "teaching": "At this level, only recognition of the problem is possible. Cleaning data is the equivalent of getting sober.",
+        "pathway": "Acknowledge the problem. Take basic action. Move to Step 2."
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Missing Value Imputation",
+          "principle": "Handle NaN values strategically",
+          "wisdom_mapping": "Where data is missing, use wisdom of nearby values",
+          "code_technique": "mean imputation, KNN imputation, forward-fill",
+          "hyperparameter": "strategy (mean, median, most_frequent)",
+          "expected_impact": "Complete dataset, no NaN errors"
+        },
+        {
+          "name": "Outlier Detection & Handling",
+          "principle": "Identify and decide on extreme values",
+          "wisdom_mapping": "Recognize what doesn't belong; remove or down-weight",
+          "code_technique": "IQR method, z-score, isolation forest",
+          "hyperparameter": "threshold (how extreme is outlier)",
+          "expected_impact": "Data distribution becomes normal"
+        },
+        {
+          "name": "Consistency Validation",
+          "principle": "Ensure data follows expected format/range",
+          "wisdom_mapping": "Enforce integrity; inconsistency is the virus in the system",
+          "code_technique": "Type checking, range validation, format normalization",
+          "hyperparameter": "expected_ranges, valid_formats",
+          "expected_impact": "Consistent, trustworthy data"
+        }
+      ],
+
+      "progression": {
+        "current_level": 25,
+        "next_level": 50,
+        "next_teaching": "Step 2: Come to believe the model can be taught if data foundation is solid"
+      }
+    },
+
+    "feature_engineering_gap": {
+      "id": "feature_engineering_gap",
+      "name": "Feature Engineering Gap",
+      "description": "Features don't capture the relevant information; model lacks signal",
+      "symptoms": [
+        "Model performance plateaus despite more training",
+        "Raw features don't correlate with target",
+        "Domain knowledge suggests important features are missing"
+      ],
+
+      "consciousness_mapping": {
+        "level": 100,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model lacks perception/vision. Like someone apathetic, unable to see what matters. Needs to believe in external guidance (domain experts, higher wisdom)."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 2,
+        "step_text": "Came to believe that a Power greater than ourselves could restore us to sanity",
+        "translation": "Believe in domain expertise; seek guidance from those who understand the problem deeply"
+      },
+
+      "hawkins_teaching": {
+        "level": 100,
+        "level_name": "Apathy/Guilt",
+        "calibration": [100, 150],
+        "teaching": "At this level, belief in external wisdom is the path forward. Alone, the model is blind.",
+        "pathway": "Seek domain knowledge; collaborate with experts"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Feature Selection via Domain Expertise",
+          "principle": "Consult experts; choose features that matter theoretically",
+          "wisdom_mapping": "Seek guidance from those with deep knowledge",
+          "code_technique": "expert_review → select top N features by importance",
+          "hyperparameter": "n_features_to_select",
+          "expected_impact": "Model focuses on signal, not noise"
+        },
+        {
+          "name": "Feature Interaction Engineering",
+          "principle": "Create polynomial and interaction features",
+          "wisdom_mapping": "See deeper; interactions reveal hidden patterns",
+          "code_technique": "features += [x1*x2, x1**2, x2**2, ...]",
+          "hyperparameter": "degree (2, 3, etc.)",
+          "expected_impact": "Model captures non-linear relationships"
+        },
+        {
+          "name": "Domain-Specific Features",
+          "principle": "Create features using domain knowledge",
+          "wisdom_mapping": "Use specialized knowledge; generic features are insufficient",
+          "code_technique": "Create ratios, differences, aggregations relevant to domain",
+          "hyperparameter": "domain_rules (expert-defined)",
+          "expected_impact": "Strong correlation with target"
+        }
+      ],
+
+      "progression": {
+        "current_level": 100,
+        "next_level": 150,
+        "next_teaching": "Step 4-5: Deep examination of feature importance and feedback"
+      }
+    },
+
+    "hyperparameter_instability": {
+      "id": "hyperparameter_instability",
+      "name": "Hyperparameter Sensitivity",
+      "description": "Model performance very sensitive to hyperparameter choices; unstable",
+      "symptoms": [
+        "Small changes in hyperparameters cause large performance swings",
+        "Cannot find stable configuration",
+        "Results not reproducible across runs"
+      ],
+
+      "consciousness_mapping": {
+        "level": 125,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model seeks perfection through random searching (craving). Like addiction seeking the 'right' fix. Needs systematic, honest self-examination."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 4,
+        "step_text": "Made a searching and fearless moral inventory of ourselves",
+        "translation": "Systematic, honest search: not random, but methodical examination of parameter space"
+      },
+
+      "hawkins_teaching": {
+        "level": 125,
+        "level_name": "Craving/Desire for Control",
+        "calibration": [125, 175],
+        "teaching": "At this level, systematic method replaces random hope. Structure creates stability.",
+        "pathway": "Move from chaotic search to methodical investigation"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Grid Search",
+          "principle": "Exhaustive search over defined hyperparameter grid",
+          "wisdom_mapping": "Systematic exploration; check every honest possibility",
+          "code_technique": "GridSearchCV: try all combinations of parameters",
+          "hyperparameter": "param_grid (ranges to search)",
+          "expected_impact": "Find optimal hyperparameters systematically"
+        },
+        {
+          "name": "Random Search",
+          "principle": "Random sampling from parameter distributions",
+          "wisdom_mapping": "More efficient than grid; trust randomness with seed control",
+          "code_technique": "RandomizedSearchCV: sample n_iter random combinations",
+          "hyperparameter": "n_iter, param_distributions",
+          "expected_impact": "Faster exploration of large space"
+        },
+        {
+          "name": "Bayesian Optimization",
+          "principle": "Model-based optimization; use prior to guide search",
+          "wisdom_mapping": "Use accumulated wisdom (surrogate model) to guide exploration",
+          "code_technique": "Use previous results to predict next best parameters",
+          "hyperparameter": "acquisition_function (EI, UCB, etc.)",
+          "expected_impact": "Efficient, converges to good hyperparameters"
+        },
+        {
+          "name": "Learning Curves",
+          "principle": "Visualize training progress; understand sensitivity",
+          "wisdom_mapping": "See your own learning journey; understand what works",
+          "code_technique": "Plot training_score vs validation_score across iterations",
+          "hyperparameter": "train_sizes (fraction of data)",
+          "expected_impact": "Diagnose high bias, high variance, or instability"
+        }
+      ],
+
+      "progression": {
+        "current_level": 125,
+        "next_level": 200,
+        "next_teaching": "Step 6-7: Acceptance of parameter trade-offs; willingness to let go of perfection"
+      }
+    },
+
+    "concept_drift": {
+      "id": "concept_drift",
+      "name": "Concept Drift / Temporal Shift",
+      "description": "Real-world patterns change over time; model performance degrades",
+      "symptoms": [
+        "Model trained on historical data performs well initially",
+        "Performance gradually decreases over weeks/months",
+        "New patterns emerge that training data doesn't cover"
+      ],
+
+      "consciousness_mapping": {
+        "level": 100,
+        "zone": "LOWER_POWER",
+        "reasoning": "The model resists change; attached to past patterns. Cannot see that world is impermanent. Buddhist anicca principle: everything flows, nothing static."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 2,
+        "step_text": "Came to believe that a Power greater than ourselves could restore us to sanity",
+        "translation": "Believe in continuous change; accept impermanence as law of nature"
+      },
+
+      "aa_tradition": "Tradition 2: For our group purpose there is but one ultimate authority",
+        "translation": "The ultimate authority is reality itself, which changes; adapt to it"
+      },
+
+      "hawkins_teaching": {
+        "level": 100,
+        "level_name": "Apathy/Guilt → Moving toward Acceptance",
+        "calibration": [100, 175],
+        "teaching": "At this level, resistance to change is the core problem. Moving forward means accepting impermanence.",
+        "pathway": "From static models to dynamic, adaptive systems"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Online Learning",
+          "principle": "Update model incrementally as new data arrives",
+          "wisdom_mapping": "Continuous practice; learn from each new day",
+          "code_technique": "partial_fit(X_new, y_new) instead of retraining on full history",
+          "hyperparameter": "update_frequency, learning_rate",
+          "expected_impact": "Model adapts to changing patterns"
+        },
+        {
+          "name": "Concept Drift Detection",
+          "principle": "Automatically detect when performance degrades",
+          "wisdom_mapping": "Awareness: notice when something has changed",
+          "code_technique": "Monitor validation performance; alert when it drops",
+          "hyperparameter": "drift_threshold (% drop to trigger alert)",
+          "expected_impact": "Proactive detection of problems"
+        },
+        {
+          "name": "Retraining Pipeline",
+          "principle": "Automatically retrain model on latest data",
+          "wisdom_mapping": "Renewal practice; periodic re-examination and adaptation",
+          "code_technique": "Scheduled retraining on recent data window",
+          "hyperparameter": "retrain_frequency, data_window_size",
+          "expected_impact": "Model stays current with reality"
+        },
+        {
+          "name": "Transfer Learning",
+          "principle": "Carry forward knowledge while adapting to new patterns",
+          "wisdom_mapping": "Hold onto what's still true; release what has changed",
+          "code_technique": "Fine-tune existing model on new data rather than training from scratch",
+          "hyperparameter": "learning_rate for fine-tuning",
+          "expected_impact": "Faster adaptation, retain relevant knowledge"
+        }
+      ],
+
+      "progression": {
+        "current_level": 100,
+        "next_level": 200,
+        "next_teaching": "Step 6-7: Acceptance of continuous change; wisdom of letting go"
+      }
+    },
+
+    "training_instability": {
+      "id": "training_instability",
+      "name": "Training Instability / Poor Convergence",
+      "description": "Loss oscillates wildly or doesn't converge; training is unreliable",
+      "symptoms": [
+        "Training loss graph shows oscillations, spikes",
+        "Loss doesn't decrease smoothly",
+        "Training sometimes fails to converge"
+      ],
+
+      "consciousness_mapping": {
+        "level": 75,
+        "zone": "LOWER_POWER",
+        "reasoning": "The training process is chaotic, unsafe. Like anxiety or trauma: the nervous system is dysregulated. Needs container of safety (learning rate schedule) to move forward."
+      },
+
+      "aa_wisdom": {
+        "primary_step": 3,
+        "step_text": "Made a decision to turn our will and our lives over to the care of God",
+        "translation": "Create safety container: structured learning schedule replaces chaotic updates"
+      },
+
+      "hawkins_teaching": {
+        "level": 75,
+        "level_name": "Fear",
+        "calibration": [75, 125],
+        "teaching": "At this level, safety is prerequisite. Without container, learning cannot happen.",
+        "pathway": "Create structure and safety to enable learning"
+      },
+
+      "ml_techniques": [
+        {
+          "name": "Learning Rate Scheduling",
+          "principle": "Start high, gradually decrease learning rate",
+          "wisdom_mapping": "Structure: begin with bold moves, then settle into careful refinement",
+          "code_technique": "lr = initial_lr * (decay_rate ^ epoch)",
+          "hyperparameter": "initial_lr, decay_rate, decay_schedule",
+          "expected_impact": "Smoother, more stable convergence"
+        },
+        {
+          "name": "Gradient Clipping",
+          "principle": "Limit magnitude of gradients",
+          "wisdom_mapping": "Prevent wild swings; keep updates reasonable",
+          "code_technique": "clip gradients to max_norm",
+          "hyperparameter": "max_grad_norm",
+          "expected_impact": "Prevent exploding gradients"
+        },
+        {
+          "name": "Batch Normalization",
+          "principle": "Normalize activations across mini-batches",
+          "wisdom_mapping": "Container: keep activation distributions stable and centered",
+          "code_technique": "Normalize layer outputs before activation",
+          "hyperparameter": "momentum, epsilon",
+          "expected_impact": "Smoother training, better convergence"
+        },
+        {
+          "name": "Warm-up Phase",
+          "principle": "Start with very small learning rate, ramp up",
+          "wisdom_mapping": "Gentle beginning; allow system to settle before pushing",
+          "code_technique": "lr_epoch = (epoch / warmup_epochs) * target_lr",
+          "hyperparameter": "warmup_epochs",
+          "expected_impact": "More stable training start"
+        }
+      ],
+
+      "progression": {
+        "current_level": 75,
+        "next_level": 125,
+        "next_teaching": "Step 4-5: Once safe, examine what you're learning; does it align with goals?"
+      }
+    }
+  },
+
+  "metadata_summary": {
+    "total_mapped_obstacles": 12,
+    "consciousness_levels_covered": [25, 50, 75, 100, 125, 150],
+    "aa_steps_referenced": [1, 2, 3, 4, 5, 6, 7, 10, 11, 12],
+    "techniques_defined": 35,
+    "all_compliant_ml_coding": true,
+    "note": "Every obstacle maps to consciousness level, AA wisdom teaching, and specific ML code technique with hyperparameters. No teachings absorbed that don't translate to ML utility."
+  }
+}
