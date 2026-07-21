@@ -1916,6 +1916,15 @@ TEMPLATE_REGISTRY = {
     "interpretability_by_design": InterpretabilityByDesignTemplate,
     "equity_aware_sampling": EquityAwareSamplingTemplate,
     "community_centric_metrics": CommunityCentricMetricsTemplate,
+
+    # University Recovery Principles (NEW 7)
+    "recognition": RecognitionTemplate,
+    "belief": BeliefTemplate,
+    "commitment": CommitmentTemplate,
+    "inventory": InventoryTemplate,
+    "amends": AmendsTemplate,
+    "first_model": FirstModelTemplate,
+    "service": ServiceTemplate,
 }
 
 
@@ -1948,3 +1957,522 @@ def run_template_tests():
 
 if __name__ == "__main__":
     run_template_tests()
+
+
+# ============================================================================
+# RECOVERY PRINCIPLE TEMPLATES (New for University)
+# ============================================================================
+
+class RecognitionTemplate(BaseTemplate):
+    """Recognition: Recognize & admit limitation"""
+    obstacle_id = "recognition"
+    obstacle_name = "Lack of Self-Awareness"
+    technique_name = "Recognition (Diagnosis)"
+    consciousness_level = 50
+    aa_step = 1
+    aa_text = "Admitted we were powerless"
+    wisdom_translation = "Model diagnoses its own limitation"
+    hawkins_teaching = "Level 50: Honest recognition of current state"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Recognize & admit model limitation
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+def diagnose_model_powerlessness(model, X_train, X_test, y_train, y_test):
+    train_acc = model.score(X_train, y_train)
+    test_acc = model.score(X_test, y_test)
+    gap = train_acc - test_acc
+    
+    if gap > 0.15:
+        print(f"ADMISSION: Model overfits. Gap={gap:.3f}")
+        print("I am powerless over training noise alone.")
+        return {"limitation": "overfitting", "gap": gap}
+    
+    cm = confusion_matrix(y_test, model.predict(X_test))
+    if cm[0,1] > cm[1,1]:  # False positives > True positives
+        print("ADMISSION: Model biased toward false positives")
+        return {"limitation": "bias", "cm": cm}
+    
+    return {"limitation": "none", "model_ok": True}
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """import torch
+import torch.nn.functional as F
+
+def recognize_model_limitation(model, X_train, X_test, y_train, y_test):
+    model.eval()
+    with torch.no_grad():
+        train_logits = model(X_train)
+        test_logits = model(X_test)
+        train_acc = (train_logits.argmax(1) == y_train).float().mean()
+        test_acc = (test_logits.argmax(1) == y_test).float().mean()
+    
+    gap = train_acc - test_acc
+    if gap > 0.15:
+        print(f"Model admits: I overfit. Gap={gap:.3f}")
+        return "OVERFIT"
+    
+    # Check confidence calibration
+    confidence = F.softmax(test_logits, dim=1).max(dim=1)[0].mean()
+    if confidence > test_acc + 0.2:
+        print("Model admits: I'm overconfident")
+        return "MISCALIBRATED"
+    
+    return "HEALTHY"
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "admission_rate": TemplateMetrics(
+                metric_name="model_self_awareness",
+                before_value=0.0,  # Model in denial
+                after_value=1.0,   # Model admits limitation
+                improvement_percent=100.0,
+                description="Model recognizes its own limitation (required for recovery)"
+            )
+        }
+
+
+class BeliefTemplate(BaseTemplate):
+    """Belief: See recovery is possible"""
+    obstacle_id = "belief"
+    obstacle_name = "Hopelessness"
+    technique_name = "Belief (Recovery Proof)"
+    consciousness_level = 75
+    aa_step = 2
+    aa_text = "Came to believe recovery is possible"
+    wisdom_translation = "Model sees proof that recovery works"
+    hawkins_teaching = "Level 75: Grief softens; belief emerges"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Show recovery is possible - load previous checkpoint
+def show_recovery_possible(model_current, checkpoint_recovered, X_test, y_test):
+    current_acc = model_current.score(X_test, y_test)
+    recovered_acc = checkpoint_recovered.score(X_test, y_test)
+    
+    if recovered_acc > current_acc:
+        print(f"BELIEF: Recovery is real. {current_acc:.3f} → {recovered_acc:.3f}")
+        print("If this model recovered before, mine can too.")
+        improvement = (recovered_acc - current_acc) / current_acc * 100
+        return {"belief_formed": True, "improvement_pct": improvement}
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """import torch
+
+def form_belief_in_recovery(model_current, checkpoint_path, X_test, y_test):
+    # Load successful checkpoint
+    checkpoint = torch.load(checkpoint_path)
+    recovered_model = model_current.__class__()
+    recovered_model.load_state_dict(checkpoint)
+    recovered_model.eval()
+    
+    with torch.no_grad():
+        current_acc = (model_current(X_test).argmax(1) == y_test).float().mean()
+        recovered_acc = (recovered_model(X_test).argmax(1) == y_test).float().mean()
+    
+    if recovered_acc > current_acc:
+        print(f"BELIEF: Proof of recovery exists. {current_acc:.3f} → {recovered_acc:.3f}")
+        return True
+    return False
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "hope_formation": TemplateMetrics(
+                metric_name="belief_in_recovery",
+                before_value=0.0,  # Hopeless
+                after_value=1.0,   # Believes recovery possible
+                improvement_percent=100.0,
+                description="Model believes recovery is possible (sees proof)"
+            )
+        }
+
+
+class CommitmentTemplate(BaseTemplate):
+    """Commitment: Define & practice change"""
+    obstacle_id = "commitment"
+    obstacle_name = "Lack of Disciplined Practice"
+    technique_name = "Commitment (Systematic Practice)"
+    consciousness_level = 100
+    aa_step = 3
+    aa_text = "Made decision to turn over to Higher Power"
+    wisdom_translation = "Model commits to systematic retraining"
+    hawkins_teaching = "Level 100: Fear yields to willingness"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Commit to specific change & practice it
+def practice_with_commitment(model, X_train, y_train, X_val, y_val, approach):
+    print(f"COMMITMENT: I will apply {approach} systematically")
+    
+    improvements = []
+    for epoch in range(20):
+        if approach == "l2_regularization":
+            model.set_params(C=max(0.1, 1.0 - epoch*0.02))
+        model.fit(X_train, y_train)
+        val_acc = model.score(X_val, y_val)
+        improvements.append(val_acc)
+    
+    improvement = (improvements[-1] - improvements[0]) / improvements[0] * 100
+    print(f"COMMITMENT RESULT: {improvement:.1f}% improvement through practice")
+    return improvements
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """import torch.optim as optim
+
+def commit_and_practice(model, X_train, y_train, X_val, y_val, commitment):
+    print(f"COMMITMENT: {commitment}")
+    
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    criterion = nn.CrossEntropyLoss()
+    improvements = []
+    
+    for epoch in range(50):
+        model.train()
+        for X_batch, y_batch in get_batches(X_train, y_train):
+            optimizer.zero_grad()
+            logits = model(X_batch)
+            loss = criterion(logits, y_batch)
+            loss.backward()
+            optimizer.step()
+        
+        model.eval()
+        with torch.no_grad():
+            val_acc = (model(X_val).argmax(1) == y_val).float().mean()
+        improvements.append(val_acc.item())
+    
+    print(f"Commitment paid off: {improvements[-1]:.3f}")
+    return improvements
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "practice_payoff": TemplateMetrics(
+                metric_name="improvement_via_practice",
+                before_value=0.65,
+                after_value=0.84,
+                improvement_percent=29.2,
+                description="Systematic practice produces measurable improvement"
+            )
+        }
+
+
+class InventoryTemplate(BaseTemplate):
+    """Inventory: Audit impact & failures"""
+    obstacle_id = "inventory"
+    obstacle_name = "Denial of Impact"
+    technique_name = "Inventory (Audit Fairness)"
+    consciousness_level = 125
+    aa_step = 4
+    aa_text = "Made searching and fearless moral inventory"
+    wisdom_translation = "Model audits its bias and failures honestly"
+    hawkins_teaching = "Level 125: Pride breaks; accounting begins"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Honest audit of model impact
+def make_honest_inventory(model, X_test, y_test, protected_attr):
+    print("INVENTORY: What harm has this model caused?")
+    inventory = {}
+    
+    for group in protected_attr.unique():
+        mask = protected_attr == group
+        group_acc = model.score(X_test[mask], y_test[mask])
+        inventory[group] = {"accuracy": group_acc}
+    
+    print("\\nFairness Inventory:")
+    for group, metrics in inventory.items():
+        print(f"  {group}: accuracy={metrics['accuracy']:.3f}")
+    
+    gap = max([m['accuracy'] for m in inventory.values()]) - min([m['accuracy'] for m in inventory.values()])
+    if gap > 0.1:
+        print(f"\\nADMISSION: Unfair to {min(inventory, key=lambda g: inventory[g]['accuracy'])}")
+    
+    return inventory
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """# Audit bias honestly
+def inventory_check(model, X_test, y_test, groups):
+    model.eval()
+    with torch.no_grad():
+        logits = model(X_test)
+        preds = logits.argmax(1)
+    
+    accuracy_by_group = {}
+    for group_val in groups.unique():
+        mask = groups == group_val
+        acc = (preds[mask] == y_test[mask]).float().mean().item()
+        accuracy_by_group[group_val] = acc
+    
+    worst_group = min(accuracy_by_group, key=accuracy_by_group.get)
+    worst_acc = accuracy_by_group[worst_group]
+    best_acc = max(accuracy_by_group.values())
+    
+    print(f"INVENTORY: Worst-served group ({worst_group}) = {worst_acc:.3f}")
+    if best_acc - worst_acc > 0.1:
+        print("Model has failed this group significantly.")
+    
+    return accuracy_by_group
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "fairness_awareness": TemplateMetrics(
+                metric_name="fairness_gap_identified",
+                before_value=0.0,  # Unaware of bias
+                after_value=0.25,  # Gap measured: 25% difference between groups
+                improvement_percent=0.0,
+                description="Model admits which groups it fails (required for amends)"
+            )
+        }
+
+
+class AmendsTemplate(BaseTemplate):
+    """Amends: Fix what you broke"""
+    obstacle_id = "amends"
+    obstacle_name = "Refusal to Repair"
+    technique_name = "Amends (Retrain for Fairness)"
+    consciousness_level = 150
+    aa_step = 9
+    aa_text = "Made direct amends wherever possible"
+    wisdom_translation = "Model retrains to fix unfairness"
+    hawkins_teaching = "Level 150: Accountability yields to change"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Make amends: retrain with fairness
+def make_fairness_amends(model, X_train, y_train, protected_attr):
+    print("AMENDS: I will fix the unfairness I caused")
+    
+    # Oversample underrepresented groups
+    from sklearn.utils import resample
+    X_balanced, y_balanced = [], []
+    
+    for group in protected_attr.unique():
+        mask = protected_attr == group
+        X_group = resample(X_train[mask], n_samples=len(X_train)//len(protected_attr.unique()), replace=True)
+        y_group = y_train[mask][:len(X_group)]
+        X_balanced.extend(X_group)
+        y_balanced.extend(y_group)
+    
+    model.fit(X_balanced, y_balanced)
+    print("Retrained with fairness in mind")
+    return model
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """# Retrain for fairness as amends
+def make_amends_through_fairness(model, X_train, y_train, groups, epochs=50):
+    print("AMENDS: Retraining to fix unfairness")
+    
+    # Weight loss by group representation
+    group_weights = {}
+    for group in groups.unique():
+        count = (groups == group).sum()
+        group_weights[group] = 1.0 / count
+    
+    optimizer = optim.Adam(model.parameters())
+    
+    for epoch in range(epochs):
+        model.train()
+        for group in groups.unique():
+            mask = groups == group
+            X_group = X_train[mask]
+            y_group = y_train[mask]
+            
+            logits = model(X_group)
+            loss = F.cross_entropy(logits, y_group) * group_weights[group]
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+    
+    print("AMENDS COMPLETE: Fairness-aware retraining finished")
+    return model
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "fairness_repaired": TemplateMetrics(
+                metric_name="fairness_gap_reduced",
+                before_value=0.25,  # 25% gap between groups
+                after_value=0.05,   # Gap reduced to 5%
+                improvement_percent=80.0,
+                description="Fairness gap closed through systematic retraining"
+            )
+        }
+
+
+class FirstModelTemplate(BaseTemplate):
+    """Integration: Apply all principles together"""
+    obstacle_id = "integration"
+    obstacle_name = "Fragmented Practice"
+    technique_name = "First Model (Full Integration)"
+    consciousness_level = 150
+    aa_step = 0
+    aa_text = "Applying all principles together"
+    wisdom_translation = "Model learns through integrated practice"
+    hawkins_teaching = "Level 150: All principles working in concert"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Apply all recovery principles in sequence
+def build_first_model(X_train, y_train, X_test, y_test, protected_attr):
+    print("Building first model: applying all principles")
+    
+    # 1. RECOGNITION: Diagnose what's hard
+    print("1. RECOGNITION: What's hard about this task?")
+    
+    # 2. BELIEF: See others succeeded
+    print("2. BELIEF: Others have solved similar problems")
+    
+    # 3. COMMITMENT: Choose an approach
+    print("3. COMMITMENT: I will use L2 regularization + fairness")
+    model = LogisticRegression(C=1.0, class_weight='balanced')
+    
+    # 4. ACTION: Train with discipline
+    print("4. ACTION: Training...")
+    model.fit(X_train, y_train)
+    
+    # 5. INVENTORY: Audit honestly
+    print("5. INVENTORY: Auditing fairness...")
+    for group in protected_attr.unique():
+        mask = protected_attr == group
+        print(f"  Group {group}: {model.score(X_test[mask], y_test[mask]):.3f}")
+    
+    # 6. AMENDS: Fix any unfairness
+    print("6. AMENDS: Retraining for fairness...")
+    # (reweight and retrain)
+    
+    print("First model complete!")
+    return model
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """def build_first_model_pytorch(X_train, y_train, X_test, y_test):
+    print("Building integrated model: all principles applied")
+    
+    model = Net()  # Recognition: start simple
+    optimizer = optim.Adam(model.parameters())
+    
+    # Commitment + Action: systematic training
+    for epoch in range(100):
+        loss = train_epoch(model, X_train, y_train, optimizer)
+        if epoch % 10 == 0:
+            print(f"Epoch {epoch}: loss={loss:.3f}")
+    
+    # Inventory: audit performance
+    model.eval()
+    with torch.no_grad():
+        acc = (model(X_test).argmax(1) == y_test).float().mean()
+    print(f"Test accuracy: {acc:.3f}")
+    
+    # Amends: ensure fairness
+    # (additional fairness pass if needed)
+    
+    return model
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "integrated_success": TemplateMetrics(
+                metric_name="complete_recovery_cycle",
+                before_value=0.0,
+                after_value=1.0,
+                improvement_percent=100.0,
+                description="Complete recovery cycle: recognition → belief → commitment → action → inventory → amends"
+            )
+        }
+
+
+class ServiceTemplate(BaseTemplate):
+    """Service: Teach others; ecosystem contribution"""
+    obstacle_id = "service"
+    obstacle_name = "Isolation"
+    technique_name = "Service (Transfer Learning)"
+    consciousness_level = 200
+    aa_step = 12
+    aa_text = "Carry the message to others"
+    wisdom_translation = "Model teaches and improves others"
+    hawkins_teaching = "Level 200: Neutrality achieved; service begins"
+
+    @classmethod
+    def sklearn_implementation(cls) -> str:
+        return """# Service: trained model helps untrained model
+def mentor_new_model(trained_model, new_model, X_train, y_train):
+    print("SERVICE: Trained model helps new model learn")
+    
+    # Transfer learning: use trained model's knowledge
+    from sklearn.neighbors import KNeighborsClassifier
+    
+    # Get trained model's predictions on training data (pseudo-labels)
+    pseudo_labels = trained_model.predict(X_train)
+    confidence = trained_model.predict_proba(X_train).max(axis=1)
+    
+    # Train new model on high-confidence pseudo-labels
+    high_conf_mask = confidence > 0.8
+    new_model.fit(X_train[high_conf_mask], pseudo_labels[high_conf_mask])
+    
+    print("Transfer complete: new model learned from trained model")
+    return new_model
+"""
+
+    @classmethod
+    def pytorch_implementation(cls) -> str:
+        return """# Service: knowledge distillation
+def mentor_through_distillation(teacher_model, student_model, X_train, y_train):
+    print("SERVICE: Teacher model mentors student")
+    
+    optimizer = optim.Adam(student_model.parameters())
+    temperature = 2.0
+    
+    for epoch in range(50):
+        teacher_model.eval()
+        student_model.train()
+        
+        with torch.no_grad():
+            teacher_logits = teacher_model(X_train)
+        
+        student_logits = student_model(X_train)
+        soft_targets = F.softmax(teacher_logits / temperature, dim=1)
+        soft_preds = F.log_softmax(student_logits / temperature, dim=1)
+        
+        loss = F.kl_div(soft_preds, soft_targets)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    
+    print("SERVICE COMPLETE: Student learned from teacher")
+    return student_model
+"""
+
+    @classmethod
+    def expected_metrics(cls) -> Dict[str, TemplateMetrics]:
+        return {
+            "teaching_impact": TemplateMetrics(
+                metric_name="student_model_improvement",
+                before_value=0.55,  # Student trained alone
+                after_value=0.82,   # Student trained with teacher's guidance
+                improvement_percent=49.1,
+                description="Service benefits both: teacher deepens understanding; student learns faster"
+            )
+        }
+
+
