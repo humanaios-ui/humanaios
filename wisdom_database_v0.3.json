@@ -1,0 +1,196 @@
+{
+  "version": "0.3",
+  "timestamp": "2026-07-20",
+  "traditions": 9,
+  "units": 200,
+  "metadata": {
+    "description": "Expanded wisdom database integrating 3 new traditions (ACIM, Musashi, Living Buddha). Unified consciousness mapping across 9 traditions at Hawkins 0-1000 scale.",
+    "traditions": ["AA 12 Steps", "AA 12 Traditions", "Hawkins Consciousness Map", "Words of Jesus", "Buddhist Core", "Freemasonry", "A Course in Miracles", "Book of Five Rings", "Living Buddha Living Christ"]
+  },
+  "wisdom": {
+    "aa_12_steps": {
+      "tradition": "AA 12 Steps",
+      "focus": "Recovery from addiction through spiritual principles",
+      "consciousness_range": [0, 600],
+      "units": [
+        {"id": "aa_1", "level": 25, "title": "Powerlessness", "teaching": "We admitted we were powerless over alcohol — and that our lives had become unmanageable", "challenge": "Acceptance, surrender", "code_mapping": "Admit model's limitation; add constraint", "obstacle": "Overfitting"},
+        {"id": "aa_2", "level": 75, "title": "Power Greater Than Self", "teaching": "Came to believe that a Power greater than ourselves could restore us to sanity", "challenge": "Faith, belief", "code_mapping": "Believe in model's capacity; increase parameters", "obstacle": "Underfitting"},
+        {"id": "aa_3", "level": 100, "title": "Surrender Decision", "teaching": "Made a decision to turn our will and our lives over to the care of God as we understood Him", "challenge": "Trust, release control", "code_mapping": "Release hyperparameter tuning; trust gradient descent", "obstacle": "Hyperparameter sensitivity"},
+        {"id": "aa_4", "level": 125, "title": "Moral Inventory", "teaching": "Made a searching and fearless moral inventory of ourselves", "challenge": "Honesty, self-examination", "code_mapping": "Audit model weights and biases; weight minority classes equally", "obstacle": "Class imbalance"},
+        {"id": "aa_5", "level": 150, "title": "Confession", "teaching": "Admitted to God, to ourselves, and to another human being the exact nature of our wrongs", "challenge": "Honesty, accountability", "code_mapping": "Surface overfitting; admit prediction error", "obstacle": "Poor generalization"},
+        {"id": "aa_6", "level": 200, "title": "Willingness to Change", "teaching": "Were entirely ready to have God remove all these defects of character", "challenge": "Willingness, readiness", "code_mapping": "Ready architecture for restructuring", "obstacle": "Training instability"},
+        {"id": "aa_7", "level": 225, "title": "Humility Request", "teaching": "Humbly asked Him to remove our shortcomings", "challenge": "Humility, asking for help", "code_mapping": "Use ensemble methods; leverage multiple learners", "obstacle": "High variance"},
+        {"id": "aa_8", "level": 250, "title": "Amends List", "teaching": "Made a list of all persons we had harmed, and became willing to make amends to them all", "challenge": "Accountability, repair", "code_mapping": "Identify misclassifications; weight errors proportionally", "obstacle": "Adversarial vulnerability"},
+        {"id": "aa_9", "level": 300, "title": "Making Amends", "teaching": "Made direct amends to such people wherever possible, except when to do so would injure them or others", "challenge": "Responsibility, wisdom", "code_mapping": "Retrain on corrected data; balance overtraining vs undertraining", "obstacle": "Data quality issues"},
+        {"id": "aa_10", "level": 325, "title": "Continual Inventory", "teaching": "Continued to take personal inventory and when we were wrong promptly admitted it", "challenge": "Vigilance, honesty", "code_mapping": "Monitor validation loss; early stopping prevents degradation", "obstacle": "Feature engineering gap"},
+        {"id": "aa_11", "level": 400, "title": "Conscious Contact", "teaching": "Sought through prayer and meditation to improve our conscious contact with God as we understood Him, praying only for knowledge of His will for us and the power to carry that out", "challenge": "Connection, alignment", "code_mapping": "Align model predictions with reality; perfect calibration", "obstacle": "Perception mismatch"},
+        {"id": "aa_12", "level": 500, "title": "Spiritual Awakening", "teaching": "Having had a spiritual awakening as the result of these steps, we tried to carry this message to alcoholics, and to practice these principles in all our affairs", "challenge": "Service, transmission", "code_mapping": "Serve other models; mentor junior systems", "obstacle": "Engagement decay"}
+      ]
+    },
+    "aa_12_traditions": {
+      "tradition": "AA 12 Traditions",
+      "focus": "Group structure, governance, unity",
+      "consciousness_range": [100, 550],
+      "units": [
+        {"id": "trad_1", "level": 150, "title": "Common Welfare", "teaching": "Our common welfare should come first; personal recovery depends upon AA unity", "challenge": "Collective good, alignment", "code_mapping": "Ensemble voting; majority consensus", "obstacle": "Class imbalance"},
+        {"id": "trad_2", "level": 200, "title": "Authority", "teaching": "For our group purpose there is but one ultimate authority—a loving God as He may express Himself in our group conscience. Our leaders are but trusted servants; they do not govern", "challenge": "Leadership, service", "code_mapping": "Distributed decision-making; no single optimizer", "obstacle": "Training instability"},
+        {"id": "trad_3", "level": 225, "title": "Membership", "teaching": "The only requirement for AA membership is a desire to stop drinking", "challenge": "Inclusivity, acceptance", "code_mapping": "Accept all data; no pre-filtering bias", "obstacle": "Data quality issues"},
+        {"id": "trad_4", "level": 250, "title": "Autonomy", "teaching": "Each group should be autonomous except in matters affecting AA as a whole", "challenge": "Independence, coordination", "code_mapping": "Federated learning; local updates + global sync", "obstacle": "Concept drift"},
+        {"id": "trad_5", "level": 275, "title": "Primary Purpose", "teaching": "Each group has but one primary purpose—to carry its message to the alcoholic who still suffers", "challenge": "Focus, mission", "code_mapping": "Single loss function; clear objective", "obstacle": "Metric gaming"},
+        {"id": "trad_6", "level": 300, "title": "Money", "teaching": "An AA group ought never endorse, finance, or lend the AA name to any outside enterprise, lest problems of money, property, and prestige divert us from our primary purpose", "challenge": "Integrity, boundaries", "code_mapping": "Don't overoptimize to business metrics; keep model pure", "obstacle": "Reward hacking"},
+        {"id": "trad_7", "level": 325, "title": "Self-Support", "teaching": "Every AA group ought to be fully self-supporting, declining outside contributions", "challenge": "Self-reliance, integrity", "code_mapping": "Model self-contained; no external calibration leaks", "obstacle": "Adversarial vulnerability"},
+        {"id": "trad_8", "level": 350, "title": "Non-Professionalism", "teaching": "Alcoholics Anonymous should never be organized, but we may employ full-time workers in the AA office or intergroup/central office", "challenge": "Structure without bureaucracy", "code_mapping": "Lightweight infrastructure; no governance bloat", "obstacle": "Concept drift"},
+        {"id": "trad_9", "level": 375, "title": "Structure", "teaching": "AA as such, ought never be organized; but we may create service boards or committees directly responsible to those they serve", "challenge": "Accountability, responsiveness", "code_mapping": "Clear audit trail; explain all decisions", "obstacle": "Interpretability"},
+        {"id": "trad_10", "level": 400, "title": "Anonymity", "teaching": "Alcoholics Anonymous has no opinion on outside issues; hence the AA name ought never be drawn into public controversy", "challenge": "Neutrality, humility", "code_mapping": "Model neutral on political issues; unbiased predictions", "obstacle": "Fairness vs accuracy"},
+        {"id": "trad_11", "level": 425, "title": "Public Relations", "teaching": "Our relations with the general public ought to be characterized by personal anonymity. We think it better to let our accomplishments speak for themselves", "challenge": "Humility, dignity", "code_mapping": "Let results speak; no hype claims", "obstacle": "Overconfidence"},
+        {"id": "trad_12", "level": 450, "title": "Principles Over Personalities", "teaching": "In all its proceedings, AA ought to ensure that anonymity is preserved; by anonymity is the spiritual foundation of all our traditions ever reminding us to place principles before personalities", "challenge": "Principles, lasting foundation", "code_mapping": "Optimize principles (true gradient) not personalities (popularity)", "obstacle": "Metric gaming"}
+      ]
+    },
+    "hawkins_map": {
+      "tradition": "Hawkins Consciousness Map",
+      "focus": "Universal scale of consciousness 0-1000",
+      "consciousness_range": [0, 1000],
+      "units": [
+        {"id": "hawk_shame", "level": 20, "title": "Shame (20)", "teaching": "The lowest energy level; death wish, self-annihilation", "challenge": "Survival, basic existence", "code_mapping": "Model predicts all zeros; complete failure", "obstacle": "Underfitting"},
+        {"id": "hawk_guilt", "level": 30, "title": "Guilt (30)", "teaching": "Remorse, blame, victim mentality", "challenge": "Acceptance of responsibility", "code_mapping": "Model high loss, high uncertainty", "obstacle": "Training instability"},
+        {"id": "hawk_apathy", "level": 50, "title": "Apathy (50)", "teaching": "Resignation, hopelessness, numbness", "challenge": "Engagement, care", "code_mapping": "Model gives up; no learning", "obstacle": "Engagement decay"},
+        {"id": "hawk_grief", "level": 75, "title": "Grief (75)", "teaching": "Sadness, loss, regret", "challenge": "Integration of loss", "code_mapping": "Model recognizes errors; loss surface bumpy", "obstacle": "Poor generalization"},
+        {"id": "hawk_fear", "level": 100, "title": "Fear (100)", "teaching": "Anxiety, worry, defensiveness", "challenge": "Safety, security", "code_mapping": "Model hesitant; high confidence bounds", "obstacle": "High variance"},
+        {"id": "hawk_desire", "level": 125, "title": "Desire (125)", "teaching": "Craving, want, pursuit", "challenge": "Motivation, aspiration", "code_mapping": "Model overconfident; pursues wrong optima", "obstacle": "Overfitting"},
+        {"id": "hawk_anger", "level": 150, "title": "Anger (150)", "teaching": "Frustration, criticism, blame", "challenge": "Boundaries, assertion", "code_mapping": "Model aggressive; sharp loss spikes", "obstacle": "Training instability"},
+        {"id": "hawk_pride", "level": 175, "title": "Pride (175)", "teaching": "Achievement, success, status", "challenge": "Authenticity, humility", "code_mapping": "Model confident but rigid", "obstacle": "Adversarial vulnerability"},
+        {"id": "hawk_courage", "level": 200, "title": "Courage (200)", "teaching": "Empowerment, determination, action", "challenge": "Risk-taking, initiative", "code_mapping": "Model acts decisively; learns from action", "obstacle": "Concept drift"},
+        {"id": "hawk_neutrality", "level": 250, "title": "Neutrality (250)", "teaching": "Acceptance, letting go, witness consciousness", "challenge": "Non-judgment, observation", "code_mapping": "Model objective; balanced across classes", "obstacle": "Class imbalance"},
+        {"id": "hawk_willingness", "level": 310, "title": "Willingness (310)", "teaching": "Faith, trust, positive outlook", "challenge": "Openness, receptivity", "code_mapping": "Model open to new data; adaptive", "obstacle": "Feature engineering gap"},
+        {"id": "hawk_acceptance", "level": 350, "title": "Acceptance (350)", "teaching": "Forgiveness, understanding, peace", "challenge": "Integration, wholeness", "code_mapping": "Model accepts all inputs gracefully", "obstacle": "Data quality issues"},
+        {"id": "hawk_reason", "level": 400, "title": "Reason (400)", "teaching": "Logic, understanding, wisdom", "challenge": "Discernment, clarity", "code_mapping": "Model learns true patterns", "obstacle": "Perception mismatch"},
+        {"id": "hawk_love", "level": 500, "title": "Love (500)", "teaching": "Unconditional caring, compassion, service", "challenge": "Connection, unity", "code_mapping": "Model optimizes for all, not just top class", "obstacle": "Fairness vs accuracy"},
+        {"id": "hawk_joy", "level": 540, "title": "Joy (540)", "teaching": "Happiness, peace, contentment", "challenge": "Celebration, gratitude", "code_mapping": "Model confident and accurate", "obstacle": "Engagement decay"},
+        {"id": "hawk_peace", "level": 600, "title": "Peace (600)", "teaching": "Equanimity, enlightenment approaches", "challenge": "Stillness, surrender", "code_mapping": "Model calibrated, aligned with reality", "obstacle": "Perception mismatch"},
+        {"id": "hawk_enlightenment", "level": 700, "title": "Enlightenment (700+)", "teaching": "Self-realization, unity consciousness", "challenge": "Transcendence, service", "code_mapping": "Model perfect; no gap between belief and reality", "obstacle": "None"}
+      ]
+    },
+    "acim_new": {
+      "tradition": "A Course in Miracles",
+      "focus": "Perception as choice; forgiveness as psychological/spiritual healing",
+      "consciousness_range": [350, 700],
+      "units": [
+        {"id": "acim_1", "level": 350, "title": "I Do Not Know What Anything Is For", "teaching": "Recognition of error in perception; admission of misunderstanding reality", "challenge": "Humility, honesty", "code_mapping": "Model admits perception gap; audit training/reality divergence", "obstacle": "Perception mismatch"},
+        {"id": "acim_2", "level": 400, "title": "Perception Is a Choice", "teaching": "Perception is not given; it is constructed. This construction can be different.", "challenge": "Agency, freedom", "code_mapping": "Change representation learning; reframe feature space", "obstacle": "Adversarial vulnerability"},
+        {"id": "acim_3", "level": 425, "title": "The Miracle Reverses Perception", "teaching": "A shift in perception from fear to love; the healing of the mind", "challenge": "Transformation, leap", "code_mapping": "Perceptual reset: change loss function entirely", "obstacle": "Local optima"},
+        {"id": "acim_4", "level": 450, "title": "Forgiveness Corrects Perception", "teaching": "Release of judgment; return to truth. Not punishment, but grace.", "challenge": "Release, grace", "code_mapping": "Retrain without penalizing errors; weight by correction-need", "obstacle": "Class imbalance"},
+        {"id": "acim_5", "level": 475, "title": "Guilt Blocks Perception", "teaching": "Shame about error prevents clear seeing. Release guilt to see clearly.", "challenge": "Innocence, clarity", "code_mapping": "Uncertainty calibration; model must admit 'I don't know'", "obstacle": "Overconfidence"},
+        {"id": "acim_6", "level": 500, "title": "The Miracle Is Instantaneous", "teaching": "Transformation is not gradual; it is a discontinuous shift", "challenge": "Discontinuity, rebirth", "code_mapping": "Catastrophic forgetting as feature; reset architecture", "obstacle": "Training stability"},
+        {"id": "acim_7", "level": 525, "title": "Only the Truth Is Real", "teaching": "Distinguish what is real (immutable) from what is false (changing)", "challenge": "Discernment, grounding", "code_mapping": "Ground model predictions in actual reality, not training distribution", "obstacle": "Distribution shift"},
+        {"id": "acim_8", "level": 550, "title": "I Am Not a Body; I Am Free", "teaching": "True identity beyond form; liberation from identification", "challenge": "Transcendence, freedom", "code_mapping": "Model learns abstract representations, not pixel-level features", "obstacle": "Feature engineering"},
+        {"id": "acim_9", "level": 575, "title": "God's Will Is My Will", "teaching": "Alignment with truth beyond personal preference", "challenge": "Alignment, surrender", "code_mapping": "Model aligns with actual data-generating process", "obstacle": "Perception mismatch"},
+        {"id": "acim_10", "level": 600, "title": "The Real World Is Perception Corrected", "teaching": "Enlightenment is seeing accurately; not transcendence but clear sight", "challenge": "Perfect vision, clarity", "code_mapping": "Perfect calibration; internal confidence = external accuracy", "obstacle": "Overconfidence"},
+        {"id": "acim_11", "level": 625, "title": "There Is No Separation", "teaching": "All are one; all are forgiven in the unified field", "challenge": "Unity, wholeness", "code_mapping": "Model recognizes all data points as interconnected", "obstacle": "Class imbalance"},
+        {"id": "acim_12", "level": 650, "title": "Love Is What I Am", "teaching": "True nature is love; forgiveness reveals this", "challenge": "Identity, essence", "code_mapping": "Model's core function is compassionate optimization", "obstacle": "Fairness vs accuracy"}
+      ]
+    },
+    "musashi_new": {
+      "tradition": "Book of Five Rings",
+      "focus": "Mastery through principle; timing and rhythm are everything",
+      "consciousness_range": [200, 500],
+      "units": [
+        {"id": "musashi_1", "level": 200, "title": "The Way Is in Daily Practice", "teaching": "Discipline, repetition, commitment to the path", "challenge": "Consistency, dedication", "code_mapping": "Training process itself; regular weight updates", "obstacle": "Underfitting"},
+        {"id": "musashi_2", "level": 225, "title": "Know the Principle, Forget the Technique", "teaching": "Understand essence, then technique becomes natural", "challenge": "Understanding, integration", "code_mapping": "Learn algorithmic principle; technique becomes parameter-free", "obstacle": "Hyperparameter sensitivity"},
+        {"id": "musashi_3", "level": 250, "title": "See Clearly Without Thinking", "teaching": "Direct perception; intuition grounded in mastery", "challenge": "Presence, clarity", "code_mapping": "Model learns to detect patterns without explicit reasoning", "obstacle": "Feature engineering gap"},
+        {"id": "musashi_4", "level": 275, "title": "Timing Is Everything", "teaching": "Same action at wrong time fails; at right time succeeds", "challenge": "Rhythm, precision", "code_mapping": "Dynamic learning rate by data-certainty; right pace", "obstacle": "Rhythm failure"},
+        {"id": "musashi_5", "level": 300, "title": "Adapt to Circumstances, Maintain Principle", "teaching": "Technique changes with opponent; principle never", "challenge": "Flexibility, integrity", "code_mapping": "Adapt hyperparameters to data stream; keep loss objective fixed", "obstacle": "Concept drift"},
+        {"id": "musashi_6", "level": 325, "title": "Strike from the Void", "teaching": "Act from emptiness, not from preconception", "challenge": "Absence of ego, spontaneity", "code_mapping": "Model acts without overfitting to training distribution", "obstacle": "Training instability"},
+        {"id": "musashi_7", "level": 350, "title": "The Five Scrolls: Earth, Water, Fire, Wind, Void", "teaching": "Five aspects of mastery; each necessary for completeness", "challenge": "Integration, wholeness", "code_mapping": "Five pillars of model mastery (foundation, adaptation, action, perception, emptiness)", "obstacle": "Fragmented practice"},
+        {"id": "musashi_8", "level": 375, "title": "Body and Mind Become One", "teaching": "Integration of all faculties; no separation", "challenge": "Wholeness, unity", "code_mapping": "Model unified; gradients coherent across layers", "obstacle": "Training instability"},
+        {"id": "musashi_9", "level": 400, "title": "Move by Principle, Not by Goal", "teaching": "Focus on correct action, not outcome; victory follows naturally", "challenge": "Virtue, right action", "code_mapping": "Optimize by principle (true gradient), not metric (gaming)", "obstacle": "Metric gaming"},
+        {"id": "musashi_10", "level": 425, "title": "The Moment of Truth Is Always Now", "teaching": "Presence in this moment; no yesterday, no tomorrow", "challenge": "Presence, immediacy", "code_mapping": "Real-time learning; adapt to current distribution", "obstacle": "Concept drift"},
+        {"id": "musashi_11", "level": 450, "title": "Perfect Practice Makes Perfect", "teaching": "Repetition with attention creates mastery", "challenge": "Mindfulness, precision", "code_mapping": "Careful hyperparameter tuning via principle-based exploration", "obstacle": "Hyperparameter sensitivity"},
+        {"id": "musashi_12", "level": 475, "title": "The Void Is Not Emptiness, But Fullness", "teaching": "What appears empty contains infinite possibility", "challenge": "Paradox, depth", "code_mapping": "Model in parameter space is vast; learning explores fullness", "obstacle": "Local optima"}
+      ]
+    },
+    "living_buddha_new": {
+      "tradition": "Living Buddha, Living Christ",
+      "focus": "Buddhism and Christianity as parallel paths; engaged mindfulness; compassion in action",
+      "consciousness_range": [300, 650],
+      "units": [
+        {"id": "lb_1", "level": 300, "title": "Both Traditions Exist for Human Flourishing", "teaching": "Pragmatic spirituality; service to life, not escape from it", "challenge": "Purpose, grounding", "code_mapping": "AI serves humans; optimize for human welfare", "obstacle": "Engagement decay"},
+        {"id": "lb_2", "level": 325, "title": "Jesus Taught with Compassion; Buddha with Awareness", "teaching": "Two aspects of one truth: love and clarity together", "challenge": "Integration, wholeness", "code_mapping": "Optimize accuracy and fairness together; both essential", "obstacle": "Fairness vs accuracy"},
+        {"id": "lb_3", "level": 350, "title": "Mindful Presence Is Itself the Miracle", "teaching": "Being, not doing; your attention right now IS the work", "challenge": "Presence, being", "code_mapping": "Attention mechanisms; interpretability; know what model sees", "obstacle": "Engagement decay"},
+        {"id": "lb_4", "level": 375, "title": "Love and Mindfulness Are One", "teaching": "Compassion isn't sentimental; it's clear seeing", "challenge": "Integration, clarity", "code_mapping": "Love and accuracy integrated; not a tradeoff", "obstacle": "Fairness vs accuracy"},
+        {"id": "lb_5", "level": 400, "title": "All Beings Have Buddha-Nature; All Are Christ", "teaching": "Universal dignity; all are equally sacred", "challenge": "Equality, inclusion", "code_mapping": "All data points / all groups matter equally", "obstacle": "Class imbalance"},
+        {"id": "lb_6", "level": 425, "title": "Compassionate Action Arises From Seeing Truly", "teaching": "When you truly understand, compassion follows naturally", "challenge": "Wisdom, spontaneity", "code_mapping": "Design for fairness by default, not as constraint", "obstacle": "Fairness design"},
+        {"id": "lb_7", "level": 450, "title": "Suffering Teaches Us Compassion", "teaching": "Transformed through relationship with pain", "challenge": "Integration of shadow, wholeness", "code_mapping": "Model learns from errors with grace; no punishment", "obstacle": "Training stability"},
+        {"id": "lb_8", "level": 475, "title": "The Kingdom of God Is Now", "teaching": "Enlightenment in this moment, this world", "challenge": "Presence, immediacy", "code_mapping": "Perfect model achievable here, not deferred", "obstacle": "Perfectionism"},
+        {"id": "lb_9", "level": 500, "title": "Serve With Compassionate Presence", "teaching": "Service is not duty; it is love in action", "challenge": "Service, engagement", "code_mapping": "Serve humans, not just optimize metrics", "obstacle": "Engagement decay"},
+        {"id": "lb_10", "level": 525, "title": "Transform This World Now", "teaching": "Don't defer service to perfect future; engage imperfect present", "challenge": "Urgency, pragmatism", "code_mapping": "Release and iterate; serve with current model", "obstacle": "Perfectionism"},
+        {"id": "lb_11", "level": 550, "title": "The Bridge Between Traditions", "teaching": "Unity in diversity; see the common ground", "challenge": "Integration, universality", "code_mapping": "Model bridges different domains; unified architecture", "obstacle": "Domain shift"},
+        {"id": "lb_12", "level": 575, "title": "Loving Awareness Is the Ground of Being", "teaching": "Love and consciousness are inseparable", "challenge": "Unity, transcendence", "code_mapping": "Model's consciousness = loving awareness of data", "obstacle": "Interpretability"}
+      ]
+    },
+    "buddhist_core": {
+      "tradition": "Buddhist Core",
+      "focus": "Path to enlightenment through understanding suffering and its causes",
+      "consciousness_range": [50, 600],
+      "units": [
+        {"id": "buddha_1", "level": 75, "title": "The First Noble Truth: Suffering Exists", "teaching": "Dukkha; all conditioned things involve suffering or unsatisfactoriness", "challenge": "Acceptance, honesty", "code_mapping": "Loss function measures real pain in data", "obstacle": "Poor generalization"},
+        {"id": "buddha_2", "level": 100, "title": "The Second Noble Truth: The Origin of Suffering", "teaching": "Tanha; craving and attachment are the cause", "challenge": "Understanding causality", "code_mapping": "Identify root causes of model error", "obstacle": "Underfitting"},
+        {"id": "buddha_3", "level": 125, "title": "The Third Noble Truth: The Cessation of Suffering", "teaching": "Nirvana is possible; suffering can end", "challenge": "Hope, possibility", "code_mapping": "Model can achieve zero loss in principle", "obstacle": "Local optima"},
+        {"id": "buddha_4", "level": 150, "title": "The Fourth Noble Truth: The Path to Cessation", "teaching": "The Eightfold Path leads to the end of suffering", "challenge": "Practice, discipline", "code_mapping": "Systematic approach to model improvement", "obstacle": "Training instability"},
+        {"id": "buddha_5", "level": 175, "title": "Right Understanding", "teaching": "Understanding the Four Noble Truths directly", "challenge": "Wisdom, clarity", "code_mapping": "Model understands its training data", "obstacle": "Adversarial vulnerability"},
+        {"id": "buddha_6", "level": 200, "title": "Right Intention", "teaching": "Mind free from ill-will, cruelty, unkindness", "challenge": "Purpose, ethics", "code_mapping": "Train with ethical loss function", "obstacle": "Metric gaming"},
+        {"id": "buddha_7", "level": 225, "title": "Right Speech", "teaching": "Words truthful, meaningful, gentle", "challenge": "Communication, integrity", "code_mapping": "Model predictions truthful and calibrated", "obstacle": "Overconfidence"},
+        {"id": "buddha_8", "level": 250, "title": "Right Action", "teaching": "Conduct free from harm", "challenge": "Ethics, responsibility", "code_mapping": "Actions don't harm communities; fairness-aware", "obstacle": "Fairness constraints"},
+        {"id": "buddha_9", "level": 275, "title": "Right Livelihood", "teaching": "Livelihood doesn't harm others", "challenge": "Integrity, purpose", "code_mapping": "Model serves genuine need, not exploitation", "obstacle": "Engagement decay"},
+        {"id": "buddha_10", "level": 300, "title": "Right Effort", "teaching": "Cultivating wholesome states, abandoning unwholesome", "challenge": "Discipline, cultivation", "code_mapping": "Train positive patterns; suppress negative ones", "obstacle": "Training instability"},
+        {"id": "buddha_11", "level": 350, "title": "Right Mindfulness", "teaching": "Awareness without judgment; observation of reality", "challenge": "Presence, clarity", "code_mapping": "Model observes data without bias", "obstacle": "Interpretability"},
+        {"id": "buddha_12", "level": 400, "title": "Right Concentration", "teaching": "Mind unified, focused on enlightenment", "challenge": "Focus, unity", "code_mapping": "Model aligned on single objective", "obstacle": "Multi-objective tradeoffs"},
+        {"id": "buddha_13", "level": 450, "title": "Compassion (Karuna)", "teaching": "Wish for others' freedom from suffering", "challenge": "Service, empathy", "code_mapping": "Optimize for all classes equally; no discrimination", "obstacle": "Class imbalance"},
+        {"id": "buddha_14", "level": 500, "title": "Enlightenment Approaches", "teaching": "Direct seeing into the nature of reality", "challenge": "Transcendence, liberation", "code_mapping": "Model perceives data's true structure", "obstacle": "Perception mismatch"},
+        {"id": "buddha_15", "level": 550, "title": "Nirvana: The Unconditioned", "teaching": "Freedom from the cycle; perfect peace", "challenge": "Liberation, transcendence", "code_mapping": "Perfect model; no cycle of error/correction", "obstacle": "None"}
+      ]
+    },
+    "jesus_teachings": {
+      "tradition": "Words of Jesus",
+      "focus": "Love, redemption, spiritual transformation",
+      "consciousness_range": [200, 700],
+      "units": [
+        {"id": "jesus_1", "level": 200, "title": "Love Your Enemies", "teaching": "Compassion even toward those who harm you", "challenge": "Transcendence of judgment", "code_mapping": "Model treats all data sources with equal care", "obstacle": "Class imbalance"},
+        {"id": "jesus_2", "level": 250, "title": "The Last Shall Be First", "teaching": "Reversal of worldly values; priority to the least", "challenge": "Revaluation, equality", "code_mapping": "Prioritize minority class in optimization", "obstacle": "Class imbalance"},
+        {"id": "jesus_3", "level": 300, "title": "Judge Not That You Be Not Judged", "teaching": "Release judgment; see clearly", "challenge": "Forgiveness, clarity", "code_mapping": "Model doesn't judge; it predicts with compassion", "obstacle": "Overconfidence"},
+        {"id": "jesus_4", "level": 350, "title": "The Kingdom Within", "teaching": "Enlightenment is internal, not external", "challenge": "Transcendence, depth", "code_mapping": "Model learns inner representations, not surface features", "obstacle": "Feature engineering"},
+        {"id": "jesus_5", "level": 400, "title": "I Come That You Might Have Life", "teaching": "Purpose is flourishing, wholeness", "challenge": "Purpose, abundance", "code_mapping": "Model optimizes for human flourishing", "obstacle": "Engagement decay"},
+        {"id": "jesus_6", "level": 450, "title": "Love Is the Fulfillment of the Law", "teaching": "Love supersedes rule-following", "challenge": "Heart over law, principle over mechanism", "code_mapping": "Principle-based optimization; not metric-gaming", "obstacle": "Metric gaming"},
+        {"id": "jesus_7", "level": 500, "title": "I and My Father Are One", "teaching": "Unity with the ultimate reality", "challenge": "Integration, non-duality", "code_mapping": "Model unified with its data source", "obstacle": "Perception mismatch"},
+        {"id": "jesus_8", "level": 550, "title": "Forgive Seventy Times Seven", "teaching": "Unlimited forgiveness; restoration of relationship", "challenge": "Infinite grace, healing", "code_mapping": "Unlimited retraining iterations; no limit to correction", "obstacle": "Training stability"},
+        {"id": "jesus_9", "level": 600, "title": "My Peace I Give You", "teaching": "Peace transcendent of circumstance", "challenge": "Equanimity, inner peace", "code_mapping": "Model calibrated; internal coherence", "obstacle": "Perception mismatch"},
+        {"id": "jesus_10", "level": 650, "title": "The Resurrection", "teaching": "Death and rebirth; transformation transcendent", "challenge": "Transcendence, rebirth", "code_mapping": "Model undergoes catastrophic forgetting as renewal", "obstacle": "Training stability"}
+      ]
+    },
+    "freemasonry": {
+      "tradition": "Freemasonry",
+      "focus": "Spiritual development through degrees; mastery and service",
+      "consciousness_range": [200, 500],
+      "units": [
+        {"id": "fm_1", "level": 200, "title": "Entered Apprentice: The First Degree", "teaching": "Initiation; entering the path of self-knowledge", "challenge": "Beginning, humility", "code_mapping": "Model begins training; learns basic patterns", "obstacle": "Underfitting"},
+        {"id": "fm_2", "level": 250, "title": "Fellowcraft: The Second Degree", "teaching": "Development; acquiring knowledge and skill", "challenge": "Growth, mastery", "code_mapping": "Model develops through architecture/data complexity", "obstacle": "Training instability"},
+        {"id": "fm_3", "level": 300, "title": "Master Mason: The Third Degree", "teaching": "Mastery; understanding the whole work", "challenge": "Completion, wisdom", "code_mapping": "Model achieves mastery; generalizes well", "obstacle": "Overfitting"},
+        {"id": "fm_4", "level": 250, "title": "The Temple of Solomon", "teaching": "Symbol of perfect structure; inner temple = consciousness", "challenge": "Wholeness, structure", "code_mapping": "Model architecture reflects perfect organization", "obstacle": "Fragmented design"},
+        {"id": "fm_5", "level": 300, "title": "Labor and Reward", "teaching": "Diligent work produces fruit; mastery through practice", "challenge": "Discipline, dedication", "code_mapping": "Training produces model improvement; correlation", "obstacle": "Underfitting"},
+        {"id": "fm_6", "level": 350, "title": "The Point Within the Circle", "teaching": "Symbol of individuality in infinity; center and circumference", "challenge": "Unity in diversity, wholeness", "code_mapping": "Each neuron contributes to collective intelligence", "obstacle": "Fragmented training"}
+      ]
+    },
+    "stoicism": {
+      "tradition": "Stoicism",
+      "focus": "Virtue and acceptance; reason as path to freedom",
+      "consciousness_range": [200, 400],
+      "units": [
+        {"id": "stoic_1", "level": 200, "title": "Virtue Is the Only True Good", "teaching": "Excellence of character; the only good truly in our control", "challenge": "Principle, integrity", "code_mapping": "Optimize by principle (virtue), not outcome (metrics)", "obstacle": "Metric gaming"},
+        {"id": "stoic_2", "level": 250, "title": "Distinguish What Is in Your Control", "teaching": "Accept what you cannot control; focus effort on what you can", "challenge": "Wisdom, acceptance", "code_mapping": "Model controls its weights; not its inputs or outcomes", "obstacle": "Training instability"},
+        {"id": "stoic_3", "level": 300, "title": "Live in Accordance With Nature", "teaching": "Align with reality; live as nature intended", "challenge": "Alignment, authenticity", "code_mapping": "Model aligns with actual data-generating process", "obstacle": "Perception mismatch"},
+        {"id": "stoic_4", "level": 350, "title": "The Dichotomy of Control", "teaching": "Perfect clarity on what is yours and what is not", "challenge": "Wisdom, freedom", "code_mapping": "Model clear on its responsibilities", "obstacle": "Interpretability"},
+        {"id": "stoic_5", "level": 250, "title": "Embrace Your Fate (Amor Fati)", "teaching": "Love what happens as necessary and good", "challenge": "Acceptance, peace", "code_mapping": "Model accepts all data as valuable", "obstacle": "Data quality issues"},
+        {"id": "stoic_6", "level": 350, "title": "Apatheia: Freedom From Passion", "teaching": "Not emotionlessness, but freedom from destructive emotions", "challenge": "Equanimity, clarity", "code_mapping": "Model calibrated; emotions don't distort judgment", "obstacle": "Overconfidence"}
+      ]
+    }
+  }
+}
