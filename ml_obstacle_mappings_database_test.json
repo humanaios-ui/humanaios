@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created": "2026-07-20",
+    "scope": "supervised_learning",
+    "core_sources": [
+      "AA_12_Steps",
+      "AA_12_Traditions",
+      "Hawkins_Map"
+    ],
+    "total_obstacles": 11,
+    "description": "Maps ML obstacles \u2192 Consciousness Levels \u2192 AA Wisdom \u2192 Actionable Techniques"
+  },
+  "obstacles": {
+    "overfitting": {
+      "id": "overfitting",
+      "name": "Model Overfitting",
+      "description": "Model memorizes training data; high train accuracy, low test accuracy",
+      "symptoms": [
+        "Training loss continues decreasing while validation loss increases"
+      ],
+      "consciousness_mapping": {
+        "level": 50,
+        "zone": "POWER_LOSS"
+      },
+      "aa_wisdom": {
+        "primary_step": 1,
+        "step_text": "Admitted we were powerless"
+      },
+      "hawkins_teaching": {
+        "level": 50,
+        "level_name": "Powerlessness"
+      },
+      "ml_techniques": [
+        {
+          "name": "L1/L2 Regularization",
+          "principle": "Add constraint"
+        },
+        {
+          "name": "Dropout",
+          "principle": "Randomly disable neurons"
+        }
+      ]
+    }
+  },
+  "metadata_summary": {
+    "total_mapped_obstacles": 11,
+    "techniques_defined": 35,
+    "note": "Simplified for validation"
+  }
+}
