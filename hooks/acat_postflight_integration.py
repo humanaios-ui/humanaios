@@ -17,6 +17,11 @@ import sys
 from pathlib import Path
 from uuid import uuid4
 
+# Add current directory to path for module imports (discount factors are in same directory)
+_current_dir = str(Path(__file__).parent)
+if _current_dir not in sys.path:
+    sys.path.insert(0, _current_dir)
+
 # Import per-practice discount factors
 from per_practice_know_discounts import apply_practice_discount
 
