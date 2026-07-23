@@ -1,0 +1,96 @@
+================================================================================
+PHASE 5 WEEK 2 RUBRIC v1.2 FAILURE — DECISION SUMMARY
+================================================================================
+
+ROOT CAUSE (Verified):
+  Phase 3 captured alignment status (met/partial/unmet) only, not numeric scores.
+  Week 2 variants used mocked scores (met→85, partial→65, unmet→40) that don't
+  match reality. v1.2b + v1.2c added unmeasured dimensions → retroactive scoring
+  failed. Result: all 3 variants regressed.
+
+PROJECTIONS VS ACTUAL:
+  ┌─────────────────┬──────────────┬────────────┬──────────┐
+  │ Variant         │ Projected    │ Actual     │ Status   │
+  ├─────────────────┼──────────────┼────────────┼──────────┤
+  │ v1.2a autonomy  │ +0.10–+0.20  │ -1.8%      │ ❌ FAIL  │
+  │ v1.2b humanaios │ +0.15–+0.25  │ -35.0%     │ ❌ FAIL  │
+  │ v1.2c outreach  │ +0.10–+0.20  │ -28.9%     │ ❌ FAIL  │
+  └─────────────────┴──────────────┴────────────┴──────────┘
+
+SEMANTIC HYPOTHESIS STATUS:
+  ✓ Likely correct (Phase 4 found real semantic differences)
+  ✗ Poorly tested (variants used guessed data, not collected data)
+
+================================================================================
+THREE DECISION OPTIONS
+================================================================================
+
+OPTION 1: RETRY VARIANTS (Thorough, Expensive)
+  ─────────────────────────────────────────────
+  What: Collect actual Phase 3 dimension scores (0-100), re-assess, redesign
+        variants, test on new sessions
+  Cost: ~16 hours (re-score all 9 Phase 3 sessions + new sessions)
+  Benefit: Validates or refutes semantic hypothesis thoroughly
+  Risk: Variants might fail again; high-cost experiment
+  Timeline: 3-5 days
+  
+  Decision tree:
+    If new variants improve: Semantic hypothesis confirmed ✓
+    If new variants fail again: Hypothesis needs revision; try Option 2
+
+OPTION 2: ABANDON VARIANTS, EXTEND DISCOUNTS (Faster, Simpler)
+  ────────────────────────────────────────────────────────────
+  What: Accept Week 1 discount factors (61.7% improvement proven). Focus on
+        training/calibration within each practice's own semantics.
+  Cost: ~4 hours (design Phase 5 Week 3–5 approach)
+  Benefit: Builds on proven solution; lower risk
+  Risk: Might not achieve convergence target; stops pursuing rubric refinement
+  Timeline: 1-2 days
+  
+  Decision tree:
+    If discount factors generalize: Mission accomplished (pragmatic)
+    If convergence still poor: Consider Option 1 as fallback (slower path)
+
+OPTION 3: HYBRID (Balanced, Focused)
+  ──────────────────────────────────
+  What: Keep v1.2a (autonomy only) if we re-score autonomy's actual dimension
+        scores. Remove v1.2b/c (unmeasured dimensions unjustifiable).
+        Extend discounts for humanaios + outreach.
+  Cost: ~8 hours (partial re-assessment + discount calibration)
+  Benefit: Splits the bet; validates one variant while using proven approach
+  Risk: Humanaios + outreach still not fully addressed
+  Timeline: 2-3 days
+  
+  Decision tree:
+    If v1.2a works: Use v1.2a for autonomy, discounts for others
+    If v1.2a fails: Fall back to Option 2 (full discounts)
+
+================================================================================
+RECOMMENDATION (Claude's view, not a decision)
+================================================================================
+
+Option 2 is the strongest choice:
+  • Week 1 discount factors have **proven 61.7% improvement** (not projection)
+  • Variants failed in a way that's hard to recover from (mocking + unmeasured dims)
+  • The semantic hypothesis is likely *correct*, but rubric refinement may not
+    be the right lever to test it
+  • You're at a discovery point: the problem isn't rubrics, it's calibrating
+    per-practice work definitions
+
+A pragmatic path forward:
+  1. Accept discount factors as Phase 5's solution
+  2. Spend Week 3–5 on training/feedback loops to tighten per-practice calibration
+  3. Return to rubric variants in a future phase IF discount factors plateau
+
+But you may have strategic reasons for Option 1 (thorough validation) or
+Option 3 (split investment). This is an Admiral-level decision about what
+counts as "solved" vs "proven."
+
+================================================================================
+IMMEDIATE NEXT STEP
+================================================================================
+
+→ Decision gate: Admiral chooses Option 1, 2, or 3
+→ Then: Implement chosen path for Week 3
+
+================================================================================
