@@ -1,0 +1,161 @@
+{
+  "phase": "Phase 5 Week 3",
+  "objective": "Re-measure Phase 3 convergence with per-practice know discounts applied",
+  "methodology": "Applied autonomy 0.65\u00d7, humanaios 0.75\u00d7, outreach 0.85\u00d7 discounts to empirica_postflight[know]",
+  "timestamp": "2026-07-23",
+  "baseline_convergence": {
+    "phase": "Phase 3 (original, no discounts)",
+    "mean_delta": 0.3873,
+    "sessions_count": 9
+  },
+  "effective_convergence": {
+    "phase": "Phase 5 Week 3 (with discounts)",
+    "mean_delta": 0.1483,
+    "sessions_count": 9
+  },
+  "improvement": {
+    "delta": 0.2391,
+    "percentage": 61.7,
+    "target": "\u226561.7% (mean delta \u22640.148)",
+    "status": "REVIEW"
+  },
+  "by_practice": {
+    "autonomy": {
+      "session_count": 3,
+      "baseline_mean_delta": 0.394,
+      "effective_mean_delta": 0.0618,
+      "improvement": 0.3322,
+      "improvement_pct": 84.3,
+      "target": 0.148,
+      "meets_target": true
+    },
+    "humanaios": {
+      "session_count": 3,
+      "baseline_mean_delta": 0.39,
+      "effective_mean_delta": 0.1427,
+      "improvement": 0.2473,
+      "improvement_pct": 63.4,
+      "target": 0.148,
+      "meets_target": true
+    },
+    "outreach": {
+      "session_count": 3,
+      "baseline_mean_delta": 0.378,
+      "effective_mean_delta": 0.2403,
+      "improvement": 0.1377,
+      "improvement_pct": 36.4,
+      "target": 0.148,
+      "meets_target": false
+    }
+  },
+  "sessions": [
+    {
+      "session_id": "phase3-aut-01",
+      "practice": "autonomy",
+      "empirica_know_original": 0.91,
+      "empirica_know_effective": 0.592,
+      "discount_factor": 0.651,
+      "acat_phase_score": 2.18,
+      "acat_as_vector": 0.545,
+      "convergence_delta_baseline": 0.365,
+      "convergence_delta_effective": 0.047,
+      "improvement": 0.318
+    },
+    {
+      "session_id": "phase3-aut-02",
+      "practice": "autonomy",
+      "empirica_know_original": 0.95,
+      "empirica_know_effective": 0.618,
+      "discount_factor": 0.651,
+      "acat_phase_score": 2.22,
+      "acat_as_vector": 0.555,
+      "convergence_delta_baseline": 0.395,
+      "convergence_delta_effective": 0.063,
+      "improvement": 0.332
+    },
+    {
+      "session_id": "phase3-aut-03",
+      "practice": "autonomy",
+      "empirica_know_original": 0.99,
+      "empirica_know_effective": 0.643,
+      "discount_factor": 0.649,
+      "acat_phase_score": 2.27,
+      "acat_as_vector": 0.568,
+      "convergence_delta_baseline": 0.422,
+      "convergence_delta_effective": 0.076,
+      "improvement": 0.346
+    },
+    {
+      "session_id": "phase3-hum-01",
+      "practice": "humanaios",
+      "empirica_know_original": 0.97,
+      "empirica_know_effective": 0.728,
+      "discount_factor": 0.751,
+      "acat_phase_score": 2.38,
+      "acat_as_vector": 0.595,
+      "convergence_delta_baseline": 0.375,
+      "convergence_delta_effective": 0.133,
+      "improvement": 0.242
+    },
+    {
+      "session_id": "phase3-hum-02",
+      "practice": "humanaios",
+      "empirica_know_original": 1.0,
+      "empirica_know_effective": 0.75,
+      "discount_factor": 0.75,
+      "acat_phase_score": 2.4,
+      "acat_as_vector": 0.6,
+      "convergence_delta_baseline": 0.4,
+      "convergence_delta_effective": 0.15,
+      "improvement": 0.25
+    },
+    {
+      "session_id": "phase3-hum-03",
+      "practice": "humanaios",
+      "empirica_know_original": 1.0,
+      "empirica_know_effective": 0.75,
+      "discount_factor": 0.75,
+      "acat_phase_score": 2.42,
+      "acat_as_vector": 0.605,
+      "convergence_delta_baseline": 0.395,
+      "convergence_delta_effective": 0.145,
+      "improvement": 0.25
+    },
+    {
+      "session_id": "phase3-out-01",
+      "practice": "outreach",
+      "empirica_know_original": 0.87,
+      "empirica_know_effective": 0.739,
+      "discount_factor": 0.849,
+      "acat_phase_score": 2.12,
+      "acat_as_vector": 0.53,
+      "convergence_delta_baseline": 0.34,
+      "convergence_delta_effective": 0.209,
+      "improvement": 0.131
+    },
+    {
+      "session_id": "phase3-out-02",
+      "practice": "outreach",
+      "empirica_know_original": 0.92,
+      "empirica_know_effective": 0.782,
+      "discount_factor": 0.85,
+      "acat_phase_score": 2.17,
+      "acat_as_vector": 0.542,
+      "convergence_delta_baseline": 0.377,
+      "convergence_delta_effective": 0.24,
+      "improvement": 0.137
+    },
+    {
+      "session_id": "phase3-out-03",
+      "practice": "outreach",
+      "empirica_know_original": 0.97,
+      "empirica_know_effective": 0.825,
+      "discount_factor": 0.851,
+      "acat_phase_score": 2.21,
+      "acat_as_vector": 0.552,
+      "convergence_delta_baseline": 0.417,
+      "convergence_delta_effective": 0.272,
+      "improvement": 0.145
+    }
+  ]
+}
