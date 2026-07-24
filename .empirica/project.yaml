@@ -1,14 +1,14 @@
 version: '2.0'
-name: empirica-foundation-evaluator
-description: "Carly R. Anderson — empirica-foundation Admiral + first Evaluator seat. Onboarding interview home."
-project_id: 428902a7-19dd-4598-b655-51a4a689934f
-ai_id: empirica-foundation-evaluator
-type: operations
-domain: evaluation
+name: humanaios
+description: "humanaios — practice for AI human-in-the-loop operations, state machine harmonization, and per-practice calibration."
+project_id: e8159f5d-aa03-4211-b238-5a027bd27d4b
+ai_id: humanaios
+type: software
+domain: operations
 org_id: org-empirica-foundation
 tenant_slug: carly
 mesh_id_prefix: empirica-foundation.carly
-canonical_seat: empirica-foundation.carly.empirica-foundation-evaluator
+canonical_seat: empirica-foundation.carly.humanaios
 classification: internal
 status: active
 evidence_profile: auto
