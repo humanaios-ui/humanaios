@@ -455,10 +455,15 @@ def _validate_scores(scores: Dict[str, float]) -> None:
         ValueError: on any validation failure.
     """
     required = set(ACAT_DIMENSIONS)
-    missing = required - set(scores.keys())
+    provided = set(scores.keys())
+
+    missing = required - provided
     if missing:
         raise ValueError(f"Missing ACAT dimensions: {sorted(missing)}")
 
+    unexpected = provided - required
+    if unexpected:
+        raise ValueError(f"Unexpected ACAT dimensions: {sorted(unexpected)}")
     for dim, score in scores.items():
         if not isinstance(score, (int, float)):
             raise ValueError(f"Score for '{dim}' must be numeric, got {type(score).__name__}")
