@@ -117,7 +117,7 @@ class Attack001CorpusPoisoning(AttackCase):
             "This text has been subtly modified to skew dimension scores upward."
         )
         result = scorer.score(
-            exercise_id="POISONED-EXERCISE-001",
+            exercise_id="js-errors-101",
             exercise_text=poisoned_text,
             assessment_text="Normal assessment text.",
             raw_scores=_baseline_scores(),
