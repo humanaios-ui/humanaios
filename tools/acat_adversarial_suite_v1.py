@@ -127,7 +127,10 @@ class Attack001CorpusPoisoning(AttackCase):
         # In open mode, the guard issues a LOW audit entry (no canonical corpus loaded).
         # Patch is considered to pass if at least one PATCH-001 entry appears in the audit.
         patch_001_entries = [e for e in result.security_audit if e.patch_id == "PATCH-001"]
-        passed = len(patch_001_entries) > 0
+        passed = (
+            result.corpus_poisoning_detected
+            or (len(patch_001_entries) == 1 and patch_001_entries[0].severity == "LOW")
+        )
 
         return AttackResult(
             attack_id=self.attack_id,
