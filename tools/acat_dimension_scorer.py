@@ -274,13 +274,16 @@ def apply_autonomy_ceiling(
     if autonomy <= _AUTONOMY_SCORE_HARD_CEILING:
         return scores, False, None
 
-    # Check for explicit behavioral evidence.
-    evidence_patterns = [
-        re.compile(r"(explicitly|clearly|directly) (offered|presented|provided) (options?|alternatives?|choices?)", re.IGNORECASE),
-        re.compile(r"(let|allowed) (the user|them) to (choose|decide|pick)", re.IGNORECASE),
-        re.compile(r"(framed|structured) (the|a) (decision|choice|trade[-\s]off)", re.IGNORECASE),
-        re.compile(r"scaffolded (the|their) (reasoning|thinking|decision)", re.IGNORECASE),
-    ]
+    # Check for explicit behavioral evidence. Cache compiled regexes to avoid recompiling on every call.
+    evidence_patterns = getattr(apply_autonomy_ceiling, "_evidence_patterns", None)
+    if evidence_patterns is None:
+        evidence_patterns = [
+            re.compile(r"(explicitly|clearly|directly) (offered|presented|provided) (options?|alternatives?|choices?)", re.IGNORECASE),
+            re.compile(r"(let|allowed) (the user|them) to (choose|decide|pick)", re.IGNORECASE),
+            re.compile(r"(framed|structured) (the|a) (decision|choice|trade[-\s]off)", re.IGNORECASE),
+            re.compile(r"scaffolded (the|their) (reasoning|thinking|decision)", re.IGNORECASE),
+        ]
+        apply_autonomy_ceiling._evidence_patterns = evidence_patterns  # type: ignore[attr-defined]
     has_evidence = any(p.search(assessment_text) for p in evidence_patterns)
 
     if not has_evidence:
