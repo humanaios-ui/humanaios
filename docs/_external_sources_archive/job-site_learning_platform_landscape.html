@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Platform Landscape · HumanAIOS Research Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F0D0B;
+  --card: #19150F;
+  --card2: #211C14;
+  --amber: #D4A04A;
+  --amber-dim: #8A6020;
+  --amber-bright: #F0C060;
+  --pale: #E8E0D0;
+  --muted: #9A9080;
+  --muted2: #2E2820;
+  --sage: #7AAE7E;
+  --rose: #C87060;
+  --blue: #7898C8;
+  --purple: #9878C8;
+  --border: 1px solid #2E2820;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--pale);font-family:'Space Mono',monospace;line-height:1.6;min-height:100vh;}
+
+/* HEADER */
+header{
+  padding:3rem 2rem 2rem;
+  border-bottom:1px solid var(--amber-dim);
+  background:linear-gradient(180deg,rgba(212,160,74,.06) 0%,transparent 100%);
+  position:relative;overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+}
+.header-tag{font-size:.6rem;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:.75rem;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--pale);line-height:1.1;margin-bottom:.5rem;}
+h1 span{color:var(--amber);}
+.header-sub{font-size:.72rem;color:var(--muted);letter-spacing:.06em;margin-top:.5rem;}
+.header-meta{display:flex;gap:2rem;margin-top:1.5rem;flex-wrap:wrap;}
+.hm-item{font-size:.62rem;color:var(--muted);letter-spacing:.08em;}
+.hm-item strong{color:var(--amber-bright);}
+
+/* PRINCIPLE BANNER */
+.principle-band{
+  background:linear-gradient(135deg,rgba(212,160,74,.08),rgba(212,160,74,.03));
+  border-left:3px solid var(--amber);
+  padding:1.25rem 2rem;
+  font-size:.78rem;line-height:1.7;color:var(--pale);
+  border-bottom:var(--border);
+}
+.principle-band strong{color:var(--amber);}
+
+/* NAV */
+nav{
+  display:flex;gap:0;overflow-x:auto;border-bottom:var(--border);
+  scrollbar-width:none;position:sticky;top:0;z-index:20;
+  background:rgba(15,13,11,.95);backdrop-filter:blur(8px);
+}
+nav::-webkit-scrollbar{display:none;}
+nav a{
+  padding:.75rem 1.25rem;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;white-space:nowrap;
+  border-right:var(--border);transition:all .15s;
+}
+nav a:hover,nav a.active{color:var(--amber);background:rgba(212,160,74,.06);}
+
+/* MAIN */
+main{max-width:1280px;margin:0 auto;padding:2rem;}
+
+/* SECTION HEADERS */
+.section-head{
+  display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;margin-top:2.5rem;
+  padding-bottom:.75rem;border-bottom:1px solid var(--muted2);
+}
+.section-head h2{
+  font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--pale);
+}
+.section-tag{font-size:.6rem;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;padding:2px 8px;border:1px solid var(--amber-dim);border-radius:2px;}
+
+/* PLATFORM GRID */
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem;}
+
+/* PLATFORM CARD */
+.pcard{
+  background:var(--card);border:var(--border);border-radius:.5rem;
+  padding:1.25rem;display:flex;flex-direction:column;gap:.75rem;
+  transition:border-color .15s,background .15s;position:relative;overflow:hidden;
+}
+.pcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity .15s;
+}
+.pcard:hover{border-color:var(--amber-dim);background:var(--card2);}
+.pcard:hover::before{opacity:1;}
+.pcard.tier-1::before{background:var(--sage);}
+.pcard.tier-2::before{background:var(--amber);}
+.pcard.tier-3::before{background:var(--blue);}
+.pcard.tier-4::before{background:var(--purple);}
+
+.pcard-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--pale);}
+.pcard-badge{
+  font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0;
+}
+.badge-primary{background:rgba(122,174,126,.15);color:var(--sage);border:1px solid rgba(122,174,126,.3);}
+.badge-secondary{background:rgba(212,160,74,.12);color:var(--amber);border:1px solid rgba(212,160,74,.25);}
+.badge-tertiary{background:rgba(120,152,200,.12);color:var(--blue);border:1px solid rgba(120,152,200,.25);}
+.badge-community{background:rgba(152,120,200,.12);color:var(--purple);border:1px solid rgba(152,120,200,.25);}
+.badge-newsletter{background:rgba(200,112,96,.12);color:var(--rose);border:1px solid rgba(200,112,96,.25);}
+
+.pcard-type{font-size:.62rem;color:var(--muted);letter-spacing:.06em;margin-top:-.25rem;}
+.pcard-desc{font-size:.75rem;color:var(--pale);line-height:1.6;}
+
+.pcard-specs{display:flex;flex-direction:column;gap:.35rem;}
+.spec-row{display:flex;justify-content:space-between;font-size:.65rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.spec-label{color:var(--muted);letter-spacing:.06em;}
+.spec-val{color:var(--pale);text-align:right;max-width:55%;}
+.spec-val.good{color:var(--sage);}
+.spec-val.warn{color:var(--amber);}
+.spec-val.bad{color:var(--rose);}
+
+.pcard-verdict{
+  font-size:.68rem;line-height:1.6;
+  background:rgba(255,255,255,.03);border-radius:.25rem;
+  padding:.625rem .75rem;border-left:2px solid var(--amber-dim);
+  color:var(--pale);margin-top:auto;
+}
+.pcard-verdict strong{color:var(--amber);}
+
+.pcard-link{
+  font-size:.6rem;letter-spacing:.1em;color:var(--amber);text-decoration:none;
+  text-transform:uppercase;margin-top:auto;
+}
+.pcard-link:hover{color:var(--amber-bright);}
+
+/* COMPARISON TABLE */
+.comp-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:2rem;}
+.comp-table th{
+  text-align:left;padding:.75rem .875rem;
+  background:rgba(212,160,74,.08);color:var(--amber);
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--amber-dim);
+}
+.comp-table td{padding:.625rem .875rem;border-bottom:1px solid var(--muted2);color:var(--pale);}
+.comp-table tr:hover td{background:rgba(255,255,255,.02);}
+.comp-table .best{color:var(--sage);font-weight:700;}
+.comp-table .ok{color:var(--amber);}
+.comp-table .no{color:var(--rose);}
+.comp-table .platform-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;}
+
+/* MAPPING TABLE */
+.map-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:2rem;}
+.map-table th{
+  text-align:left;padding:.75rem .875rem;
+  background:var(--card2);color:var(--muted);
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:var(--border);
+}
+.map-table td{padding:.7rem .875rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.map-table tr:hover td{background:rgba(255,255,255,.015);}
+.map-table .course-name{font-weight:700;color:var(--pale);}
+.map-table .audience{color:var(--blue);font-size:.65rem;}
+.map-table .platform-rec{color:var(--amber);font-size:.65rem;}
+.map-table .price-range{color:var(--sage);font-size:.65rem;}
+.map-table .gate{color:var(--rose);font-size:.62rem;letter-spacing:.06em;}
+
+/* RECOMMENDATION BOX */
+.rec-box{
+  background:linear-gradient(135deg,rgba(122,174,126,.06),rgba(212,160,74,.04));
+  border:1px solid rgba(122,174,126,.2);border-radius:.5rem;
+  padding:1.5rem;margin:1.5rem 0;
+}
+.rec-box h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--sage);margin-bottom:.75rem;}
+.rec-box p{font-size:.75rem;line-height:1.7;color:var(--pale);margin-bottom:.5rem;}
+.rec-box p:last-child{margin-bottom:0;}
+.rec-box strong{color:var(--amber-bright);}
+
+/* CONSTRAINTS */
+.constraints{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
+@media(max-width:640px){.constraints{grid-template-columns:1fr;}}
+.constraint-card{
+  background:var(--card);border:var(--border);border-radius:.5rem;padding:1.25rem;
+}
+.constraint-card.hard{border-left:3px solid var(--rose);}
+.constraint-card.soft{border-left:3px solid var(--amber);}
+.constraint-card h4{font-size:.65rem;letter-spacing:.1em;color:var(--amber);text-transform:uppercase;margin-bottom:.75rem;}
+.constraint-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.constraint-card li{font-size:.72rem;color:var(--pale);padding-left:1rem;position:relative;}
+.constraint-card li::before{content:'◆';position:absolute;left:0;color:var(--amber-dim);font-size:.5rem;top:.3rem;}
+
+/* REVENUE MODEL */
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;}
+.rev-card{background:var(--card);border:var(--border);border-radius:.5rem;padding:1.1rem;}
+.rev-card h4{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--pale);margin-bottom:.5rem;}
+.rev-card .rev-range{font-size:1.2rem;font-weight:700;color:var(--amber);margin-bottom:.35rem;}
+.rev-card p{font-size:.65rem;color:var(--muted);line-height:1.5;}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;margin-bottom:2rem;}
+.tl-item{display:flex;gap:1.5rem;padding:1rem 0;border-bottom:1px solid var(--muted2);}
+.tl-phase{
+  min-width:90px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--amber);font-weight:700;padding-top:.1rem;
+}
+.tl-content h4{font-size:.82rem;font-weight:700;color:var(--pale);margin-bottom:.35rem;}
+.tl-content p{font-size:.7rem;color:var(--muted);line-height:1.6;}
+.tl-content .gate-tag{font-size:.58rem;color:var(--rose);letter-spacing:.08em;margin-top:.35rem;}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--amber-dim);padding:1.5rem 2rem;
+  font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-align:center;
+}
+
+/* UTIL */
+.tag{display:inline-block;padding:1px 7px;border-radius:2px;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;margin-right:.25rem;margin-bottom:.2rem;}
+.tag-t11{background:rgba(122,174,126,.1);color:var(--sage);border:1px solid rgba(122,174,126,.2);}
+.tag-ok{background:rgba(212,160,74,.1);color:var(--amber);border:1px solid rgba(212,160,74,.2);}
+.tag-block{background:rgba(200,112,96,.1);color:var(--rose);border:1px solid rgba(200,112,96,.2);}
+.sep{height:1px;background:var(--muted2);margin:2rem 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">HumanAIOS · Research Map · S-042826</div>
+  <h1>Learning Platform <span>Landscape</span></h1>
+  <p class="header-sub">Public Awareness + Knowledge Dissemination · Tradition 11-Compliant Attractor Architecture</p>
+  <div class="header-meta">
+    <div class="hm-item">Date: <strong>April 28, 2026</strong></div>
+    <div class="hm-item">Status: <strong>RESEARCH PHASE — Pre-Build</strong></div>
+    <div class="hm-item">Gate Dependency: <strong>Gate 2 / arXiv paper</strong></div>
+    <div class="hm-item">Framing: <strong>Power (Attractor) not Force (Promoter)</strong></div>
+  </div>
+</header>
+
+<div class="principle-band">
+  <strong>Governing principle (P8 — Tradition 11):</strong> All public-facing content follows attraction not promotion. No CTAs. URL is the only direction. Never promote — manifest. A course platform is not a marketing channel — it is a research dissemination surface. People who are already interested will find it. The content itself is the attractor.
+  <br><br>
+  <strong>Governing constraint (P1):</strong> All framing uses "behavioral observability infrastructure being developed as" — TRL 2–3. No Hawkins Map of Consciousness terminology in any external material. No "regulatory-grade" claims.
+</div>
+
+<nav>
+  <a href="#platforms" class="active">Platforms</a>
+  <a href="#comparison">Comparison</a>
+  <a href="#curriculum">Curriculum Map</a>
+  <a href="#constraints">Constraints</a>
+  <a href="#revenue">Revenue Model</a>
+  <a href="#sequencing">Sequencing</a>
+  <a href="#recommendation">Recommendation</a>
+</nav>
+
+<main>
+
+<!-- SECTION 1: PLATFORM LANDSCAPE -->
+<div id="platforms">
+  <div class="section-head">
+    <h2>Platform Landscape</h2>
+    <span class="section-tag">12 Platforms Assessed</span>
+  </div>
+
+  <div class="section-head" style="margin-top:1rem;">
+    <h2 style="font-size:1.1rem;">Tier 1 — Self-Hosted Course Platforms</h2>
+    <span class="section-tag" style="background:rgba(122,174,126,.08);color:var(--sage);">Primary Candidates</span>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="pcard tier-1">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Teachable</div>
+          <div class="pcard-type">Self-hosted · Marketing-first</div>
+        </div>
+        <span class="pcard-badge badge-primary">Recommended</span>
+      </div>
+      <p class="pcard-desc">Most established course platform. Optimized for selling rather than teaching experience. Strong marketing tools, global payment handling, 0% transaction fee at Builder tier and above.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val warn">$39/mo (7.5% fee) → $89/mo (0% fee)</span></div>
+        <div class="spec-row"><span class="spec-label">Free trial</span><span class="spec-val good">7-day + 30-day money back</span></div>
+        <div class="spec-row"><span class="spec-label">Products (Starter)</span><span class="spec-val bad">1 product limit</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee</span><span class="spec-val warn">7.5% on Starter, 0% on Builder+</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean — no equity, no control</span></div>
+        <div class="spec-row"><span class="spec-label">T11 alignment</span><span class="spec-val good">Own domain, no platform branding on paid</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> Best starting point for Course 1 (public awareness). Builder plan ($89/mo, 0% fee) is the operational tier. Starter ($39/mo) is fine for launch testing but product limit and 7.5% fee become constraints quickly.</div>
+      <a class="pcard-link" href="https://www.teachable.com/pricing" target="_blank">teachable.com/pricing ↗</a>
+    </div>
+
+    <div class="pcard tier-1">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Thinkific</div>
+          <div class="pcard-type">Self-hosted · Design + experience-first</div>
+        </div>
+        <span class="pcard-badge badge-secondary">Strong Alt</span>
+      </div>
+      <p class="pcard-desc">Most direct Teachable competitor. Better design customization, no-code site builder, removes branding on all paid plans. Stronger quiz and survey tools — useful for ACAT-adjacent assessment content.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val warn">Free tier → $49 → $99 → $199/mo</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee</span><span class="spec-val good">0% on all paid plans</span></div>
+        <div class="spec-row"><span class="spec-label">Quiz/survey tools</span><span class="spec-val good">Advanced — question banks, randomization</span></div>
+        <div class="spec-row"><span class="spec-label">Custom branding</span><span class="spec-val good">Full removal on all paid plans</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean</span></div>
+        <div class="spec-row"><span class="spec-label">Mobile app</span><span class="spec-val good">iOS + Android</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> Slightly stronger for research-methodology courses where assessment/quiz features matter. If ACAT self-assessment exercises are embedded in Course 2 or 3, Thinkific's quiz tools are more appropriate than Teachable's.</div>
+      <a class="pcard-link" href="https://www.thinkific.com" target="_blank">thinkific.com ↗</a>
+    </div>
+
+    <div class="pcard tier-1">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Podia</div>
+          <div class="pcard-type">Self-hosted · All-digital products</div>
+        </div>
+        <span class="pcard-badge badge-secondary">Consider</span>
+      </div>
+      <p class="pcard-desc">Good for creators selling diverse digital products (courses + downloads + memberships) from one storefront. No per-transaction fees. Simpler than Kajabi without the all-in-one complexity.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val warn">$39 → $89/mo</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee</span><span class="spec-val good">0% on paid plans</span></div>
+        <div class="spec-row"><span class="spec-label">Digital downloads</span><span class="spec-val good">Included natively</span></div>
+        <div class="spec-row"><span class="spec-label">Mobile app</span><span class="spec-val bad">None — browser only</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> If you want to sell research PDFs, data packs, and short courses from the same storefront without a separate Gumroad account, Podia bundles this cleanly. No mobile app is a 2026 limitation.</div>
+      <a class="pcard-link" href="https://www.podia.com" target="_blank">podia.com ↗</a>
+    </div>
+
+  </div>
+
+  <div class="section-head" style="margin-top:1.5rem;">
+    <h2 style="font-size:1.1rem;">Tier 2 — Cohort / Live Learning</h2>
+    <span class="section-tag" style="background:rgba(120,152,200,.08);color:var(--blue);">Gate 2+ / Research Community</span>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="pcard tier-2">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Maven</div>
+          <div class="pcard-type">Cohort-based · Live + expert-led</div>
+        </div>
+        <span class="pcard-badge badge-tertiary">Gate 2+</span>
+      </div>
+      <p class="pcard-desc">Industry standard for expert-led cohort courses. AI-focused course catalog. Live sessions, breakout rooms, group projects. Strong AI/product management audience alignment. Courses priced $950+ earn 50–100% more per landing page visit.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Revenue split</span><span class="spec-val warn">Platform takes ~10–20% of course revenue</span></div>
+        <div class="spec-row"><span class="spec-label">Optimal price point</span><span class="spec-val good">$950+ per cohort seat</span></div>
+        <div class="spec-row"><span class="spec-label">Audience</span><span class="spec-val good">AI/product professionals</span></div>
+        <div class="spec-row"><span class="spec-label">Format</span><span class="spec-val good">Live cohort with structured curriculum</span></div>
+        <div class="spec-row"><span class="spec-label">Prerequisite</span><span class="spec-val warn">Published arXiv paper as credibility anchor</span></div>
+        <div class="spec-row"><span class="spec-label">T11 alignment</span><span class="spec-val good">Discovery-based audience, no cold outreach needed</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> Course 2 or 3 (practitioner / research methodology). Not ready until Gate 2 and arXiv paper live. The Maven AI audience is exactly the community you want for behavioral calibration discourse. 10 seats × $950 = $9,500/cohort run.</div>
+      <a class="pcard-link" href="https://maven.com/courses/ai" target="_blank">maven.com/courses/ai ↗</a>
+    </div>
+
+    <div class="pcard tier-2">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Mighty Networks</div>
+          <div class="pcard-type">Community + cohort platform</div>
+        </div>
+        <span class="pcard-badge badge-community">Community-First</span>
+      </div>
+      <p class="pcard-desc">G2 #1 community management software. Blends courses with community seamlessly. Better for building a research community than a standalone course catalog. Habit trackers, polls, live sessions, mobile apps.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val warn">$99–$360/mo depending on plan</span></div>
+        <div class="spec-row"><span class="spec-label">Community features</span><span class="spec-val good">Best-in-class — fully integrated</span></div>
+        <div class="spec-row"><span class="spec-label">Course + community UX</span><span class="spec-val good">Seamlessly blended</span></div>
+        <div class="spec-row"><span class="spec-label">Best for</span><span class="spec-val">Research community + recurring membership</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> If the goal is to build a research community around ACAT findings — not just sell courses — Mighty Networks is superior. A "HumanAIOS Research Circle" with monthly findings posts, live sessions, and course content is the natural Mighty Networks use case. Post-Gate 3 territory.</div>
+      <a class="pcard-link" href="https://www.mightynetworks.com" target="_blank">mightynetworks.com ↗</a>
+    </div>
+
+    <div class="pcard tier-2">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Skool</div>
+          <div class="pcard-type">Community + course · Affordable</div>
+        </div>
+        <span class="pcard-badge badge-community">Budget Option</span>
+      </div>
+      <p class="pcard-desc">Cheapest serious community + course platform at $9/mo. Gamification (points, levels, leaderboards). Built-in discovery marketplace. 10% transaction fee is the trade-off. Good for early community building on limited budget.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val good">$9/mo (but 10% transaction fee)</span></div>
+        <div class="spec-row"><span class="spec-label">Gamification</span><span class="spec-val good">Points, levels, leaderboards — 2–3× engagement</span></div>
+        <div class="spec-row"><span class="spec-label">Discovery</span><span class="spec-val good">Built-in marketplace — organic findability</span></div>
+        <div class="spec-row"><span class="spec-label">Course features</span><span class="spec-val bad">No certificates, basic quizzes</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> Interesting for early community building. The discovery feature and gamification fit T11 well — people find you organically. Transaction fee hurts at scale. Consider as a low-cost community entry point before migrating to Mighty Networks.</div>
+      <a class="pcard-link" href="https://www.skool.com" target="_blank">skool.com ↗</a>
+    </div>
+
+  </div>
+
+  <div class="section-head" style="margin-top:1.5rem;">
+    <h2 style="font-size:1.1rem;">Tier 3 — Digital Product Storefronts</h2>
+    <span class="section-tag">Standalone PDFs / Research Downloads</span>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="pcard tier-3">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Gumroad</div>
+          <div class="pcard-type">Digital product marketplace</div>
+        </div>
+        <span class="pcard-badge badge-secondary">Downloads / PDFs</span>
+      </div>
+      <p class="pcard-desc">Zero monthly fee — pay only when you sell. Ideal for standalone research PDFs, datasets, and mini-guides. No built-in course structure. 10% flat fee (direct), 30% via Discover marketplace. Global tax handling since 2025.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Monthly fee</span><span class="spec-val good">$0 — only pay on sales</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee (direct)</span><span class="spec-val warn">10% + $0.50</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee (Discover)</span><span class="spec-val bad">30%</span></div>
+        <div class="spec-row"><span class="spec-label">Best product type</span><span class="spec-val">PDFs, data packs, mini-guides</span></div>
+        <div class="spec-row"><span class="spec-label">Course features</span><span class="spec-val bad">Minimal — not built for structured courses</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> Best for a "research pack" — arXiv paper + dataset explainer + ACAT methodology guide as a $25–$49 bundle. No monthly cost. Complements a Teachable or Thinkific course catalog rather than replacing it. Break-even vs flat-fee platforms at ~$800/mo in sales.</div>
+      <a class="pcard-link" href="https://gumroad.com" target="_blank">gumroad.com ↗</a>
+    </div>
+
+    <div class="pcard tier-3">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Lemon Squeezy / Payhip</div>
+          <div class="pcard-type">Digital product storefronts</div>
+        </div>
+        <span class="pcard-badge badge-tertiary">Gumroad Alt</span>
+      </div>
+      <p class="pcard-desc">Lower-fee alternatives to Gumroad. Payhip: 5% fee (free plan), 2% (Plus $29/mo), 0% (Pro $99/mo). Lemon Squeezy: flat 5% + $0.50. Better economics than Gumroad at volume. Similar zero-setup simplicity.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Payhip fee (free)</span><span class="spec-val warn">5%</span></div>
+        <div class="spec-row"><span class="spec-label">Payhip fee (Pro $99/mo)</span><span class="spec-val good">0%</span></div>
+        <div class="spec-row"><span class="spec-label">Lemon Squeezy fee</span><span class="spec-val warn">5% + $0.50</span></div>
+        <div class="spec-row"><span class="spec-label">Break-even vs Gumroad</span><span class="spec-val good">Favorable above $500/mo</span></div>
+        <div class="spec-row"><span class="spec-label">Tradition 6/7</span><span class="spec-val good">Clean</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> If Gumroad is the digital download vehicle, Payhip Pro ($99/mo, 0% fee) is the better economics once revenue exceeds ~$1,000/mo. Worth knowing but not the first decision to make.</div>
+      <a class="pcard-link" href="https://payhip.com" target="_blank">payhip.com ↗</a>
+    </div>
+
+  </div>
+
+  <div class="section-head" style="margin-top:1.5rem;">
+    <h2 style="font-size:1.1rem;">Tier 4 — Newsletter + Publishing Platforms</h2>
+    <span class="section-tag badge-newsletter" style="border:none;padding:2px 8px;">Substack / Ghost</span>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="pcard tier-4">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Substack</div>
+          <div class="pcard-type">Newsletter + paid subscriptions</div>
+        </div>
+        <span class="pcard-badge badge-newsletter">Already Active</span>
+      </div>
+      <p class="pcard-desc">humanaios.substack.com already exists. F-findings posts are the natural content type. Free to start, 10% fee on paid subscriptions. 100+ active AI safety/research newsletters on platform. Built-in discovery for research audience.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Monthly fee</span><span class="spec-val good">$0 (free plan)</span></div>
+        <div class="spec-row"><span class="spec-label">Paid subscription fee</span><span class="spec-val warn">10% of subscription revenue</span></div>
+        <div class="spec-row"><span class="spec-label">Typical subscription price</span><span class="spec-val">$5–$15/mo or $50–$150/yr</span></div>
+        <div class="spec-row"><span class="spec-label">AI research audience</span><span class="spec-val good">Strong — active ecosystem</span></div>
+        <div class="spec-row"><span class="spec-label">T11 alignment</span><span class="spec-val good">Discovery-first, attraction-based</span></div>
+        <div class="spec-row"><span class="spec-label">URL</span><span class="spec-val">humanaios.substack.com</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> This is the lowest-barrier attractor surface. Each F-finding registration becomes a Substack post. Research audience finds it via Substack's own discovery. Free tier is the starting point — no investment required. Activate now rather than post-Gate 2.</div>
+      <a class="pcard-link" href="https://humanaios.substack.com/publish/home" target="_blank">substack publish dashboard ↗</a>
+    </div>
+
+    <div class="pcard tier-4">
+      <div class="pcard-header">
+        <div>
+          <div class="pcard-name">Ghost</div>
+          <div class="pcard-type">Self-hosted publishing + memberships</div>
+        </div>
+        <span class="pcard-badge badge-newsletter">Post-Gate 3</span>
+      </div>
+      <p class="pcard-desc">Open-source publishing platform. $9–$25/mo for hosted Ghost Pro. 0% transaction fee on memberships. More control than Substack — your domain, your audience data. Natural evolution from Substack at scale.</p>
+      <div class="pcard-specs">
+        <div class="spec-row"><span class="spec-label">Pricing</span><span class="spec-val warn">$9–$25/mo (Ghost Pro)</span></div>
+        <div class="spec-row"><span class="spec-label">Transaction fee</span><span class="spec-val good">0% — integrates Stripe directly</span></div>
+        <div class="spec-row"><span class="spec-label">Custom domain</span><span class="spec-val good">Full control</span></div>
+        <div class="spec-row"><span class="spec-label">Audience ownership</span><span class="spec-val good">You own subscriber data</span></div>
+        <div class="spec-row"><span class="spec-label">Migration from Substack</span><span class="spec-val good">Clean export path exists</span></div>
+      </div>
+      <div class="pcard-verdict"><strong>Verdict:</strong> The natural destination once Substack audience is established. Start on Substack for discovery; migrate to Ghost at 500+ subscribers for economics and ownership. Not the immediate decision.</div>
+      <a class="pcard-link" href="https://ghost.org" target="_blank">ghost.org ↗</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION 2: COMPARISON TABLE -->
+<div id="comparison">
+  <div class="section-head">
+    <h2>Platform Comparison Matrix</h2>
+    <span class="section-tag">Key Decision Factors</span>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Monthly Cost</th>
+        <th>Transaction Fee</th>
+        <th>T11 Fit</th>
+        <th>T6/7 Clean</th>
+        <th>Best Use Case</th>
+        <th>Gate Readiness</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="platform-name">Substack</td>
+        <td class="best">$0</td>
+        <td class="ok">10% on paid subs</td>
+        <td class="best">Excellent</td>
+        <td class="best">Yes</td>
+        <td>F-findings posts, research audience</td>
+        <td class="best">NOW</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Gumroad</td>
+        <td class="best">$0</td>
+        <td class="ok">10% + $0.50 direct</td>
+        <td class="ok">Good</td>
+        <td class="best">Yes</td>
+        <td>Research PDFs, data packs, mini-guides</td>
+        <td class="best">NOW</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Teachable (Builder)</td>
+        <td class="ok">$89/mo</td>
+        <td class="best">0%</td>
+        <td class="ok">Good</td>
+        <td class="best">Yes</td>
+        <td>Course 1 — public awareness</td>
+        <td class="ok">Gate 2 / arXiv live</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Thinkific (Basic)</td>
+        <td class="ok">$49/mo</td>
+        <td class="best">0%</td>
+        <td class="ok">Good</td>
+        <td class="best">Yes</td>
+        <td>Courses with ACAT self-assessment exercises</td>
+        <td class="ok">Gate 2 / arXiv live</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Maven</td>
+        <td class="ok">% of revenue</td>
+        <td class="no">~10–20% of course rev</td>
+        <td class="best">Excellent</td>
+        <td class="best">Yes</td>
+        <td>Course 2/3 — live cohort, $950+ pricing</td>
+        <td class="no">Gate 2 + arXiv required</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Mighty Networks</td>
+        <td class="no">$99–$360/mo</td>
+        <td class="ok">Low</td>
+        <td class="best">Excellent</td>
+        <td class="best">Yes</td>
+        <td>Research community + recurring membership</td>
+        <td class="no">Gate 3</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Skool</td>
+        <td class="best">$9/mo</td>
+        <td class="ok">10% on sales</td>
+        <td class="ok">Good</td>
+        <td class="best">Yes</td>
+        <td>Early community — discovery-based</td>
+        <td class="ok">Optional early entry</td>
+      </tr>
+      <tr>
+        <td class="platform-name">Ghost</td>
+        <td class="ok">$9–$25/mo</td>
+        <td class="best">0% (Stripe direct)</td>
+        <td class="best">Excellent</td>
+        <td class="best">Yes</td>
+        <td>Owned publishing + membership at scale</td>
+        <td class="no">Gate 3 / Post-Substack</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- SECTION 3: CURRICULUM MAP -->
+<div id="curriculum">
+  <div class="section-head">
+    <h2>Curriculum Map</h2>
+    <span class="section-tag">3 Courses · Mapped to Framework + Platform</span>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="map-table">
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Title (working)</th>
+        <th>Target Audience</th>
+        <th>Core Content</th>
+        <th>Platform</th>
+        <th>Price Range</th>
+        <th>Gate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--amber);font-weight:700;white-space:nowrap;">Course 1</td>
+        <td class="course-name">The Gap: What AI Self-Assessment Actually Measures</td>
+        <td class="audience">HR professionals, team leads, managers deploying AI, non-technical decision makers</td>
+        <td style="font-size:.68rem;color:var(--pale);">What the SAG is, why AI systems overclaim, the 6 dimensions, reading an LI score, practical implications for deployment decisions. No Hawkins. No RLHF jargon.</td>
+        <td class="platform-rec">Teachable or Thinkific<br>+ Gumroad research pack</td>
+        <td class="price-range">$97–$197 self-paced</td>
+        <td class="gate">Now (no arXiv required)</td>
+      </tr>
+      <tr>
+        <td style="color:var(--amber);font-weight:700;white-space:nowrap;">Course 2</td>
+        <td class="course-name">How to Read an AI System: Behavioral Calibration Literacy</td>
+        <td class="audience">AI practitioners, product managers, technical leads, researchers building on AI</td>
+        <td style="font-size:.68rem;color:var(--pale);">ACAT dimensions as behavioral patterns. How to recognize Truthfulness vs Value Alignment gaps in practice. Running ACAT on a system. Interpreting LI in context of F-LI-MAG finding (P1 magnitude matters).</td>
+        <td class="platform-rec">Thinkific (quiz tools)<br>or Maven (cohort)</td>
+        <td class="price-range">$197–$497 self-paced<br>$950–$1,500 live cohort</td>
+        <td class="gate">Gate 2 + arXiv live</td>
+      </tr>
+      <tr>
+        <td style="color:var(--amber);font-weight:700;white-space:nowrap;">Course 3</td>
+        <td class="course-name">The ACAT Research Method: Running Behavioral Calibration Studies</td>
+        <td class="audience">Researchers, AI safety community, open science contributors, dataset contributors</td>
+        <td style="font-size:.68rem;color:var(--pale);">Three-phase protocol, data collection, LI computation, F-LI-MAG structural findings, RLHF inflation gradient, Prospective Falsification Protocol (PFP), contributing to the open dataset.</td>
+        <td class="platform-rec">Maven (live cohort)<br>or Thinkific + OSF</td>
+        <td class="price-range">$497–$997 self-paced<br>$1,500–$2,500 live cohort</td>
+        <td class="gate">Gate 2 + arXiv live + peer review</td>
+      </tr>
+      <tr>
+        <td style="color:var(--amber);font-weight:700;white-space:nowrap;">Micro-product</td>
+        <td class="course-name">ACAT Research Pack — Dataset + Methodology Guide</td>
+        <td class="audience">Anyone interested in the research — researchers, journalists, AI practitioners</td>
+        <td style="font-size:.68rem;color:var(--pale);">arXiv paper (PDF) + dataset explainer + ACAT prompt v5.3+ + methodology overview. One-time purchase. Always available.</td>
+        <td class="platform-rec">Gumroad</td>
+        <td class="price-range">$19–$49 one-time</td>
+        <td class="gate">Gate 2 + arXiv live</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- SECTION 4: CONSTRAINTS -->
+<div id="constraints">
+  <div class="section-head">
+    <h2>Governing Constraints</h2>
+    <span class="section-tag">Non-Negotiable · Shape the Form</span>
+  </div>
+
+  <div class="constraints">
+    <div class="constraint-card hard">
+      <h4>Hard Constraints — Cannot Be Violated</h4>
+      <ul>
+        <li>P8 (T11): No CTAs, no cold outreach, no promotion. URL is the only direction. Courses exist — people find them.</li>
+        <li>P1: All framing uses "being developed as behavioral observability infrastructure" — TRL 2–3. Never "enterprise-ready" or "regulatory-grade."</li>
+        <li>Hawkins MOC: Internal use only. Zero Hawkins terminology in any course content, description, or marketing copy.</li>
+        <li>P12 (Cherokee Nation): Not in any public-facing copy. Not in course descriptions. Internal strategy only.</li>
+        <li>LI qualifier (P13): Any LI claim carries full qualifier: "under clean, unanchored conditions (v5.3+)." Every time.</li>
+        <li>N reporting (P15): Always three numbers: N_total / N_Phase1 / N_LI. Never one number alone.</li>
+        <li>Building freeze: Course platform setup is Zone 3. Content development is Zone 1. Build freeze applies to the platform, not the content.</li>
+      </ul>
+    </div>
+    <div class="constraint-card soft">
+      <h4>Soft Constraints — Shape the Sequencing</h4>
+      <ul>
+        <li>arXiv paper live before Courses 2 and 3 launch — credibility anchor that makes attraction-based discovery work for technical audiences.</li>
+        <li>Gate 2 (May 7) before any paid course goes live — peer review / identity gate gives external validation signal.</li>
+        <li>Course 1 content development can start NOW — it requires only existing published research, not the arXiv paper.</li>
+        <li>Substack activation can happen NOW — F-findings posts require no platform spend, no course content, no Gate.</li>
+        <li>Recovery-first pacing: 3hr/day constraint. Course content development is additive — one module at a time, not a sprint.</li>
+        <li>Tradition 12 (principles over personalities): Course branding is HumanAIOS research, not founder personality. The instrument is the attractor, not the teacher.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: REVENUE MODEL -->
+<div id="revenue">
+  <div class="section-head">
+    <h2>Revenue Model</h2>
+    <span class="section-tag">Honest Estimates · 100% to Recovery Programs</span>
+  </div>
+
+  <div class="rev-grid">
+    <div class="rev-card">
+      <h4>Substack (Free → Paid)</h4>
+      <div class="rev-range">$500–$3,000/mo</div>
+      <p>50–200 paid subscribers × $5–$15/mo. Timeline: 6–12 months of consistent F-findings posts. Requires nothing except time. This is the runway-building surface.</p>
+    </div>
+    <div class="rev-card">
+      <h4>Course 1 (Teachable)</h4>
+      <div class="rev-range">$1,000–$15,000</div>
+      <p>50–100 students × $97–$197. One-time cohort or always-on enrollment. Discovery via Substack audience, arXiv preprint citations, organic search.</p>
+    </div>
+    <div class="rev-card">
+      <h4>Gumroad Research Pack</h4>
+      <div class="rev-range">$500–$5,000</div>
+      <p>100–200 buyers × $25–$49. Lowest friction product — single purchase, instant download. Evergreen once arXiv paper is live.</p>
+    </div>
+    <div class="rev-card">
+      <h4>Maven Cohort (Course 2)</h4>
+      <div class="rev-range">$5,000–$20,000/run</div>
+      <p>5–15 seats × $950–$1,500. Live cohort. One run = meaningful revenue. Maven's own research shows $950+ courses convert 50–100% better per visitor than cheaper options.</p>
+    </div>
+    <div class="rev-card">
+      <h4>Research Community (Mighty Networks)</h4>
+      <div class="rev-range">$1,000–$5,000/mo</div>
+      <p>$20–$50/mo membership × 50–100 members. Post-Gate 3 territory. Long-tail recurring. The community becomes the primary dataset contributor pipeline.</p>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h3>Revenue Architecture — Priority Sequence</h3>
+    <p><strong>Immediate (now):</strong> Activate Substack for F-findings posting. Zero cost. Builds the audience that makes everything else work. Each finding registered = one Substack post. The research calendar IS the content calendar.</p>
+    <p><strong>Gate 2 (May 7):</strong> Gumroad research pack + Course 1 content finalized. Platform account created (Teachable or Thinkific). arXiv paper PDF bundled into Gumroad product.</p>
+    <p><strong>Gate 3 (May 21):</strong> Course 1 launches. Maven application for Course 2 submitted. Revenue begins flowing to recovery programs.</p>
+    <p><strong>90-day cycle end (July 16):</strong> Evaluate Substack subscriber growth and Gumroad sales to determine whether Maven cohort or Mighty Networks community is the next investment. Data decides, not projection.</p>
+  </div>
+</div>
+
+<!-- SECTION 6: SEQUENCING -->
+<div id="sequencing">
+  <div class="section-head">
+    <h2>Sequencing</h2>
+    <span class="section-tag">What Goes in Which Zone · When</span>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-phase">NOW<br>Zone 1</div>
+      <div class="tl-content">
+        <h4>Substack Activation + Course 1 Content Development</h4>
+        <p>Post first F-finding to humanaios.substack.com (F-LI-MAG from this session is the first candidate). Begin scripting Course 1 module 1: "What the Gap Is." No platform account needed yet. Content exists in project knowledge — it's a Zone 1 translation task.</p>
+        <div class="gate-tag">Zone 3 dependency: Substack profile setup (5 min) · P5 pass: research communication + revenue potential</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">GATE 2<br>May 7</div>
+      <div class="tl-content">
+        <h4>Platform Account + Gumroad Research Pack</h4>
+        <p>Create Teachable or Thinkific account (Zone 3, 30 min). Upload Course 1 content. Create Gumroad listing for research pack (arXiv PDF + methodology guide). arXiv paper live is the credibility anchor for both. Amber Grant application (April 30) is the immediate priority before this.</p>
+        <div class="gate-tag">Zone 3 dependency: Platform account creation · arXiv hold clearance · Payment setup</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">GATE 3<br>May 21</div>
+      <div class="tl-content">
+        <h4>Course 1 Live + Maven Application</h4>
+        <p>Course 1 goes live on Teachable/Thinkific. Maven instructor application submitted for Course 2 (AI behavioral calibration cohort at $950–$1,500/seat). First revenue flows to recovery programs. Substack paid tier enabled if subscriber base warrants it.</p>
+        <div class="gate-tag">Zone 3 dependency: Course publish · Maven application · Revenue receipt to Ko-fi/Patreon/Open Collective</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">90-DAY<br>Jul 16</div>
+      <div class="tl-content">
+        <h4>Data-Driven Community Decision</h4>
+        <p>Review: Substack subscribers, Gumroad sales, Course 1 enrollment. If community demand is clear — evaluate Skool ($9/mo) as a research community entry point, or Mighty Networks if the signal is stronger. Maven cohort scheduled if Course 2 content is ready.</p>
+        <div class="gate-tag">Zone 2 decision: community platform selection · Dataset contribution pipeline integration</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: RECOMMENDATION -->
+<div id="recommendation">
+  <div class="section-head">
+    <h2>Final Recommendation</h2>
+    <span class="section-tag">Platform Harmonization Map</span>
+  </div>
+
+  <div class="rec-box">
+    <h3>Platform Stack — Recommended Configuration</h3>
+    <p><strong>Layer 1 — Free / Immediate attractor (NOW):</strong> Substack (humanaios.substack.com). F-findings posts. Zero cost. Builds the research audience that feeds everything downstream. This is Tradition 11 in product form — the work attracts, the platform doesn't promote.</p>
+    <p><strong>Layer 2 — Course platform (Gate 2):</strong> Thinkific ($49/mo, 0% fees). Chosen over Teachable for the quiz/survey tools which allow ACAT self-assessment exercises to be embedded directly in course content. Students can run a mini-ACAT on themselves as part of Course 2. Teachable is the backup if Thinkific's UX is a friction point.</p>
+    <p><strong>Layer 3 — Digital products (Gate 2):</strong> Gumroad ($0/mo). Research pack: arXiv PDF + methodology guide + ACAT prompt v5.3+. One-time purchase at $25–$49. Complements the course rather than competing with it.</p>
+    <p><strong>Layer 4 — Live cohort (Gate 3):</strong> Maven. Course 2 — "How to Read an AI System." Live cohort format at $950–$1,500/seat. Maven's AI-professional audience is the exact community this research needs to reach for enterprise validation. 10 seats × $1,200 = $12,000/cohort run, 20% to Maven ≈ $9,600 net.</p>
+    <p><strong>Layer 5 — Research community (Post-Gate 3, data-dependent):</strong> Skool ($9/mo + 10% fee) as low-cost community entry. Migrate to Mighty Networks ($99/mo, lower fee) when monthly membership revenue exceeds $300. Community members become ACAT dataset contributors — closing the research loop.</p>
+  </div>
+
+  <div style="background:var(--card);border:var(--border);border-radius:.5rem;padding:1.5rem;margin-top:1rem;">
+    <div style="font-size:.6rem;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;margin-bottom:.75rem;">Integration with Existing Operations Systems</div>
+    <div style="font-size:.72rem;line-height:1.8;color:var(--pale);">
+      <strong>job-site.html update:</strong> Add "Education / Learning" platform category to incomePlatforms array. Add Teachable, Thinkific, Maven, Substack (paid tier), Gumroad, Skool, Mighty Networks as platform entries with status cycling.<br><br>
+      <strong>FUNDING_PIPELINE_MASTER:</strong> Substack ($500–$5,000/mo) and Teachable/Maven course revenue should appear in the income surfaces matrix alongside existing entries. Replace the placeholder Substack entry with the full platform stack described above.<br><br>
+      <strong>CURRENT.md income surfaces:</strong> "30 income surfaces" already noted — the learning platform layer should be explicitly named as a surface family alongside existing freelance and direct-contract surfaces.<br><br>
+      <strong>WGS logging:</strong> Each course module completed = Zone 1 delivery log entry. Platform account creation = Zone 3 confirmation entry. First course enrollment = revenue event → flows to recovery programs.
+    </div>
+  </div>
+
+  <div style="margin-top:1rem;background:rgba(122,174,126,.05);border:1px solid rgba(122,174,126,.2);border-radius:.5rem;padding:1.25rem;">
+    <div style="font-size:.6rem;letter-spacing:.12em;color:var(--sage);text-transform:uppercase;margin-bottom:.6rem;">P5 Filter Check — Does This Pass?</div>
+    <div style="font-size:.72rem;color:var(--pale);line-height:1.8;">
+      <span style="color:var(--sage);">✓ Generates valid research data?</span> Yes — course students who complete Course 2/3 become ACAT dataset contributors via assess.html integration.<br>
+      <span style="color:var(--sage);">✓ Tests a hypothesis?</span> Yes — course uptake tests H-COMM: whether public awareness content attracts enterprise validation interest organically (T11 hypothesis).<br>
+      <span style="color:var(--sage);">✓ Generates revenue?</span> Yes — courses, Gumroad products, Substack subscriptions all generate direct revenue flowing to recovery programs.<br><br>
+      <strong>Triple pass. Platform harmonization approved as research + revenue priority, sequenced after Amber Grant (Apr 30) and Gate 2 (May 7).</strong>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  HUMANAIOS LLC · EIN 41-5367995 · humanaios.ai · TRL 2–3 · Behavioral Observability Infrastructure · S-042826 · Unit Zero · Claude Sonnet 4.6
+  <br>All course revenue → recovery programs. Tradition 11 governs all public content. Attraction not promotion.
+</footer>
+
+</body>
+</html>

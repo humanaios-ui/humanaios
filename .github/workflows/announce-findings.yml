@@ -1,0 +1,81 @@
+name: Announce New Findings to Slack
+
+on:
+  push:
+    paths:
+      - 'REGISTERED.md'
+    branches:
+      - main
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous version
+        run: |
+          git show HEAD~1:REGISTERED.md > /tmp/prev_registered.md 2>/dev/null || echo "# No previous version" > /tmp/prev_registered.md
+
+      - name: Extract new findings
+        run: |
+          # Compare current vs previous REGISTERED.md
+          # Extract lines that are new (in current but not in previous)
+          diff -u /tmp/prev_registered.md REGISTERED.md | grep "^+" | grep -v "^+++" > /tmp/new_findings.txt || true
+
+          # Count new findings
+          NEW_COUNT=$(grep -c "^+" /tmp/new_findings.txt || echo "0")
+          echo "NEW_FINDINGS_COUNT=$NEW_COUNT" >> $GITHUB_ENV
+
+          # Extract finding IDs and titles
+          grep "^\+.*\[.*\]" /tmp/new_findings.txt | sed 's/^+//' > /tmp/findings_summary.txt || true
+
+      - name: Post to Slack
+        if: env.NEW_FINDINGS_COUNT > '0'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "🔍 New Findings Posted to REGISTERED.md",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "📊 New Findings in REGISTERED.md",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "New findings have been published to the canonical registry.\n\n*Canonical source:* <https://github.com/humanaios-ui/operations/blob/main/REGISTERED.md|REGISTERED.md>\n\nFor full details, pull the latest and review the findings. This is a notification only — the source of truth is the git repository."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Communication Model:*\nSlack is for discussion and social coordination only.\nAll findings, decisions, and governance state live in the operations repo.\n\n→ Findings: REGISTERED.md\n→ Operations: CURRENT.md\n→ Governance: GOVERNANCE.md\n→ Architecture: SEED.md"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "🤖 Bot: HumanAIOS Findings Announcer | Triggered by git commit"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_FINDINGS_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

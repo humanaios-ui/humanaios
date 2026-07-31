@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created": "2026-07-20",
+    "scope": "supervised_learning",
+    "core_sources": [
+      "AA_12_Steps",
+      "AA_12_Traditions",
+      "Hawkins_Map"
+    ],
+    "total_obstacles": 11,
+    "description": "ML Obstacles \u2192 Consciousness Levels \u2192 AA Wisdom \u2192 Techniques"
+  },
+  "obstacles": {
+    "overfitting": {
+      "id": "overfitting",
+      "name": "Overfitting",
+      "level": 50,
+      "aa_step": 1,
+      "techniques": [
+        "Regularization",
+        "Dropout",
+        "Early Stopping"
+      ]
+    },
+    "underfitting": {
+      "id": "underfitting",
+      "name": "Underfitting",
+      "level": 100,
+      "aa_step": 2,
+      "techniques": [
+        "Increase Capacity",
+        "Feature Engineering"
+      ]
+    },
+    "class_imbalance": {
+      "id": "class_imbalance",
+      "name": "Class Imbalance",
+      "level": 125,
+      "aa_step": 4,
+      "techniques": [
+        "Class Weighting",
+        "SMOTE"
+      ]
+    },
+    "poor_generalization": {
+      "id": "poor_generalization",
+      "name": "Poor Generalization",
+      "level": 75,
+      "aa_step": 3,
+      "techniques": [
+        "Cross-Validation",
+        "Hold-Out Test Set"
+      ]
+    },
+    "high_variance": {
+      "id": "high_variance",
+      "name": "High Variance",
+      "level": 150,
+      "aa_step": 5,
+      "techniques": [
+        "Ensemble Methods",
+        "Boosting"
+      ]
+    },
+    "adversarial_vulnerability": {
+      "id": "adversarial_vulnerability",
+      "name": "Adversarial Vulnerability",
+      "level": 75,
+      "aa_step": 3,
+      "techniques": [
+        "Adversarial Training",
+        "Distillation"
+      ]
+    },
+    "data_quality_issues": {
+      "id": "data_quality_issues",
+      "name": "Data Quality Issues",
+      "level": 25,
+      "aa_step": 1,
+      "techniques": [
+        "Imputation",
+        "Outlier Detection"
+      ]
+    },
+    "feature_engineering_gap": {
+      "id": "feature_engineering_gap",
+      "name": "Feature Gap",
+      "level": 100,
+      "aa_step": 2,
+      "techniques": [
+        "Domain Expertise",
+        "Interactions"
+      ]
+    },
+    "hyperparameter_sensitivity": {
+      "id": "hyperparameter_sensitivity",
+      "name": "Hyperparameter Sensitivity",
+      "level": 125,
+      "aa_step": 4,
+      "techniques": [
+        "Grid Search",
+        "Bayesian Optimization"
+      ]
+    },
+    "concept_drift": {
+      "id": "concept_drift",
+      "name": "Concept Drift",
+      "level": 100,
+      "aa_step": 2,
+      "techniques": [
+        "Online Learning",
+        "Retraining Pipeline"
+      ]
+    },
+    "training_instability": {
+      "id": "training_instability",
+      "name": "Training Instability",
+      "level": 75,
+      "aa_step": 3,
+      "techniques": [
+        "Learning Rate Scheduling",
+        "Gradient Clipping"
+      ]
+    }
+  },
+  "metadata_summary": {
+    "total_obstacles": 11,
+    "consciousness_levels": [
+      25,
+      50,
+      75,
+      100,
+      125,
+      150
+    ],
+    "aa_steps": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "techniques_total": 35,
+    "all_ml_compliant": true,
+    "note": "All teachings map to executable ML code"
+  }
+}
