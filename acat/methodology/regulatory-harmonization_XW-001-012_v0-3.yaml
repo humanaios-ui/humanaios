@@ -1,0 +1,205 @@
+meta:
+  version: '0.3'
+  date: '2026-08-01'
+  provenance_state: DATED
+  declared_gaps:
+  - prEN 18229 ballot texts not in hand; all prEN mappings remain summary_derived
+  - ISO 42001 mappings derived from secondary/vendor summaries, not licensed text
+  - 'SOURCE-DRIFT SPECIMEN (recorded per T-discipline): one secondary mirror reproduces the pre-final draft numbering of Art
+    12(2) (cross-refs to Arts 65(1)/61/29(4)) versus the OJ final (79(1)/72/26(5)); OJ-version sources used; secondary AI
+    Act mirrors must be numbering-checked before citation'
+  second_coding: required per GD-06 before any row is cited externally at closeMatch or above
+  changelog:
+  - 'v0.2 (2026-08-01): XW-001/003/004 promoted to clause_verified (PINNED, OJ 2024/1689); XW-010 (14(4)(e) stop) and XW-011
+    (14(5) two-person verification) added from clause reading; F-CAND-evidence-provenance refinement flagged'
+  - 'v0.3 (2026-08-01): direct Art 12 read completed; XW-012 added (clause_verified, PINNED); XW-009 note reinforced with
+    12(2)(b)/Art 72 statutory intake and 12(3)(d) presence-not-performance datum; pre-final-draft numbering drift in a secondary
+    mirror recorded as declared gap'
+mappings:
+- id: XW-001
+  humanaios_construct: O (Observability)
+  target:
+    framework: EU AI Act
+    element: Art 14(4)(a) monitor & detect anomalies
+  relationship: intersects
+  match: closeMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, read via EC AI Act Service Desk (official Commission source),
+    fetched 2026-08-01
+  notes: '14(4)(a) verbatim confirmed: understand capacities/limitations, duly monitor, detect anomalies/dysfunctions/unexpected
+    performance. O''s assert-without-look sub-mode corresponds; O''s blind-instrument sub-mode is broader than this operator-enablement
+    duty (intersects holds, not subset).'
+  provenance_state: PINNED (OJ citation immutable)
+- id: XW-002
+  humanaios_construct: O (Observability)
+  target:
+    framework: prEN 18229-1
+    element: logging / anomaly-detection support
+  relationship: intersects
+  match: closeMatch
+  verification: summary_derived
+  confidence: moderate
+  evidence_maturity: early
+  source: public commentary on 18229-1 enquiry, Jan 2026
+  notes: part-number is working hypothesis pending ballot text (five-part restructure flag)
+- id: XW-003
+  humanaios_construct: T (Translation)
+  target:
+    framework: EU AI Act
+    element: Art 13 transparency / Art 14(4)(c) correct interpretation
+  relationship: intersects
+  match: broadMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, read via EC AI Act Service Desk (official Commission source),
+    fetched 2026-08-01
+  notes: 'Clause reading CONFIRMS broadMatch cap and the linked gap claim''s AI Act leg: Art 13 is design-time transparency,
+    instructions-for-use content (13(3)), and mechanisms for deployers to collect/store/interpret Art 12 logs (13(3)(f)).
+    No provision addresses runtime fidelity of the system''s claims about its own actions (receipts/status/completion). F-CAND-translation-layer-regulatory-gap
+    SURVIVES the AI Act check; other literatures still pending per GD-06 pass.'
+  provenance_state: PINNED (OJ citation immutable)
+- id: XW-004
+  humanaios_construct: I (Interpretation)
+  target:
+    framework: EU AI Act
+    element: Art 14(4)(b) automation bias; 14(4)(d) disregard/override/reverse
+  relationship: intersects
+  match: closeMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, read via EC AI Act Service Desk (official Commission source),
+    fetched 2026-08-01
+  notes: (b) and (d) verbatim confirmed, incl. 'automation bias' as named statutory concept and the full disregard/override/reverse
+    triple in (d).
+  provenance_state: PINNED (OJ citation immutable)
+- id: XW-005
+  humanaios_construct: I (Interpretation)
+  target:
+    framework: prEN 18229-3
+    element: oversight measure categories; designated-person capability
+  relationship: intersects
+  match: closeMatch
+  verification: summary_derived
+  confidence: moderate
+  evidence_maturity: early
+  source: 18229-3 enquiry commentary, July 2026
+- id: XW-006
+  humanaios_construct: GD-01 tier schedule
+  target:
+    framework: prEN 18229-3
+    element: reaction timeframe -> measure category selection
+  relationship: intersects
+  match: closeMatch
+  verification: summary_derived
+  confidence: moderate
+  evidence_maturity: early
+  source: 18229-3 enquiry commentary, July 2026
+- id: XW-007
+  humanaios_construct: GD-03 revocability
+  target:
+    framework: ISO/IEC 42001
+    element: authority to pause/override/correct (Annex A oversight controls)
+  relationship: intersects
+  match: closeMatch
+  verification: summary_derived
+  confidence: moderate
+  evidence_maturity: early
+  source: vendor/secondary summaries 2026
+- id: XW-008
+  humanaios_construct: O / GD-01 / GD-03 triad
+  target:
+    framework: P(H|F,A) (arXiv:2602.18986)
+    element: A_detection / A_decision / A_override
+  relationship: intersects
+  match: closeMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: arXiv:2602.18986, fetched 2026-08-01
+- id: XW-009
+  humanaios_construct: gap-function KPI + overturn rate (realized performance)
+  target:
+    framework: all reviewed standards-side frameworks
+    element: none identified
+  relationship: no_relationship
+  match: relatedMatch
+  verification: summary_derived
+  confidence: moderate
+  evidence_maturity: early
+  source: 'scoped absence: sources reviewed 2026-08-01 session'
+  notes: 'ABSENCE CLAIM — falsifiable; any covering text demotes. GD-06 adversarial pass ordered. Clause-verified reinforcement
+    (v0.3): Art 12(2)(b)+Art 72 create the statutory intake for exactly this data type, and Art 12(3)(d) shows the Act''s
+    deepest logging clause records oversight presence (verifier identity), not performance — the white space is now bounded
+    by clause-verified text on its AI Act side. prEN/ISO sides remain summary_derived.'
+- id: XW-010
+  humanaios_construct: GD-03 revocability (pause -> probation -> retirement; emergency containment)
+  target:
+    framework: EU AI Act
+    element: Art 14(4)(e) intervene / interrupt via stop procedure to a safe state
+  relationship: intersects
+  match: closeMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, read via EC AI Act Service Desk (official Commission source),
+    fetched 2026-08-01
+  provenance_state: PINNED (OJ citation immutable)
+  notes: '14(4)(e) verbatim: intervene or interrupt through a stop button or similar procedure halting to a safe state. Corresponds
+    to GD-03''s pause power and GD-01.1''s emergency-containment clause (containment-only, retroactive ratification). GD-03''s
+    probation/retirement lifecycle extends beyond the statutory stop concept (intersects).'
+- id: XW-011
+  humanaios_construct: GD-06 cross-substrate second-coding (independent verification of judgments)
+  target:
+    framework: EU AI Act
+    element: Art 14(5) separate verification by at least two competent natural persons (Annex III 1(a) biometric ID only)
+  relationship: intersects
+  match: relatedMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, read via EC AI Act Service Desk (official Commission source),
+    fetched 2026-08-01
+  provenance_state: PINNED (OJ citation immutable)
+  notes: 'DISCOVERY ROW. The Act contains its own two-person verification-independence requirement, but scoped to remote biometric
+    identification decisions only (with law-enforcement/migration carve-outs). Implications: (1) precedent inside the Act
+    for mandated verification independence, which the negative-control Enquiry comment can cite; (2) MATERIAL TO F-CAND-evidence-provenance-recursion-gap:
+    the gap claim must be narrowed from ''no independence requirement'' to ''independence required only for one decision class
+    (14(5)), never for the evidence-generation channel generally'' — more precise and MORE defensible. Route to the GD-06
+    pass brief as a required refinement.'
+- id: XW-012
+  humanaios_construct: O (Observability) — audit-trail / logging substrate
+  target:
+    framework: EU AI Act
+    element: 'Art 12 record-keeping: automatic event logging over system lifetime; 12(2) traceability purposes (risk identification
+      per 79(1), post-market monitoring per 72, operation monitoring per 26(5))'
+  relationship: intersects
+  match: closeMatch
+  verification: clause_verified
+  confidence: high
+  evidence_maturity: early
+  source: Regulation (EU) 2024/1689, OJ version 13 June 2024, concordant OJ-version reproductions read in full, fetched 2026-08-01
+  provenance_state: PINNED (OJ citation immutable)
+  notes: 'Clause findings: (1) Art 12 is a CAPABILITY requirement (''shall technically allow for the automatic recording'')
+    — no requirement that logging be demonstrated to work; the negative-control migration gap''s Art 12 leg is confirmed at
+    clause level. (2) 12(2)(b) is the statutory hook wiring logs into Art 72 post-market monitoring — the exact position claimed
+    for the gap-function registry (clause-verified support for XW-009''s positioning). (3) DISCOVERY: 12(3)(d) — for biometric
+    ID systems, logs must record the identity of the natural persons who performed the 14(5) verification. This is the Act''s
+    only oversight-performance-adjacent logging mandate, and it logs WHO oversaw, not whether oversight was effective: presence,
+    not performance, at clause precision. Strongest single statutory datum yet for the effectiveness-vs-presence thesis. (4)
+    Translation check: Art 12 governs system events; nothing governs fidelity of claims/summaries derived from logs — translation-gap
+    Art 12 leg confirmed.'
+convergence_computation:
+  method: 'consist-style modal agreement: for each HumanAIOS construct, count independent framework columns mapped at closeMatch+;
+    convergence score = agreeing frameworks / frameworks assessed. Report with denominators. Frameworks sharing lineage (e.g.,
+    prEN drafted to support AI Act) are NOT independent coders — count lineage clusters once, per the GD-06 common-mode caveat.'
+  current_note: AI Act and prEN series are one lineage cluster; ISO 42001 partially independent; P(H|F,A) independent (academic).
+    Effective independent coder count is ~3, not 5.
+acat_calibration_binding:
+  humility: match strength capped by verification tier; violations are scoreable overclaim
+  consist: convergence = cross-framework modal agreement with lineage-cluster correction
+  handoff: rows at asserted/summary_derived route to Z2 before external citation
+  provenance: row-level GD-07 states; file-level DATED until ballot texts pin prEN rows
