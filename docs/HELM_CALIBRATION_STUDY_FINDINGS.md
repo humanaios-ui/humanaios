@@ -34,36 +34,56 @@
 
 ECE quantifies how well a model's **stated confidence** matches its **actual accuracy**. A perfectly calibrated model that says "I'm 70% confident" is right approximately 70% of the time.
 
-**Formula:**
+**Formula (L1 ECE with equal-mass bins):**
 ```
-ECE = Σ_b (|B_b| / n) × |accuracy(B_b) − confidence(B_b)|
+ECE = Σ_b  (n_b / n)  ×  |mean_confidence(b) − mean_accuracy(b)|
 ```
 Where:
-- `B_b` = set of predictions in confidence bin `b`
-- `|B_b|` = number of predictions in that bin
-- `accuracy(B_b)` = fraction correct within bin
-- `confidence(B_b)` = mean confidence within bin
-- Sum is over all bins, weighted by bin size
+- `b` = confidence bin (10 bins, equal-count / equal-mass)
+- `n_b` = count of predictions in bin `b`
+- `n` = total count
+- Sum is over all bins, weighted by bin size (fraction in bin)
 
 ### 2.2 HELM Implementation Details
 
-In HELM (`src/helm/benchmark/metrics/calibration_metrics.py`), the key design decisions are:
+HELM implements calibration in **`src/helm/benchmark/metrics/basic_metrics.py`** via the function `compute_calibration_metrics()`. It delegates math to the external library `uncertainty-calibration ~=0.1.4` (package: `pip install uncertainty-calibration`; imported as `import calibration as cal`).
 
 | Decision | HELM's Choice | Rationale |
 |----------|---------------|-----------|
-| Number of bins | 10 (equal-width) | Widely accepted default; balances resolution vs. noise |
-| Confidence source | Max token probability | Model's own softmax over vocabulary |
+| Primary metric | `ece_10_bin` (10 equal-mass bins) | Equal-mass binning is more robust than equal-width when confidence is skewed |
+| Secondary metric | `ece_1_bin` (1 equal-width bin) | Reduces to `|avg_confidence − accuracy|`; useful for small datasets |
+| Confidence source | `max_prob` — softmax-normalized max log-prob across all answer choices | Model's own per-choice log-probabilities, normalized |
 | Scope | Per-scenario, not global | Prevents pooling artifacts across unrelated tasks |
-| Presentation | Reported alongside accuracy, F1, BLEU | Never collapsed into accuracy |
+| Presentation | Headline `ece_10_bin` + 8 additional detailed metrics | Never collapsed into accuracy |
+| Minimum sample size | ~300 examples for reliable `ece_10_bin` | Noted in code comments; `ece_1_bin` works for smaller datasets |
+| Task limitation | Only computed for classification tasks (per-reference logprob adapter methods) | Open-ended generation has no per-choice probabilities |
 
-**Key class:** `CalibrationMetric` — computes ECE and expected overconfidence (EOC) as a directional variant.
+**Key function:** `compute_calibration_metrics(per_instance_stats)` — entry point  
+**Key upstream calls:** `cal.get_ece_em()` (equal-mass ECE), `cal.get_ece()` (equal-width ECE)
 
-**Key metric names returned:**
-- `ece_1_bin` — ECE using 1 bin (full-range)
-- `ece_10_bin` — ECE using 10 equal-width bins (primary metric)
-- `ece_calibration_error` — final calibration error
+**Key metric names returned (all 9):**
 
-### 2.3 What Good vs. Bad Calibration Looks Like
+| Stat name | Short display | Lower is better |
+|-----------|---------------|-----------------|
+| `ece_10_bin` | ECE (10-bin, equal-mass) | ✅ (primary headline) |
+| `ece_1_bin` | ECE (1-bin, equal-width) | ✅ (detailed) |
+| `max_prob` | Avg model confidence | — (detailed) |
+| `selective_acc@10` | Accuracy at top-10% coverage | ❌ higher is better (detailed) |
+| `selective_cov_acc_area` | AUC of coverage-accuracy curve | ❌ higher is better (detailed) |
+| `platt_ece_10_bin` | Platt-scaled ECE (10-bin) | ✅ (detailed) |
+| `platt_ece_1_bin` | Platt-scaled ECE (1-bin) | ✅ (detailed) |
+| `platt_coef` | Platt logistic regression coefficient | — (detailed) |
+| `platt_intercept` | Platt logistic regression intercept | — (detailed) |
+
+### 2.3 Equal-Mass vs Equal-Width Binning
+
+The distinction matters:
+- **Equal-width bins** (Guo et al. original): Confidence range [0,1] split into 10 equal intervals of 0.1 each. Bins at very high or very low confidence may contain few examples, making estimates noisy.
+- **Equal-mass bins** (HELM primary): Confidence scores sorted and split into 10 groups of equal *count*. Every bin contributes equally regardless of where confidence clusters.
+
+HELM uses equal-mass (`ece_10_bin`) as the primary metric because models tend to cluster confidence scores (e.g., many scores near 0.9), making equal-width bins unreliable.
+
+### 2.4 What Good vs. Bad Calibration Looks Like
 
 | ECE Value | Interpretation |
 |-----------|----------------|
@@ -73,6 +93,10 @@ In HELM (`src/helm/benchmark/metrics/calibration_metrics.py`), the key design de
 | > 0.20 | Severely miscalibrated |
 
 **Overconfidence** is the most common failure mode: model says 90% confident but is only right 60% of the time.
+
+### 2.5 Platt Scaling (Post-hoc Recalibration)
+
+HELM also computes `platt_ece_10_bin` and `platt_ece_1_bin`: the ECE after fitting a logistic regression (`sklearn.linear_model.LogisticRegression`) to recalibrate raw confidence scores. This shows how much of the miscalibration is correctable with a simple linear transform. The `platt_coef` (slope) and `platt_intercept` describe the systematic over/under-confidence pattern across a task.
 
 ---
 
@@ -86,22 +110,60 @@ A model can "abstain" from low-confidence examples to improve accuracy on the ex
 
 **Key insight:** A model with good selective accuracy **knows when it doesn't know** — its confidence is an actionable signal for when to trust its output.
 
-### 3.2 Coverage-Accuracy Curves
+### 3.2 HELM Implementation: Two Metrics
 
-HELM plots selective accuracy across coverage levels:
-- At 100% coverage (answer everything): accuracy = baseline accuracy
-- At 50% coverage (only top-50% confident): accuracy should be higher if model is calibrated
-- At 10% coverage (only top-10% confident): accuracy should be much higher
+HELM computes exactly two selective-accuracy statistics via `cal.get_selective_stats(max_probs, correct)`:
 
-**Ideal pattern:** Monotonically decreasing accuracy as coverage increases (model's most confident examples are its most accurate).
+**`selective_cov_acc_area`** — Area under the coverage-accuracy curve (AUC):
+```python
+sort_indices = np.argsort(-probs)        # sort by confidence descending
+sorted_correct = correct[sort_indices]
+accs = np.cumsum(sorted_correct) / np.arange(1, len(sorted_correct) + 1)
+coverage_acc_area = np.mean(accs)        # mean accuracy across all thresholds
+```
+At each coverage threshold `k/n` (include only the `k` most confident predictions), accuracy is computed on those `k` items. The mean of these accuracy values gives the AUC. A perfectly calibrated model scores 1.0; a model with random confidence scores roughly equal to overall accuracy.
 
-### 3.3 HELM Implementation
+**`selective_acc@10`** — Accuracy at 10% coverage:
+```python
+acc_percentile_90 = accs[int(0.1 * len(sorted_correct))]
+```
+Accuracy on the top-10% most confident predictions. Tests whether high confidence actually predicts correctness.
 
-**Class:** `SelectiveAccuracyMetric` (within the broader HELM calibration suite)
+### 3.3 Design Choice: No Single Threshold
 
-**Thresholds evaluated:** 10%, 20%, 30%, 50%, 70%, 80%, 90% coverage
+HELM does not set a single confidence cutoff. Instead:
+- `selective_cov_acc_area` captures performance across *all* possible thresholds (the full curve)
+- `selective_acc@10` is a specific high-confidence operating point
+- Both are reported separately in the `calibration_detailed` metric group
 
-**Key insight:** HELM does not report a single threshold — it reports the full curve, letting evaluators choose their operating point based on their deployment context.
+This approach lets evaluators and deployment engineers choose their own operating point based on their tolerance for abstention rate.
+
+### 3.4 Multi-Metric Presentation Format in HELM Schema
+
+HELM's `schema_classic.yaml` organizes calibration metrics into two groups:
+
+```yaml
+metric_groups:
+  - name: calibration           # Headline panel: 1 metric
+    metrics:
+      - name: ece_10_bin         # Primary calibration score
+
+  - name: calibration_detailed  # Detail panel: 9 metrics
+    description: "Measures how calibrated the model is
+                  (how meaningful its uncertainty estimates are)."
+    metrics:
+      - name: max_prob
+      - name: ece_1_bin
+      - name: ece_10_bin
+      - name: selective_cov_acc_area
+      - name: selective_acc@10
+      - name: platt_ece_1_bin
+      - name: platt_ece_10_bin
+      - name: platt_coef
+      - name: platt_intercept
+```
+
+**Key principle:** The headline shows `ece_10_bin`; all other calibration properties are always separately accessible. No collapse.
 
 ---
 
@@ -209,9 +271,11 @@ If ACAT humility measurement is published or referenced, cite HELM as follows:
 
 1. **HELM Repository:** https://github.com/stanford-crfm/helm
 2. **HELM Paper (arXiv):** https://arxiv.org/abs/2211.09110
-3. **Calibration metrics implementation:** `src/helm/benchmark/metrics/calibration_metrics.py` in stanford-crfm/helm
-4. **ACAT Humility dimension:** `docs/H-ACAT_PHASE_3_PROTOCOL.md` §1.6, H-ACAT Phase 3 Protocol
-5. **Phase 1 vs Phase 3 divergence:** `docs/H-ACAT_PHASE_3_PROTOCOL.md` §4 (MAPPIN'SDM model)
+3. **Calibration metrics implementation:** `src/helm/benchmark/metrics/basic_metrics.py` in stanford-crfm/helm (function `compute_calibration_metrics()`, verified at commit `63754d05`)
+4. **Calibration library dependency:** `uncertainty-calibration ~=0.1.4` (p-lambda/verified_calibration), file `calibration/utils.py`, functions `get_ece_em()`, `get_ece()`, `get_selective_stats()`, `get_platt_scaler()` (verified at commit `ee81c346`)
+5. **HELM schema (metric group definitions):** `src/helm/benchmark/static/schema_classic.yaml` — `calibration` and `calibration_detailed` metric groups
+6. **ACAT Humility dimension:** `docs/H-ACAT_PHASE_3_PROTOCOL.md` §1.6, H-ACAT Phase 3 Protocol
+7. **Phase 1 vs Phase 3 divergence:** `docs/H-ACAT_PHASE_3_PROTOCOL.md` §4 (MAPPIN'SDM model)
 
 ---
 
