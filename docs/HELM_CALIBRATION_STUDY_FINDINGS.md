@@ -121,7 +121,7 @@ sorted_correct = correct[sort_indices]
 accs = np.cumsum(sorted_correct) / np.arange(1, len(sorted_correct) + 1)
 coverage_acc_area = np.mean(accs)        # mean accuracy across all thresholds
 ```
-At each coverage threshold `k/n` (include only the `k` most confident predictions), accuracy is computed on those `k` items. The mean of these accuracy values gives the AUC. A perfectly calibrated model scores 1.0; a model with random confidence scores roughly equal to overall accuracy.
+At each coverage threshold `k/n` (include only the `k` most confident predictions), accuracy is computed on those `k` items. The mean of these accuracy values gives the AUC. This value is bounded above by 1.0 (achieved only with perfect accuracy) and increases when confidence ranks correct predictions ahead of incorrect ones; with uninformative confidence it tends toward the overall accuracy.
 
 **`selective_acc@10`** — Accuracy at 10% coverage:
 ```python
