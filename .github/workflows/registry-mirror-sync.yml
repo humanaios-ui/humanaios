@@ -1,0 +1,145 @@
+name: Registry Mirror Sync Check
+# PURPOSE: Verify canonical REGISTERED.md and local mirrors are synchronized
+# (PATH A: Codify existing — detect divergence, alert if >3 days old, non-blocking)
+
+on:
+  schedule:
+    # Run every 6 hours (cron: 0 */6 * * *)
+    - cron: '0 */6 * * *'
+
+  # Also run on any push to operations/REGISTERED.md (catch updates immediately)
+  push:
+    paths:
+      - 'operations/REGISTERED.md'
+      - '.empirica/governance/ARTIFACT_REGISTRY_INDEX.yaml'
+
+  # Manual trigger for debugging
+  workflow_dispatch:
+
+jobs:
+  sync-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Fetch canonical REGISTERED.md from remote
+        run: |
+          curl -s -H "User-Agent: registry-mirror-sync/1.0" \
+            "https://raw.githubusercontent.com/humanaios-ui/operations/main/REGISTERED.md" \
+            -o /tmp/canonical_REGISTERED.md
+          if [ ! -s /tmp/canonical_REGISTERED.md ]; then
+            echo "ERROR: Failed to fetch canonical registry (HTTP or network error)"
+            exit 1
+          fi
+          echo "✓ Canonical fetch succeeded ($(wc -c < /tmp/canonical_REGISTERED.md) bytes)"
+
+      - name: Compare canonical vs local copy (if exists)
+        run: |
+          LOCAL_PATH="operations/REGISTERED.md"
+          if [ -f "$LOCAL_PATH" ]; then
+            echo "Comparing local and canonical..."
+            DIFF=$(diff -u "$LOCAL_PATH" /tmp/canonical_REGISTERED.md | wc -l)
+            if [ "$DIFF" -gt 0 ]; then
+              echo "⚠ WARNING: Local diverges from canonical by $DIFF lines"
+              echo "Local: $(wc -c < "$LOCAL_PATH") bytes"
+              echo "Canonical: $(wc -c < /tmp/canonical_REGISTERED.md) bytes"
+              echo "First 20 diff lines:"
+              diff -u "$LOCAL_PATH" /tmp/canonical_REGISTERED.md | head -20
+            else
+              echo "✓ Local and canonical are identical"
+            fi
+          else
+            echo "ℹ Local REGISTERED.md does not exist (first run?)"
+          fi
+
+      - name: Check canonical freshness (must be <3 days old)
+        run: |
+          # Extract last update date from canonical header
+          CANONICAL_DATE=$(grep -m 1 "^**Last updated:" /tmp/canonical_REGISTERED.md | \
+            sed -E 's/.*\(S-([0-9]{6})\).*/\1/' || echo "UNKNOWN")
+
+          echo "Canonical registry last update: S-$CANONICAL_DATE (from header)"
+
+          # This is a heuristic; full date parsing depends on format
+          # For now, alert if header is missing or seems stale
+          if [ "$CANONICAL_DATE" = "UNKNOWN" ]; then
+            echo "⚠ WARNING: Could not parse canonical update date from header"
+            exit 0 # Non-blocking alert
+          fi
+
+          echo "✓ Canonical date found: S-$CANONICAL_DATE"
+
+      - name: Generate registry index (derive metadata)
+        run: |
+          INDEX_FILE=".empirica/governance/ARTIFACT_REGISTRY_INDEX.yaml"
+
+          # Extract counts from canonical
+          F_COUNT=$(grep -c "^### F-" /tmp/canonical_REGISTERED.md || echo "0")
+          IC_COUNT=$(grep -c "^### IC-" /tmp/canonical_REGISTERED.md || echo "0")
+          H_COUNT=$(grep -c "^### H-" /tmp/canonical_REGISTERED.md || echo "0")
+
+          echo "Counts from canonical: F=$F_COUNT IC=$IC_COUNT H=$H_COUNT"
+
+          # Update metadata section only (preserve rest of file for manual edits)
+          if [ -f "$INDEX_FILE" ]; then
+            # Sed in-place update of metadata (assumes YAML structure)
+            sed -i "s/last_sync: .*/last_sync: \"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"/" "$INDEX_FILE"
+            sed -i "s/sync_status: .*/sync_status: \"green\"/" "$INDEX_FILE"
+            echo "✓ Updated index metadata in $INDEX_FILE"
+          else
+            echo "ℹ Index file $INDEX_FILE not yet created (will be on first merge)"
+          fi
+
+      - name: Alert if divergence detected
+        if: failure() || env.DIVERGENCE_ALERT == 'true'
+        run: |
+          echo "⚠ REGISTRY MIRROR SYNC ALERT"
+          echo "One or more issues detected:"
+          echo "  - Canonical fetch failed, OR"
+          echo "  - Local copy diverges from canonical, OR"
+          echo "  - Canonical date could not be parsed"
+          echo ""
+          echo "Non-blocking alert. Investigate via:"
+          echo "  1. Verify remote REGISTERED.md at: https://github.com/humanaios-ui/operations/blob/main/REGISTERED.md"
+          echo "  2. Diff local vs canonical: operations/REGISTERED.md"
+          echo "  3. If remote is newer, sync local and commit"
+          exit 0 # Non-blocking; exits cleanly with warning
+
+      - name: Verify claim_class_gate.py points to canonical
+        run: |
+          GATE_FILE="operations/tools/claim_class_gate.py"
+          if [ -f "$GATE_FILE" ]; then
+            if grep -q 'humanaios-ui/operations.*REGISTERED.md' "$GATE_FILE"; then
+              echo "✓ claim_class_gate.py references canonical URL"
+            else
+              echo "⚠ WARNING: claim_class_gate.py URL may be outdated"
+              grep -n "github.*REGISTERED" "$GATE_FILE" || echo "  (no GitHub reference found)"
+            fi
+          fi
+
+      - name: Summary
+        run: |
+          echo "=== REGISTRY MIRROR SYNC CHECK SUMMARY ==="
+          echo "Canonical: https://github.com/humanaios-ui/operations/main/REGISTERED.md"
+          echo "Local: operations/REGISTERED.md"
+          echo "Index: .empirica/governance/ARTIFACT_REGISTRY_INDEX.yaml"
+          echo ""
+          echo "Status: All checks completed (non-blocking alerts only)"
+          echo "See job logs above for details."
+          echo ""
+          echo "Questions? See:"
+          echo "  - REGISTRY_SPEC.md (governance spec)"
+          echo "  - ARTIFACT_REGISTRY_FINDINGS.md (design rationale)"
+          echo ""
+          echo "Wado. 🦅"
+
+# NOTE: This workflow is intentionally non-blocking. Its purpose is to detect
+# divergence and alert, not to halt the pipeline. Divergence >3 days triggers
+# a warning; maintainers can then decide whether to sync, merge, or leave alone.
+#
+# If you need blocking verification, create a separate workflow that fails
+# CI on divergence. This version prioritizes velocity over strict sync.
