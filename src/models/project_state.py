@@ -13,7 +13,7 @@ Mapping from legacy states:
 from enum import Enum
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ProjectState(str, Enum):
@@ -77,7 +77,7 @@ class ProjectStateSchema:
         transition = StateTransition(
             from_state=self.state.value,
             to_state=new_state.value,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             authorizer_id=authorizer_id,
             reason=reason
         )
@@ -85,7 +85,7 @@ class ProjectStateSchema:
 
         # Update state and timestamp
         self.state = new_state
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         if new_state == ProjectState.PLANNED:
             self.state_timestamps.planned_at = now
