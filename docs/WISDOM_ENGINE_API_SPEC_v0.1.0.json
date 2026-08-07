@@ -9,7 +9,7 @@
   "endpoints": [
     {
       "method": "POST",
-      "path": "/api/v1/guidance/request",
+      "path": "/request",
       "name": "Create Guidance Request",
       "description": "Submit a guidance request based on student consciousness level and submission context",
       "request_schema": {
