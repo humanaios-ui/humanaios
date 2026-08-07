@@ -66,9 +66,9 @@ def upgrade() -> None:
         sa.Column("timestamp", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.Column("authorizer_id", sa.String(255), nullable=False),
         sa.Column("reason", sa.String(1000), nullable=True),
-        sa.Index("idx_audit_entity", ["entity_type", "entity_id"]),
+        sa.Index("idx_audit_entity", "entity_type", "entity_id"),
         sa.Index("idx_audit_timestamp", "timestamp"),
-        sa.Index("idx_audit_state_change", ["from_state", "to_state"]),
+        sa.Index("idx_audit_state_change", "from_state", "to_state"),
     )
 
 
