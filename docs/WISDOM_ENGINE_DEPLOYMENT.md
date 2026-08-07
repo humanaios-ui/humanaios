@@ -149,10 +149,7 @@ curl -X GET http://localhost:8000/api/v1/guidance/session/42503a5e-789a-4de5-a30
 
 ---
 
-## 3. Error Cases
-
-### Invalid Request (400 - Validation Error)
-
+### Invalid Request (422 - Validation Error)
 ```bash
 curl -X POST http://localhost:8000/api/v1/guidance/request \
   -H "Content-Type: application/json" \
