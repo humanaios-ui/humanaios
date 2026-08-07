@@ -2,6 +2,9 @@ name: Registry Mirror Sync Check
 # PURPOSE: Verify canonical REGISTERED.md and local mirrors are synchronized
 # (PATH A: Codify existing — detect divergence, alert if >3 days old, non-blocking)
 
+permissions:
+  contents: read
+
 on:
   schedule:
     # Run every 6 hours (cron: 0 */6 * * *)
