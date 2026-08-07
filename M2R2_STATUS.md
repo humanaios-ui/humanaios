@@ -2,8 +2,8 @@
 
 **Authority:** M2 Rank 2 RFC (State Machine Harmonization)  
 **Practice:** humanaios (empirica-foundation)  
-**Last Updated:** 2026-08-06  
-**Status:** ✅ CORE IMPLEMENTATION COMPLETE — Ready for Integration
+**Last Updated:** 2026-08-07  
+**Status:** ✅ PHASE 3 COMPLETE — Supabase ORM Ready for Schema Deployment
 
 ---
 
@@ -47,28 +47,64 @@
   - Proper sys.path handling ✅
   - Works standalone (no PYTHONPATH required) ✅
 
-### 4. Unit Tests ✅
+### 4. State Machine Unit Tests ✅
 - **File:** `tests/test_m2r2_state_harmonization.py`
 - **Coverage:** 28 tests, all passing
   - Collaboration state machine: 14 tests ✅
   - Project state machine: 14 tests ✅
   - Cross-state validation: 2 tests ✅
 
-### 5. Code Quality Improvements ✅
+### 5. Production Integration Utilities ✅
+- **File:** `src/models/state_utils.py` (533 lines)
+  - StateSerializer: JSON roundtrip for database storage
+  - StateQuery: Timeline, analytics, and audit queries
+  - StateComparison: Validation and consistency checking
+- **File:** `tests/test_state_utils.py`
+  - 21 comprehensive tests covering all utilities ✅
+
+### 6. Supabase ORM Models (Phase 3) ✅
+- **File:** `src/models/orm_supabase.py` (366 lines)
+  - Collaboration ORM model with embedded state machine
+  - Project ORM model with embedded state machine
+  - JSONB column support for state serialization
+  - Automatic timestamp tracking
+  - Helper functions for common queries
+  - Full SQLAlchemy compatibility
+
+- **File:** `tests/test_orm_supabase.py`
+  - 15 ORM integration tests (100% passing) ✅
+  - Collaboration lifecycle testing ✅
+  - Project lifecycle testing ✅
+  - State persistence verification ✅
+  - Multi-entity interoperability ✅
+
+### 7. Code Quality Improvements ✅
 - Replaced deprecated `datetime.utcnow()` with `datetime.now(timezone.utc)`
 - All deprecation warnings eliminated
-- Tests run cleanly: 37/37 passing (including discount integration & fresh session validation)
+- Tests run cleanly: 73/73 passing
+- Proper sys.path handling in scripts
 
-### 6. Production Integration Utilities ✅ (NEW)
-- **File:** `src/models/state_utils.py` (533 lines)
-  - **StateSerializer**: JSON serialization/deserialization (roundtrip-safe)
-  - **StateQuery**: Timeline, transition counting, time-in-state analysis
-  - **StateComparison**: Cross-schema validation and consistency checking
-- **File:** `tests/test_state_utils.py` (21 comprehensive tests)
-  - Serialization roundtrip testing
-  - Query operation verification
-  - State consistency validation
-  - Edge cases and error scenarios
+---
+
+## Test Results
+
+```
+$ python3 -m pytest tests/ -v
+======================== 73 passed in 0.20s ========================
+
+Breakdown:
+  - test_m2r2_state_harmonization.py:    28 tests ✅
+  - test_discount_integration.py:         4 tests ✅
+  - test_fresh_session_validation.py:     5 tests ✅
+  - test_state_utils.py:                 21 tests ✅
+  - test_orm_supabase.py:                15 tests ✅
+
+Zero deprecation warnings
+All timezone-aware UTC datetime handling
+Serialization roundtrip verified
+Consistency validation tested
+ORM integration verified
+```
 
 ---
 
@@ -89,37 +125,90 @@ PLANNED   COMPLETED   │
 - COMPLETED → ARCHIVED | IN_PROGRESS
 - ARCHIVED → IN_PROGRESS (reopen)
 
-**Blocked transitions:**
-- PLANNED → ARCHIVED (skip intermediate states)
-- IN_PROGRESS → ARCHIVED (must go through COMPLETED)
+### Supabase Database Schema
 
-### Audit Trail Structure
-Each state transition records:
-- `from_state`: Previous state
-- `to_state`: New state
-- `timestamp`: When transition occurred (timezone-aware UTC)
-- `authorizer_id`: Who authorized the transition
-- `reason`: Why the transition occurred
+**collaborations table:**
+```sql
+CREATE TABLE collaborations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  description TEXT,
+  state_data JSONB NOT NULL,  -- Serialized CollaborationStateSchema
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  archived_at TIMESTAMP WITH TIME ZONE
+);
+```
+
+**projects table:**
+```sql
+CREATE TABLE projects (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  description TEXT,
+  state_data JSONB NOT NULL,  -- Serialized ProjectStateSchema
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  archived_at TIMESTAMP WITH TIME ZONE
+);
+```
+
+### ORM Pattern
+
+```python
+# Create collaboration
+collab = Collaboration(name="Research Phase", description="Q3 2026")
+session.add(collab)
+session.commit()
+
+# Transition state
+collab.transition_to(
+    CollaborationState.IN_PROGRESS,
+    authorizer_id="user_123",
+    reason="Team ratified"
+)
+session.commit()
+
+# Query by state
+in_progress = get_collaboration_by_state(session, CollaborationState.IN_PROGRESS)
+
+# Access audit trail
+transitions = collab.get_audit_trail()
+time_in_state = collab.time_in_current_state()
+```
 
 ---
 
-## Test Results
+## Implementation Completeness
 
-```
-$ python3 -m pytest tests/ -v
-======================== 58 passed in 1.88s ========================
+### ✅ Phase 1: Core State Machines (Complete)
+- [x] CollaborationState + CollaborationStateSchema
+- [x] ProjectState + ProjectStateSchema
+- [x] 4-tier unified model with reopen support
+- [x] Audit trail (timestamp, authorizer, reason)
+- [x] Legacy state migration mappings
+- [x] 28 unit tests (100% pass)
 
-Breakdown:
-  - test_m2r2_state_harmonization.py:    28 tests ✅
-  - test_discount_integration.py:         4 tests ✅
-  - test_fresh_session_validation.py:     5 tests ✅
-  - test_state_utils.py:                 21 tests ✅ (NEW)
+### ✅ Phase 2: Production Utilities (Complete)
+- [x] JSON serialization/deserialization
+- [x] State timeline and analytics queries
+- [x] Consistency validation and comparison
+- [x] 21 unit tests (100% pass)
+- [x] Migration scripts with standalone execution
 
-No deprecation warnings
-All timezone-aware UTC datetime handling
-Serialization roundtrip verified
-Consistency validation tested
-```
+### ✅ Phase 3: Supabase Integration (Complete — Zone 2 Approved)
+- [x] Database backend selected: Supabase (PostgreSQL)
+- [x] ORM models with state machine integration (SQLAlchemy-compatible)
+- [x] JSON serialization for JSONB columns
+- [x] Collaboration and Project models fully implemented
+- [x] 15 integration tests (100% pass)
+- [x] Decision document: M2R2_PHASE3_DECISION.md
+
+### ⏳ Phase 4: Schema Deployment (Next)
+- [ ] Alembic migration scripts
+- [ ] Production database schema creation
+- [ ] Real data migration planning
+- [ ] Monitoring and validation setup
 
 ---
 
@@ -136,72 +225,54 @@ Consistency validation tested
    - No PYTHONPATH manipulation required
    - Commit: a1a80ae
 
-3. **Production integration utilities:** (NEW)
+3. **Production integration utilities:**
    - StateSerializer: JSON roundtrip support for database storage
    - StateQuery: Timeline, analytics, and audit queries
    - StateComparison: Validation and consistency checking
    - 21 new tests covering all utilities
    - Commit: 861286d
 
+4. **Supabase ORM Implementation:** (NEW)
+   - Collaboration ORM model with full state machine integration
+   - Project ORM model with full state machine integration
+   - JSONB column support for efficient serialization
+   - 15 integration tests verifying ORM behavior
+   - Commit: cc7dc5a
+
 ---
 
-## Next Steps (Prioritized)
+## Zone 2 Decisions (Approved 2026-08-07)
 
-### Phase 1: Integration Points (Zone 1/2 work) — READY
-✅ **Utilities complete.** Awaiting Zone 2 decision on:
-- [ ] Database backend selection (SQLAlchemy, Supabase, etc.)
-- [ ] Create ORM models that compose state machines
-- [ ] Define database schema and Alembic migrations
-- [ ] Production data extraction and dry-run migration
+| Decision | Choice | Authority | Status |
+|----------|--------|-----------|--------|
+| Integration Path | Phase 3 Database Integration | Carly R. Anderson | ✅ APPROVED |
+| Database Backend | Supabase (PostgreSQL) | Carly R. Anderson | ✅ APPROVED |
+| ORM Framework | SQLAlchemy | Carly R. Anderson | ✅ APPROVED |
+| Serialization | JSONB columns | Carly R. Anderson | ✅ APPROVED |
 
-### Phase 2: API & Deployment
-- [ ] Create state transition API endpoints (if external exposure needed)
-- [ ] Integration tests with actual database operations
-- [ ] Performance testing (audit trail query performance)
-- [ ] Zone 2 approval for database schema and rollout plan
-
-### Phase 3: Documentation & Rollout
-- [ ] API documentation for state transitions
-- [ ] Operational runbook for state management
-- [ ] Migration runbook for legacy data
-- [ ] Zone 3 execution: Deploy to production
+**Decision Document:** M2R2_PHASE3_DECISION.md
 
 ---
 
 ## Remaining Open Questions
 
-1. **Database backend:** Which ORM/database should state machines integrate with?
-   - Currently models are database-agnostic (dataclasses)
-   - Need: SQLAlchemy ORM, Supabase SQL, or other integration
-
-2. **Real-world data:** Do we have existing collaborations/projects that need state migration?
-   - Migration scripts use mock data for demo
-   - Need: Production data extraction and validation
-
-3. **API exposure:** Should state transitions be exposed as REST endpoints?
-   - Or purely internal (used by other domain logic)?
-
-4. **Audit retention:** What's the SLA for keeping audit trails?
-   - Currently unbounded
-   - Need: Retention policy and archival strategy
-
----
-
-## Authority & Decision Gates
-
-| Decision | Owner | Status | Due |
-|----------|-------|--------|-----|
-| Proceed with integration | Zone 2 (Carly) | ⏳ Pending | - |
-| Database backend choice | Zone 2 (Carly) | ⏳ Pending | - |
-| API design (if needed) | Zone 2 (Carly) | ⏳ Pending | - |
-| Merge to main | Zone 2 (Carly) | ⏳ Pending | - |
+1. **Existing Data Migration**: Are there production collaborations/projects requiring migration?
+2. **API Endpoints**: Should state transitions be exposed as REST endpoints?
+3. **Monitoring**: Which metrics to track (transition frequency, time-in-state, etc.)?
+4. **Backup Strategy**: Retention policy for archived state records?
+5. **Performance**: Query optimization for state-based filtering?
 
 ---
 
 ## Files Modified This Session
 
 ```
-861286d feat(m2r2): Add state machine utilities - serialization, querying, and validation
+cc7dc5a feat(m2r2-phase3): Implement Supabase ORM models and integration
+        - src/models/orm_supabase.py (NEW — 366 lines)
+        - tests/test_orm_supabase.py (NEW — 15 tests)
+        - M2R2_PHASE3_DECISION.md (NEW — 176 lines)
+
+861286d feat(m2r2): Add state machine utilities - serialization, querying, validation
         - src/models/state_utils.py (NEW — 533 lines)
         - tests/test_state_utils.py (NEW — 21 tests)
 
@@ -216,9 +287,40 @@ fe74c80 docs(m2r2): Add comprehensive implementation status and next steps
         - M2R2_STATUS.md (NEW — 194 lines)
 ```
 
+**Total Additions:** ~1,800 lines of code, tests, and documentation  
+**Commits:** 4 new commits to feature branch  
+**Remote:** All changes pushed to origin
+
+---
+
+## Next Phase (Phase 4 - Schema Deployment)
+
+**Estimated Timeline:** 1-2 weeks
+
+1. **Schema & Migrations** (3-5 days)
+   - Write Alembic migration scripts
+   - Define table creation with proper indexes
+   - Set up audit_log table (optional)
+
+2. **Integration Testing** (2-3 days)
+   - Test ORM models against real Supabase instance
+   - Verify state serialization/deserialization
+   - Performance test queries
+
+3. **Data Migration Planning** (2-3 days)
+   - Extract existing collaboration/project data (if any)
+   - Design migration strategy
+   - Dry-run on staging environment
+
+4. **Deployment** (1 day)
+   - Apply migrations to production
+   - Validate state machines working correctly
+   - Set up monitoring
+
 ---
 
 **Practice:** humanaios  
 **Canonical:** empirica-foundation.carly.humanaios  
 **Authority:** M2 Rank 2 RFC (Carly R. Anderson, Admiral)  
-**Next review:** After Zone 2 decision on integration path
+**GitHub PR:** #54  
+**Next review:** After Phase 4 schema deployment
