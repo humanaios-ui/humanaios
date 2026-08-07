@@ -56,23 +56,24 @@ task:
 
 
 
+
 # Learning trajectory (PREFLIGHT→POSTFLIGHT deltas — measures learning, NOT calibration bias)
 # For actual bias corrections see grounded_calibration.grounded_bias_corrections
 learning_trajectory:
-  last_updated: "2026-08-04T19:26:04.762854"
+  last_updated: "2026-08-07T09:16:41.082854"
   ai_id: humanaios
-  observations: 252
+  observations: 265
   session_deltas:
     impact: +0.25
     change: +0.25
     uncertainty: +0.11
-    completion: -0.11
+    completion: -0.10
     clarity: -0.07
     state: -0.06
     density: -0.05
-    signal: -0.05
-    coherence: -0.03
-    know: -0.03
+    signal: -0.04
+    coherence: -0.02
+    know: -0.02
     context: -0.02
     engagement: +0.01
     do: -0.00
@@ -90,85 +91,80 @@ learning_trajectory:
 # fully measure holistic epistemic state. Use alongside self-assessment,
 # not as a replacement. See dual-track calibration philosophy in docs.
 grounded_calibration:
-  last_updated: "2026-08-04T19:26:05.623305"
+  last_updated: "2026-08-07T09:16:42.622439"
   ai_id: humanaios
-  observations: 577
+  observations: 592
   grounded_coverage: 0.92
   divergence:
-    know: +0.42
+    know: +0.43
     uncertainty: -0.42
-    do: +0.42
-    signal: +0.33
-    impact: +0.23
-    change: +0.20
+    do: +0.39
+    signal: +0.34
+    impact: +0.24
+    change: +0.19
     clarity: +0.19
-    completion: +0.10
+    completion: +0.11
     context: +0.07
-    density: +0.01
-    state: +0.00
+    state: +0.02
+    density: +0.02
   ungrounded: [engagement]
   grounded_bias_corrections:
-    completion: +0.25
     state: +0.25
-    density: +0.25
     context: +0.25
+    completion: +0.25
+    density: +0.25
     clarity: +0.19
-    change: -0.11
     impact: +0.10
+    change: -0.09
     uncertainty: +0.08
     know: -0.05
-    do: -0.04
     signal: +0.02
+    do: -0.01
   phase_weights:
     noetic: 0.5
     praxic: 0.5
     source: no_tool_data
-  holistic_calibration_score: 0.1546
+  holistic_calibration_score: 0.1169
   holistic_gaps:
-    know: +0.4167
-    signal: +0.4167
-    completion: -0.2500
-    clarity: +0.2325
-    state: -0.2000
-    uncertainty: -0.1667
-    change: +0.1500
-    density: -0.0898
-    do: +0.0500
-    context: -0.0389
+    uncertainty: -0.4200
+    state: +0.3321
+    change: +0.1316
+    do: -0.1000
+    context: -0.0800
   insights:
+    - vector: uncertainty
+      phase: both
+      pattern: chronic_underestimate
+      severity: 1.00
+      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.41)"
+      suggestion: "increase_self_assessment:uncertainty"
     - vector: clarity
       phase: both
       pattern: chronic_overestimate
-      severity: 0.92
-      description: "clarity overestimated in 7/7 calibrations (mean gap +0.31)"
+      severity: 0.91
+      description: "clarity overestimated in 6/6 calibrations (mean gap +0.30)"
       suggestion: "reduce_self_assessment:clarity"
-    - vector: do
-      phase: both
-      pattern: chronic_overestimate
-      severity: 0.39
-      description: "do overestimated in 5/7 calibrations (mean gap +0.13)"
-      suggestion: "reduce_self_assessment:do"
-    - vector: state
-      phase: both
-      pattern: chronic_underestimate
-      severity: 0.41
-      description: "state underestimated in 7/7 calibrations (mean gap -0.14)"
-      suggestion: "increase_self_assessment:state"
     - vector: know
       phase: both
       pattern: chronic_overestimate
       severity: 1.00
-      description: "know overestimated in 10/10 calibrations (mean gap +0.33)"
+      description: "know overestimated in 9/9 calibrations (mean gap +0.34)"
       suggestion: "reduce_self_assessment:know"
     - vector: signal
       phase: both
       pattern: chronic_overestimate
-      severity: 0.87
-      description: "signal overestimated in 10/10 calibrations (mean gap +0.29)"
+      severity: 0.90
+      description: "signal overestimated in 9/9 calibrations (mean gap +0.30)"
       suggestion: "reduce_self_assessment:signal"
+    - vector: impact
+      phase: both
+      pattern: evidence_gap
+      severity: 0.70
+      description: "impact has evidence in only 0/10 verifications (mean coverage 0.56)"
+      suggestion: "add_evidence_source:impact"
 # Brier calibration (auto-updated by Empirica post-test verification)
 brier_calibration:
-  last_updated: "2026-08-04T19:26:04.813768"
+  last_updated: "2026-08-07T09:16:41.126658"
   ai_id: humanaios
   note: "Murphy (1973) decomposition: BS = Reliability - Resolution + Uncertainty"
   noetic:
@@ -179,16 +175,16 @@ brier_calibration:
     n_predictions: 32
     trend: improving
   praxic:
-    brier_score: 0.0754
-    reliability: 0.0427
-    resolution: 0.0063
-    uncertainty: 0.0390
+    brier_score: 0.0742
+    reliability: 0.0391
+    resolution: 0.0057
+    uncertainty: 0.0409
     n_predictions: 50
-    trend: stable
+    trend: improving
   combined:
-    brier_score: 0.0725
-    reliability: 0.0408
-    resolution: 0.0071
-    uncertainty: 0.0388
+    brier_score: 0.0742
+    reliability: 0.0391
+    resolution: 0.0057
+    uncertainty: 0.0409
     n_predictions: 50
-    trend: stable
+    trend: improving
