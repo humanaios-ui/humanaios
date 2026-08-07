@@ -11,7 +11,7 @@ Tests:
 """
 
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 from src.models.collaboration_state import (
     CollaborationState,
     CollaborationStateSchema,
@@ -93,13 +93,13 @@ class TestCollaborationState:
     def test_transition_to_updates_timestamp(self):
         """Transition should update the appropriate timestamp field."""
         schema = CollaborationStateSchema()
-        before = datetime.utcnow()
+        before = datetime.now(timezone.utc)
         schema.transition_to(
             CollaborationState.IN_PROGRESS,
             authorizer_id="user_123",
             reason="Starting work"
         )
-        after = datetime.utcnow()
+        after = datetime.now(timezone.utc)
 
         assert schema.state_timestamps.started_at is not None
         assert before <= schema.state_timestamps.started_at <= after
