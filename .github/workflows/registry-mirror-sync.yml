@@ -16,6 +16,9 @@ on:
   # Manual trigger for debugging
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   sync-check:
     runs-on: ubuntu-latest
