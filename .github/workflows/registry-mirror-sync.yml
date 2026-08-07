@@ -58,9 +58,7 @@ jobs:
 
       - name: Check canonical freshness (must be <3 days old)
         run: |
-          # Extract last update date from canonical header
-          CANONICAL_DATE=$(grep -m 1 "^**Last updated:" /tmp/canonical_REGISTERED.md | \
-            sed -E 's/.*\(S-([0-9]{6})\).*/\1/' || echo "UNKNOWN")
+          CANONICAL_DATE=$(grep -m 1 -F "**Last updated:" /tmp/canonical_REGISTERED.md | \
 
           echo "Canonical registry last update: S-$CANONICAL_DATE (from header)"
 
