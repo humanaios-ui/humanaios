@@ -74,8 +74,13 @@ def run_migrations_online() -> None:
     configuration = config.get_section(config.config_ini_section)
     configuration["sqlalchemy.url"] = DB_URL
 
+    # Filter to only SQLAlchemy-valid options (exclude Alembic-specific keys)
+    filtered_config = {k: v for k, v in configuration.items()
+                      if k.startswith("sqlalchemy.") and not k.endswith("_scheme")}
+    filtered_config["sqlalchemy.url"] = DB_URL
+
     connectable = engine_from_config(
-        configuration,
+        filtered_config,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
