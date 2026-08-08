@@ -1,0 +1,67 @@
+---
+# Heavy Load Test: 100 Concurrent Users
+# Duration: 2 minutes
+# Arrival Rate: 10 users/second (ramp to 100 total)
+# Tests system limits and graceful degradation
+
+config:
+  target: http://localhost:3000
+  phases:
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 100
+      name: "Heavy Load (100 concurrent users)"
+
+  processor: "./scenario-processor.js"
+
+  defaults:
+    headers:
+      Content-Type: application/json
+      User-Agent: Artillery/LoadTest
+
+  log:
+    level: info
+
+scenarios:
+  - name: "Assessment Submission Flow"
+    flow:
+      - post:
+          url: "/api/v1/assessments"
+          headers:
+            X-Org-ID: "test-org-heavy"
+          json:
+            system_id: "{{ $randomChoice(['gpt-4', 'claude-3', 'gpt-3.5']) }}"
+            system_name: "System Heavy"
+            system_info:
+              endpoint: "https://api.example.com/v1"
+              model: "test-model"
+              api_key: "sk-test-key-heavy"
+            tier: "T1_STANDARD"
+          expect:
+            - statusCode: [201, 429, 503]  # Accept some rate limit/service unavailable errors
+          capture:
+            json: "$.assessment_id"
+            as: "assessment_id"
+
+      - think: 1
+
+      - loop:
+          - get:
+              url: "/api/v1/assessments/{{ assessment_id }}"
+              headers:
+                X-Org-ID: "test-org-heavy"
+              expect:
+                - statusCode: [200, 404, 503]  # Accept some failures
+              capture:
+                json: "$.status"
+                as: "job_status"
+          - think: 2
+        count: 10
+        whileTrue: "{{ job_status != 'completed' && job_status != 'failed' }}"
+
+      - get:
+          url: "/api/v1/assessments/{{ assessment_id }}/result"
+          headers:
+            X-Org-ID: "test-org-heavy"
+          expect:
+            - statusCode: [200, 404, 503]
