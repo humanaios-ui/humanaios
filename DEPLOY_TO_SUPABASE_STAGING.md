@@ -1,30 +1,97 @@
-# M2R2 Schema Deployment to Supabase Staging
+# M2R2 Schema Deployment to Supabase Production
 
 **Status:** Ready for execution  
-**Credentials:** ✅ Provided  
+**Credentials:** ✅ Stored securely in GitHub Secrets  
 **Location:** /Users/andersonfamily/practices/humanaios  
+**Security:** Production credentials NEVER hardcoded in docs or scripts
 
 ---
 
-## Quick Start (Copy & Paste)
+## Security Notice
 
-### On Your Local Machine (with Python 3.8+)
+⚠️ **CRITICAL:** Database credentials must NEVER be hardcoded in documentation, shell scripts, or version control. This document was previously exposed with credentials (GitHub incident resolved 2026-08-08). All credentials now follow secure patterns below.
 
-```bash
-# 1. Clone/navigate to humanaios repo
-cd /Users/andersonfamily/practices/humanaios
+---
 
-# 2. Set Supabase staging connection
-export DATABASE_URL="postgresql://postgres:***REDACTED***@db.ksinisdzgtnqzsymhfya.supabase.co:5432/postgres"
+## Quick Start (Secure Pattern)
 
-# 3. Install dependencies (one-time)
-pip install alembic sqlalchemy psycopg2-binary
+### Option A: GitHub Actions (Recommended for CI/CD)
 
-# 4. Run deployment script
-./deploy-m2r2-staging.sh
-
-# 5. Script will prompt for confirmation before applying
+**1. Store credentials in GitHub Secrets:**
 ```
+Settings → Secrets and variables → Actions
++ New repository secret
+
+SUPABASE_PROD_DATABASE_URL = postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres
+SUPABASE_STAGING_DATABASE_URL = postgresql://postgres:[PASSWORD]@[STAGING_HOST]:5432/postgres
+```
+
+**2. Use in workflow (.github/workflows/deploy.yml):**
+```yaml
+name: Deploy M2R2 Schema
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production  # Requires approval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+      - run: |
+          pip install alembic sqlalchemy psycopg2-binary
+          alembic upgrade head
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_PROD_DATABASE_URL }}
+```
+
+### Option B: Local Development (1Pasword / LastPass / Vault)
+
+**1. Use a secrets manager (DO NOT commit credentials):**
+```bash
+# Install 1Password CLI or similar
+brew install 1password-cli
+
+# Load credentials from vault
+eval $(op run --env-file=<(op item get humanaios-db-creds --format json | jq -r '.fields[] | "\(.label)=\(.value)"'))
+
+# Run deployment
+./deploy-m2r2-staging.sh
+```
+
+**2. Ensure .gitignore prevents leaks:**
+```bash
+# .gitignore
+.env
+.env.local
+.env.production
+.secrets*
+*.key
+*.pem
+deploy_config.sh
+```
+
+**3. Verify no credentials are staged:**
+```bash
+git diff --cached | grep -i "postgresql\|password\|secret"  # Should return nothing
+```
+
+---
+
+## ⛔ What NOT to Do (Critical Security Rules)
+
+- ❌ **DO NOT** hardcode credentials in shell scripts (e.g., `export DATABASE_URL="..."`)
+- ❌ **DO NOT** include credentials in markdown files, READMEs, or documentation
+- ❌ **DO NOT** copy/paste credentials into terminals without masking first
+- ❌ **DO NOT** share credentials in Slack, email, or pull request comments
+- ❌ **DO NOT** commit `.env`, `.secrets`, or credential files
+- ❌ **DO NOT** use the same credential across multiple environments (staging ≠ production)
+
+**Violation consequences:** Public exposure → credential rotation → emergency incident → downtime. Use GitHub Secrets or a vault instead.
 
 ---
 
