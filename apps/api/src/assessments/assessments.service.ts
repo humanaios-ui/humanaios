@@ -37,6 +37,8 @@ export interface AssessmentSubmitRequest {
 export class AssessmentsService {
   private readonly logger = new Logger(AssessmentsService.name);
   private activeJobs: Map<string, JobStatus> = new Map(); // In-memory for MVP; DB-backed in production
+  private jobTimeouts: Map<string, NodeJS.Timeout> = new Map(); // Track timeouts for cleanup
+  private readonly DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
   constructor(
     private assessmentsRepository: AssessmentsRepository,
@@ -83,7 +85,10 @@ export class AssessmentsService {
 
       this.activeJobs.set(jobId, jobStatus);
 
-      this.logger.log(`Assessment submitted: ${assessment.id} (job: ${jobId})`);
+      // Trigger async job execution (fire and forget)
+      this.triggerAsyncJobExecution(jobId, assessment.id, orgId, this.DEFAULT_TIMEOUT_MS);
+
+      this.logger.log(`Assessment submitted: ${assessment.id} (job: ${jobId}, timeout: ${this.DEFAULT_TIMEOUT_MS}ms)`);
 
       return {
         job_id: jobId,
@@ -259,5 +264,80 @@ export class AssessmentsService {
         }
       }
     }
+  }
+
+  /**
+   * Trigger async job execution
+   * Queues job to run asynchronously without blocking the API response
+   */
+  private triggerAsyncJobExecution(jobId: string, assessmentId: string, orgId: string, timeoutMs: number): void {
+    // Queue job execution asynchronously
+    setImmediate(async () => {
+      try {
+        // Set timeout for this job
+        const timeoutHandle = setTimeout(() => {
+          this.enforceJobTimeout(jobId, assessmentId);
+        }, timeoutMs);
+
+        this.jobTimeouts.set(jobId, timeoutHandle);
+
+        // Execute the job
+        await this.executeAssessmentJob(jobId, assessmentId, orgId);
+
+        // Clear timeout if job completed before timeout
+        this.clearJobTimeout(jobId);
+      } catch (error) {
+        this.logger.error(`Async job execution failed: ${error.message}`, error.stack);
+        this.clearJobTimeout(jobId);
+      }
+    });
+  }
+
+  /**
+   * Enforce job timeout
+   * Called when a job exceeds its time limit
+   */
+  private enforceJobTimeout(jobId: string, assessmentId: string): void {
+    const job = this.activeJobs.get(jobId);
+    if (job && job.status === 'running') {
+      this.logger.warn(`Job timeout enforced: ${jobId} (assessment: ${assessmentId})`);
+
+      // Update job status
+      job.status = 'failed';
+      job.error_message = `Assessment execution timeout after ${this.DEFAULT_TIMEOUT_MS / 1000}s`;
+      job.completed_at = new Date();
+
+      // Update assessment status
+      this.assessmentsRepository
+        .updateAssessmentStatus(assessmentId, 'failed')
+        .catch((e) => {
+          this.logger.error(`Failed to update assessment status on timeout: ${e.message}`);
+        });
+
+      this.clearJobTimeout(jobId);
+    }
+  }
+
+  /**
+   * Clear timeout handle for a job
+   */
+  private clearJobTimeout(jobId: string): void {
+    const timeoutHandle = this.jobTimeouts.get(jobId);
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle);
+      this.jobTimeouts.delete(jobId);
+    }
+  }
+
+  /**
+   * Cleanup all timeouts on shutdown
+   * Called during app teardown
+   */
+  cleanupAllTimeouts(): void {
+    for (const [jobId, timeoutHandle] of this.jobTimeouts.entries()) {
+      clearTimeout(timeoutHandle);
+    }
+    this.jobTimeouts.clear();
+    this.logger.log('All job timeouts cleared');
   }
 }

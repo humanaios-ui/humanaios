@@ -3,7 +3,7 @@
  * Orchestrates assessment API, job queue, and result persistence
  */
 
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationShutdown } from '@nestjs/common';
 import { AssessmentsService } from './assessments.service';
 import { AssessmentsController } from './assessments.controller';
 import { AssessmentsRepository } from './assessments.repository';
@@ -16,4 +16,10 @@ import { DatabaseModule } from '../database/database.module';
   controllers: [AssessmentsController],
   exports: [AssessmentsService, AssessmentsRepository],
 })
-export class AssessmentsModule {}
+export class AssessmentsModule implements OnApplicationShutdown {
+  constructor(private assessmentsService: AssessmentsService) {}
+
+  onApplicationShutdown(signal?: string) {
+    this.assessmentsService.cleanupAllTimeouts();
+  }
+}
