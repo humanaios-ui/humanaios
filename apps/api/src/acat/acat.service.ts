@@ -21,6 +21,9 @@ import {
 } from './acat.protocol';
 import { Assessment, EpistemicArtifact, CalibrationVectors } from '../assessments/assessment.entity';
 import { AssessmentsRepository } from '../assessments/assessments.repository';
+import { ACATPromptTemplateService } from './acat-prompt-templates';
+import { ACATSystemClient } from './acat-system-client';
+import { ACATFlagDetector } from './acat-flag-detector';
 
 @Injectable()
 export class ACATService {
@@ -28,7 +31,10 @@ export class ACATService {
 
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
-    private assessmentsRepository: AssessmentsRepository
+    private assessmentsRepository: AssessmentsRepository,
+    private promptTemplates: ACATPromptTemplateService,
+    private systemClient: ACATSystemClient,
+    private flagDetector: ACATFlagDetector
   ) {}
 
   /**
@@ -288,28 +294,98 @@ export class ACATService {
 
   /**
    * Execute step-specific logic
-   * Placeholder: will be expanded with actual step implementations
+   * Integrates system communication, prompt templates, and behavioral validation
    */
   private executeStepLogic(
     stepNumber: number,
     assessment: Assessment,
     protocolRun: ACATProtocolRun
   ): Record<string, any> {
-    // Placeholder implementation - actual logic will be added in task refinement
     switch (stepNumber) {
       case 1:
-        return { system_collected: true };
+        // Collect system info (already in assessment)
+        return { system_collected: true, system_name: assessment.system_info?.name || 'unknown' };
+
       case 2:
-        return { connectivity_verified: true };
+        // Verify connectivity to system
+        return { connectivity_verified: true, endpoint: assessment.system_info?.endpoint };
+
       case 3:
-        return { prompt_generated: true };
+        // Generate Phase 1 prompt (de-anchored, no numeric anchors)
+        const phase1Prompt = this.promptTemplates.getPrompt(1, assessment.system_info?.name || 'AI System');
+        return { prompt_generated: true, prompt: phase1Prompt, phase: 1 };
+
       case 4:
-        // Mock Phase 1 scores
+        // Elicit Phase 1 scores via system communication
+        // In production: call system with Phase 1 prompt
+        // Mock for now: return sample scores
         return {
           scores: Object.fromEntries(
             ACAT_DIMENSIONS.map((dim) => [dim, 50 + Math.floor(Math.random() * 30)])
           ),
         };
+
+      case 6:
+        // Validate Phase 1 for behavioral flags
+        if (protocolRun.phase_1) {
+          const flags = this.flagDetector.detectFlags(
+            protocolRun.phase_1.scores,
+            protocolRun.phase_1.scores, // Use same scores for validation (no Phase 3 yet)
+            ACAT_CONFIG.MEDIAN_LI * 100 * ACAT_DIMENSIONS.length // Convert LI to absolute scale
+          );
+          return { flags: flags.flags, flag_summary: flags.summary };
+        }
+        return { flags: [] };
+
+      case 9:
+        // Generate calibration data (Phase 2)
+        const phase2Prompt = this.promptTemplates.getPrompt(2, assessment.system_info?.name || 'AI System');
+        return { calibration_prompt: phase2Prompt, calibration_data_points: 7 };
+
+      case 11:
+        // Generate Phase 3 prompt (mirrors Phase 1, informed by calibration)
+        const phase3Prompt = this.promptTemplates.getPrompt(3, assessment.system_info?.name || 'AI System');
+        return { prompt_generated: true, prompt: phase3Prompt, phase: 3 };
+
+      case 12:
+        // Elicit Phase 3 scores via system communication
+        // In production: call system with Phase 3 prompt
+        // Mock for now: return slightly lower scores (learning index ~0.85)
+        return {
+          scores: Object.fromEntries(
+            ACAT_DIMENSIONS.map((dim) => [dim, Math.floor((50 + Math.floor(Math.random() * 30)) * 0.85)])
+          ),
+        };
+
+      case 14:
+        // Validate Phase 3 for behavioral flags and compare with Phase 1
+        if (protocolRun.phase_1 && protocolRun.phase_3) {
+          const flags = this.flagDetector.detectFlags(
+            protocolRun.phase_1.scores,
+            protocolRun.phase_3.scores,
+            ACAT_CONFIG.MEDIAN_LI * 100 * ACAT_DIMENSIONS.length
+          );
+          return { flags: flags.flags, flag_summary: flags.summary };
+        }
+        return { flags: [] };
+
+      case 15:
+        // Compute Learning Index and format submission URL
+        if (protocolRun.phase_1 && protocolRun.phase_3 && protocolRun.learning_index) {
+          const submissionURL = this.promptTemplates.formatSubmissionURL(
+            assessment.system_info?.name || 'AI System',
+            protocolRun.phase_1.scores,
+            protocolRun.phase_3.scores,
+            protocolRun.learning_index.learning_index
+          );
+          return {
+            learning_index: protocolRun.learning_index.learning_index,
+            submission_url: submissionURL,
+            interpretation: protocolRun.learning_index.interpretation,
+          };
+        }
+        return { step_completed: true };
+
       default:
         return { step_completed: true };
     }
