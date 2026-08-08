@@ -1,0 +1,24 @@
+name: HumanAIOS Security Scanner
+url: https://github.com/humanaios-ui/humanaios
+hook_attributes:
+  url: https://security-scanner.humanaios.empirica/webhooks/github
+description: Automated secret scanning and credential detection for multi-repo security governance
+public: true
+default_events:
+  - pull_request
+  - push
+  - repository
+default_permissions:
+  contents: read
+  pull_requests: write
+  workflows: write
+  checks: write
+  actions: read
+  security_events: write
+required_single_file_paths:
+  - .github/workflows/secret-scan.yml
+  - .githooks/pre-commit
+redirect_url: https://security-scanner.humanaios.empirica/app/callback
+request_oauth_on_install: false
+setup_on_update: false
+template_repository: false
