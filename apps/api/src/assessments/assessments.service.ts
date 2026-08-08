@@ -36,15 +36,19 @@ export interface AssessmentSubmitRequest {
 @Injectable()
 export class AssessmentsService {
   private readonly logger = new Logger(AssessmentsService.name);
-  private activeJobs: Map<string, JobStatus> = new Map(); // In-memory for MVP; DB-backed in production
-  private jobTimeouts: Map<string, NodeJS.Timeout> = new Map(); // Track timeouts for cleanup
+  private jobTimeouts: Map<string, NodeJS.Timeout> = new Map(); // Track timeouts for cleanup (in-memory, regenerated per restart)
   private readonly DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
   constructor(
     private assessmentsRepository: AssessmentsRepository,
-    private acatService: ACATService
+    private acatService: ACATService,
+    @Inject('DATABASE_POOL') private pool: any
   ) {
     this.logger.log('AssessmentsService initialized');
+    // Recover incomplete jobs on startup
+    this.recoverJobsOnStartup().catch((e) => {
+      this.logger.error(`Failed to recover jobs on startup: ${e.message}`, e.stack);
+    });
   }
 
   /**
@@ -85,6 +89,9 @@ export class AssessmentsService {
 
       this.activeJobs.set(jobId, jobStatus);
 
+      // Persist job to database
+      await this.persistJobStatus(jobId, assessment.id, orgId, 'queued', 0, 0);
+
       // Trigger async job execution (fire and forget)
       this.triggerAsyncJobExecution(jobId, assessment.id, orgId, this.DEFAULT_TIMEOUT_MS);
 
@@ -102,7 +109,7 @@ export class AssessmentsService {
   }
 
   /**
-   * Get job status
+   * Get job status from database
    */
   async getJobStatus(assessmentId: string, orgId: string): Promise<JobStatus | null> {
     // Check if assessment exists
@@ -111,14 +118,28 @@ export class AssessmentsService {
       throw new NotFoundException(`Assessment not found: ${assessmentId}`);
     }
 
-    // Find corresponding job (by assessment_id)
-    for (const [jobId, status] of this.activeJobs.entries()) {
-      if (status.assessment_id === assessmentId) {
-        return status;
-      }
+    // Query job from database
+    const result = await this.pool.query(
+      'SELECT job_id, status, progress_percent, current_phase, started_at, completed_at, error_message FROM assessment_jobs WHERE assessment_id = $1 LIMIT 1',
+      [assessmentId]
+    );
+
+    if (result.rows.length > 0) {
+      const row = result.rows[0];
+      return {
+        job_id: row.job_id,
+        assessment_id: assessmentId,
+        status: row.status,
+        progress_percent: row.progress_percent,
+        current_phase: row.current_phase,
+        total_phases: 3,
+        started_at: row.started_at,
+        completed_at: row.completed_at,
+        error_message: row.error_message,
+      };
     }
 
-    // If no active job, return completed status if assessment is done
+    // If no job record and assessment is completed, return synthetic status
     if (assessment.status === 'completed') {
       return {
         job_id: 'unknown',
@@ -178,10 +199,7 @@ export class AssessmentsService {
 
     try {
       // Update job status: running
-      job.status = 'running';
-      job.started_at = new Date();
-      job.progress_percent = 10;
-      job.current_phase = 1;
+      await this.persistJobStatus(jobId, assessmentId, orgId, 'running', 10, 1);
 
       // Fetch assessment
       const assessment = await this.assessmentsRepository.getAssessment(assessmentId, orgId);
@@ -198,8 +216,7 @@ export class AssessmentsService {
       const protocolRun = await this.acatService.executeACATProtocol(assessment);
 
       // Update job progress
-      job.progress_percent = 90;
-      job.current_phase = 3;
+      await this.persistJobStatus(jobId, assessmentId, orgId, 'running', 90, 3);
 
       // Store results
       const resultSummary = {
@@ -216,25 +233,21 @@ export class AssessmentsService {
       const completedAssessment = await this.assessmentsRepository.updateAssessmentStatus(assessmentId, 'completed');
       if (completedAssessment) {
         // Store result_summary as JSON
-        const updateResult = await (this as any).pool?.query(
+        await this.pool.query(
           'UPDATE assessments SET result_summary = $1, completed_at = NOW() WHERE id = $2',
           [JSON.stringify(resultSummary), assessmentId]
         );
       }
 
       // Update job status: completed
-      job.status = 'completed';
-      job.progress_percent = 100;
-      job.completed_at = new Date();
+      await this.markJobCompleted(jobId, assessmentId, orgId);
 
       this.logger.log(`[${jobId}] Assessment completed successfully. LI=${resultSummary.learning_index?.toFixed(3) || 'N/A'}`);
     } catch (error) {
       this.logger.error(`[${jobId}] Assessment execution failed: ${error.message}`, error);
 
       // Update job status: failed
-      job.status = 'failed';
-      job.error_message = error.message;
-      job.completed_at = new Date();
+      await this.markJobFailed(jobId, assessmentId, orgId, error.message);
 
       // Update assessment status: failed
       try {
@@ -298,24 +311,28 @@ export class AssessmentsService {
    * Called when a job exceeds its time limit
    */
   private enforceJobTimeout(jobId: string, assessmentId: string): void {
-    const job = this.activeJobs.get(jobId);
-    if (job && job.status === 'running') {
-      this.logger.warn(`Job timeout enforced: ${jobId} (assessment: ${assessmentId})`);
+    this.logger.warn(`Job timeout enforced: ${jobId} (assessment: ${assessmentId})`);
 
-      // Update job status
-      job.status = 'failed';
-      job.error_message = `Assessment execution timeout after ${this.DEFAULT_TIMEOUT_MS / 1000}s`;
-      job.completed_at = new Date();
+    // Mark job as failed in database
+    // Note: we don't have orgId here, but we can query it or use a generic update
+    // For now, use a direct DB update since the job record should exist
+    this.pool
+      .query(
+        "UPDATE assessment_jobs SET status = 'failed', error_message = $1, completed_at = NOW() WHERE job_id = $2",
+        [`Assessment execution timeout after ${this.DEFAULT_TIMEOUT_MS / 1000}s`, jobId]
+      )
+      .catch((e: any) => {
+        this.logger.error(`Failed to update job status on timeout: ${e.message}`);
+      });
 
-      // Update assessment status
-      this.assessmentsRepository
-        .updateAssessmentStatus(assessmentId, 'failed')
-        .catch((e) => {
-          this.logger.error(`Failed to update assessment status on timeout: ${e.message}`);
-        });
+    // Update assessment status to failed
+    this.assessmentsRepository
+      .updateAssessmentStatus(assessmentId, 'failed')
+      .catch((e: any) => {
+        this.logger.error(`Failed to update assessment status on timeout: ${e.message}`);
+      });
 
-      this.clearJobTimeout(jobId);
-    }
+    this.clearJobTimeout(jobId);
   }
 
   /**
@@ -339,5 +356,91 @@ export class AssessmentsService {
     }
     this.jobTimeouts.clear();
     this.logger.log('All job timeouts cleared');
+  }
+
+  /**
+   * Persist job status to database
+   */
+  private async persistJobStatus(
+    jobId: string,
+    assessmentId: string,
+    orgId: string,
+    status: 'queued' | 'running' | 'completed' | 'failed',
+    progressPercent: number,
+    currentPhase: number,
+    errorMessage?: string
+  ): Promise<void> {
+    try {
+      const query = `
+        INSERT INTO assessment_jobs
+        (job_id, assessment_id, org_id, status, progress_percent, current_phase, error_message, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+        ON CONFLICT (job_id) DO UPDATE SET
+          status = $4,
+          progress_percent = $5,
+          current_phase = $6,
+          error_message = $7,
+          updated_at = NOW(),
+          completed_at = CASE WHEN $4 IN ('completed', 'failed') THEN NOW() ELSE completed_at END
+      `;
+
+      await this.pool.query(query, [jobId, assessmentId, orgId, status, progressPercent, currentPhase, errorMessage || null]);
+    } catch (error) {
+      this.logger.error(`Failed to persist job status: ${error.message}`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Recover incomplete jobs from database on app startup
+   * Re-queues jobs that were running when app crashed
+   */
+  private async recoverJobsOnStartup(): Promise<void> {
+    try {
+      const result = await this.pool.query(
+        "SELECT job_id, assessment_id, org_id FROM assessment_jobs WHERE status IN ('queued', 'running') ORDER BY created_at ASC"
+      );
+
+      const jobsToRecover = result.rows;
+      if (jobsToRecover.length === 0) {
+        this.logger.log('No incomplete jobs to recover');
+        return;
+      }
+
+      this.logger.log(`Recovering ${jobsToRecover.length} incomplete jobs from database`);
+
+      // Re-queue each incomplete job for execution
+      for (const job of jobsToRecover) {
+        this.triggerAsyncJobExecution(job.job_id, job.assessment_id, job.org_id, this.DEFAULT_TIMEOUT_MS);
+        this.logger.debug(`Re-queued job for recovery: ${job.job_id}`);
+      }
+
+      this.logger.log(`Successfully recovered ${jobsToRecover.length} jobs`);
+    } catch (error) {
+      this.logger.error(`Failed to recover jobs on startup: ${error.message}`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update job status in database during execution
+   * Called from executeAssessmentJob as work progresses
+   */
+  async updateJobProgress(jobId: string, assessmentId: string, orgId: string, progress: number, phase: number): Promise<void> {
+    await this.persistJobStatus(jobId, assessmentId, orgId, 'running', progress, phase);
+  }
+
+  /**
+   * Mark job as completed with results
+   */
+  async markJobCompleted(jobId: string, assessmentId: string, orgId: string): Promise<void> {
+    await this.persistJobStatus(jobId, assessmentId, orgId, 'completed', 100, 3);
+  }
+
+  /**
+   * Mark job as failed with error message
+   */
+  async markJobFailed(jobId: string, assessmentId: string, orgId: string, errorMessage: string): Promise<void> {
+    await this.persistJobStatus(jobId, assessmentId, orgId, 'failed', 0, 0, errorMessage);
   }
 }
