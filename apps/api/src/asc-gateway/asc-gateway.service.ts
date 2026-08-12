@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { EventEmitter } from 'events';
 import { ProbeRegistry, ProbeClass, ProbeResult } from './measurement-engine/probe-taxonomy';
 import { TierCeilingMap, CalibrationTier } from './measurement-engine/tier-ceiling';
 import { AgentTupleRegistry, AgentTuple } from './measurement-engine/agent-tuple';
 import { SequentialAnalyzer, MeasurementWindow, Threshold, MeasurementStatus } from './measurement-engine/sequential-analysis';
+import { AscGatewayRepository } from './asc-gateway.repository';
 
 /**
  * ASC_GATEWAY Service — AI Stability and Compliance Gateway
@@ -19,12 +21,14 @@ export class AscGatewayService {
   private tierCeilingMap: TierCeilingMap;
   private tupleRegistry: AgentTupleRegistry;
   private sequentialAnalyzer: SequentialAnalyzer;
+  private auditEventEmitter: EventEmitter;
 
-  constructor() {
+  constructor(private repository: AscGatewayRepository) {
     this.probeRegistry = new ProbeRegistry();
     this.tierCeilingMap = new TierCeilingMap();
     this.tupleRegistry = new AgentTupleRegistry();
     this.sequentialAnalyzer = new SequentialAnalyzer();
+    this.auditEventEmitter = new EventEmitter();
     this.initializeDefaultProbes();
   }
 
@@ -236,5 +240,164 @@ export class AscGatewayService {
       gateCapableDimensions: this.tierCeilingMap.getGateCapableDimensions().length,
       uncalibratedDimensions: this.tierCeilingMap.getUncalibratedDimensions().length,
     };
+  }
+
+  /**
+   * Record and persist a probe result (async, persists to database).
+   */
+  async recordAndPersistProbeResult(result: ProbeResult): Promise<string> {
+    // Record in-memory
+    this.probeRegistry.recordResult(result);
+
+    // Persist to database
+    const auditLogId = await this.repository.saveProbeResult(result);
+
+    // Emit event for subscribers
+    this.auditEventEmitter.emit('probeResultRecorded', {
+      auditLogId,
+      probeId: result.probeId,
+      targetTuple: result.targetTuple,
+      timestamp: result.timestamp,
+    });
+
+    return auditLogId;
+  }
+
+  /**
+   * Measure a window and persist status (async).
+   */
+  async measureAndPersistWindow(window: MeasurementWindow): Promise<{
+    window: MeasurementWindow;
+    statuses: Array<{
+      dimensionName: string;
+      status: MeasurementStatus;
+      passRate: number;
+      statusReason: string;
+      notificationRequired: boolean;
+    }>;
+  }> {
+    // Measure in-memory
+    const result = this.measureWindow(window);
+
+    // Persist measurement window
+    const thresholds = Array.from(
+      (this.sequentialAnalyzer as any).thresholds.values?.() || []
+    ) as Threshold[];
+
+    for (const status of result.statuses) {
+      const threshold = thresholds.find(t => t.dimensionName === status.dimensionName);
+      if (threshold) {
+        await this.repository.saveMeasurementWindow(window, {
+          thresholdId: threshold.thresholdId,
+          windowId: window.windowId,
+          dimensionName: status.dimensionName,
+          passRate: status.passRate,
+          status: status.status,
+          statusReason: status.statusReason,
+          computedAt: new Date(),
+          notificationRequired: status.notificationRequired,
+        });
+
+        // Record threshold breach if needed
+        if (status.notificationRequired) {
+          const breachType =
+            status.status === 'DEGRADED' ? 'DEGRADED' : 'UNSATISFIED';
+          const notificationPayload = this.getNotificationPayload();
+          await this.repository.recordThresholdBreach(
+            window.deploymentId,
+            threshold.thresholdId,
+            breachType,
+            notificationPayload
+          );
+
+          // Emit breach event
+          this.auditEventEmitter.emit('thresholdBreach', {
+            deploymentId: window.deploymentId,
+            dimensionName: status.dimensionName,
+            breachType,
+            passRate: status.passRate,
+            timestamp: new Date(),
+          });
+        }
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Register deployment (persists to database).
+   */
+  async registerDeploymentPersisted(tuple: AgentTuple): Promise<void> {
+    // Register in-memory
+    this.registerDeployment(tuple);
+
+    // Persist to database
+    await this.repository.registerDeployment(tuple);
+
+    // Emit event
+    this.auditEventEmitter.emit('deploymentRegistered', {
+      deploymentId: tuple.deploymentId,
+      modelVersion: tuple.modelVersion,
+      timestamp: new Date(),
+    });
+  }
+
+  /**
+   * Get pending notifications that need to be sent.
+   */
+  async getPendingNotifications(deploymentId: string): Promise<any[]> {
+    return this.repository.getPendingNotifications(deploymentId);
+  }
+
+  /**
+   * Mark a notification as sent.
+   */
+  async markNotificationSent(breachId: string): Promise<void> {
+    await this.repository.markNotificationSent(breachId);
+
+    // Emit event
+    this.auditEventEmitter.emit('notificationSent', {
+      breachId,
+      timestamp: new Date(),
+    });
+  }
+
+  /**
+   * Get audit log for a deployment (for reports).
+   */
+  async getAuditLog(
+    deploymentId: string,
+    startTime?: Date,
+    endTime?: Date
+  ): Promise<any[]> {
+    return this.repository.getAuditLog(deploymentId, startTime, endTime);
+  }
+
+  /**
+   * Get deployment statistics.
+   */
+  async getDeploymentStats(deploymentId: string): Promise<{
+    totalProbes: number;
+    passCount: number;
+    failCount: number;
+    warnCount: number;
+    breachCount: number;
+  }> {
+    return this.repository.getDeploymentStats(deploymentId);
+  }
+
+  /**
+   * Subscribe to audit events (for real-time streaming).
+   */
+  onAuditEvent(eventType: string, callback: (data: any) => void): void {
+    this.auditEventEmitter.on(eventType, callback);
+  }
+
+  /**
+   * Unsubscribe from audit events.
+   */
+  offAuditEvent(eventType: string, callback: (data: any) => void): void {
+    this.auditEventEmitter.off(eventType, callback);
   }
 }
