@@ -3,7 +3,7 @@
  * Orchestrates assessment submissions, job queuing, and result retrieval
  */
 
-import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { AssessmentsRepository } from './assessments.repository';
 import { ACATService } from '../acat/acat.service';
