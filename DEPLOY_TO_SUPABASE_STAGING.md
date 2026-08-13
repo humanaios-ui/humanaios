@@ -22,9 +22,11 @@
 Settings → Secrets and variables → Actions
 + New repository secret
 
-SUPABASE_PROD_DATABASE_URL = postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres
-SUPABASE_STAGING_DATABASE_URL = postgresql://postgres:[PASSWORD]@[STAGING_HOST]:5432/postgres
+SUPABASE_PROD_DATABASE_URL = <production-connection-string>
+SUPABASE_STAGING_DATABASE_URL = <staging-connection-string>
 ```
+
+> Use Supabase Console to copy the full connection string (with password) into GitHub Secrets. Never hardcode credentials in docs.
 
 **2. Use in workflow (.github/workflows/deploy.yml):**
 ```yaml

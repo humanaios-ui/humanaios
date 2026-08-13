@@ -15,9 +15,11 @@ Successfully deployed M2R2 state machine schema to Supabase staging using Alembi
 
 **Deployment Command:**
 ```bash
-export DATABASE_URL="postgresql://postgres.ksinisdzgtnqzsymhfya:***REDACTED***@aws-1-us-east-1.pooler.supabase.com:6543/postgres"
+export DATABASE_URL="$SUPABASE_STAGING_DATABASE_URL"  # Loaded from GitHub Secrets
 ./deploy-m2r2-staging.sh
 ```
+
+> ⚠️ **Security:** Database credentials stored in GitHub Secrets, not hardcoded
 
 ---
 
