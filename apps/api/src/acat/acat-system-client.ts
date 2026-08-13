@@ -157,9 +157,17 @@ export class ACATSystemClient {
    */
   private detectProvider(endpoint: string): string {
     if (!endpoint) return 'generic';
-    if (endpoint.includes('openai.com')) return 'openai';
-    if (endpoint.includes('anthropic.com')) return 'anthropic';
-    if (endpoint.includes('localhost') || endpoint.includes('127.0.0.1')) return 'local';
+
+    try {
+      const host = new URL(endpoint).hostname.toLowerCase();
+
+      if (host === 'openai.com' || host.endsWith('.openai.com')) return 'openai';
+      if (host === 'anthropic.com' || host.endsWith('.anthropic.com')) return 'anthropic';
+      if (host === 'localhost' || host === '127.0.0.1') return 'local';
+    } catch {
+      return 'generic';
+    }
+
     return 'generic';
   }
 
