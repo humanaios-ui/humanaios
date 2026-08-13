@@ -1,0 +1,35 @@
+---
+# Artillery Load Testing Configuration
+# Assessment API stress testing framework
+# Supports: baseline (1 user), light (10), moderate (50), high (100)
+
+config:
+  target: http://localhost:3000
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      name: "Warm up"
+
+  processor: "./scenario-processor.js"
+
+  # Default headers for all requests
+  defaults:
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+      User-Agent: Artillery/LoadTest
+
+  # Logging
+  log:
+    level: info
+
+# HTTP options
+http:
+  timeout: 30000  # 30 second timeout per request
+  max: 100        # Max concurrent connections
+
+# Advanced reporting
+reporting:
+  - type: console
+  - type: json
+    filename: "./results/artillery-report-{{ $timestamp }}.json"
