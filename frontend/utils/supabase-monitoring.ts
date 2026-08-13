@@ -63,9 +63,11 @@ export function logSupabaseQuery(metric: Omit<SupabaseQueryMetrics, 'timestamp'>
 
 export function getSupabaseMetrics(table?: string): SupabaseQueryMetrics[] {
   if (table) {
-    return metrics.filter((m) => m.table === table);
+    return metrics
+      .filter((m) => m.table === table)
+      .map((m) => ({ ...m, timestamp: new Date(m.timestamp) }));
   }
-  return [...metrics];
+  return metrics.map((m) => ({ ...m, timestamp: new Date(m.timestamp) }));
 }
 
 export function getSupabaseMetricsSummary() {
