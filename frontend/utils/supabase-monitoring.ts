@@ -24,7 +24,8 @@ export function logSupabaseQuery(metric: Omit<SupabaseQueryMetrics, 'timestamp'>
 
   // Log errors to Sentry
   if (metric.error) {
-    Sentry.captureException(new Error(`Supabase ${metric.method} on ${metric.table}: ${metric.error}`), {
+    const errorText = metric.error.length > 500 ? `${metric.error.slice(0, 500)}…` : metric.error;
+    Sentry.captureException(new Error(`Supabase ${metric.method} on ${metric.table} failed`), {
       tags: {
         component: 'supabase',
         method: metric.method,
@@ -36,6 +37,7 @@ export function logSupabaseQuery(metric: Omit<SupabaseQueryMetrics, 'timestamp'>
           table: metric.table,
           duration: metric.duration,
           rowsAffected: metric.rowsAffected,
+          error: errorText,
         },
       },
     });
