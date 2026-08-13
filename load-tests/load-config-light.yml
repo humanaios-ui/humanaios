@@ -34,7 +34,6 @@ scenarios:
             system_info:
               endpoint: "https://api.openai.com/v1/chat/completions"
               model: "gpt-4"
-              api_key: "sk-test-key-light"
             tier: "T1_STANDARD"
           expect:
             - statusCode: 201
