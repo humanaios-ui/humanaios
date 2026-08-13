@@ -34,9 +34,10 @@ export class AssessmentsController {
    */
   @Post()
   async submitAssessment(@Body() request: AssessmentSubmitRequest, @Req() req: any) {
-    // Extract org_id from authenticated user (for now, use hardcoded default)
-    const orgId = req.user?.org_id || 'default-org';
-
+    const orgId = req.user?.org_id ?? req.headers?.['x-org-id'];
+    if (!orgId) {
+      throw new BadRequestException('Missing org id (JWT user org_id or X-Org-ID header)');
+    }
     return this.assessmentsService.submitAssessment(orgId, request);
   }
 
