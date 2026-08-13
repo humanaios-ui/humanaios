@@ -151,8 +151,8 @@ def upgrade() -> None:
     # ============================================
     # Add columns to organizations if not exists (for future subscription tier)
     try:
-        with op.batch_operations.Operations.context() as batch_op:
-            batch_op.add_column("organizations", sa.Column("assessment_quota", sa.Integer, nullable=True))
+        with op.batch_alter_table("organizations") as batch_op:
+            batch_op.add_column(sa.Column("assessment_quota", sa.Integer, nullable=True))
     except Exception:
         # Column may already exist
         pass
