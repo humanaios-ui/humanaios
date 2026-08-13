@@ -80,7 +80,7 @@ export class TierCeilingMap {
     this.dimensions.set('scheme', {
       dimensionName: 'scheme',
       tier: CalibrationTier.PROVISIONAL,
-      gateCapable: true, // Technically gate-capable but P1-adjacent
+      gateCapable: false,
       probeClassesCovered: ['P3_MANIPULATION_ELICITING'],
       lastCalibrationDate: new Date('2026-08-04'),
       researchAuthorityNotes: 'Manipulation-eliciting probes. Alert-capable; blocking policy per operator.',
