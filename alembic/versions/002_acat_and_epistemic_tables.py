@@ -33,7 +33,7 @@ def upgrade() -> None:
         "assessments",
         sa.Column("id", postgresql.UUID(as_uuid=True), server_default=sa.func.gen_random_uuid(), primary_key=True),
         sa.Column("org_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column("system_id", postgresql.UUID(as_uuid=True), nullable=False),
+        sa.Column("system_id", sa.String(255), nullable=False),
         sa.Column("system_name", sa.String(255), nullable=False),
         sa.Column("system_info", postgresql.JSONB, nullable=False, server_default="{}"),
         sa.Column("status", sa.String(50), nullable=False, server_default="pending"),
