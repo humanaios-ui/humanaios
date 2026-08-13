@@ -43,9 +43,10 @@ export function logSupabaseQuery(metric: Omit<SupabaseQueryMetrics, 'timestamp'>
 
   // Warn on slow queries (>1s)
   if (metric.duration > 1000) {
-    console.warn(`[Supabase] Slow query: ${metric.method} on ${metric.table} took ${metric.duration}ms`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(`[Supabase] Slow query: ${metric.method} on ${metric.table} took ${metric.duration}ms`);
+    }
     Sentry.captureMessage(`Slow Supabase query: ${metric.method} ${metric.table}`, {
-      level: 'warning',
       tags: {
         component: 'supabase',
         type: 'slow_query',
