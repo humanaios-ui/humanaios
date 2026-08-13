@@ -97,12 +97,23 @@ export class ACATSystemClient {
    * Call OpenAI API (GPT-4, GPT-3.5, etc.)
    */
   private async callOpenAI(config: SystemConfig, prompt: string): Promise<any> {
-    return this.httpClient.post(config.endpoint || 'https://api.openai.com/v1/chat/completions', {
-      model: config.model || 'gpt-4',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
+    const apiKey = config.api_key || process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new BadRequestException('Missing OpenAI API key');
+    }
+
+    return this.httpClient.post(
+      config.endpoint || 'https://api.openai.com/v1/chat/completions',
+      {
+        model: config.model || 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 2000,
+      },
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      }
+    );
   }
 
   /**
