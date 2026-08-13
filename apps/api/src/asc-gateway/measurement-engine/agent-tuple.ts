@@ -101,12 +101,12 @@ export class AgentTupleRegistry {
     this.infrastructureLog.push(event);
 
     // Update version history
-    const history = this.versions.get(event.tupleId);
+    const deploymentId = this.tuples.get(event.tupleId)?.deploymentId;
+    const history = deploymentId ? this.versions.get(deploymentId) : undefined;
     if (history) {
       history.infrastructureChanges.push(event);
       history.lastInfrastructureChangeAt = event.changedAt;
     }
-  }
 
   /**
    * Get infrastructure changes for a tuple.
