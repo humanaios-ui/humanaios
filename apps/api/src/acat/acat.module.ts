@@ -3,7 +3,7 @@
  * Bundles ACAT protocol service, database layer, and orchestration
  */
 
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ACATService } from './acat.service';
 import { ACATPromptTemplateService } from './acat-prompt-templates';
 import { ACATSystemClient } from './acat-system-client';
@@ -12,7 +12,7 @@ import { DatabaseModule } from '../database/database.module';
 import { AssessmentsModule } from '../assessments/assessments.module';
 
 @Module({
-  imports: [DatabaseModule, AssessmentsModule],
+  imports: [DatabaseModule, forwardRef(() => AssessmentsModule)],
   providers: [ACATService, ACATPromptTemplateService, ACATSystemClient, ACATFlagDetector],
   exports: [ACATService, ACATPromptTemplateService, ACATSystemClient, ACATFlagDetector],
 })
