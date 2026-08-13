@@ -50,7 +50,6 @@ scenarios:
             system_info:
               endpoint: "{{ $randomChoice(system_configs).endpoint }}"
               model: "{{ $randomChoice(system_configs).model }}"
-              api_key: "sk-test-key-baseline"
             tier: "T1_STANDARD"
           expect:
             - statusCode: 201
