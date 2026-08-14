@@ -1,5 +1,5 @@
 version: '2.0'
-root: /Users/andersonfamily/practices/empirica-foundation-evaluator/.empirica
+root: /Users/andersonfamily/practices/humanaios/.empirica
 paths:
   sessions: sessions/sessions.db
   identity: identity/

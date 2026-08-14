@@ -1,0 +1,19 @@
+{
+  "name": "humanaios-load-tests",
+  "version": "1.0.0",
+  "description": "Load testing suite for HumanAIOS assessment API",
+  "scripts": {
+    "test:baseline": "artillery run assessment-submission.yml",
+    "test:light": "artillery run load-config-light.yml",
+    "test:moderate": "artillery run load-config-moderate.yml",
+    "test:heavy": "artillery run load-config-heavy.yml",
+    "test:sustained": "artillery run load-config-sustained.yml",
+    "test:all": "npm run test:baseline && npm run test:light && npm run test:moderate && npm run test:heavy"
+  },
+  "keywords": ["load-testing", "artillery", "assessment-api"],
+  "author": "HumanAIOS Team",
+  "license": "MIT",
+  "devDependencies": {
+    "artillery": "^2.0.0"
+  }
+}

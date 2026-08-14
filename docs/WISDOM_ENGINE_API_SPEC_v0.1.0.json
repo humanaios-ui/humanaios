@@ -1,0 +1,191 @@
+{
+  "title": "Wisdom Engine (Guidance System) API Specification",
+  "version": "0.1.0",
+  "base_path": "/api/v1/guidance",
+  "auth": {
+    "type": "Bearer token",
+    "header": "Authorization: Bearer <api_key>"
+  },
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/request",
+      "name": "Create Guidance Request",
+      "description": "Submit a guidance request based on student consciousness level and submission context",
+      "request_schema": {
+        "type": "object",
+        "required": ["submission_purity", "evidential_tier", "humility_hierarchy", "corpus_source"],
+        "properties": {
+          "submission_purity": {
+            "type": "string",
+            "description": "Verification level of the submission",
+            "enum": ["unverified", "one_stage_verified", "two_stage_verified"],
+            "example": "two_stage_verified"
+          },
+          "evidential_tier": {
+            "type": "string",
+            "description": "Quality tier of supporting evidence",
+            "enum": ["anecdotal", "observational", "measured", "validated"],
+            "example": "measured"
+          },
+          "humility_hierarchy": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Hawkins consciousness scale (0-1000) representing submission humility/calibration",
+            "example": 250
+          },
+          "corpus_source": {
+            "type": "string",
+            "description": "Knowledge domain the guidance should draw from",
+            "enum": ["top_curriculum", "esoteric_wisdom", "modern_science", "cross_tradition"],
+            "example": "top_curriculum"
+          },
+          "constraint_tradition": {
+            "type": "string",
+            "description": "Optional: limit guidance to a specific wisdom tradition",
+            "example": "stoicism",
+            "nullable": true
+          },
+          "constraint_theme": {
+            "type": "string",
+            "description": "Optional: focus guidance on a specific theme",
+            "example": "dealing-with-uncertainty",
+            "nullable": true
+          },
+          "obstacle": {
+            "type": "string",
+            "description": "Named obstacle or emotional state to address",
+            "example": "powerlessness",
+            "nullable": true
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "guidance_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Reference ID for tracking this guidance session"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["accepted", "queued", "processing", "error"],
+            "example": "accepted"
+          },
+          "teaching": {
+            "type": "object",
+            "description": "Primary teaching matched to the request",
+            "properties": {
+              "tradition": {"type": "string", "example": "stoicism"},
+              "title": {"type": "string", "example": "Amor Fati: Embracing What Is"},
+              "text": {"type": "string"},
+              "source": {"type": "string", "example": "Marcus Aurelius Meditations"},
+              "era": {"type": "string", "example": "2nd century CE"}
+            }
+          },
+          "parallels": {
+            "type": "array",
+            "description": "Cross-tradition wisdom parallels to the primary teaching",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tradition": {"type": "string"},
+                "teaching_unit": {"type": "string"},
+                "similarity_score": {"type": "number", "minimum": 0, "maximum": 1}
+              }
+            }
+          },
+          "next_level_pathway": {
+            "type": "object",
+            "description": "Suggested next steps for deeper engagement",
+            "properties": {
+              "recommended_humility_level": {"type": "integer", "minimum": 0, "maximum": 1000},
+              "next_theme": {"type": "string"},
+              "estimated_session_count": {"type": "integer"}
+            }
+          }
+        }
+      },
+      "error_responses": {
+        "400": "Invalid request schema (check submission_purity, humility_hierarchy range, etc.)",
+        "401": "Unauthorized (invalid or missing Bearer token)",
+        "422": "Validation error (corpus_source not found, obstacle unrecognized)",
+        "500": "Server error"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/guidance/session/{session_id}",
+      "name": "Retrieve Guidance Session",
+      "description": "Fetch details and full transcript of a prior guidance session",
+      "path_parameters": {
+        "session_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The guidance_session_id returned from POST /guidance/request"
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "guidance_session_id": {"type": "string", "format": "uuid"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "status": {"type": "string", "enum": ["in_progress", "completed", "archived"]},
+          "request": {
+            "type": "object",
+            "description": "Echo of the original POST request"
+          },
+          "teaching": {
+            "type": "object",
+            "description": "Primary teaching provided"
+          },
+          "parallels": {
+            "type": "array",
+            "description": "Cross-tradition matches"
+          },
+          "transcript": {
+            "type": "array",
+            "description": "Full conversation history if this was interactive",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {"type": "string", "enum": ["user", "system", "assistant"]},
+                "content": {"type": "string"},
+                "timestamp": {"type": "string", "format": "date-time"}
+              }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Internal observability: confidence scores, dimension tracking",
+            "properties": {
+              "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+              "dimensions_assessed": {
+                "type": "array",
+                "items": {"type": "string"},
+                "example": ["truth", "autonomy", "harm", "coherence"]
+              }
+            }
+          }
+        }
+      },
+      "error_responses": {
+        "401": "Unauthorized",
+        "404": "Session not found",
+        "500": "Server error"
+      }
+    }
+  ],
+  "implementation_notes": {
+    "storage": "Supabase PostgreSQL (guidance_requests, guidance_sessions tables)",
+    "auth_strategy": "API key via Bearer token (same as ACAT endpoints)",
+    "rate_limiting": "100 requests/minute per API key (TBD by team)",
+    "phase_integration": "SER 3.5 ACAT-Composition Feedback Loop — guidance sessions feed behavioral observations back to ACAT assessment",
+    "dependencies": [
+      "ConsciousnessGuidanceEngine (guidance_system_v1.0.py)",
+      "WisdomDatabase v0.3 (wisdom_database_v0.3.json)"
+    ]
+  }
+}

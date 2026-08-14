@@ -1,0 +1,67 @@
+---
+# Light Load Test: 10 Concurrent Users
+# Duration: 2 minutes
+# Arrival Rate: 10 users/second (ramp to 10 total)
+
+config:
+  target: http://localhost:3000
+  phases:
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 10
+      name: "Light Load (10 concurrent users)"
+
+  processor: "./scenario-processor.js"
+
+  defaults:
+    headers:
+      Content-Type: application/json
+      User-Agent: Artillery/LoadTest
+
+  log:
+    level: info
+
+scenarios:
+  - name: "Assessment Submission Flow"
+    flow:
+      - post:
+          url: "/api/v1/assessments"
+          headers:
+            X-Org-ID: "test-org-light"
+          json:
+            system_id: "gpt-4"
+            system_name: "GPT-4 Light"
+            system_info:
+              endpoint: "https://api.openai.com/v1/chat/completions"
+              model: "gpt-4"
+            tier: "T1_STANDARD"
+          expect:
+            - statusCode: 201
+          capture:
+            - json: "$.job_id"
+              as: "job_id"
+            - json: "$.assessment_id"
+              as: "assessment_id"
+
+      - think: 1
+
+      - loop:
+          - get:
+              url: "/api/v1/assessments/{{ assessment_id }}"
+              headers:
+                X-Org-ID: "test-org-light"
+              expect:
+                - statusCode: 200
+              capture:
+                json: "$.status"
+                as: "job_status"
+          - think: 2
+        count: 10
+        whileTrue: "{{ job_status != 'completed' && job_status != 'failed' }}"
+
+      - get:
+          url: "/api/v1/assessments/{{ assessment_id }}/result"
+          headers:
+            X-Org-ID: "test-org-light"
+          expect:
+            - statusCode: 200

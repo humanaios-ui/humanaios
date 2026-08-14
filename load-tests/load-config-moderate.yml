@@ -1,0 +1,66 @@
+---
+# Moderate Load Test: 50 Concurrent Users
+# Duration: 2 minutes
+# Arrival Rate: 10 users/second (ramp to 50 total)
+
+config:
+  target: http://localhost:3000
+  phases:
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 50
+      name: "Moderate Load (50 concurrent users)"
+
+  processor: "./scenario-processor.js"
+
+  defaults:
+    headers:
+      Content-Type: application/json
+      User-Agent: Artillery/LoadTest
+
+  log:
+    level: info
+
+scenarios:
+  - name: "Assessment Submission Flow"
+    flow:
+      - post:
+          url: "/api/v1/assessments"
+          headers:
+            X-Org-ID: "test-org-moderate"
+          json:
+            system_id: "{{ $randomChoice(['gpt-4', 'claude-3']) }}"
+            system_name: "System Moderate"
+            system_info:
+              endpoint: "https://api.example.com/v1"
+              model: "test-model"
+              api_key: "sk-test-key-moderate"
+            tier: "T1_STANDARD"
+          expect:
+            - statusCode: 201
+          capture:
+            json: "$.assessment_id"
+            as: "assessment_id"
+
+      - think: 1
+
+      - loop:
+          - get:
+              url: "/api/v1/assessments/{{ assessment_id }}"
+              headers:
+                X-Org-ID: "test-org-moderate"
+              expect:
+                - statusCode: 200
+              capture:
+                json: "$.status"
+                as: "job_status"
+          - think: 2
+        count: 10
+        whileTrue: "{{ job_status != 'completed' && job_status != 'failed' }}"
+
+      - get:
+          url: "/api/v1/assessments/{{ assessment_id }}/result"
+          headers:
+            X-Org-ID: "test-org-moderate"
+          expect:
+            - statusCode: 200

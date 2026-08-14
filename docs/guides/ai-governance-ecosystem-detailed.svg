@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1560" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="1560" fill="#000000"/>
+
+  <!-- Title -->
+  <rect x="280" y="30" width="440" height="90" rx="22" fill="none" stroke="#2233ee" stroke-width="3"/>
+  <text x="500" y="68" text-anchor="middle" fill="#ffffff" font-size="30" font-weight="bold">AI GOVERNANCE</text>
+  <text x="500" y="102" text-anchor="middle" fill="#ffffff" font-size="30" font-weight="bold">ECOSYSTEM</text>
+  <text x="500" y="140" text-anchor="middle" fill="#8899cc" font-size="14" font-style="italic">Binding law → voluntary standards → operational frameworks → org-level implementation</text>
+
+  <!-- Connector lines from title to three pillars -->
+  <line x1="500" y1="150" x2="180" y2="195" stroke="#2233ee" stroke-width="2"/>
+  <line x1="500" y1="150" x2="500" y2="195" stroke="#2233ee" stroke-width="2"/>
+  <line x1="500" y1="150" x2="820" y2="195" stroke="#2233ee" stroke-width="2"/>
+
+  <!-- Pillar headers -->
+  <rect x="60" y="195" width="240" height="46" rx="14" fill="none" stroke="#e8175d" stroke-width="3"/>
+  <text x="180" y="226" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="bold">Regulations</text>
+  <text x="180" y="262" text-anchor="middle" fill="#e8175d" font-size="13" font-style="italic">Legally binding, enforceable</text>
+
+  <rect x="380" y="195" width="240" height="46" rx="14" fill="none" stroke="#20e5c8" stroke-width="3"/>
+  <text x="500" y="226" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="bold">Standards</text>
+  <text x="500" y="262" text-anchor="middle" fill="#20e5c8" font-size="13" font-style="italic">Voluntary, certifiable/auditable</text>
+
+  <rect x="700" y="195" width="240" height="46" rx="14" fill="none" stroke="#f5a623" stroke-width="3"/>
+  <text x="820" y="226" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="bold">Frameworks</text>
+  <text x="820" y="262" text-anchor="middle" fill="#f5a623" font-size="13" font-style="italic">Guidance, non-certifiable</text>
+
+  <!-- Connectors to detail boxes -->
+  <line x1="180" y1="272" x2="180" y2="292" stroke="#e8175d" stroke-width="2"/>
+  <line x1="500" y1="272" x2="500" y2="292" stroke="#20e5c8" stroke-width="2"/>
+  <line x1="820" y1="272" x2="820" y2="292" stroke="#f5a623" stroke-width="2"/>
+
+  <!-- REGULATIONS detail box -->
+  <rect x="35" y="292" width="290" height="560" rx="28" fill="none" stroke="#e8175d" stroke-width="3"/>
+  <text x="180" y="330" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">EU AI Act</text>
+  <text x="180" y="352" text-anchor="middle" fill="#cccccc" font-size="12">Risk-tiered (prohibited / high /</text>
+  <text x="180" y="368" text-anchor="middle" fill="#cccccc" font-size="12">limited / minimal); GPAI duties;</text>
+  <text x="180" y="384" text-anchor="middle" fill="#cccccc" font-size="12">phased application 2025–2027;</text>
+  <text x="180" y="400" text-anchor="middle" fill="#cccccc" font-size="12">fines up to 7% global turnover</text>
+
+  <text x="180" y="440" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">GDPR</text>
+  <text x="180" y="462" text-anchor="middle" fill="#cccccc" font-size="12">Data protection; lawful basis,</text>
+  <text x="180" y="478" text-anchor="middle" fill="#cccccc" font-size="12">Art. 22 automated decision-making,</text>
+  <text x="180" y="494" text-anchor="middle" fill="#cccccc" font-size="12">DPIAs, data-subject rights —</text>
+  <text x="180" y="510" text-anchor="middle" fill="#cccccc" font-size="12">binds AI wherever personal data flows</text>
+
+  <text x="180" y="550" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">AI Liability Act</text>
+  <text x="180" y="572" text-anchor="middle" fill="#cccccc" font-size="12">Proposed EU directive easing civil</text>
+  <text x="180" y="588" text-anchor="middle" fill="#cccccc" font-size="12">claims for AI harm (disclosure duties,</text>
+  <text x="180" y="604" text-anchor="middle" fill="#cccccc" font-size="12">rebuttable causality presumption);</text>
+  <text x="180" y="620" text-anchor="middle" fill="#e8175d" font-size="12" font-style="italic">withdrawn Feb 2025 — liability now</text>
+  <text x="180" y="636" text-anchor="middle" fill="#e8175d" font-size="12" font-style="italic">via PLD + national tort law</text>
+
+  <text x="180" y="676" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">Also in this layer</text>
+  <text x="180" y="698" text-anchor="middle" fill="#cccccc" font-size="12">Sectoral law (MAS, HIPAA, DORA),</text>
+  <text x="180" y="714" text-anchor="middle" fill="#cccccc" font-size="12">US state AI acts (e.g. Colorado),</text>
+  <text x="180" y="730" text-anchor="middle" fill="#cccccc" font-size="12">PDPA / national privacy regimes,</text>
+  <text x="180" y="746" text-anchor="middle" fill="#cccccc" font-size="12">product liability &amp; consumer law</text>
+  <text x="180" y="790" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">Function: sets the floor —</text>
+  <text x="180" y="806" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">what you MUST do, with penalties</text>
+
+  <!-- STANDARDS detail box -->
+  <rect x="355" y="292" width="290" height="560" rx="28" fill="none" stroke="#20e5c8" stroke-width="3"/>
+  <text x="500" y="330" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">ISO/IEC 42001</text>
+  <text x="500" y="352" text-anchor="middle" fill="#cccccc" font-size="12">AI management system (AIMS) —</text>
+  <text x="500" y="368" text-anchor="middle" fill="#cccccc" font-size="12">the certifiable "ISO 27001 for AI";</text>
+  <text x="500" y="384" text-anchor="middle" fill="#cccccc" font-size="12">lifecycle controls, impact assessment</text>
+
+  <text x="500" y="424" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">ISO/IEC 23894</text>
+  <text x="500" y="446" text-anchor="middle" fill="#cccccc" font-size="12">AI-specific risk management</text>
+  <text x="500" y="462" text-anchor="middle" fill="#cccccc" font-size="12">guidance; applies 31000 process</text>
+  <text x="500" y="478" text-anchor="middle" fill="#cccccc" font-size="12">to AI lifecycle risks</text>
+
+  <text x="500" y="518" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">ISO/IEC 27001</text>
+  <text x="500" y="540" text-anchor="middle" fill="#cccccc" font-size="12">Information security management —</text>
+  <text x="500" y="556" text-anchor="middle" fill="#cccccc" font-size="12">confidentiality / integrity / availability</text>
+  <text x="500" y="572" text-anchor="middle" fill="#cccccc" font-size="12">substrate AI systems inherit</text>
+
+  <text x="500" y="612" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">ISO 31000</text>
+  <text x="500" y="634" text-anchor="middle" fill="#cccccc" font-size="12">Enterprise risk management</text>
+  <text x="500" y="650" text-anchor="middle" fill="#cccccc" font-size="12">principles — parent discipline</text>
+  <text x="500" y="666" text-anchor="middle" fill="#cccccc" font-size="12">23894 specialises for AI</text>
+
+  <text x="500" y="706" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">Also in this layer</text>
+  <text x="500" y="728" text-anchor="middle" fill="#cccccc" font-size="12">ISO/IEC 42005 (AI impact assessmt),</text>
+  <text x="500" y="744" text-anchor="middle" fill="#cccccc" font-size="12">ISO/IEC 23053 (ML framework),</text>
+  <text x="500" y="760" text-anchor="middle" fill="#cccccc" font-size="12">IEEE 7000-series (ethics by design)</text>
+  <text x="500" y="790" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">Function: auditable proof —</text>
+  <text x="500" y="806" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">HOW you demonstrate conformance</text>
+
+  <!-- FRAMEWORKS detail box -->
+  <rect x="675" y="292" width="290" height="560" rx="28" fill="none" stroke="#f5a623" stroke-width="3"/>
+  <text x="820" y="330" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">NIST AI RMF</text>
+  <text x="820" y="352" text-anchor="middle" fill="#cccccc" font-size="12">Four functions: Govern, Map,</text>
+  <text x="820" y="368" text-anchor="middle" fill="#cccccc" font-size="12">Measure, Manage; trustworthiness</text>
+  <text x="820" y="384" text-anchor="middle" fill="#cccccc" font-size="12">characteristics; GenAI Profile</text>
+  <text x="820" y="400" text-anchor="middle" fill="#cccccc" font-size="12">(NIST AI 600-1)</text>
+
+  <text x="820" y="440" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">COSO</text>
+  <text x="820" y="462" text-anchor="middle" fill="#cccccc" font-size="12">Internal control &amp; ERM framework;</text>
+  <text x="820" y="478" text-anchor="middle" fill="#cccccc" font-size="12">board-level risk appetite, control</text>
+  <text x="820" y="494" text-anchor="middle" fill="#cccccc" font-size="12">environment — where AI risk meets</text>
+  <text x="820" y="510" text-anchor="middle" fill="#cccccc" font-size="12">financial-reporting assurance</text>
+
+  <text x="820" y="550" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">COBIT</text>
+  <text x="820" y="572" text-anchor="middle" fill="#cccccc" font-size="12">ISACA's IT governance model —</text>
+  <text x="820" y="588" text-anchor="middle" fill="#cccccc" font-size="12">aligns tech objectives with business</text>
+  <text x="820" y="604" text-anchor="middle" fill="#cccccc" font-size="12">goals; audit community's lingua</text>
+  <text x="820" y="620" text-anchor="middle" fill="#cccccc" font-size="12">franca for IT controls</text>
+
+  <text x="820" y="660" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="bold">Also in this layer</text>
+  <text x="820" y="682" text-anchor="middle" fill="#cccccc" font-size="12">NIST CSF 2.0 (cyber),</text>
+  <text x="820" y="698" text-anchor="middle" fill="#cccccc" font-size="12">MITRE ATLAS (AI threat matrix),</text>
+  <text x="820" y="714" text-anchor="middle" fill="#cccccc" font-size="12">OWASP LLM / Agentic Top 10,</text>
+  <text x="820" y="730" text-anchor="middle" fill="#cccccc" font-size="12">CSA agentic security guidance</text>
+  <text x="820" y="790" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">Function: shared vocabulary —</text>
+  <text x="820" y="806" text-anchor="middle" fill="#888888" font-size="11" font-style="italic">how practitioners structure the work</text>
+
+  <!-- Converging lines to middle band -->
+  <line x1="180" y1="852" x2="500" y2="920" stroke="#2233ee" stroke-width="2"/>
+  <line x1="500" y1="852" x2="500" y2="920" stroke="#2233ee" stroke-width="2"/>
+  <line x1="820" y1="852" x2="500" y2="920" stroke="#2233ee" stroke-width="2"/>
+
+  <!-- Industry & Regional band -->
+  <rect x="180" y="920" width="640" height="230" rx="24" fill="none" stroke="#2233ee" stroke-width="3"/>
+  <text x="500" y="958" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold">Industry &amp; Regional AI Principles &amp; Codes</text>
+  <text x="500" y="982" text-anchor="middle" fill="#8899cc" font-size="13" font-style="italic">Soft law: translates the three pillars for sectors and jurisdictions</text>
+  <text x="500" y="1014" text-anchor="middle" fill="#cccccc" font-size="13">• OECD AI Principles &amp; G7 Hiroshima Process (intergovernmental baseline)</text>
+  <text x="500" y="1036" text-anchor="middle" fill="#cccccc" font-size="13">• IMDA Model AI Governance Framework — incl. MGF for Agentic AI v1.5 (2026)</text>
+  <text x="500" y="1058" text-anchor="middle" fill="#cccccc" font-size="13">• EU GPAI Code of Practice; UK / Seoul frontier safety commitments</text>
+  <text x="500" y="1080" text-anchor="middle" fill="#cccccc" font-size="13">• Sector codes: MAS FEAT (finance), WHO guidance (health), IEEE ethics</text>
+  <text x="500" y="1102" text-anchor="middle" fill="#cccccc" font-size="13">• Assurance ecosystems: AI Verify, Global AI Assurance Sandbox, insurer</text>
+  <text x="500" y="1122" text-anchor="middle" fill="#cccccc" font-size="13">standards (e.g. AIUC-1) — the emerging measurement/audit clearinghouse tier</text>
+
+  <line x1="500" y1="1150" x2="500" y2="1190" stroke="#2233ee" stroke-width="2"/>
+
+  <!-- Organizational Governance Layer -->
+  <rect x="140" y="1190" width="720" height="290" rx="20" fill="#1a1fb8" stroke="#4455ff" stroke-width="3"/>
+  <text x="500" y="1230" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="bold">Organizational Governance Layer</text>
+  <text x="500" y="1254" text-anchor="middle" fill="#aab4ff" font-size="13" font-style="italic">Where everything above becomes operational practice</text>
+  <text x="500" y="1288" text-anchor="middle" fill="#e6e9ff" font-size="13">• AI policy, acceptable-use rules, and an inventory/registry of AI systems &amp; agents</text>
+  <text x="500" y="1312" text-anchor="middle" fill="#e6e9ff" font-size="13">• Risk assessment &amp; use-case gating (impact × likelihood; tiered autonomy)</text>
+  <text x="500" y="1336" text-anchor="middle" fill="#e6e9ff" font-size="13">• Accountability chains: named owners, human-approval checkpoints,</text>
+  <text x="500" y="1356" text-anchor="middle" fill="#e6e9ff" font-size="13">automation-bias auditing (override rates, review times)</text>
+  <text x="500" y="1380" text-anchor="middle" fill="#e6e9ff" font-size="13">• Technical controls: least-privilege access, identity for agents, guardrails,</text>
+  <text x="500" y="1400" text-anchor="middle" fill="#e6e9ff" font-size="13">sandboxing, deterministic-over-prompt-layer enforcement</text>
+  <text x="500" y="1424" text-anchor="middle" fill="#e6e9ff" font-size="13">• Testing, gradual rollout, continuous monitoring, immutable audit logging</text>
+  <text x="500" y="1448" text-anchor="middle" fill="#e6e9ff" font-size="13">• Training &amp; end-user responsibility; change management; incident response</text>
+
+  <text x="500" y="1520" text-anchor="middle" fill="#666666" font-size="12" font-style="italic">Flow: Regulations set obligations → Standards make conformance auditable → Frameworks structure practice</text>
+  <text x="500" y="1540" text-anchor="middle" fill="#666666" font-size="12" font-style="italic">→ Industry codes contextualise → Organizations implement and evidence it</text>
+</svg>

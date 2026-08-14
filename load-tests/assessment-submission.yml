@@ -1,0 +1,94 @@
+---
+# Assessment Submission Scenario
+# Tests: POST /assessments → poll GET /assessments/:id → GET /assessments/:id/result
+# Simulates real workflow: submit system → poll until complete → retrieve results
+
+config:
+  target: http://localhost:3000
+  phases:
+    # Scenario 1: Baseline (1 user, 2 min, single submission)
+    - duration: 120
+      arrivalRate: 1
+      name: "Baseline (1 user)"
+      rampTo: 1
+
+  processor: "./scenario-processor.js"
+
+  defaults:
+    headers:
+      Content-Type: application/json
+      User-Agent: Artillery/LoadTest
+
+  log:
+    level: info
+
+  variables:
+    # Org ID (should match test org in API)
+    org_id: ["test-org-baseline"]
+    # System configurations to test against
+    system_configs:
+      - system_id: gpt-4
+        system_name: "GPT-4 Baseline"
+        endpoint: "https://api.openai.com/v1/chat/completions"
+        model: "gpt-4"
+      - system_id: claude-3
+        system_name: "Claude 3 Baseline"
+        endpoint: "https://api.anthropic.com/v1/messages"
+        model: "claude-3-opus"
+
+scenarios:
+  - name: "Assessment Submission Flow"
+    flow:
+      # Step 1: Submit assessment (fire and forget)
+      - post:
+          url: "/api/v1/assessments"
+          headers:
+            X-Org-ID: "{{ org_id }}"
+          json:
+            system_id: "{{ $randomChoice(system_configs).system_id }}"
+            system_name: "{{ $randomChoice(system_configs).system_name }}"
+            system_info:
+              endpoint: "{{ $randomChoice(system_configs).endpoint }}"
+              model: "{{ $randomChoice(system_configs).model }}"
+            tier: "T1_STANDARD"
+          expect:
+            - statusCode: 201
+          capture:
+            - json: "$.job_id"
+              as: "job_id"
+            - json: "$.assessment_id"
+              as: "assessment_id"
+
+      # Step 2: Wait 1 second (give job time to start)
+      - think: 1
+
+      # Step 3: Poll status (up to 10 times, 2 sec intervals)
+      # This simulates client polling for job completion
+      - loop:
+          - get:
+              url: "/api/v1/assessments/{{ assessment_id }}"
+              headers:
+                X-Org-ID: "{{ org_id }}"
+              expect:
+                - statusCode: 200
+              capture:
+                json: "$.status"
+                as: "job_status"
+                regexp: "queued|running|completed|failed"
+          - think: 2  # Wait 2 seconds between polls
+        count: 10  # Poll up to 10 times (20 seconds max wait)
+        whileTrue: "{{ job_status != 'completed' && job_status != 'failed' }}"
+
+      # Step 4: Retrieve results (only if completed successfully)
+      - get:
+          url: "/api/v1/assessments/{{ assessment_id }}/result"
+          headers:
+            X-Org-ID: "{{ org_id }}"
+          expect:
+            - statusCode: 200
+          capture:
+            json: "$.learning_index"
+            as: "learning_index"
+
+      # Step 5: Log successful completion
+      - log: "Assessment completed: {{ assessment_id }} | LI: {{ learning_index }} | Status: {{ job_status }}"

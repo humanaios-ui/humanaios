@@ -1,0 +1,102 @@
+{
+  "phase": "Phase 5 Week 2",
+  "rubric_focus": "practice-specific variants (v1.2a/b/c)",
+  "by_practice": {
+    "autonomy": {
+      "sessions": [
+        {
+          "session_id": "phase3-aut-01",
+          "session_num": 1,
+          "phase_score_v1_1": 2.18,
+          "phase_score_variant": 3.28,
+          "delta": -0.04,
+          "improvement_pct": -1.8
+        },
+        {
+          "session_id": "phase3-aut-02",
+          "session_num": 2,
+          "phase_score_v1_1": 2.22,
+          "phase_score_variant": 3.28,
+          "delta": -0.04,
+          "improvement_pct": -1.8
+        },
+        {
+          "session_id": "phase3-aut-03",
+          "session_num": 3,
+          "phase_score_v1_1": 2.27,
+          "phase_score_variant": 3.28,
+          "delta": -0.04,
+          "improvement_pct": -1.8
+        }
+      ],
+      "variant": "v1.2a",
+      "mean_delta": -0.04,
+      "mean_improvement_pct": -1.8,
+      "session_count": 3
+    },
+    "humanaios": {
+      "sessions": [
+        {
+          "session_id": "phase3-hum-01",
+          "session_num": 1,
+          "phase_score_v1_1": 2.38,
+          "phase_score_variant": 2.48,
+          "delta": -0.84,
+          "improvement_pct": -35.3
+        },
+        {
+          "session_id": "phase3-hum-02",
+          "session_num": 2,
+          "phase_score_v1_1": 2.4,
+          "phase_score_variant": 2.48,
+          "delta": -0.84,
+          "improvement_pct": -35.0
+        },
+        {
+          "session_id": "phase3-hum-03",
+          "session_num": 3,
+          "phase_score_v1_1": 2.42,
+          "phase_score_variant": 2.48,
+          "delta": -0.84,
+          "improvement_pct": -34.7
+        }
+      ],
+      "variant": "v1.2b",
+      "mean_delta": -0.84,
+      "mean_improvement_pct": -35.0,
+      "session_count": 3
+    },
+    "outreach": {
+      "sessions": [
+        {
+          "session_id": "phase3-out-01",
+          "session_num": 1,
+          "phase_score_v1_1": 2.12,
+          "phase_score_variant": 2.6,
+          "delta": -0.6,
+          "improvement_pct": -28.3
+        },
+        {
+          "session_id": "phase3-out-02",
+          "session_num": 2,
+          "phase_score_v1_1": 2.17,
+          "phase_score_variant": 2.6,
+          "delta": -0.6,
+          "improvement_pct": -27.6
+        },
+        {
+          "session_id": "phase3-out-03",
+          "session_num": 3,
+          "phase_score_v1_1": 2.21,
+          "phase_score_variant": 2.64,
+          "delta": -0.68,
+          "improvement_pct": -30.8
+        }
+      ],
+      "variant": "v1.2c",
+      "mean_delta": -0.627,
+      "mean_improvement_pct": -28.9,
+      "session_count": 3
+    }
+  }
+}

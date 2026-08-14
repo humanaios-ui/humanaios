@@ -1,0 +1,156 @@
+name: Auto-capture to measurement ledgers
+
+on:
+  workflow_dispatch:  # Manual trigger for testing
+  push:
+    branches:
+      - main
+      - feature/**
+    paths:
+      - '.empirica/sessions/sessions.db'
+      - 'REGISTERED.md'
+      - 'docs/calibration/**'
+
+jobs:
+  capture_ledger_entries:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Extract transaction metadata from git notes
+        id: extract_tx
+        run: |
+          # Look for empirica breadcrumbs in git notes
+          if git notes show --ref=breadcrumbs HEAD &>/dev/null; then
+            echo "breadcrumb_found=true" >> $GITHUB_OUTPUT
+            git notes show --ref=breadcrumbs HEAD > /tmp/breadcrumb.txt
+            cat /tmp/breadcrumb.txt
+          else
+            echo "breadcrumb_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Parse REGISTERED.md for new findings
+        id: parse_findings
+        run: |
+          # Check if REGISTERED.md was modified
+          if git diff HEAD~1 HEAD --name-only | grep -q "REGISTERED.md"; then
+            echo "registry_updated=true" >> $GITHUB_OUTPUT
+
+            # Extract timestamps and find new entries (those dated today)
+            TODAY=$(date +%Y-%m-%d)
+            NEW_FINDINGS=$(grep -c "$TODAY" REGISTERED.md || echo "0")
+            echo "new_findings=$NEW_FINDINGS" >> $GITHUB_OUTPUT
+          else
+            echo "registry_updated=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect ledger-relevant patterns
+        id: detect_patterns
+        run: |
+          # Pattern detection for auto-ledger-append
+
+          # Calibration patterns
+          if grep -q "CALIBRATION_VALIDATION_SYSTEM_PLAN\|CALIBRATION_OOO" REGISTERED.md; then
+            echo "calibration_relevant=true" >> $GITHUB_OUTPUT
+          fi
+
+          # Governance assessment patterns
+          if grep -q "INSTANCE_GODMOD3\|say-do gap\|paradigm" REGISTERED.md; then
+            echo "governance_relevant=true" >> $GITHUB_OUTPUT
+          fi
+
+          # Communication calibration patterns
+          if grep -q "H-CAND-Z1-COMM\|clarification-request\|Z1.*communication" REGISTERED.md; then
+            echo "communication_relevant=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate calibration validation ledger entry
+        if: steps.detect_patterns.outputs.calibration_relevant == 'true'
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT_SHA=$(git rev-parse HEAD)
+
+          cat >> audits/calibration_validation_ledger.jsonl << EOF
+          {"ledger_id": "CAL-VAL-$(date +%Y%m%d-%H%M%S)-AUTO", "ledger_type": "calibration_validation", "timestamp": "$TIMESTAMP", "transaction_id": "auto-captured", "session_id": "", "commit_sha": "$COMMIT_SHA", "predicted": {"claim": "Registry update contains calibration-related findings", "confidence": 0.7}, "measured": {"outcome": "REGISTERED.md modified with calibration entries", "grounding": "$COMMIT_SHA"}, "substrate": {"implementation": "Automated workflow capture from PR/commit", "scope": "Registry update detection"}, "gap_analysis": {"delta": "See REGISTERED.md diff", "root_causes": [], "learning": "Ledger auto-capture operational", "lsm_enriched": false}, "source_artifacts": [], "cross_ledger_refs": {"operations_ledger": "SMAG pattern", "sync_status": "independent"}}
+          EOF
+
+      - name: Generate governance assessment ledger entry
+        if: steps.detect_patterns.outputs.governance_relevant == 'true'
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT_SHA=$(git rev-parse HEAD)
+
+          cat >> audits/governance_assessment_ledger.jsonl << EOF
+          {"ledger_id": "GOV-ASSESS-$(date +%Y%m%d-%H%M%S)-AUTO", "ledger_type": "governance_assessment", "timestamp": "$TIMESTAMP", "transaction_id": "auto-captured", "assessment_type": "registry_update", "artifact_evaluated": "REGISTERED.md", "predicted": {"gap_hypothesis": "Governance findings logged in registry", "confidence": 0.8}, "measured": {"gaps_found": ["New governance assessment entries detected"], "grounding": "$COMMIT_SHA"}, "substrate": {"implementation": "Automated workflow capture", "scope": "Registry monitoring"}, "gap_analysis": {"learning": "Ledger capture operational", "lsm_enriched": false}, "source_artifacts": [], "cross_ledger_refs": {"sync_status": "independent"}}
+          EOF
+
+      - name: Generate communication calibration ledger entry
+        if: steps.detect_patterns.outputs.communication_relevant == 'true'
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT_SHA=$(git rev-parse HEAD)
+
+          cat >> audits/communication_calibration_ledger.jsonl << EOF
+          {"ledger_id": "COMM-CAL-$(date +%Y%m%d-%H%M%S)-AUTO", "ledger_type": "communication_calibration", "timestamp": "$TIMESTAMP", "transaction_id": "auto-captured", "communication_pair": "automation", "assessment_metric": "registry_update", "predicted": {"clarification_rate": "logged communication findings", "confidence": 0.75}, "measured": {"clarification_events": 1, "evidence": "REGISTERED.md entry"}, "substrate": {"implementation": "Automated workflow capture"}, "gap_analysis": {"learning": "Communication patterns auto-detected", "lsm_enriched": false}, "source_artifacts": [], "cross_ledger_refs": {"sync_status": "independent"}}
+          EOF
+
+      - name: Commit ledger updates
+        if: steps.detect_patterns.outputs.calibration_relevant == 'true' || steps.detect_patterns.outputs.governance_relevant == 'true' || steps.detect_patterns.outputs.communication_relevant == 'true'
+        run: |
+          git config user.name "ledger-capture-bot"
+          git config user.email "noreply@humanaios.ai"
+
+          git add audits/*.jsonl
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(ledger): Auto-capture measurement entries from registry update
+
+Mechanical capture of predicted vs measured outcomes:
+- Calibration validation patterns detected
+- Governance assessment patterns detected
+- Communication calibration patterns detected
+
+Workflow: ledger-capture.yml (SMAG pattern mirror)
+Timestamp: $(date -u +%Y-%m-%d\ %H:%M:%SZ)"
+
+            git push origin HEAD
+          fi
+
+      - name: Post PR comment with ledger status
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Count ledger entries
+            const calibrationCount = fs.readFileSync('audits/calibration_validation_ledger.jsonl', 'utf8').split('\n').filter(l => l.trim()).length;
+            const governanceCount = fs.readFileSync('audits/governance_assessment_ledger.jsonl', 'utf8').split('\n').filter(l => l.trim()).length;
+            const commCount = fs.readFileSync('audits/communication_calibration_ledger.jsonl', 'utf8').split('\n').filter(l => l.trim()).length;
+
+            const comment = `## 📊 Ledger Capture Summary
+
+**Predicted vs Measured Outcomes Tracked:**
+- Calibration Validation: ${calibrationCount} entries
+- Governance Assessment: ${governanceCount} entries
+- Communication Calibration: ${commCount} entries
+
+[View ledgers](/audits/) for full transaction records.
+
+Mirror of [SMAG pilot ledger pattern](https://github.com/humanaios-ui/operations/issues/103). Cross-linked with operations repo for ecosystem-wide learning.`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
