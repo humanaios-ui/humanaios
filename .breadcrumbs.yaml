@@ -36,12 +36,13 @@ task:
 
 
 
+
 # Learning trajectory (PREFLIGHT→POSTFLIGHT deltas — measures learning, NOT calibration bias)
 # For actual bias corrections see grounded_calibration.grounded_bias_corrections
 learning_trajectory:
-  last_updated: "2026-08-15T13:52:36.248027"
+  last_updated: "2026-08-15T14:59:38.452903"
   ai_id: humanaios
-  observations: 13
+  observations: 26
   session_deltas:
   readiness:
     min_know: 0.70
@@ -57,40 +58,44 @@ learning_trajectory:
 # fully measure holistic epistemic state. Use alongside self-assessment,
 # not as a replacement. See dual-track calibration philosophy in docs.
 grounded_calibration:
-  last_updated: "2026-08-15T13:52:36.699129"
+  last_updated: "2026-08-15T14:59:40.003802"
   ai_id: humanaios
-  observations: 22
+  observations: 51
   grounded_coverage: 0.83
   divergence:
-    know: +0.53
-    signal: +0.50
-    change: +0.48
-    uncertainty: -0.31
-    do: +0.21
-    context: +0.12
-    density: -0.10
-    state: -0.09
-    clarity: -0.04
-    completion: -0.03
+    change: +0.53
+    know: +0.47
+    signal: +0.42
+    uncertainty: -0.34
+    do: +0.23
+    context: +0.17
+    state: -0.08
+    clarity: +0.07
+    density: -0.05
+    completion: -0.02
   ungrounded: [engagement]
   grounded_bias_corrections:
-    density: +0.12
-    uncertainty: -0.01
+    density: +0.24
+    context: +0.09
+    signal: -0.06
+    uncertainty: -0.04
+    know: -0.04
+    do: +0.04
   phase_weights:
     noetic: 0.5
     praxic: 0.5
     source: no_tool_data
-  holistic_calibration_score: 0.2353
+  holistic_calibration_score: 0.1940
   holistic_gaps:
-    know: +0.7200
-    signal: +0.6800
-    change: +0.6500
-    uncertainty: -0.4361
-    do: +0.3000
-    context: +0.2000
-    state: -0.0800
-    density: -0.0751
-    clarity: +0.0173
+    change: +0.6000
+    know: +0.4342
+    uncertainty: -0.3843
+    signal: +0.3431
+    do: +0.2700
+    context: +0.2467
+    clarity: +0.2156
+    state: -0.0600
+    density: +0.0147
     completion: +0.0000
   insights:
     - vector: context
@@ -103,49 +108,35 @@ grounded_calibration:
       phase: both
       pattern: chronic_underestimate
       severity: 1.00
-      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.35)"
+      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.36)"
       suggestion: "increase_self_assessment:uncertainty"
-    - vector: impact
-      phase: both
-      pattern: evidence_gap
-      severity: 0.70
-      description: "impact has evidence in only 0/10 verifications (mean coverage 0.36)"
-      suggestion: "add_evidence_source:impact"
-    - vector: completion
-      phase: both
-      pattern: evidence_gap
-      severity: 0.56
-      description: "completion has evidence in only 2/10 verifications (mean coverage 0.36)"
-      suggestion: "add_evidence_source:completion"
     - vector: coherence
       phase: both
       pattern: evidence_gap
       severity: 0.70
-      description: "coherence has evidence in only 0/10 verifications (mean coverage 0.36)"
+      description: "coherence has evidence in only 0/10 verifications (mean coverage 0.37)"
       suggestion: "add_evidence_source:coherence"
+    - vector: impact
+      phase: both
+      pattern: evidence_gap
+      severity: 0.70
+      description: "impact has evidence in only 0/10 verifications (mean coverage 0.37)"
+      suggestion: "add_evidence_source:impact"
 # Brier calibration (auto-updated by Empirica post-test verification)
 brier_calibration:
-  last_updated: "2026-07-22T17:13:28.310207"
-  ai_id: empirica-foundation-evaluator
+  last_updated: "2026-08-15T14:59:38.531274"
+  ai_id: humanaios
   note: "Murphy (1973) decomposition: BS = Reliability - Resolution + Uncertainty"
   noetic:
-    brier_score: 0.0786
-    reliability: 0.0658
-    resolution: 0.0087
-    uncertainty: 0.0215
-    n_predictions: 48
-    trend: stable
+    status: insufficient_data
+    samples: 0
   praxic:
-    brier_score: 0.0785
-    reliability: 0.0327
-    resolution: 0.0133
-    uncertainty: 0.0591
-    n_predictions: 50
-    trend: stable
+    status: insufficient_data
+    samples: 0
   combined:
-    brier_score: 0.0748
-    reliability: 0.0426
-    resolution: 0.0187
-    uncertainty: 0.0509
-    n_predictions: 50
-    trend: stable
+    brier_score: 0.1775
+    reliability: 0.1242
+    resolution: 0.0533
+    uncertainty: 0.1066
+    n_predictions: 10
+    trend: improving
