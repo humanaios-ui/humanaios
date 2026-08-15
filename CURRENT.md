@@ -54,7 +54,7 @@
 | **G-FOUND-03** | Ratify SAGB findings for publication | Pending Phase 3 close | Phase 3 ⏳ |
 | **G-FOUND-04** | Publish founding anchor to REGISTERED.md | Pending Phase 3 + ratification | Post-Phase-3 |
 | **G-FOUND-05** | Approve external operator recruitment | Pending G-FOUND-04 closure | Post-ratification |
-| **Charter Extension Decision** | H-ACAT + empirica timeline | **URGENT** (charter overdue) | Night |
+| **Charter Timeline** | H-ACAT + empirica timeline | **RESOURCE-BASED** (no artificial deadline unless external constraint) | Zone 2: follow capacity, not calendar |
 
 ---
 
@@ -107,7 +107,7 @@
 
 | Deadline | Item | Status | Action |
 |----------|------|--------|--------|
-| **2026-07-24 (NOW)** | Charter close date (overdue) | ⚠️ OVERDUE | Night decision: extend or compress |
+| **TBD** | Charter close date (resource-based) | ✅ Resource-driven | Work pace determines timeline |
 | **2026-07-28** | Phase 3 SAGB ready (4–24h from Phase 2) | ⏳ Pending | H-ACAT pilot milestone |
 | **2026-08-01** | empirica Run 1 scheduled (post-charter review) | 📅 Planning | Interpretation-step research |
 | **TBD** | Gate 3 activation (arXiv + Dataset B + revenue) | 🚧 Blocked | Layer 3 self-governing app launch |
