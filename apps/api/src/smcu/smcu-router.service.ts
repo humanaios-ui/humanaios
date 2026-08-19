@@ -37,11 +37,13 @@ export class SmcuRouterService {
    *
    * @param smcu_id  Unique SMCU identifier (e.g. "payment/card.go-L45")
    * @param features Contextual features extracted from the SMCU
+   * @param org_id   Optional org scope used to pre-filter similar records
    * @returns        Routing decision with selected method and exploration flag
    */
   async route(
     smcu_id: string,
     features: SmcuFeatures,
+    org_id?: string,
   ): Promise<SmcuRoutingDecision> {
     const is_exploration = Math.random() > SMCU_CONFIG.EXPLOITATION_RATE;
 
@@ -63,6 +65,7 @@ export class SmcuRouterService {
     const similar = await this.telemetry.findSimilar(
       features,
       SMCU_CONFIG.SIMILARITY_LOOKBACK,
+      org_id,
     );
 
     if (similar.length === 0) {

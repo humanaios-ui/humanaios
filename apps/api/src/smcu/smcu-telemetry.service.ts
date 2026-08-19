@@ -83,15 +83,14 @@ export class SmcuTelemetryService {
    * Find the top-N most similar past SMCU records based on feature distance.
    * Similarity is computed as Euclidean distance on numeric features.
    *
-   * Returns records ordered by similarity (closest first).
+   * Candidates are pre-filtered to the same org and a recent time window to
+   * keep the scan bounded as the table grows.
    */
   async findSimilar(
     features: SmcuFeatures,
     limit = SMCU_CONFIG.SIMILARITY_LOOKBACK,
+    org_id?: string,
   ): Promise<SmcuTelemetryRecord[]> {
-    // Euclidean distance on the key numeric dimensions.
-    // We use SQL-level arithmetic for performance; non-numeric features are
-    // matched exactly (extension filter applied when non-empty).
     const result = await this.pool.query(
       `SELECT *,
         SQRT(
@@ -101,13 +100,16 @@ export class SmcuTelemetryService {
         ) AS _dist
        FROM smcu_telemetry
        WHERE ($4 = '' OR features->>'extension' = $4)
+         AND ($5 = '' OR org_id = $5)
+         AND recorded_at >= NOW() - INTERVAL '30 days'
        ORDER BY _dist ASC
-       LIMIT $5`,
+       LIMIT $6`,
       [
         features.complexity,
         features.lines,
         features.churn,
         features.extension ?? '',
+        org_id ?? '',
         limit,
       ],
     );
@@ -126,8 +128,7 @@ export class SmcuTelemetryService {
          COUNT(*)::int                        AS total_runs,
          AVG(duration_s)                      AS avg_duration_s,
          AVG(reward)                          AS avg_reward,
-         PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY duration_s) AS p95_duration_s,
-         (array_agg(action_taken ORDER BY reward DESC))[1] AS best_method
+         PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY duration_s) AS p95_duration_s
        FROM smcu_telemetry
        WHERE smcu_id = $1
        GROUP BY smcu_id`,
@@ -138,6 +139,21 @@ export class SmcuTelemetryService {
 
     const row = result.rows[0];
 
+    // Select the method with the highest average reward across all runs.
+    const bestMethodResult = await this.pool.query(
+      `SELECT action_taken
+       FROM smcu_telemetry
+       WHERE smcu_id = $1
+       GROUP BY action_taken
+       ORDER BY AVG(reward) DESC
+       LIMIT 1`,
+      [smcu_id],
+    );
+    const best_method: SmcuMethod =
+      bestMethodResult.rows.length > 0
+        ? (bestMethodResult.rows[0]['action_taken'] as SmcuMethod)
+        : SmcuMethod.QUICK_LINT;
+
     // Anomaly: check if the most recent duration is > 10× the rolling average.
     const recent = await this.getRecentRecords(smcu_id, 1);
     const anomaly_detected =
@@ -146,12 +162,12 @@ export class SmcuTelemetryService {
         row.avg_duration_s * SMCU_CONFIG.ANOMALY_DURATION_FACTOR;
 
     return {
-      smcu_id: row.smcu_id,
-      total_runs: row.total_runs,
-      avg_duration_s: parseFloat(row.avg_duration_s),
-      avg_reward: parseFloat(row.avg_reward),
-      best_method: row.best_method as SmcuMethod,
-      p95_duration_s: parseFloat(row.p95_duration_s),
+      smcu_id: row['smcu_id'] as string,
+      total_runs: row['total_runs'] as number,
+      avg_duration_s: parseFloat(row['avg_duration_s'] as string),
+      avg_reward: parseFloat(row['avg_reward'] as string),
+      best_method,
+      p95_duration_s: parseFloat(row['p95_duration_s'] as string),
       anomaly_detected,
     };
   }

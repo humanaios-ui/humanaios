@@ -53,7 +53,7 @@ export interface SmcuFeatures {
  *
  * Matches the JSON schema defined in the issue:
  * {
- *   "smu_id": "payment/card.go-L45",
+ *   "smcu_id": "payment/card.go-L45",
  *   "features": { "complexity": 12, "lines": 89, "churn": 7 },
  *   "action_taken": "deep_scan",
  *   "reward": 0.85,
