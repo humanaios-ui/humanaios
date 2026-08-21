@@ -1,0 +1,21 @@
+{
+  "name": "@humanaios/email-service",
+  "version": "1.0.0",
+  "description": "Email service module for HumanAIOS using SendGrid",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.js"
+  },
+  "keywords": ["email", "sendgrid", "nodemailer", "auth"],
+  "author": "HumanAIOS Team",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.0"
+  }
+}

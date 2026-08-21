@@ -1,0 +1,22 @@
+{
+  "name": "@humanaios/token-service",
+  "version": "1.0.0",
+  "description": "JWT token service module for HumanAIOS with refresh token management",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.js"
+  },
+  "keywords": ["jwt", "token", "auth", "refresh-token", "access-token"],
+  "author": "HumanAIOS Team",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.0"
+  }
+}
