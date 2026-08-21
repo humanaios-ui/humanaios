@@ -1,0 +1,29 @@
+name: Audit - Code Quality & Coverage
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Code quality analysis
+        run: |
+          npm ci
+          npm run lint -- --format json > lint-report.json || true
+          npm run complexity:check || true
+
+      - name: Coverage report
+        run: npm run coverage -- --coverage-threshold=80
+
+      - name: Upload to SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

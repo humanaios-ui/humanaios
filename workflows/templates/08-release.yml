@@ -1,0 +1,26 @@
+name: Release - Publish & Tag
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            See CHANGELOG.md for details
+          draft: false

@@ -1,0 +1,35 @@
+name: Data - Pipeline & Sync
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch data
+        run: npm run data:fetch
+
+      - name: Transform & validate
+        run: npm run data:validate
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit & push if changed
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "Pipeline"
+          git config user.email "pipeline@humanaios.com"
+          git add -A
+          git commit -m "chore: data pipeline sync"
+          git push

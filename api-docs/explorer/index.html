@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HumanAIOS API - Interactive Explorer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 60px 40px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .feature {
+      text-align: center;
+    }
+    .feature-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+    .feature h3 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .feature p {
+      color: #666;
+      line-height: 1.6;
+    }
+    .cta-section {
+      background: #f7f7f7;
+      padding: 40px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .cta-section h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+    .btn-secondary:hover {
+      background: #f7f7f7;
+    }
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .doc-link {
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+    .doc-link:hover {
+      border-color: #667eea;
+      background: #f7f9ff;
+    }
+    .footer {
+      background: #f7f7f7;
+      padding: 30px 40px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>HumanAIOS API</h1>
+      <p>Interactive API Documentation & Explorer</p>
+    </div>
+
+    <div class="content">
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🔍</div>
+          <h3>Interactive Explorer</h3>
+          <p>Try API endpoints directly from your browser with automatic authentication</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📖</div>
+          <h3>Full Documentation</h3>
+          <p>Comprehensive docs for all endpoints, parameters, and responses</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📋</div>
+          <h3>Changelog</h3>
+          <p>Track API changes, breaking updates, and new features</p>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <h2>Get Started</h2>
+        <div class="buttons">
+          <button class="btn btn-primary" onclick="window.location.href='/swagger-ui/'">
+            Open Swagger UI
+          </button>
+          <button class="btn btn-secondary" onclick="window.location.href='/redoc/'">
+            View Full Docs
+          </button>
+        </div>
+      </div>
+
+      <h2 style="margin-bottom: 20px;">Documentation</h2>
+      <div class="docs-grid">
+        <a href="CHANGELOG.md" class="doc-link">
+          <strong>📝 Changelog</strong>
+          <p style="margin-top: 10px; font-size: 0.9em;">API version history and changes</p>
+        </a>
+        <a href="API.md" class="doc-link">
+          <strong>📚 API Reference</strong>
+          <p style="margin-top: 10px; font-size: 0.9em;">Complete endpoint reference</p>
+        </a>
+        <a href="spec.json" class="doc-link">
+          <strong>⚙️ OpenAPI Spec</strong>
+          <p style="margin-top: 10px; font-size: 0.9em;">Machine-readable specification</p>
+        </a>
+        <a href="https://github.com/humanaios/api" class="doc-link" target="_blank">
+          <strong>💻 GitHub</strong>
+          <p style="margin-top: 10px; font-size: 0.9em;">Source code and issues</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>HumanAIOS API v1.0.0 • Last updated: <span id="updated-date"></span></p>
+      <p style="margin-top: 10px;">For support: <a href="mailto:api@humanaios.com">api@humanaios.com</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('updated-date').textContent = new Date().toLocaleDateString();
+  </script>
+</body>
+</html>

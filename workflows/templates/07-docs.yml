@@ -1,0 +1,35 @@
+name: Documentation - Generate & Deploy
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'src/**/*.md'
+      - 'README.md'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate docs
+        run: npm run docs:build
+
+      - name: Validate docs
+        run: npm run docs:validate
+
+      - name: Deploy docs site
+        run: npm run docs:deploy || echo "⚠️ Docs deployment skipped"
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📚 Docs updated - [preview](https://docs-preview.humanaios.com)'
+            })

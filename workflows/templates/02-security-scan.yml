@@ -1,0 +1,26 @@
+name: Security - Scan & Audit
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/owasp-top-ten
+            p/security-audit
+
+      - name: Secret scanning
+        run: |
+          npm install -g @trufflesecurity/trufflehog
+          trufflehog filesystem . --json
+
+      - name: Dependency audit
+        run: npm audit --audit-level=moderate

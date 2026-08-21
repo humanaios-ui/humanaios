@@ -1,0 +1,57 @@
+{
+  "spec": {
+    "path": "openapi/api-spec.yml",
+    "format": "openapi3"
+  },
+  "output": {
+    "html": "dist/index.html",
+    "json": "dist/api-spec.json",
+    "markdown": "dist/API.md"
+  },
+  "generator": {
+    "tool": "redoc",
+    "theme": "dark",
+    "hideDownloadButton": false,
+    "disableSearch": false,
+    "hideLoading": false,
+    "sortPropsAlphabetically": true,
+    "hideSchemaPattern": false,
+    "showExtensions": false,
+    "expandDefaultServerVariables": true,
+    "expandSingleSchemaField": true,
+    "nativeScrollbars": false,
+    "pathInMiddlePanel": false,
+    "hideHostname": false,
+    "hideSchemasTitle": false,
+    "hideInfo": false,
+    "hideModels": false,
+    "hideRightPanel": false,
+    "hideOneOfDescription": false,
+    "showContactInfo": true
+  },
+  "explorer": {
+    "enabled": true,
+    "theme": "dark",
+    "tryItOut": true,
+    "persistAuthorization": true,
+    "presets": [
+      "apis",
+      "layouts",
+      "specs"
+    ]
+  },
+  "changelog": {
+    "enabled": true,
+    "format": "markdown",
+    "template": "templates/CHANGELOG.md.hbs"
+  },
+  "deployment": {
+    "staticHost": "docs.humanaios.com",
+    "cdnPath": "/api-docs/v1/",
+    "versioning": {
+      "enabled": true,
+      "pattern": "v[0-9]+",
+      "multiVersion": true
+    }
+  }
+}

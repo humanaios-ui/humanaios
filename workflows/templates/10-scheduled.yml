@@ -1,0 +1,35 @@
+name: Scheduled - Maintenance & Cleanup
+on:
+  schedule:
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update dependencies
+        run: |
+          npm update
+          npm audit fix || true
+
+      - name: Cleanup old artifacts
+        run: npm run cleanup:artifacts || true
+
+      - name: Archive old logs
+        run: npm run archive:logs || true
+
+      - name: Database maintenance
+        run: npm run db:maintenance || true
+
+      - name: Commit updates
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "Maintenance"
+            git config user.email "maintenance@humanaios.com"
+            git add -A
+            git commit -m "chore: scheduled maintenance"
+            git push
+          fi
