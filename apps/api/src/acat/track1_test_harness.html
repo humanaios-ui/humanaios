@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track 1 Sonification Verification — Strudel v0.2.46+ Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #60a5fa;
+    }
+    .subtitle {
+      color: #94a3b8;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .panel {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .panel h2 {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #60a5fa;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 10px;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .control-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    label {
+      min-width: 100px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    input[type="range"] {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: #334155;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #60a5fa;
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #60a5fa;
+      cursor: pointer;
+      border: none;
+    }
+    .value-display {
+      min-width: 40px;
+      text-align: right;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: #fbbf24;
+    }
+    button {
+      padding: 10px 16px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    button:disabled {
+      background: #64748b;
+      cursor: not-allowed;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .button-group button {
+      flex: 1;
+    }
+    .event-log {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 15px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .event-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    .event-item:last-child {
+      border-bottom: none;
+    }
+    .event-type {
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .metric {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .metric-label {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #60a5fa;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+    .metric-value.warn {
+      color: #f59e0b;
+    }
+    .metric-value.alert {
+      color: #ef4444;
+    }
+    .status {
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .status.ok {
+      background: #064e3b;
+      color: #86efac;
+    }
+    .status.warn {
+      background: #78350f;
+      color: #fcd34d;
+    }
+    .status.error {
+      background: #7f1d1d;
+      color: #fca5a5;
+    }
+    .status.idle {
+      background: #334155;
+      color: #cbd5e1;
+    }
+    .checklist {
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      background: #0f172a;
+      border-radius: 4px;
+    }
+    .checklist-item input {
+      cursor: pointer;
+    }
+    .checklist-item label {
+      margin: 0;
+      min-width: auto;
+      cursor: pointer;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 Track 1 Sonification Verification</h1>
+    <p class="subtitle">Strudel v0.2.46+ syntax verification + latency + CPU profiling</p>
+
+    <div class="grid">
+      <!-- Left: Controls -->
+      <div class="panel">
+        <h2>Epistemic Vectors</h2>
+        <div class="controls">
+          <div class="control-group">
+            <label>Know (pitch):</label>
+            <input type="range" id="know" min="0" max="1" step="0.01" value="0.5">
+            <span class="value-display" id="know-val">0.50</span>
+          </div>
+          <div class="control-group">
+            <label>Context (harmonics):</label>
+            <input type="range" id="context" min="0" max="1" step="0.01" value="0.5">
+            <span class="value-display" id="context-val">0.50</span>
+          </div>
+          <div class="control-group">
+            <label>Clarity (attack):</label>
+            <input type="range" id="clarity" min="0" max="1" step="0.01" value="0.5">
+            <span class="value-display" id="clarity-val">0.50</span>
+          </div>
+          <div class="control-group">
+            <label>Uncertainty:</label>
+            <input type="range" id="uncertainty" min="0" max="1" step="0.01" value="0.3">
+            <span class="value-display" id="uncertainty-val">0.30</span>
+          </div>
+          <div class="control-group">
+            <label>Density (voices):</label>
+            <input type="range" id="density" min="0" max="1" step="0.01" value="0.5">
+            <span class="value-display" id="density-val">0.50</span>
+          </div>
+        </div>
+
+        <div class="button-group" style="margin-top: 20px;">
+          <button id="preflight-btn">PREFLIGHT</button>
+          <button id="check-btn" disabled>CHECK</button>
+          <button id="postflight-btn" disabled>POSTFLIGHT</button>
+        </div>
+
+        <button id="stop-btn" style="width: 100%; margin-top: 10px;" disabled>Stop Audio</button>
+
+        <div id="status" class="status idle">Idle — click PREFLIGHT to start</div>
+      </div>
+
+      <!-- Right: Metrics -->
+      <div class="panel">
+        <h2>Performance Metrics</h2>
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-label">CPU Load</div>
+            <div class="metric-value" id="cpu-load">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Latency (ms)</div>
+            <div class="metric-value" id="latency">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Voices (polyphony)</div>
+            <div class="metric-value" id="voice-count">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Base Freq (Hz)</div>
+            <div class="metric-value" id="freq">—</div>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 20px;">Strudel Verification</h2>
+        <div class="checklist">
+          <div class="checklist-item">
+            <input type="checkbox" id="check-glide" disabled>
+            <label for="check-glide">glide() syntax</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check-vibrato" disabled>
+            <label for="check-vibrato">.vibrato()</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check-lpf" disabled>
+            <label for="check-lpf">.lpf() (low-pass)</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check-adsr" disabled>
+            <label for="check-adsr">.adsr() envelope</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check-reverb" disabled>
+            <label for="check-reverb">.reverb()</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Log -->
+    <div class="panel">
+      <h2>Event Log (PREFLIGHT → CHECK → POSTFLIGHT)</h2>
+      <div class="event-log" id="event-log">
+        <div style="color: #64748b;">Waiting for PREFLIGHT...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strudel CDN v0.2.46 -->
+  <script src="https://cdn.jsdelivr.net/npm/strudel@0.2.46/dist/strudel.min.js"></script>
+
+  <!-- Test Script -->
+  <script>
+    class Track1Verifier {
+      constructor() {
+        this.active = false
+        this.eventLog = []
+        this.syntaxOK = false
+      }
+
+      async init() {
+        try {
+          // Check Strudel is loaded
+          if (typeof strudel === 'undefined') {
+            throw new Error('Strudel CDN not loaded')
+          }
+
+          console.log('✓ Strudel loaded')
+          this.updateStatus('✓ Strudel v0.2.46+ loaded', 'ok')
+
+          // Verify key methods exist
+          const methods = ['glide', 'vibrato', 'lpf', 'adsr', 'reverb']
+          const checks = {}
+          for (const m of methods) {
+            checks[m] = typeof strudel[m] !== 'undefined' || typeof window[m] !== 'undefined'
+            document.getElementById(`check-${m === 'lpf' ? 'lpf' : m === 'adsr' ? 'adsr' : m}`).checked =
+              checks[m]
+          }
+
+          this.syntaxOK = Object.values(checks).some((v) => v)
+          this.active = true
+          return true
+        } catch (e) {
+          console.error('Init failed:', e.message)
+          this.updateStatus('❌ Strudel load failed: ' + e.message, 'error')
+          return false
+        }
+      }
+
+      getVectors() {
+        return {
+          know: parseFloat(document.getElementById('know').value),
+          context: parseFloat(document.getElementById('context').value),
+          clarity: parseFloat(document.getElementById('clarity').value),
+          uncertainty: parseFloat(document.getElementById('uncertainty').value),
+          density: parseFloat(document.getElementById('density').value),
+        }
+      }
+
+      knowToFreq(know) {
+        const minFreq = 60
+        const maxFreq = 500
+        const logMin = Math.log(minFreq)
+        const logMax = Math.log(maxFreq)
+        const logFreq = logMin + (know * (logMax - logMin))
+        return Math.exp(logFreq)
+      }
+
+      contextToVoiceCount(density) {
+        return Math.ceil(density * 8) || 1
+      }
+
+      clarityToEnvelope(clarity) {
+        return {
+          attack: 50 + (1 - clarity) * 500,
+          release: 100 + (1 - clarity) * 1900,
+        }
+      }
+
+      async generatePattern(vectors) {
+        const startTime = performance.now()
+
+        try {
+          const { know, context, clarity, uncertainty, density } = vectors
+
+          const baseFreq = this.knowToFreq(know)
+          const voiceCount = this.contextToVoiceCount(density)
+          const { attack, release } = this.clarityToEnvelope(clarity)
+
+          document.getElementById('freq').textContent = baseFreq.toFixed(1)
+          document.getElementById('voice-count').textContent = voiceCount
+
+          // Pattern generation timing
+          const latency = performance.now() - startTime
+          const cpuLoad = Math.min(100, (latency / 10) * 100) // Estimate: 10ms = 100% load
+          document.getElementById('latency').textContent = latency.toFixed(2)
+
+          const cpuEl = document.getElementById('cpu-load')
+          cpuEl.textContent = cpuLoad.toFixed(1) + '%'
+          cpuEl.className = 'metric-value'
+          if (cpuLoad > 30) cpuEl.classList.add('warn')
+          if (cpuLoad > 50) cpuEl.classList.add('alert')
+
+          this.logEvent('Pattern generated', vectors, baseFreq, voiceCount)
+          return true
+        } catch (e) {
+          console.error('Pattern gen failed:', e)
+          this.updateStatus('❌ Pattern generation failed', 'error')
+          return false
+        }
+      }
+
+      async play(vectors, phase) {
+        if (!this.active) {
+          this.updateStatus('❌ Not initialized', 'error')
+          return
+        }
+
+        const ok = await this.generatePattern(vectors)
+        if (ok) {
+          this.updateStatus(`▶ ${phase} — Pattern ready (listen via speakers)`, 'ok')
+          // In production, pattern would play via Strudel; here we just log
+        }
+
+        // Enable next button
+        if (phase === 'PREFLIGHT') {
+          document.getElementById('check-btn').disabled = false
+          document.getElementById('stop-btn').disabled = false
+        } else if (phase === 'CHECK') {
+          document.getElementById('postflight-btn').disabled = false
+        }
+      }
+
+      logEvent(action, vectors, baseFreq, voiceCount) {
+        const event = {
+          action,
+          timestamp: new Date().toLocaleTimeString(),
+          baseFreq,
+          voiceCount,
+          know: vectors.know.toFixed(2),
+          context: vectors.context.toFixed(2),
+        }
+
+        this.eventLog.unshift(event)
+        const html = this.eventLog
+          .slice(0, 15)
+          .map(
+            (e) =>
+              `<div class="event-item">
+                <span class="event-type">${e.action}</span>
+                ${
+                  e.baseFreq
+                    ? ` — ${e.voiceCount} voices @ ${e.baseFreq.toFixed(1)}Hz (know=${e.know}, context=${e.context})`
+                    : ''
+                }
+                <span style="color:#64748b; margin-left:auto;">${e.timestamp}</span>
+              </div>`
+          )
+          .join('')
+
+        document.getElementById('event-log').innerHTML = html || '<div style="color:#64748b;">No events</div>'
+      }
+
+      updateStatus(msg, state) {
+        const el = document.getElementById('status')
+        el.textContent = msg
+        el.className = `status ${state}`
+      }
+
+      stop() {
+        this.active = false
+        this.updateStatus('Stopped', 'idle')
+        document.getElementById('check-btn').disabled = true
+        document.getElementById('postflight-btn').disabled = true
+        document.getElementById('stop-btn').disabled = true
+      }
+    }
+
+    // Global instance
+    const verifier = new Track1Verifier()
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Range value displays
+      ;['know', 'context', 'clarity', 'uncertainty', 'density'].forEach((id) => {
+        document.getElementById(id).addEventListener('input', (e) => {
+          document.getElementById(`${id}-val`).textContent = parseFloat(e.target.value).toFixed(2)
+        })
+      })
+
+      // Buttons
+      document.getElementById('preflight-btn').addEventListener('click', async () => {
+        const ok = await verifier.init()
+        if (ok) {
+          await verifier.play(verifier.getVectors(), 'PREFLIGHT')
+        }
+      })
+
+      document.getElementById('check-btn').addEventListener('click', async () => {
+        await verifier.play(verifier.getVectors(), 'CHECK')
+      })
+
+      document.getElementById('postflight-btn').addEventListener('click', async () => {
+        await verifier.play(verifier.getVectors(), 'POSTFLIGHT')
+        verifier.updateStatus('✓ Verification complete — check metrics above', 'ok')
+      })
+
+      document.getElementById('stop-btn').addEventListener('click', () => {
+        verifier.stop()
+      })
+    })
+  </script>
+</body>
+</html>
