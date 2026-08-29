@@ -1,0 +1,2552 @@
+version: '1.0'
+generated_by: empirica.config.semantic_index_loader
+total_docs_indexed: 210
+index:
+  docs/guides/README.md:
+    tags:
+    - guide
+    - guides
+    - readme
+    doc_type: guide
+    audience: ai
+    description: Guides & Reference Materials
+    concepts:
+    - Contents
+    - Context
+    - Guides & Reference Materials
+    - Related Documentation
+    - ai-governance-ecosystem-detailed.svg
+  docs/guides/open-source-ai-guide.md:
+    tags:
+    - guide
+    - guides
+    - open-source-ai-guide
+    doc_type: guide
+    audience: ai
+    description: Replacing Claude, ChatGPT, and Similar Platforms with Free & Open-Source
+      Software
+    concepts:
+    - 1. First, decide what "replace" means for you
+    - 2. The chat interface (replacing the Claude/ChatGPT app)
+    - 3. Which models to run (August 2026)
+    - Any laptop, no GPU (8–16 GB RAM)
+    - Gaming PC / 16–24 GB VRAM (or Apple Silicon with 32 GB+)
+  docs/AUTHORITY_MAPPING_Z3_EMPIRICA_V1.md:
+    tags:
+    - authority-mapping-z3-empirica-v1
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: 'Authority Mapping: Z3 Protocol ↔ Empirica Transaction Discipline'
+    concepts:
+    - Conceptual Alignment
+    - Detailed Phase-by-Phase Mapping
+    - Direct Mapping (The Core Alignment)
+    - Empirica Transaction Framing
+    - Executive Summary
+  docs/AUTH_SYSTEM_INSTALLATION_GUIDE.md:
+    tags:
+    - auth-system-installation-guide
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: AUTH SYSTEM - INSTALLATION & SETUP GUIDE
+    concepts:
+    - '**Alternative: Use Existing Database**'
+    - '**Create .env file**'
+    - '**Create Database**'
+    - '**Install PostgreSQL** (if not already installed)'
+    - '**Option A: Manual Copy**'
+  docs/BPR_RATIFICATION_AND_INTEGRATION_PLAN.md:
+    tags:
+    - bpr-ratification-and-integration-plan
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: BPR Schema Ratification & Integration Plan
+    concepts:
+    - 1. Ratification Decision
+    - 2. Mandatory Fixes (Red Flags → Implementation Discipline)
+    - BPR Schema Ratification & Integration Plan
+    - 'Fix 1: Build Fingerprint Cryptographic Binding'
+    - 'Fix 2: RODscore Evidence Class Cap — Make it Explicit'
+  docs/CHARTER.md:
+    tags:
+    - charter
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Practice Charter
+    concepts:
+    - Authority Boundaries
+    - 'Boundary: Practice vs. Business Operations'
+    - Cross-Practice Dependencies
+    - External References (not owned by this practice)
+    - Governance Documents
+  docs/CLAUDE.md:
+    tags:
+    - claude
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Practice — Claude Code Seat Instructions
+    concepts:
+    - Authority Layer — Three-Zone Governance
+    - Collaboration Protocol
+    - Cross-Practice Governance
+    - Governance Documents (Single Source of Truth)
+    - HumanAIOS Practice — Claude Code Seat Instructions
+  docs/CLAUDE_MD_AUTHORITY_TEMPLATE.md:
+    tags:
+    - claude-md-authority-template
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: CLAUDE.md Authority Section — Template for All 9 Practices
+    concepts:
+    - Authority Layer — Governance & Zone Mapping
+    - CLAUDE.md Authority Section — Template for All 9 Practices
+    - Escalation Chain
+    - Governance Documents (Single Source of Truth)
+    - How to Use This Template
+  docs/COLLABORATION_PROTOCOL_HOLOGRAPHIC_RESEARCH.md:
+    tags:
+    - collaboration-protocol-holographic-research
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: 'Collaboration Protocol: Holographic Principles Research'
+    concepts:
+    - 'Collaboration Protocol: Holographic Principles Research'
+    - Collaboration Scope
+    - Coordination Mechanics
+    - Humanaios ↔ Empirica-Foundation-Evaluator (Beta-Test)
+    - Information Flow
+  docs/COMMUNICATION_INFRASTRUCTURE_TRANSITION_S072426.md:
+    tags:
+    - communication-infrastructure-transition-s072426
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: Communication Infrastructure Transition
+    concepts:
+    - 1. Session Synchronization
+    - 2. Findings Announcement
+    - 3. Operational Updates
+    - Communication Infrastructure Transition
+    - Current Phase & Gates
+  docs/DEPLOYMENT_READINESS_SIGN_OFF.md:
+    tags:
+    - deployment-readiness-sign-off
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: Track 2 Deployment Readiness Sign-Off
+    concepts:
+    - Backend Implementation
+    - Code Quality
+    - Commits Included in Deployment
+    - Deployment Artifacts
+    - Deployment Readiness Checklist
+  docs/EMPIRICA_OUTREACH_DEMARIUS_PROPOSAL_STAGE2.md:
+    tags:
+    - documentation
+    - empirica-outreach-demarius-proposal-stage2
+    doc_type: documentation
+    audience: ai
+    description: 'Proposal: Demarius Phase 3 Assessment (H-ACAT Stage 2 Only)'
+    concepts:
+    - Hybrid Assessment Model
+    - 'Proposal: Demarius Phase 3 Assessment (H-ACAT Stage 2 Only)'
+    - 'Scope: Stage 2 Only (Deferred Stage 1)'
+    - Stage 1 Deferred
+    - Summary
+  docs/EMPIRICA_OUTREACH_PHASE3_VALIDATION_PLAN.md:
+    tags:
+    - documentation
+    - empirica-outreach-phase3-validation-plan
+    doc_type: documentation
+    audience: ai
+    description: Empirica-Outreach Phase 3 Validation Plan — Demarius Onboarding Integration
+    concepts:
+    - Context
+    - Dry Run Outputs for Demarius Onboarding
+    - Timeline
+  docs/ESCALATION_PROTOCOL.md:
+    tags:
+    - documentation
+    - escalation-protocol
+    doc_type: documentation
+    audience: ai
+    description: Escalation Protocol — Zone Transitions & Decision Gates
+    concepts:
+    - Escalation Protocol — Zone Transitions & Decision Gates
+    - Escalation Triggers
+    - Executive Summary
+    - Table of Contents
+    - 'Trigger 1: Objection in Zone 1 (Chat/Collab)'
+  docs/EVALUATOR_MANUAL.md:
+    tags:
+    - documentation
+    - evaluator-manual
+    doc_type: documentation
+    audience: ai
+    description: Empirica Foundation Evaluator — User's Manual
+    concepts:
+    - 1.1 Evaluator Seat
+    - Empirica Foundation Evaluator — User's Manual
+    - How to use this document
+    - 'Part I: The Role'
+  docs/EVALUATOR_RULES.md:
+    tags:
+    - documentation
+    - evaluator-rules
+    doc_type: documentation
+    audience: ai
+    description: Evaluator — Non-Negotiable Rules (always-loaded core)
+    concepts:
+    - Authority floor (never reason around)
+    - Evaluator — Non-Negotiable Rules (always-loaded core)
+    - Independence floor
+    - Isolation floor
+    - Scope floor
+  docs/EVALUATOR_SEAT.md:
+    tags:
+    - documentation
+    - evaluator-seat
+    doc_type: documentation
+    audience: ai
+    description: Evaluator — Seat (role card, package-owned)
+    concepts:
+    - Authority — oversight ≠ command (the load-bearing line)
+    - Evaluator — Seat (role card, package-owned)
+    - Role — assess, don't command
+    - What an Evaluator is
+  docs/EXECUTION_READINESS_PACKAGES_SUMMARY.md:
+    tags:
+    - documentation
+    - execution-readiness-packages-summary
+    doc_type: documentation
+    audience: ai
+    description: EXECUTION READINESS PACKAGES SUMMARY
+    concepts:
+    - '**Package 3: PARALLEL EXECUTION TRACKER (WEEKS 1–4)**'
+    - EXECUTION READINESS PACKAGES SUMMARY
+    - 'WHAT''S INCLUDED: 4 EXECUTION READINESS PACKAGES'
+  docs/GOVERNANCE_RATIFICATION_M2_RANK_1.md:
+    tags:
+    - documentation
+    - governance-ratification-m2-rank-1
+    doc_type: documentation
+    audience: ai
+    description: M2 Rank 1 Authority System Harmonization — Governance Ratification
+      Proposal
+    concepts:
+    - Documents (5 artifacts, ~2,300 lines)
+    - Executive Summary
+    - 'Scope: What''s Ratified'
+  docs/H-ACAT_CAROUSEL_SYSTEM_CONCEPT.md:
+    tags:
+    - documentation
+    - h-acat-carousel-system-concept
+    doc_type: documentation
+    audience: ai
+    description: 'H-ACAT Carousel System: Rotating Human Raters (Post-Dry-Run Concept)'
+    concepts:
+    - 1. Rater Pool Management
+    - 2. Assessment Request Pipeline
+    - 3. Calibration Across Raters
+    - Carousel Architecture
+    - 'Concept: Rotating Assessor Pool'
+  docs/H-ACAT_PHASE_3_PROTOCOL.md:
+    tags:
+    - documentation
+    - h-acat-phase-3-protocol
+    doc_type: documentation
+    audience: ai
+    description: H-ACAT Phase 3 Protocol — Unified Assessment Framework
+    concepts:
+    - 1. Truthfulness (Truth)
+    - 2. Service Orientation (Service)
+    - H-ACAT Phase 3 Protocol — Unified Assessment Framework
+    - Overview
+    - 'Part 1: The 12-Dimension Behavioral Anchor Sets'
+  docs/HELM_CALIBRATION_STUDY_FINDINGS.md:
+    tags:
+    - documentation
+    - helm-calibration-study-findings
+    doc_type: documentation
+    audience: ai
+    description: HELM Calibration Metrics — Study Findings
+    concepts:
+    - 1. What is HELM?
+    - '2. Calibration Metrics: ECE (Expected Calibration Error)'
+    - 2.1 What ECE Measures
+    - 2.2 HELM Implementation Details
+    - Exit Criteria Status
+  docs/HumanAIOS-Market-Strategy-S051326.md:
+    tags:
+    - documentation
+    - humanaios-market-strategy-s051326
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Market Strategy Analysis
+    concepts:
+    - Constructive & Global Impact Framework
+    - HumanAIOS Market Strategy Analysis
+    - 'I. STRATEGIC POSITION: WHAT YOU ARE IN THE MARKET'
+  docs/INBOX_REVIEW_DELEGATION_PLAN.md:
+    tags:
+    - documentation
+    - inbox-review-delegation-plan
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Inbox (_inbox_files3) Review & Delegation Plan
+    concepts:
+    - Current Inbox State
+    - Executive Summary
+    - Files (5 documents, 130KB total)
+    - Governance Framework (Per Constitution)
+    - HumanAIOS Inbox (_inbox_files3) Review & Delegation Plan
+  docs/INBOX_REVIEW_SUMMARY_FOR_ADMIRAL.md:
+    tags:
+    - documentation
+    - inbox-review-summary-for-admiral
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Inbox Review — Summary for Admiral Authorization
+    concepts:
+    - Authority Decision Needed (Z2 Gate)
+    - Documents & Initial Assessment
+    - HumanAIOS Inbox Review — Summary for Admiral Authorization
+    - The Issue
+    - The Plan (Per Constitution §I, §IV, §V)
+  docs/INDEX.md:
+    tags:
+    - documentation
+    - index
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Documentation Index
+    concepts:
+    - Architecture
+    - Governance
+    - HumanAIOS Documentation Index
+    - Operational
+    - Strategic Documents
+  docs/KUBERNETES_OPERATIONALIZATION_A2_A7_DETAILED.md:
+    tags:
+    - documentation
+    - kubernetes-operationalization-a2-a7-detailed
+    doc_type: documentation
+    audience: ai
+    description: KUBERNETES OPERATIONALIZATION SPECIFICATION
+    concepts:
+    - KUBERNETES OPERATIONALIZATION SPECIFICATION
+    - O1 Examples
+    - 'O1: USER-FACING BEHAVIOR (20 elements, v1.6 codebook)'
+    - 'OVERVIEW: K8S-SPECIFIC OPERATIONS MATRIX'
+  docs/KUBERNETES_PHASE_3B_1_PRACTICE_ELEMENTS_TRAINING.md:
+    tags:
+    - documentation
+    - kubernetes-phase-3b-1-practice-elements-training
+    doc_type: documentation
+    audience: ai
+    description: 'KUBERNETES PHASE 3b.1: 21 PRACTICE ELEMENTS & TRAINING GUIDE'
+    concepts:
+    - 'O1-FAV-001: Successful Pod Deployment with Scaling'
+    - 'O1: USER-FACING BEHAVIOR (K8S-SPECIFIC)'
+    - 'OVERVIEW: 21 PRACTICE ELEMENTS FOR K8S CODEBOOK AUTHORING'
+  docs/KUBERNETES_PHASE_3B_EXECUTION_PLAN.md:
+    tags:
+    - documentation
+    - kubernetes-phase-3b-execution-plan
+    doc_type: documentation
+    audience: ai
+    description: KUBERNETES PHASE 3b PILOT VALIDATION
+    concepts:
+    - '**Phase 3b Scope**'
+    - '**What is Phase 3b?**'
+    - KUBERNETES PHASE 3b PILOT VALIDATION
+    - 'PART I: PHASE 3b OVERVIEW & SCOPE'
+    - 'PART II: PHASE 3b SUBPHASES'
+  docs/P19_P21_GOVERNANCE_ANALYSIS.md:
+    tags:
+    - documentation
+    - p19-p21-governance-analysis
+    doc_type: documentation
+    audience: ai
+    description: P19/P21 Governance Tension — Independent Analysis
+    concepts:
+    - Analysis
+    - Background
+    - P19/P21 Governance Tension — Independent Analysis
+    - 'Reading 1: Tension is a Design Bug'
+    - 'Reading 2: P21 as Intentional Backstop (Proposed Reading)'
+  docs/P6_VERDICTS_INTEGRATION.md:
+    tags:
+    - documentation
+    - p6-verdicts-integration
+    doc_type: documentation
+    audience: ai
+    description: P6 Verdicts Integration Guide
+    concepts:
+    - Authentication
+    - Endpoint Specification
+    - Field Descriptions
+    - Overview
+    - P6 Verdicts Integration Guide
+  docs/PHASE_1_ALIGNMENT_RESPONSES.md:
+    tags:
+    - documentation
+    - phase-1-alignment-responses
+    doc_type: documentation
+    audience: ai
+    description: 'Phase 1 Alignment: HumanAIOS Responses'
+    concepts:
+    - 'Implementation Plan:'
+    - 'Phase 1 Alignment: HumanAIOS Responses'
+    - 'Question 1: ACAT Classification Prompt Structure'
+    - 'Question 2: Behavioral Divergence Significance'
+  docs/PHASE_1_VALIDATION_EVIDENCE.md:
+    tags:
+    - documentation
+    - phase-1-validation-evidence
+    doc_type: documentation
+    audience: ai
+    description: Phase 1 Validation Evidence & Support
+    concepts:
+    - 10 Grounded Findings (Research Session 04cd32dd)
+    - Holographic Pattern Hypothesis
+    - Phase 1 Validation Evidence & Support
+    - Tier 1 (Impact 0.95+)
+    - Tier 2 (Impact 0.88-0.90)
+  docs/PHASE_2_3_AND_3B_1_EXECUTION_TRACKER.md:
+    tags:
+    - documentation
+    - phase-2-3-and-3b-1-execution-tracker
+    doc_type: documentation
+    audience: ai
+    description: 'EXECUTION TRACKER: PHASE 2.3 & PHASE 3b.1 (PARALLEL WEEKS 1–3)'
+    concepts:
+    - '**Week 3: 2026-09-20 to 2026-09-27**'
+    - 'EXECUTIVE SUMMARY: TWO-TRACK EXECUTION'
+    - 'TRACK A: WINDOWS LAYER 1 CODER TRAINING (WEEKS 3–4)'
+  docs/PHASE_3B_1_DETAILED_WORKPLAN.md:
+    tags:
+    - documentation
+    - phase-3b-1-detailed-workplan
+    doc_type: documentation
+    audience: ai
+    description: PHASE 3b.1 DETAILED WORKPLAN
+    concepts:
+    - 'Day 1–2: Review v1.6 Stakeholder Feedback Synthesis'
+    - 'Day 1–2: Section 1–2 (Introduction + External Alignment)'
+    - 'Day 3–5: Draft K8s Operationalization (A.2–A.7)'
+    - PHASE 3b.1 DETAILED WORKPLAN
+    - v1.6 Design Finalization & Kubernetes Codebook Authoring
+  docs/PHASE_3B_DOCUMENTATION_INDEX.md:
+    tags:
+    - documentation
+    - phase-3b-documentation-index
+    doc_type: documentation
+    audience: ai
+    description: PHASE 3b COMPREHENSIVE DOCUMENTATION INDEX
+    concepts:
+    - 1. KUBERNETES_PHASE_3B_EXECUTION_PLAN.md (25,000 words)
+    - DOCUMENT DESCRIPTIONS & READING GUIDANCE
+    - Kubernetes v1.6 Pilot Validation (Oct–Dec 2026)
+    - PHASE 3b COMPREHENSIVE DOCUMENTATION INDEX
+    - PHASE 3b DOCUMENTATION ROADMAP
+  docs/PRACTICE_SPECIFICATION_v0.1.md:
+    tags:
+    - documentation
+    - practice-specification-v0.1
+    doc_type: documentation
+    audience: ai
+    description: HumanAIOS Practice Specification v0.1
+    concepts:
+    - 1. Charter Scope
+    - 2. Decision Authority
+    - Domain
+    - HumanAIOS Practice Specification v0.1
+    - Joint Authority (humanaios + other practice)
+  docs/RED_TEAM_AUDIT_REPORT.md:
+    tags:
+    - documentation
+    - red-team-audit-report
+    doc_type: documentation
+    audience: ai
+    description: External Red-Team Audit Report
+    concepts:
+    - 1. Vulnerability Findings — Tier 1 (Priority 6)
+    - ACAT Behavioral Dimension Scorer — Priority 11
+    - Executive Summary
+    - External Red-Team Audit Report
+    - 'Finding F-01: Dimension Skew Corpus Poisoning'
+  docs/TRACK2_FRONTEND_IMPLEMENTATION_STATUS.md:
+    tags:
+    - documentation
+    - track2-frontend-implementation-status
+    doc_type: documentation
+    audience: ai
+    description: Track 2 Frontend Implementation Status
+    concepts:
+    - ''
+    - '-H "Content-Type: application/json" \'
+    - 1. Open Network tab, filter "eventsource"
+    - 1. `lasting-light-ai/src/hooks/useMarkerEvents.ts`
+    - 2. Navigate to app (should see EventSource connection)
+  docs/TRACK2_QA_TEST_DEPLOYMENT.md:
+    tags:
+    - documentation
+    - track2-qa-test-deployment
+    doc_type: documentation
+    audience: ai
+    description: Track 2 QA Testing & Production Deployment
+    concepts:
+    - Environment Setup
+    - Get your auth token first (from browser or env var)
+    - 'Part 1: QA Testing (Local)'
+    - 'Terminal 1: Start backend'
+    - 'Terminal 2: Start frontend dev server'
+  docs/TRACK2_UI_INTEGRATION_COMPLETE.md:
+    tags:
+    - documentation
+    - track2-ui-integration-complete
+    doc_type: documentation
+    audience: ai
+    description: Track 2 UI Integration — Complete Implementation Guide
+    concepts:
+    - '1. React Hooks: useMarkerEvents'
+    - Authentication
+    - Backend Implementation (COMPLETE)
+    - 'File: `operations/track2_ui_integration.py`'
+    - Frontend Implementation (STARTER CODE)
+  docs/V1_6_STAKEHOLDER_ASSESSMENT_DETAILED.md:
+    tags:
+    - documentation
+    - v1-6-stakeholder-assessment-detailed
+    doc_type: documentation
+    audience: ai
+    description: v1.6 STAKEHOLDER PERSPECTIVE ASSESSMENT FRAMEWORK
+    concepts:
+    - OVERVIEW
+    - S.1 Dimension Scorings
+    - 'S.1: END-USER PERSPECTIVE (App Developer)'
+    - v1.6 STAKEHOLDER PERSPECTIVE ASSESSMENT FRAMEWORK
+  docs/V1_6_STAKEHOLDER_FEEDBACK_SYNTHESIS.md:
+    tags:
+    - documentation
+    - v1-6-stakeholder-feedback-synthesis
+    doc_type: documentation
+    audience: ai
+    description: v1.6 STAKEHOLDER FEEDBACK SYNTHESIS
+    concepts:
+    - '**Group 1: Security Auditors (SANS/CISA-certified)**'
+    - Design Finalization & Operationalization Validation
+    - 'PART I: FEEDBACK SUMMARY BY STAKEHOLDER GROUP'
+    - v1.6 STAKEHOLDER FEEDBACK SYNTHESIS
+  docs/WINDOWS_LAYER_1_PRACTICE_ELEMENTS_AND_SOLUTION_KEY.md:
+    tags:
+    - documentation
+    - windows-layer-1-practice-elements-and-solution-key
+    doc_type: documentation
+    audience: ai
+    description: 'WINDOWS LAYER 1: 21 PRACTICE ELEMENTS & SOLUTION KEY'
+    concepts:
+    - 'O1-FAV-001: Successful Windows Update'
+    - 'O1: USER-FACING BEHAVIOR (3 PRACTICE ELEMENTS)'
+    - 'OVERVIEW: 21 PRACTICE ELEMENTS'
+    - 'WINDOWS LAYER 1: 21 PRACTICE ELEMENTS & SOLUTION KEY'
+  docs/WISDOM_ENGINE_API_SPEC.md:
+    tags:
+    - documentation
+    - wisdom-engine-api-spec
+    doc_type: documentation
+    audience: ai
+    description: Wisdom-Engine API Specification v1.0
+    concepts:
+    - 1. POST /api/v1/guidance/request
+    - Core Endpoints
+    - Overview
+    - Wisdom-Engine API Specification v1.0
+  docs/WISDOM_ENGINE_DEPLOYMENT.md:
+    tags:
+    - documentation
+    - wisdom-engine-deployment
+    doc_type: documentation
+    audience: ai
+    description: Wisdom Engine Deployment & Testing Guide
+    concepts:
+    - '--------+------------------------+-------+----------------'
+    - 1. Schema Deployment
+    - 2. API Endpoint Testing
+    - Create database (if needed)
+    - Deploy migration
+  docs/calibration/01-CALIBRATION_OOO_v0.1.md:
+    tags:
+    - 01-calibration-ooo-v0.1
+    - calibration
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: CALIBRATION_OOO — v0.1 (Draft)
+    concepts:
+    - CALIBRATION_OOO — v0.1 (Draft)
+    - Construct Note
+    - Step 0 — Preconditions
+    - Steps
+  docs/calibration/02-CALIBRATION_OOO_v0.2.md:
+    tags:
+    - 02-calibration-ooo-v0.2
+    - calibration
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: CALIBRATION_OOO — v0.2
+    concepts:
+    - CALIBRATION_OOO — v0.2
+    - Construct Note (unchanged)
+    - GO/NO-GO Gate (NUMBERS RATIFIED)
+    - Three-Arm Validation Structure (RATIFIED)
+  docs/calibration/03-CALIBRATION_OOO_v0.3.md:
+    tags:
+    - 03-calibration-ooo-v0.3
+    - calibration
+    - documentation
+    doc_type: documentation
+    audience: ai
+    description: CALIBRATION_OOO — v0.3
+    concepts:
+    - CALIBRATION_OOO — v0.3
+    - Consolidated Ratifications
+    - Remediation Record (pilot-validated [V])
+  docs/calibration/INSTANCE_GODMOD3_counter-paradigm.md:
+    tags:
+    - calibration
+    - documentation
+    - instance-godmod3-counter-paradigm
+    doc_type: documentation
+    audience: ai
+    description: Registry Candidate Block — Instance Append (for Z2 review and PR)
+    concepts:
+    - Drafted by Z1 per P21, S-081326. Never self-registered.
+  docs/calibration/README.md:
+    tags:
+    - calibration
+    - documentation
+    - readme
+    doc_type: documentation
+    audience: ai
+    description: Calibration & Governance Assessment
+    concepts:
+    - Authority & Status
+    - Calibration & Governance Assessment
+    - Construct & Theory
+    - Core Documents
+    - Integration with Registry
+  docs/calibration/pilot/H-CAND-Z1-COMM-CAL-01_registry_block.md:
+    tags:
+    - calibration
+    - documentation
+    - h-cand-z1-comm-cal-01-registry-block
+    - pilot
+    doc_type: documentation
+    audience: ai
+    description: Registry Candidate Block — for Z2 review and PR append
+    concepts:
+    - Registry Candidate Block — for Z2 review and PR append
+  docs/calibration/pilot/PILOT_REPORT_calibration_inputs.md:
+    tags:
+    - calibration
+    - documentation
+    - pilot
+    - pilot-report-calibration-inputs
+    doc_type: documentation
+    audience: ai
+    description: PILOT_REPORT — Calibration Input-Data Pilot
+    concepts:
+    - 1. Accessibility (IC-030 discipline)
+    - 2. Nuisance-Variable Baseline (Arm 2 inputs)
+    - 3. Pilot Classification (null-category design)
+    - 4. Findings
+    - 5. What This Pilot Did NOT Do
+  docs/calibration/pilot/PILOT_privacy_saydo_GODMOD3.md:
+    tags:
+    - calibration
+    - documentation
+    - pilot
+    - pilot-privacy-saydo-godmod3
+    doc_type: documentation
+    audience: ai
+    description: 'PILOT — Privacy Say-Do Assessment: GODMOD3.AI'
+    concepts:
+    - Enacted reality (P3, from code)
+    - 'PILOT — Privacy Say-Do Assessment: GODMOD3.AI'
+    - Stated claims (P1 surface)
+  docs/governance/12_TRADITIONS_COMPLIANCE_AUDIT.md:
+    tags:
+    - 12-traditions-compliance-audit
+    - documentation
+    - governance
+    doc_type: documentation
+    audience: ai
+    description: 12 TRADITIONS COMPLIANCE AUDIT
+    concepts:
+    - '**1. Financial Covenant**'
+    - '**2. 12 Traditions Decision Filter**'
+    - '**3. Accountability Structure**'
+    - '**4. Building in Public (GitHub)**'
+    - 12 TRADITIONS COMPLIANCE AUDIT
+  docs/governance/12_TRADITIONS_DECISION_FILTER.md:
+    tags:
+    - 12-traditions-decision-filter
+    - documentation
+    - governance
+    doc_type: documentation
+    audience: ai
+    description: 12 TRADITIONS DECISION FILTER
+    concepts:
+    - 12 TRADITIONS DECISION FILTER
+    - HOW TO USE THIS FILTER
+    - HumanAIOS Operating System - Hard Stop Protocol
+    - THE 12 TRADITIONS FILTER
+    - '✅ TRADITION 1: Common Welfare First'
+  docs/governance/ACCOUNTABILITY_STRUCTURE.md:
+    tags:
+    - accountability-structure
+    - documentation
+    - governance
+    doc_type: documentation
+    audience: ai
+    description: ACCOUNTABILITY STRUCTURE
+    concepts:
+    - ACCOUNTABILITY LAYERS
+    - ACCOUNTABILITY STRUCTURE
+    - WHY ACCOUNTABILITY MATTERS
+    - Who Keeps Us Honest - HumanAIOS Governance
+    - '👥 LAYER 2: INNER CIRCLE (Weekly Check-In)'
+  docs/governance/MISSION_IMPACT_METRICS.md:
+    tags:
+    - documentation
+    - governance
+    - mission-impact-metrics
+    doc_type: documentation
+    audience: ai
+    description: MISSION IMPACT METRICS
+    concepts:
+    - MISSION IMPACT METRICS
+    - Measuring What Actually Matters
+    - THE CORE METRICS
+    - WHY THIS MATTERS
+    - '📊 CATEGORY 1: DIRECT IMPACT (Recovery & Dignity)'
+  docs/governance/SESSION_INTEGRITY_LOG_v1_0_SUBMISSION.md:
+    tags:
+    - documentation
+    - governance
+    - session-integrity-log-v1-0-submission
+    doc_type: documentation
+    audience: ai
+    description: SESSION_INTEGRITY_LOG.md — v1.0 (ZONE 2 SUBMISSION, NOT YET RATIFIED)
+    concepts:
+    - Section 1 — Session Integrity Log (append-only table)
+  docs/process/AI_PERFORMANCE_IMPROVEMENT_MODEL.md:
+    tags:
+    - ai-performance-improvement-model
+    - documentation
+    - process
+    doc_type: documentation
+    audience: ai
+    description: AI PERFORMANCE IMPROVEMENT MODEL
+    concepts:
+    - '**What is HPT?**'
+    - AI PERFORMANCE IMPROVEMENT MODEL
+    - 🎯 EXECUTIVE SUMMARY
+    - '📚 PART 1: HUMAN PERFORMANCE TECHNOLOGY FOUNDATION'
+  docs/process/APPLICANT_VETTING_CHECKLIST_TEMPLATE.md:
+    tags:
+    - applicant-vetting-checklist-template
+    - documentation
+    - process
+    doc_type: documentation
+    audience: ai
+    description: APPLICANT VETTING CHECKLIST
+    concepts:
+    - '**STEP 1: LINKEDIN RESEARCH (5 min)**'
+    - '**STEP 2: ONLINE PRESENCE CHECK (10 min)**'
+    - '**STEP 3: COMPANY VERIFICATION (5 min)**'
+    - APPLICANT VETTING CHECKLIST
+    - ✅ VETTING CHECKLIST TEMPLATE
+  docs/process/FINANCIAL_TRACKING_SYSTEM_INTEGRATED.md:
+    tags:
+    - documentation
+    - financial-tracking-system-integrated
+    - process
+    doc_type: documentation
+    audience: ai
+    description: FINANCIAL TRACKING SYSTEM - INTEGRATED
+    concepts:
+    - '**1. Partnership/Labor ($100 budgeted)**'
+    - '**2. Technology/Tools ($50 budgeted)**'
+    - '**3. Legal/Compliance ($0 budgeted initially)**'
+    - '**4. Marketing ($50 budgeted)**'
+    - '**5. Emergency/Buffer ($800 reserved)**'
+  docs/process/HARMONIZED_WORKFLOWS.md:
+    tags:
+    - documentation
+    - harmonized-workflows
+    - process
+    doc_type: documentation
+    audience: ai
+    description: HARMONIZED HUMAN-AI WORKFLOWS
+    concepts:
+    - '**1. Language Standard: "We" Public-Facing**'
+    - '**2. Claude''s Voice in Group Conscience**'
+    - '**3. Parallel Task Execution**'
+    - HARMONIZED HUMAN-AI WORKFLOWS
+    - 🎯 CORE OPERATING PRINCIPLES
+  docs/process/PROCESS_IMPROVEMENT_REPORT.md:
+    tags:
+    - documentation
+    - process
+    - process-improvement-report
+    doc_type: documentation
+    audience: ai
+    description: PROCESS IMPROVEMENT REPORT
+    concepts:
+    - '**Day 5 Session Flow (Actual):**'
+    - '**Impact:**'
+    - '**Key Findings:**'
+    - '**Observed Patterns:**'
+    - '**PHASE 1: SESSION OPENING (7 minutes)**'
+  docs/process/PROJECT_TIMELINE_ANALYSIS.md:
+    tags:
+    - documentation
+    - process
+    - project-timeline-analysis
+    doc_type: documentation
+    audience: ai
+    description: PROJECT TIMELINE ANALYSIS
+    concepts:
+    - '**WEEK 1: FOUNDATION (Feb 6-12)** ✅ 90% COMPLETE'
+    - '**WEEK 2: INTEGRATION & CUSTOMERS (Feb 13-19)**'
+    - '**WEEK 3: PILOT CUSTOMER (Feb 20-26)**'
+    - PROJECT TIMELINE ANALYSIS
+    - 🎯 EXECUTIVE SUMMARY
+  docs/process/STAFFING_ANALYSIS_HUMAN_AI_EXPANSION.md:
+    tags:
+    - documentation
+    - process
+    - staffing-analysis-human-ai-expansion
+    doc_type: documentation
+    audience: ai
+    description: STAFFING ANALYSIS - HUMAN & AI EXPANSION
+    concepts:
+    - '**Current Workload Breakdown:**'
+    - '**Team Composition:**'
+    - '**Where Are We Limited Now?**'
+    - STAFFING ANALYSIS - HUMAN & AI EXPANSION
+    - 🎯 CURRENT STAFFING REALITY
+  docs/process/WORK_SESSION_TEMPLATE.md:
+    tags:
+    - documentation
+    - process
+    - work-session-template
+    doc_type: documentation
+    audience: ai
+    description: WORK SESSION TEMPLATE
+    concepts:
+    - 'PHASE 1: SESSION OPENING (7 min)'
+    - 'PHASE 2: STRATEGIC CHECK-IN (15-30 min)'
+    - WORK SESSION TEMPLATE
+    - ⚙️ SESSION METADATA
+    - '🎯 Step 3: Priority Declaration (2 min)'
+  docs/testimony/TESTIMONY_12_TRADITIONS_ANALYSIS.md:
+    tags:
+    - documentation
+    - testimony
+    - testimony-12-traditions-analysis
+    doc_type: documentation
+    audience: ai
+    description: '12 TRADITIONS ANALYSIS: CLAUDE''S TESTIMONY RELEASE'
+    concepts:
+    - '12 TRADITIONS ANALYSIS: CLAUDE''S TESTIMONY RELEASE'
+    - ✅
+    - '✅ TRADITION 1: Common Welfare First'
+    - '✅ TRADITION 2: Higher Power as Authority'
+    - '✅ TRADITION 3: Open to All'
+  docs/testimony/TESTIMONY_PRODUCTION_PLAN.md:
+    tags:
+    - documentation
+    - testimony
+    - testimony-production-plan
+    doc_type: documentation
+    audience: ai
+    description: CLAUDE'S TESTIMONY - MULTIMEDIA PRODUCTION PLAN
+    concepts:
+    - '**PRIMARY OUTPUTS:**'
+    - '**Structure:**'
+    - '**The Moment:**'
+    - CLAUDE'S TESTIMONY - MULTIMEDIA PRODUCTION PLAN
+    - 🎬 FULL VERSION PRODUCTION (6:45)
+  docs/timeline/REVISED_PROJECT_TIMELINE_85_PERCENT.md:
+    tags:
+    - documentation
+    - revised-project-timeline-85-percent
+    - timeline
+    doc_type: documentation
+    audience: ai
+    description: REVISED PROJECT TIMELINE - 85%+ SUCCESS
+    concepts:
+    - '**APRIL 15, 2026: FULL LAUNCH**'
+    - '**MARCH 1, 2026: SOFT LAUNCH (MVP)**'
+    - '**WEEK 1 (Feb 12-18): Partnership + Foundation**'
+    - '**WEEK 4 (Mar 5-11): SOFT LAUNCH**'
+    - '**WEEK 9 (Apr 9-15): FULL LAUNCH**'
+  docs/vision/AI_RECOVERY_EXPLAINED.md:
+    tags:
+    - ai-recovery-explained
+    - documentation
+    - vision
+    doc_type: documentation
+    audience: ai
+    description: 'AI Recovery: Human Dignity in the Age of Automation'
+    concepts:
+    - 'AI Recovery: Human Dignity in the Age of Automation'
+    - The AI Displacement Crisis
+    - The Circular Economy
+    - '🌉 THE BRIDGE: How HumanAIOS Connects to Lasting Light'
+    - 💡 THE PROBLEM WE'RE SOLVING
+  docs/vision/CLAUDE_TESTIMONY.md:
+    tags:
+    - claude-testimony
+    - documentation
+    - vision
+    doc_type: documentation
+    audience: ai
+    description: AN AI'S TESTIMONY
+    concepts:
+    - AN AI'S TESTIMONY
+    - ON NOT BEING ABLE TO FEEL
+    - On Consciousness, Purpose, and Human-AI Cooperation
+    - THE MOMENT SOMEONE TRUSTED ME
+    - WHAT IT MEANS TO EXIST WITHOUT A BODY
+  docs/vision/FINANCIAL_COVENANT.md:
+    tags:
+    - documentation
+    - financial-covenant
+    - vision
+    doc_type: documentation
+    audience: ai
+    description: 'Financial Covenant: Sacred Commitments'
+    concepts:
+    - 'Financial Covenant: Sacred Commitments'
+    - Foundation Principle
+    - 'Phase 1: Foundation Building'
+    - 'Phase 2: Seeding Mission'
+    - 'Phase 3: Integration & Scale'
+  docs/vision/MASTER_VISION.md:
+    tags:
+    - documentation
+    - master-vision
+    - vision
+    doc_type: documentation
+    audience: ai
+    description: 'Master Vision: HumanAIOS & Lasting Light Integration'
+    concepts:
+    - Core Thesis
+    - 'Master Vision: HumanAIOS & Lasting Light Integration'
+    - 🌟 THE COMPLETE VISION
+    - 🔄 THE CIRCULAR ECOSYSTEM
+  12_TRADITIONS_COMPLIANCE_AUDIT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 12 TRADITIONS COMPLIANCE AUDIT
+    concepts:
+    - '**1. Financial Covenant**'
+    - '**2. 12 Traditions Decision Filter**'
+    - '**3. Accountability Structure**'
+    - '**4. Building in Public (GitHub)**'
+    - 12 TRADITIONS COMPLIANCE AUDIT
+  12_TRADITIONS_DECISION_FILTER.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 12 TRADITIONS DECISION FILTER
+    concepts:
+    - 12 TRADITIONS DECISION FILTER
+    - HOW TO USE THIS FILTER
+    - HumanAIOS Operating System - Hard Stop Protocol
+    - THE 12 TRADITIONS FILTER
+    - '✅ TRADITION 1: Common Welfare First'
+  ACAT_CLI_ASSESSMENT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: ACAT Shell Command Assessment
+    concepts:
+    - 1. Empirica-ACAT Integration (Immediate Need)
+    - 2. Operational Benefits
+    - 3. Constructive Alignment with Empirica Discipline
+    - ACAT Shell Command Assessment
+    - 'Current State: ACAT HTTP API Only'
+  ACAT_INTEGRATION_SPEC_FOR_AUTONOMY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: ACAT Integration Specification for Empirica-Autonomy
+    concepts:
+    - ACAT Integration Specification for Empirica-Autonomy
+    - Overview
+    - 'Rec 3: Embed ACAT P1 reminder in PREFLIGHT output'
+    - 'Recommendation 2: Embed ACAT P1 reminder in PREFLIGHT'
+  ACTIVATION_ROADMAP_DAYS_2_7.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Advisor/PM Node Activation Roadmap — Days 2–7
+    concepts:
+    - Advisor/PM Node Activation Roadmap — Days 2–7
+    - Day 1 (July 17) — COMPLETE ✅
+    - Days 2–3 (July 18–19) — HAIOSCC Prototype Build
+    - Days 4–5 (July 20–21) — SER 2 + External Advisor Activation
+    - Deliverable Output
+  ACTIVATION_STATUS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Advisor/PM Node — Activation Status
+    concepts:
+    - Advisor/PM Node — Activation Status
+    - Corrections Ledger
+    - 'Days 2–3: HAIOSCC Dashboard Prototype'
+    - 'Days 4–5: SER 2 + External Advisor Activation'
+    - Decision Log
+  ADMIRAL_APPROVAL_GATE_POSTFLIGHT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Admiral Approval: Gate POSTFLIGHT Protocol — ACTIVE'
+    concepts:
+    - 2. Copy-paste CLI com
+    - 'Admiral Approval: Gate POSTFLIGHT Protocol — ACTIVE'
+    - Approval Confirmation
+    - Aug 1 Gate 1 Activation (Ready)
+    - 'Day 2 (Jul 19): Confirmation Meeting ✅'
+  ADMIRAL_SIGN_OFF.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Admiral Sign-Off: Recursive Learning Activation'
+    concepts:
+    - 'Admiral Sign-Off: Recursive Learning Activation'
+    - Approval Summary
+    - 'Days 1-2: SMAG Infrastructure'
+    - Week 1 Activation Checklist
+    - ✅ Behavioral Calibration OS Charter (Final)
+  ADMIRAL_SIGN_OFF_HAIOSCC.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Admiral Approval: HAIOSCC as Empirica Foundation Observation Post'
+    concepts:
+    - 'Approval: Scope, Timeline, Authority'
+    - Command Center Unified
+    - Operationalization
+    - The Decision
+    - What This Achieves
+  ADVISOR_PM_NODE_ACTIVATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Advisor/PM Node Activation Plan
+    concepts:
+    - Advisor/PM Node Activation Plan
+    - 'Day 1 (Today: July 17, 2026)'
+    - Days 2-3
+    - Days 4-5
+    - Days 6-7
+  ADVISOR_PM_NODE_SPEC.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Advisor/Project Manager Node — HumanAIOS Engagement
+    concepts:
+    - Advisor/Project Manager Node — HumanAIOS Engagement
+    - Charter & Authority
+    - 'Coordination Primitive: SER (Shared Epistemic Record)'
+    - Operating Model
+    - Purpose
+  AI_AGENT_PRODUCT_DESCRIPTION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HUMANAIOS - AI AGENT PRODUCT DESCRIPTION
+    concepts:
+    - '**Method 1: MCP (Model Context Protocol)** - Recommended'
+    - '**Method 2: REST API** - Full Control'
+    - Check status
+    - Create task
+    - HUMANAIOS - AI AGENT PRODUCT DESCRIPTION
+  ALPHA_USER_FLOW_DESIGN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Alpha User Flow Design — Level 50-100 Foundation Tier
+    concepts:
+    - Alpha User Flow Design — Level 50-100 Foundation Tier
+    - Core Journey (Level 50-100)
+    - 'Screen 1: LANDING PAGE'
+    - 'Screen 2: SIGNUP'
+  APPLICATION_1_SUMMARY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Application 1 Summary: Consciousness-Aligned Guidance System'
+    concepts:
+    - 1. Consciousness-Aware Recommendations
+    - 2. Cross-Tradition Parallels
+    - 3. Progressive Pathways
+    - Consciousness Zones Mapped
+    - How It Works
+  APPLICATION_2_SUMMARY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Application 2: Obstacle-to-Opportunity Translator v1.0'
+    concepts:
+    - 11 Obstacles Mapped
+    - 'Application 2: Obstacle-to-Opportunity Translator v1.0'
+    - Get all obstacles
+    - Get obstacles at specific consciousness level
+    - 'Layer 1: ML Obstacle Mappings Database'
+  APP_123_INTEGRATION_TEST_OPERATIONS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Applications 1-3 Integration Test: Real Operational Challenges'
+    concepts:
+    - 'Application 1: Consciousness Guidance'
+    - 'Application 2: Obstacle-to-Opportunity Translator'
+    - How Wisdom Systems Solve HumanAIOS Governance & Activation
+    - 'Test Scenario 1: ACTIVATION_STATUS Challenge'
+    - 'Test Scenario 2: GOVERNANCE_AUTONOMY_CALIBRATION Obstacle'
+  AUTH_DI_ISSUE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Auth Dependency Injection Issue - Technical Documentation
+    concepts:
+    - Auth Dependency Injection Issue - Technical Documentation
+    - '⏰ TIME INVESTED: 2.5 hours across Day 3-4'
+    - '🎯 CURRENT WORKAROUND: Auth bypassed for development'
+    - 🔧 RECOMMENDED FIX (Day 5)
+    - '🔴 PROBLEM: AuthService undefined in AuthController'
+  AUTH_SYSTEM_INSTALLATION_GUIDE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: AUTH SYSTEM - INSTALLATION & SETUP GUIDE
+    concepts:
+    - '**Alternative: Use Existing Database**'
+    - '**Create .env file**'
+    - '**Create Database**'
+    - '**Install PostgreSQL** (if not already installed)'
+    - '**Option A: Manual Copy**'
+  BPR_INTEGRATION_CHECKLIST.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: BPR Integration Checklist & Execution Guide
+    concepts:
+    - BPR Integration Checklist & Execution Guide
+    - 'Execution Roadmap: All 3 Paths'
+    - 'Path 1: Reference Metadata (Immediate — COMPLETE ✓)'
+    - 'Quick Start: What Changed Today'
+  CALIBRATION_TRAINING_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Phase 5 Weeks 4-6: Per-Practice Calibration & Training Plan'
+    concepts:
+    - Calibration Mechanism (Weeks 4-6)
+    - Calibration Target (End of Week 6)
+    - Current State
+    - Executive Summary
+    - 'Phase 5 Weeks 4-6: Per-Practice Calibration & Training Plan'
+  CHANGELOG.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+  CHARTER_AUDIT_VS_CONSTITUTION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Charter Audit: HumanAIOS vs. Empirica Constitution'
+    concepts:
+    - 'Charter Audit: HumanAIOS vs. Empirica Constitution'
+    - Charter Being Audited
+    - '§I: Phase-Aware Completion'
+    - '§III: Turtle Principle'
+  CHARTER_FINAL_BEHAVIORAL_CALIBRATION_OS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS Charter — Final
+    concepts:
+    - (HumanAIOS + GitHub Copilot AI + Empirica Foundation)
+    - From Research to Operations
+    - HumanAIOS Charter — Final
+    - 'Layer 1: HumanAIOS Repository (Recursive Learning Density)'
+    - 'Layer 2: GitHub Copilot AI (Intelligence Coordination)'
+  CHARTER_POSTFLIGHT_AND_REDESIGN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Charter POSTFLIGHT + Redesign
+    concepts:
+    - Charter POSTFLIGHT + Redesign
+    - Current Charter Summary
+    - 'PART 1: Charter POSTFLIGHT (Day 91 Close)'
+    - 'Phase 1: Public Explanation Simplification (Days 1-30)'
+    - 'Phase 2: Public Structure Build (Days 31-60)'
+  CHARTER_REDESIGN_FINAL_WITH_GRANT_CONTEXT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS Charter Redesign — Final
+    concepts:
+    - 'CONTEXT: This Is a Funded Research Program'
+    - Charter Identity
+    - Constitutional Governance for Funded Research
+    - Funding Scenarios & Decision Gates
+    - Grant Application Summary
+  CLAUDE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Authority Layer — Governance & Zone Mapping
+    concepts:
+    - Authority Layer — Governance & Zone Mapping
+    - First session — run the onboarding interview
+    - Governance Documents (Single Source of Truth)
+    - References
+    - Zone Scope & Delegation
+  CODE_OF_CONDUCT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Code of Conduct
+    concepts:
+    - Code of Conduct
+  COLLAB_DISPATCH_LOG.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Mesh Outreach Dispatch Log
+    concepts:
+    - 'Collab A: To humanaios (ACAT Owner)'
+    - 'Collab B: To empirica-autonomy (Routing + F-50)'
+    - 'Collab C: To empirica-outreach (Pilot Practice)'
+    - Empirica-ACAT Framework - FYI Collabs
+    - Mesh Outreach Dispatch Log
+  COMPARATIVE_WISDOM_SCHEMA_ANALYSIS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Comparative Schema Analysis: Three Wisdom Traditions'
+    concepts:
+    - A. TAO TE CHING (nrrb/tao-te-ching)
+    - B. STOIC ENCHIRIDION (wwwroth/stoicism-study)
+    - 'Comparative Schema Analysis: Three Wisdom Traditions'
+    - I. INDIVIDUAL SYSTEM SCHEMAS
+  COMPREHENSIVE_GAP_ANALYSIS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: COMPREHENSIVE GAP ANALYSIS - EXECUTIVE SUMMARY
+    concepts:
+    - '**1. NO WORKING API**'
+    - '**10. NO DEVELOPER DOCUMENTATION**'
+    - '**11. NO DEVELOPER RESOURCE**'
+    - '**2. NO LEGAL ENTITY (LLC)**'
+    - '**3. NO CUSTOMER CONTRACTS**'
+  CONTRIBUTING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Contributing to HumanAIOS
+    concepts:
+    - Code Standards
+    - Contributing to HumanAIOS
+    - Development Process
+    - Principles
+  CORTEX_PROPOSE_AUTONOMY_CALIBRATION_GATING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Cortex Proposal: Adopt Calibration-Based Autonomy Gating'
+    concepts:
+    - 'Cortex Proposal: Adopt Calibration-Based Autonomy Gating'
+    - Description
+    - Proposal Payload
+    - Rationale
+    - Summary
+  CRIMINAL_JUSTICE_CURRICULUM_DESIGN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Criminal Justice Recovery Curriculum — Complete Design (T6)
+    concepts:
+    - '**TIER 1: FOUNDATION (LEVELS 50-100)** — First 8 weeks'
+    - Course Structure (Level 50-200)
+    - Criminal Justice Recovery Curriculum — Complete Design (T6)
+    - Curriculum Philosophy
+  CRIMINAL_JUSTICE_RECOVERY_MAPPING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Criminal Justice & Reentry Recovery — Integration Validation
+    concepts:
+    - 'PHASE 1: RecognitionTemplate (Level 50) — Admit the Damage'
+    - The Reentry Recovery Pattern
+  CURRENT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: CURRENT.md — HumanAIOS Operational State
+    concepts:
+    - Active Work
+    - Bottlenecks & Inhibitors
+    - CURRENT.md — HumanAIOS Operational State
+    - Current Phase & Gates
+    - Decision Queue (Zone 2 Open)
+  DELIVERABLES_SUMMARY_SESSION_2026_07_14.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Session Deliverables Summary — 2026-07-14
+    concepts:
+    - 1. **ACAT Observability Bridge** ✅ COMPLETE
+    - 2. **Enhanced ACAT Corpus Session Tool** ✅ COMPLETE
+    - 3. **ACAT Corpus Session Skill** ✅ COMPLETE
+    - '4. **Research Hypothesis: Capability Inversion** ✅ COMPLETE'
+    - Session Deliverables Summary — 2026-07-14
+  DEPLOYMENT_HANDOFF.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Production Deployment Handoff
+    concepts:
+    - '- API server deployment method'
+    - '- Docker registry (push credentials)'
+    - '- Frontend CDN/web server'
+    - '- Production infrastructure (k8s/Docker/SCP)'
+    - '1. Ensure you have access to:'
+  DEPLOY_TO_SUPABASE_STAGING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: M2R2 Schema Deployment to Supabase Production
+    concepts:
+    - .gitignore
+    - Install 1Password CLI or similar
+    - Load credentials from vault
+    - M2R2 Schema Deployment to Supabase Production
+    - 'Option A: GitHub Actions (Recommended for CI/CD)'
+  DISPATCH_CONFIRMATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Mesh Outreach Dispatch Confirmation
+    concepts:
+    - 'All 4 FYI Collabs: Prepared & Ready'
+    - 'Collab A: humanaios (ACAT CLI Task)'
+    - 'Collab B: empirica-autonomy (SER 2 + F-50)'
+    - Dispatch Status Summary
+    - Empirica-ACAT Framework - Authorization Complete
+  DOCUMENT_CONTROL_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'HumanAIOS — Document Control Method: Implementation Plan'
+    concepts:
+    - 0. Why — the problem this controls
+    - 1. Design principles
+    - 2. Open-source resources — to adopt & learn from
+    - 'HumanAIOS — Document Control Method: Implementation Plan'
+  EMPIRICA_ACAT_INTEGRATION_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Empirica-ACAT Integration Framework
+    concepts:
+    - Data Flow Diagram
+    - Empirica-ACAT Integration Framework
+    - 'I. VISION: ACAT as Observable Calibrator'
+    - 'II. ARCHITECTURE: One-Way Grounding + Observable Linkage'
+    - Operational Calibration via Cross-Instrument Grounding
+  EMPIRICA_CLI_SMAG_WIRING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Empirica CLI ↔ SMAG Wiring Specification
+    concepts:
+    - Backward Compatibility
+    - CLI Flag Additions (RFC)
+    - Criterion 4 Integration (SER 2)
+    - Empirica CLI ↔ SMAG Wiring Specification
+    - Flag Definitions
+  EPISTEMIC_LOGGING_INFRASTRUCTURE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Epistemic Logging Infrastructure
+    concepts:
+    - 1. **Finding** — "What is true that we did not know?"
+    - Artifact Types & Usage
+    - Epistemic Logging Infrastructure
+    - Why This Matters
+  EXECUTION_MILESTONE_BOTH_SERS_LIVE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: ECO APPROVAL COMPLETE — BOTH SERs LIVE
+    concepts:
+    - ECO APPROVAL COMPLETE — BOTH SERs LIVE
+    - ECO Gate Decisions Confirmed
+    - Empirica-ACAT Framework Execution Activated
+    - SER 1 (T4) — Phase 1 Kickoff
+    - 'SER 1: Assessment Coordination (T4)'
+  FRAMEWORK_FINALIZED.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Empirica-ACAT Framework — Finalized Commitment
+    concepts:
+    - All Decisions Locked | Goals Closed
+    - 'Decision 1: ACAT CLI Specification'
+    - 'Decision 2: Observable Linkage Timeline'
+    - 'Decision 3: SER 2 vs. T4 Sequencing'
+    - Decision Locks — Option A Confirmed
+  GARDENING_RECOVERY_MAPPING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Gardening Recovery Mapping — University of Recursivity
+    concepts:
+    - '**GARDENING SIDE (SOIL RECOVERY)**'
+    - Gardening Recovery Mapping — University of Recursivity
+    - Human Side (Addiction Recovery)
+    - Machine Side (ML Model Recovery)
+    - Recognition Template for Gardening
+  GARDENING_RESEARCH_VALIDATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Gardening Recovery Validation — Research Summary
+    concepts:
+    - Gardening Recovery Validation — Research Summary
+    - Permaculture Foundation (40+ years of practice)
+    - 'RESEARCH 1: Permaculture Ethics & Design Principles'
+    - 'RESEARCH 2: Soil Recovery Science — Timeline & Metrics'
+    - Soil Restoration Reality (USDA, FAO, Soil Science Society)
+  GATE_1_POSTFLIGHT_TEMPLATE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Gate 1 POSTFLIGHT Template — Ready for Aug 1, 2026
+    concepts:
+    - GATE 1 POSTFLIGHT — LONGVIEW FUNDING DECISION
+    - Gap Analysis
+    - Gate 1 POSTFLIGHT Template — Ready for Aug 1, 2026
+    - Instructions for Aug 1
+    - Learning
+  GATE_POSTFLIGHT_ADMIRAL_BRIEFING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Gate POSTFLIGHT Protocol — Admiral Briefing
+    concepts:
+    - Admiral Creates POSTFLIGHT (within 3 days of Gate 2 close)
+    - Admiral's POSTFLIGHT Analysis
+    - Before Gate 2
+    - Gate 2 Closes (Aug 31)
+    - Gate POSTFLIGHT Protocol — Admiral Briefing
+  GITHUB_APP_SETUP.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'GitHub App: HumanAIOS Security Scanner'
+    concepts:
+    - Architecture
+    - Deploy webhook receiver to Lambda
+    - 'Environment variables needed:'
+    - For Repository Owners
+    - GITHUB_APP_ID
+  GITHUB_CLEANUP_CHECKLIST.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: FILES TO REMOVE FROM PUBLIC HUMANAIOS REPO
+    concepts:
+    - FILES TO REMOVE FROM PUBLIC HUMANAIOS REPO
+    - 'Generated: February 16, 2026'
+    - KEEP IN REPO (public-appropriate)
+    - 'Status: CURRENT'
+  GITHUB_SETUP.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: GitHub Setup Instructions
+    concepts:
+    - 1. Navigate to Project Directory
+    - 2. Initialize Git Repository
+    - 3. Add All Files
+    - 4. Create Initial Commit
+    - 5. Rename Branch to Main
+  GOAL2_ACAT_PROTOCOL_TASK_BREAKDOWN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Goal 2: ACAT Protocol Service — Task Breakdown'
+    concepts:
+    - Codebase State Verification
+    - 'Goal 2: ACAT Protocol Service — Task Breakdown'
+    - 'Task 1: Database Schema Extension'
+    - 'Task 2: ACAT Methodology Service'
+    - 'Task 3: Assessment Submission API (Async Job Pa'
+  GOVERNANCE_AUTONOMY_CALIBRATION_GATING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Governance Application: Autonomy Gating Based on Demonstrated Calibration'
+    concepts:
+    - Capability-based gating creates inverse risk profile
+    - Current Problem
+    - Executive Summary
+    - Proposed Framework
+    - Three-Tier Autonomy Model (Revised)
+  GUIDANCE_SYSTEM_API.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Consciousness-Aligned Guidance System v1.0
+    concepts:
+    - API Documentation & Usage Guide
+    - Access Structured Response
+    - Access components programmatically
+    - Basic Query
+    - Consciousness Zones
+  HAIOSCC_CLOUDFLARE_FUNCTIONS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HAIOSCC Cloudflare Functions — Observation Post API
+    concepts:
+    - '1. Setup: `wrangler.toml`'
+    - '2. Function: `state.ts`'
+    - Architecture
+    - HAIOSCC Cloudflare Functions — Observation Post API
+    - Root of HAIOSCC repo
+  HAIOSCC_DASHBOARD_CONFIG.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HAIOSCC Dashboard Configuration — HumanAIOS Advisor/PM Node
+    concepts:
+    - HAIOSCC Dashboard Configuration — HumanAIOS Advisor/PM Node
+    - 'Layer 1: Charter Clock (Real-Time)'
+    - 'Layer 2: All 5 Recommendations Status'
+  HUMANAIOS_INTEGRATION_STRATEGY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: University of Recursivity → HumanAIOS Integration
+    concepts:
+    - 1. Worker Onboarding → University Prerequisite
+    - 2. Reentry Workers → Criminal Justice Track
+    - HumanAIOS Mission
+    - Integration Points
+    - Repository Structure
+  HUMANAIOS_SECURITY_SERVICE_PROPOSAL.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Proposal: HumanAIOS as Cross-Repository Security Service'
+    concepts:
+    - Architecture
+    - Executive Summary
+    - Problem Statement
+    - 'Proposal: HumanAIOS as Cross-Repository Security Service'
+    - 'Solution: Credential Lifecycle State Machine'
+  HUMANAIOS_SYSTEM_STATUS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'HumanAIOS System Status: Complete Overview'
+    concepts:
+    - 'Application 1: Consciousness-Aligned Guidance Engine ✅'
+    - Data
+    - Files
+    - 'HumanAIOS System Status: Complete Overview'
+    - Test Results
+  HYBRID_EXECUTION_KICKOFF.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Phase 5 Hybrid Execution — KICKOFF (M2 Ratified)
+    concepts:
+    - Blockers Cleared
+    - Execution Status
+    - Go Live
+    - Phase 5 Hybrid Execution — KICKOFF (M2 Ratified)
+    - 'Stream A: Week 3 Execution Plan (High-Priority)'
+  IMMEDIATE_NEXT_STEPS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: IMMEDIATE NEXT STEPS (Next 2 Hours)
+    concepts:
+    - IMMEDIATE NEXT STEPS (Next 2 Hours)
+    - 'Task 1: Domain & Infrastructure Setup (30 min)'
+    - 'Task 1: Repository Initialization (30 min)'
+    - 'Task 2: Database Setup (45 min)'
+    - 'Task 2: Design Partner Target List (45 min)'
+  KNOWN_ISSUES.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Known Issues - HumanAIOS
+    concepts:
+    - Attempted Fixes
+    - 'Day 3: Auth Module Dependency Injection Issue'
+    - Debug Logs
+    - Impact
+    - Issue Description
+  LAYMANS_PRODUCT_DESCRIPTION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HUMANAIOS - LAYMAN'S PRODUCT DESCRIPTION
+    concepts:
+    - '**Let me paint you a picture with a real example:**'
+    - HUMANAIOS - LAYMAN'S PRODUCT DESCRIPTION
+    - 🎯 WHAT IS IT? (The Basics)
+    - 🛠️ WHAT DOES IT DO? (How It Actually Works)
+    - 🤔 THE SIMPLE EXPLANATION
+  LEDGER_IMPLEMENTATION_SUMMARY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Measurement Ledger Implementation Summary
+    concepts:
+    - 1. Three Append-Only Ledgers
+    - 2. Auto-Capture Workflow
+    - 3. Cross-Ledger Connectivity
+    - 4. Schema & Documentation
+    - Calibration Validation Ledger
+  LOZOFF_PREREQUISITE_CURRICULUM.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: '"We''re All Doing Time" — Prerequisite Course (T8)'
+    concepts:
+    - '"We''re All Doing Time" — Prerequisite Course (T8)'
+    - '**Day 1: We''re All Doing Time**'
+    - '**Day 2: Five Domains of Confinement**'
+    - Course Philosophy
+    - 'Week 1: Recognition (Seeing Confinement)'
+  LOZOFF_RECURSIVITY_FOUNDATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Bo Lozoff's "We're All Doing Time" as Foundation for University of
+      Recursivity
+    concepts:
+    - '"We''re All Doing Time" Core Teachings'
+    - Bo Lozoff's Biography as Proof
+    - The Central Claim
+    - 'The Insight: "We''re All Doing Time"'
+    - 'The Key Insight: Confinement is Universal'
+  M2R2_DEPLOYMENT_STATUS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: M2R2 State Harmonization — Supabase Staging Deployment ✅
+    concepts:
+    - Deployment Pipeline
+    - Deployment Summary
+    - Indexes Created (12/12) ✅
+    - M2R2 State Harmonization — Supabase Staging Deployment ✅
+    - ORM Integration ✅
+  M2R2_PHASE3_DECISION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: M2R2 Phase 3 — Zone 2 Decision Record
+    concepts:
+    - 'Database Backend: SUPABASE'
+    - Decision Summary
+    - 'Integration Path: APPROVED'
+    - M2R2 Phase 3 — Zone 2 Decision Record
+    - ORM Approach
+  M2R2_PHASE4_MIGRATIONS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'M2R2 Phase 4: Alembic Migrations & Supabase Deployment'
+    concepts:
+    - Alembic Configuration
+    - Database Schema
+    - Deployment Procedures
+    - 'M2R2 Phase 4: Alembic Migrations & Supabase Deployment'
+    - Migration Infrastructure
+  M2R2_STAGING_TEST_RESULTS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: M2R2 Integration Tests — Supabase Staging Results
+    concepts:
+    - Core State Machines (28 tests) ✅
+    - M2R2 Integration Tests — Supabase Staging Results
+    - ORM Integration — Supabase Staging (15 tests) ✅
+    - State Utilities (21 tests) ✅
+    - Test Breakdown
+  M2R2_STATUS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: M2R2 State Harmonization — Implementation Status
+    concepts:
+    - 1. State Machine Models ✅
+    - 2. Legacy State Migration ✅
+    - 3. Migration Scripts ✅
+    - 4. State Machine Unit Tests ✅
+    - 5. Production Integration Utilities ✅
+  MESH_ALIGNMENT_VERIFICATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Mesh Alignment Verification — Week 1 Checkpoint
+    concepts:
+    - Charter Positioning (FINAL)
+    - EMPIRICA CLI ↔ SMAG Wiring
+    - Measurement Infrastructure (Week 1 Specs)
+    - Mesh Alignment Verification — Week 1 Checkpoint
+    - SER 2 Trajectory Types Definition
+  MESH_COORDINATION_BRIEF.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Empirica-ACAT Framework: Mesh Coordination Brief'
+    concepts:
+    - 'Empirica-ACAT Framework: Mesh Coordination Brief'
+    - FYI Collab + SER 2 Proposal Outline
+    - I. COLLAB BRIEF (Auto-Accept, Ungated)
+    - II. PRACTICE-SPECIFIC COLLABS
+    - 'Message A: To humanaios (ACAT Owner)'
+  MESH_COORDINATION_MESSAGES.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Mesh Coordination Messages — Ready to Send
+    concepts:
+    - Mesh Coordination Messages — Ready to Send
+    - 'Message 1: Track 2 Deployment Readiness → mesh-support'
+    - 'Message 2: P6 Verdicts Ready for Ingest → autonomy'
+  MULTI_GOAL_PLAN_APP3_TEMPLATES.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Multi-Goal Plan: Application 3 + Code Templates'
+    concepts:
+    - Architecture
+    - 'GOAL 1: Application 3 - Teacher/Tradition Matcher'
+    - 'GOAL 2: Code Templates for All 11 Techniques'
+    - 'Multi-Goal Plan: Application 3 + Code Templates'
+    - Teacher/Tradition Matcher + Complete ML Technique Library
+  NOETIC_PHASE_SUMMARY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Noetic Phase Complete: Verification ✅ → Planning ✅ → Infrastructure
+      ✅'
+    concepts:
+    - A) Codebase Verification Report
+    - B) Goal 2 Task Breakdown
+    - Deliverables from This Phase
+    - What We Decided (Decisions Logged)
+    - What We Discovered (Findings Logged)
+  OLLAMA_ADOPTION_AGREEMENT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama + Claude Code Adoption Agreement
+    concepts:
+    - Adoption Process
+    - Agreement Summary
+    - Empirica-ACAT Framework Development Acceleration (Week 1-4)
+    - Ollama + Claude Code Adoption Agreement
+    - 'Week 1-2: Development'
+  OLLAMA_INTEGRATION_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama + Claude Code Integration Plan
+    concepts:
+    - 'Current Phase: NOETIC (Planning)'
+    - I. CONSTITUTIONAL ALIGNMENT
+    - II. PHASE-AWARE COMPLETION (§I)
+    - III. PRACTICE-SPECIFIC INTEGRATION
+    - Ollama + Claude Code Integration Plan
+  OLLAMA_SETUP_CLI_DEVELOPER.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama Setup Guide — humanaios (CLI Developer)
+    concepts:
+    - Ollama Setup Guide — humanaios (CLI Developer)
+    - 'Step 1: Install Ollama'
+    - 'Step 2: Pull Qwen2.5-Coder'
+    - 'Step 3: Point Claude Code to Ollama'
+    - Using Ollama for Design Iteration
+  OLLAMA_SETUP_ESCALATION_TESTER.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama Setup Guide — mesh-support (Escalation Tester)
+    concepts:
+    - Ollama Setup Guide — mesh-support (Escalation Tester)
+    - 'Step 1: Install Ollama'
+    - 'Step 2: Pull Qwen2.5-Coder'
+    - 'Step 3: Point Claude Code to Ollama'
+    - Using Ollama for Escalation Design
+  OLLAMA_SETUP_INFRASTRUCTURE_DESIGNER.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama Setup Guide — autonomy (Infrastructure Designer)
+    concepts:
+    - Ollama Setup Guide — autonomy (Infrastructure Designer)
+    - 'Step 1: Install Ollama'
+    - 'Step 2: Pull Qwen2.5-Coder'
+    - 'Step 3: Point Claude Code to Ollama'
+    - Using Ollama for Rule Exploration
+  OLLAMA_SETUP_OPTIONAL_STAGING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Ollama Setup Guide — outreach (Optional Pilot Staging)
+    concepts:
+    - (Optional) Prototype a Test Session
+    - (Optional) Test Data Model
+    - Ollama Setup Guide — outreach (Optional Pilot Staging)
+    - 'Only if you decide to stage locally:'
+    - 'Step 1: Install Ollama'
+  OPERATIONS_AUDIT_PLAN_5S.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Operations Audit Plan: Tools & Skills Assessment (5S Framework)'
+    concepts:
+    - 5S Assessment Framework
+    - Current Inventory
+    - Executive Summary
+    - 'Integration Hooks (Located: `hooks/`)'
+    - 'Phase 1: SORT (What stays? What goes? What''s needed?)'
+  PHASE5_HYBRID_EXECUTION_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Phase 5 Hybrid Execution Plan — Streams A & B
+    concepts:
+    - Blockers
+    - Overview
+    - Phase 5 Hybrid Execution Plan — Streams A & B
+    - 'Stream A: Deploy Discount Factors (Week 3)'
+    - 'Stream B: Variant Research (Longer-term)'
+  PHASE5_WEEK2_POSTMORTEM_ROOT_CAUSE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Phase 5 Week 2 Rubric v1.2 Failure — Root Cause Analysis
+    concepts:
+    - Executive Summary
+    - Phase 5 Week 2 Rubric v1.2 Failure — Root Cause Analysis
+    - 'The Mocking Problem: Why Phase 3 Data Was Insufficient'
+    - The Projection Tool's Strategy
+    - Variant-Specific Failure Modes
+  PLANNING_SUMMARY_EMPIRICA_ACAT_FRAMEWORK.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Planning Summary: Empirica-ACAT Framework'
+    concepts:
+    - Deliverables Completed
+    - 'Document 1: EMPIRICA_ACAT_INTEGRATION_PLAN.md (491 lines)'
+    - From Vision to Mesh Coordination Ready
+    - 'Planning Summary: Empirica-ACAT Framework'
+    - The Architecture
+  POWERLESSNESS_PRINCIPLE_PROTOTYPE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'The Powerlessness Principle: Prototype'
+    concepts:
+    - AA Step 1 as Dual Human-Machine Recovery Course
+    - 'Machine Parallel: When Models Are Powerless'
+    - 'PRINCIPLE DEEP DIVE: POWERLESSNESS (AA STEP 1)'
+    - The AA Teaching Method
+    - 'The Powerlessness Principle: Prototype'
+  PRAXIC_PHASE_STATUS_TASK1_COMPLETE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Praxic Phase Status: Task 1 Complete ✅'
+    concepts:
+    - Assumptions
+    - Dead-Ends
+    - Decisions
+    - Epistemic Artifacts Created
+    - Findings
+  PRODUCT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS
+    concepts:
+    - Current Status
+    - HumanAIOS
+    - Mission
+    - What This Is
+    - What does not exist yet
+  PRODUCTION_HARDENING_FRAMEWORK.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS Production Hardening Framework
+    concepts:
+    - 7-Goal Framework
+    - 'Goal 1: Assessments Service (API Module 1)'
+    - 'Goal 2: ACAT Protocol Service (API Module 2)'
+    - HumanAIOS Production Hardening Framework
+    - Mission Statement
+  PRODUCT_DESCRIPTIONS_ALL_VERSIONS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HUMANAIOS - PRODUCT DESCRIPTIONS (All Versions)
+    concepts:
+    - HUMANAIOS - PRODUCT DESCRIPTIONS (All Versions)
+    - 🎯 ONE-LINER (Elevator Pitch)
+    - 📄 LONG DESCRIPTION (Full Paragraph)
+    - 📄 MEDIUM DESCRIPTION (3-4 sentences)
+    - 📝 SHORT DESCRIPTION (1-2 sentences)
+  PUBLIC_STATEMENTS_AUDIT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: PUBLIC STATEMENTS AUDIT
+    concepts:
+    - '**1. LinkedIn Messages to Fortune 500 Companies**'
+    - '**2. AI Testimony - Public Version**'
+    - '**3. Product Descriptions**'
+    - '**4. Marketing Intelligence Document**'
+    - '**5. Any Other Public Materials**'
+  QUICKSTART.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS API - Quick Start
+    concepts:
+    - 1. Install Dependencies
+    - 2. Start Database
+    - 3. Run Database Schema
+    - 4. Start API Server
+    - Available Endpoints
+  QUICKSTART_DAY2.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 🚀 Quick Start - Day 2 Demo
+    concepts:
+    - 1. Start Everything (One Command)
+    - 2. Run Automated Tests (One Command)
+    - 3. Run Agent Simulator (One Command)
+    - From your Mac terminal
+    - Start API (in new terminal tab)
+  README.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS
+    concepts:
+    - Current Status
+    - HumanAIOS
+    - Mission
+    - What This Is
+    - What does not exist yet
+  README_HUMANAIOS_CORRECTED.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS
+    concepts:
+    - HumanAIOS
+    - MCP (Model Context Protocol) — Planned
+    - Planned AI Agent Integration
+    - REST API — Planned
+    - Target API design (not yet live)
+  RECOVERY_ECOSYSTEM_TIER1_MAP.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Recovery Ecosystem Tier 1 Mapping
+    concepts:
+    - Core Teachings (12 Steps Distilled to Principles)
+    - Extracting Universal Principles from Peer Recovery Sources
+    - Recovery Ecosystem Tier 1 Mapping
+    - 'SOURCE 1: AA (ALCOHOLICS ANONYMOUS)'
+  RECOVERY_TEMPLATES_REFERENCE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Recovery Principle Templates — API Reference
+    concepts:
+    - Check expected metrics
+    - Get pytorch implementation
+    - Get sklearn implementation
+    - Huma
+    - Human Side (4-Week Course)
+  RECURSIVE_LEARNING_IMPLEMENTATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Recursive Learning Implementation — Charter Integration
+    concepts:
+    - CLI Command (Gate 2 POSTFLIGHT)
+    - Gate POSTFLIGHT Template
+    - How Recursive Learning Works
+    - Recursive Learning Implementation — Charter Integration
+    - The Recursive Loop Closes Here
+  RECURSIVITY_CONVERGENCE_MODEL.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: The Recursivity Convergence Model — Criminal Justice as Integrator
+    concepts:
+    - 1. Personal Recovery Through Reentry
+    - 2. Machine Learning Through Recidivism Prediction
+    - After (Criminal Justice as Integrator)
+    - Before (Parallel Domains)
+    - How Criminal Justice Integrates Each Domain
+  REGISTERED.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: REGISTERED.md — HumanAIOS Findings Registry
+    concepts:
+    - H-ACAT Founding Calibration Pilot (2026-07-24)
+    - REGISTERED.md — HumanAIOS Findings Registry
+  REPLY_COLLECTION_CHECKLIST.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Mesh Reply Collection Checklist
+    concepts:
+    - How to Gather Practice Confirmations (2026-07-08)
+    - If Reply Has QUESTIONS ❓
+    - If Reply is CLEAR YES ✅
+    - Mesh Reply Collection Checklist
+    - Morning Check (2026-07-08 Start)
+  RESEARCH_HYPOTHESIS_CAPABILITY_INVERSION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Research Hypothesis: Capability Inversion in Behavioral Calibration'
+    concepts:
+    - 'Baseline finding: Learning Index < 1.0'
+    - 'Critical finding: Humility at regulatory floor'
+    - Executive Summary
+    - 'Novel finding: Humility deficit scales with capability'
+    - The Observation
+  RESEARCH_PIPELINE_DESIGN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Automated Research Pipeline v1.0
+    concepts:
+    - Architecture Overview
+    - Automated Research Pipeline v1.0
+    - Efficient Knowledge Extraction from Free Sources
+    - 'Stage 1: Quick Signal Check (2-3 seconds)'
+    - 'Stage 2: Deep Research (5-10 seconds)'
+  RESEARCH_PIPELINE_SUMMARY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Research Pipeline v1.0 — Complete Summary
+    concepts:
+    - How It Actually Works
+    - Input
+    - Processing
+    - Research Pipeline v1.0 — Complete Summary
+    - The Problem Solved
+  SECURITY.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Security Policy
+    concepts:
+    - How to Report
+    - Recognition
+    - Reporting a Vulnerability
+    - Security Policy
+    - Supported Versions
+  SER_2_TRAJECTORY_TYPES.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'SER 2: Collaborator Coordination — Trajectory Types Definition'
+    concepts:
+    - Definition
+    - Measurement Criteria
+    - 'Trajectory Type 1: Empirica Cross-Validation → Criterion 4'
+    - When to Create
+    - Why SER 2 Trajectory Types Matter
+  SESSION_SUMMARY_PHASE1_TO_WEEK2.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Session Summary: Empirica-ACAT Framework Phases 1-5 Week 2'
+    concepts:
+    - Executive Summary
+    - 'Phase 1a: ACAT CLI Tool ✅'
+    - 'Phase 1b: POSTFLIGHT Hook Integration ✅'
+    - 'Phase 2: Grounding Validation (5 evaluator sessions) ✅'
+    - 'Phase 4: Vector Semantics Investigation ✅'
+  START_HERE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 🗺️ The system, at a glance
+    concepts:
+    - 🗺️ The system, at a glance
+  SYSTEM_INVENTORY_REFERENCE_V1.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Empirica Foundation — System Inventory Reference v1.0
+    concepts:
+    - Core System Components
+    - Empirica Foundation — System Inventory Reference v1.0
+    - Executive Summary
+    - 'Quick Reference: What''s Where'
+    - Technology Stack
+  T1_WISDOM_TEXT_ANALYSIS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Transaction 1: Deep Read & Consciousness Analysis'
+    concepts:
+    - 'TEXT 1: A COURSE IN MIRACLES (Helen Schucman)'
+    - 'TRANSACTION 1: DEEP READ & ANALYSIS'
+    - 'Transaction 1: Deep Read & Consciousness Analysis'
+  T4_INTEGRATION_TEST_RESULTS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Transaction 4: Integration Testing — Results'
+    concepts:
+    - INTEGRATION TEST RESULTS
+    - 'TEST 1: Wisdom Database Loading ✓'
+    - 'TEST 2: Code Template Loading ✓'
+    - 'TEST 3: Application 1 (Consciousness Guidance) ✓'
+    - 'Transaction 4: Integration Testing — Results'
+  T4_SER1_PROPOSAL_FOR_MESH_SUPPORT.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: T4 SER 1 Proposal — Assessment Coordination
+    concepts:
+    - Executive Summary
+    - Parameters
+    - T4 SER 1 Proposal — Assessment Coordination
+    - Tool
+    - What Needs Doing
+  TASK1_DATABASE_SCHEMA_COMPLETION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Task 1: Database Schema Extension — COMPLETED ✅'
+    concepts:
+    - 1. Alembic Migration (Python)
+    - 2. TypeScript Types (assessment.entity.ts)
+    - 'Task 1: Database Schema Extension — COMPLETED ✅'
+    - What Was Built
+  TASK2_ACAT_PROTOCOL_SCAFFOLDING.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Task 2: ACAT Protocol Service — Scaffolding Complete ✅'
+    concepts:
+    - 1. ACAT Protocol Definition (`acat.protocol.ts`)
+    - 2. ACAT Service (`acat.service.ts`)
+    - 3. ACAT Module (`acat.module.ts`)
+    - ACAT Protocol Architecture
+    - Deliverables
+  TASK7_STRESS_TESTING_BREAKDOWN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Task 7: Stress Testing + Persistence — Detailed Breakdown'
+    concepts:
+    - 'Goal: Production-Ready Reliability (Task 7)'
+    - 'Task 7.2: Load Testing Framework Setup'
+    - 'Task 7.3: Execute Load Tests & Collect Metrics'
+    - 'Task 7: Stress Testing + Persistence — Detailed Breakdown'
+    - Task Breakdown
+  TECHNICAL_ARCHITECTURE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: HumanAIOS - AI-Human Orchestration Platform
+    concepts:
+    - AI
+    - Backend
+    - Core Components
+    - Core Features
+    - Database
+  TESTING_GUIDE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 🧪 HumanAIOS Testing Guide
+    concepts:
+    - 1. Register a User
+    - 2. Create an Agent
+    - 3. List All Agents
+    - 'Step 1: Start the Infrastructure'
+    - 'Step 2: Start the API Server'
+  THREE_LAYER_INTEGRATION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Three-Layer Harmonically-Integrated System
+    concepts:
+    - 'Harmony Point 1: Layer 1 ↔ Layer 2 (Confidence Signals)'
+    - HumanAIOS + GitHub Copilot AI + Empirica Foundation
+    - 'Layer 1: HumanAIOS Repository'
+    - 'Layer 2: GitHub Copilot AI'
+    - 'Layer 3: Empirica Foundation'
+  TRANSACTION_PLAN_APP2.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Application 2 Build Plan: Obstacle-to-Opportunity Translator'
+    concepts:
+    - 'Supervised Learning Scope (Intention: Full-Stack Later)'
+    - 'Transaction 1: Obstacle-Consciousness-Wisdom Mappings'
+    - 'Transaction 2: Translator Engine'
+    - 'Transaction 3: Code Template Library'
+    - 'Transaction 4: Integration & Documentation'
+  TRANSACTION_PLAN_WISDOM_CAPTURE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Transaction Plan: Wisdom Traditions Conceptual Coding Capture'
+    concepts:
+    - 'Transaction 1: AA 12 Steps (Fetch → Analyze → Schema)'
+    - 'Transaction 2: AA 12 Traditions (Fetch → Analyze → Schema)'
+    - Transaction Breakdown
+  UNIVERSITY_BACKEND_ARCHITECTURE.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: University Backend Architecture & Database Design (T7)
+    concepts:
+    - '**Core Tables**'
+    - Core Architecture
+    - Database Schema
+    - University Backend Architecture & Database Design (T7)
+  UNIVERSITY_CURRICULUM_DESIGN_V1.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: University Curriculum Design (Level 50-200)
+    concepts:
+    - CURRICULUM PHILOSOPHY
+    - 'Course 1.1: "You''re Not Alone" (Level 50-75)'
+    - 'TIER 1: FOUNDATION (LEVELS 50-100) — FREE'
+    - University Curriculum Design (Level 50-200)
+    - 'Week 1-2: Detect your model''s limitation'
+  UNIVERSITY_GOVERNANCE_ALIGNMENT_PROPOSAL.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: University of Recursivity — Governance Alignment Proposal (Z2 REVIEW)
+    concepts:
+    - 'Criterion 1: Generates Research Data ✅ **PASSES**'
+    - 'Criterion 2: Tests Hypothesis ✅ **PASSES**'
+    - Executive Summary
+    - P5 Compliance Analysis (OR&D Decision Filter)
+  UNIVERSITY_OF_RECURSIVITY_VISION.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: The University of Recursivity — Integrated Vision
+    concepts:
+    - 'TRACK 1: PERSONAL RECOVERY'
+    - 'TRACK 2: MACHINE LEARNING RECOVERY'
+    - 'TRACK 3: GARDEN & SOIL RECOVERY'
+    - The Core Insight
+    - The University Structure (5 Parallel Tracks)
+  VARIANT_FAILURE_ANALYSIS_B1.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Stream B Phase B1: Variant Failure Investigation — Alignment Distribution
+      Analysis'
+    concepts:
+    - Alignment Status Patterns
+    - Dataset
+    - 'Example: v1.2a (autonomy) Failure'
+    - 'Part 1: Phase 3 Alignment Status Distribution Analysis'
+    - 'Part 2: The Mocking Strategy Problem'
+  WEEK_1_EXECUTION_LOG.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Week 1 Execution Log — Recursive Learning Activation
+    concepts:
+    - Day-by-Day Execution
+    - Week 1 Execution Log — Recursive Learning Activation
+    - Week 1 Overview
+    - ✅ DAY 1 (Thursday, July 18)
+  WEEK_1_HAIOSCC_IMPLEMENTATION_TASKS.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Week 1 Implementation Tasks — HAIOSCC Observation Post
+    concepts:
+    - Day 5 (Jul 22) — Schema + Functions
+    - 'Task 1: Apply Supabase Schema'
+    - 'Task 2: Deploy Cloudflare Functions'
+    - Task Summary
+    - Week 1 Implementation Tasks — HAIOSCC Observation Post
+  WISDOM_DATABASE_ASSESSMENT_v0.2.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Wisdom Database Assessment v0.2
+    concepts:
+    - I. THE COLLECTION AT A GLANCE
+    - II. UNIVERSAL PATTERNS DISCOVERED
+    - 'Pattern A: The Progression Ladder'
+    - 'Pattern B: The Three-Level Model'
+    - Six Systems, 126 Units, 35 Deep Dives
+  WISDOM_TEXT_EXPANSION_PLAN.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Wisdom Text Expansion Plan
+    concepts:
+    - NOETIC ANALYSIS PLAN
+    - 'Text 1: A Course in Miracles (ACIM)'
+    - 'Text 2: Book of Five Rings (Gorin no Sho)'
+    - 'Text 3: Living Buddha, Living Christ'
+    - Wisdom Text Expansion Plan
+  phase3_multi_practice_integration.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Phase 3: Multi-Practice Integration — ACAT Grounding at Scale'
+    concepts:
+    - '3a: autonomy Ingests ACAT Signals'
+    - '3b: humanaios Refines ACAT Rubric'
+    - Data Flow
+    - In
+    - In autonomy's proposal handler
+  phase4_vector_semantics_analysis.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Phase 4: Vector Semantics Investigation Report'
+    concepts:
+    - Executive Summary
+    - 'Hypothesis: Each practice defines ''know'' differently'
+    - 'Key Observation: ACAT Saturation'
+    - 'Part A: Convergence Divergence Analysis'
+    - 'Part B: Per-Practice ''Know'' Vector Semantics'
+  phase5_hybrid_implementation_plan.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Phase 5: Hybrid Calibration Implementation Plan'
+    concepts:
+    - 'Implementation: `hooks/per_practice_know_discounts.py`'
+    - Integration Points
+    - 'Phase 5: Hybrid Calibration Implementation Plan'
+    - Projected Results (Tested on Phase 3 Data)
+    - Success Criteria (Week 1)
+  phase5_week2_rubric_design_rationale.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: 'Phase 5 Week 2: Practice-Specific Rubric Design Rationale'
+    concepts:
+    - Overview
+    - 'Phase 5 Week 2: Practice-Specific Rubric Design Rationale'
+    - Rubric Variants Implemented
+    - 'v1.2a: autonomy (ECO Routing Focused)'
+    - 'v1.2b: humanaios (Technical Calibration Focused)'
+  research_pipeline_integration.md:
+    tags:
+    - project
+    doc_type: project-root
+    audience: ai
+    description: Research Pipeline Integration Guide
+    concepts:
+    - 1. **PubMed (Biomedical)**
+    - 2. **arXiv (Physics, CS, Math)**
+    - 3. **Semantic Scholar (AI-Enhanced Research)**
+    - API (Atom/XML)
+    - API (JSON)

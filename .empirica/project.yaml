@@ -1,31 +1,17 @@
-version: '2.0'
-name: humanaios
-description: "humanaios — practice for AI human-in-the-loop operations, state machine harmonization, and per-practice calibration."
-project_id: e8159f5d-aa03-4211-b238-5a027bd27d4b
+version: '3.0'
 ai_id: humanaios
-type: software
-domain: operations
-org_id: org-empirica-foundation
-tenant_slug: carly
-mesh_id_prefix: empirica-foundation.carly
 canonical_seat: empirica-foundation.carly.humanaios
 classification: internal
-status: active
-evidence_profile: auto
-languages: []
-tags: []
 created_at: '2026-06-26'
 created_by: andersonfamily
-contacts: []
-engagements: []
-edges: []
-beads:
-  default_enabled: false
-subjects: {}
+description: humanaios — practice for AI human-in-the-loop operations, state machine
+  harmonization, and per-practice calibration.
+org_id: org-empirica-foundation
+tenant_slug: carly
+type: software
 auto_detect:
   enabled: true
   method: path_match
-domain_config: {}
 calibration_weights:
   noetic:
     know: 1.0
@@ -53,3 +39,18 @@ calibration_weights:
     signal: 0.4
     density: 0.4
     state: 0.7
+contacts: []
+domain: operations
+domain_config: {}
+engagements: []
+evidence_profile: auto
+languages: []
+mesh_id_prefix: empirica-foundation.carly
+name: humanaios
+project_id: e8159f5d-aa03-4211-b238-5a027bd27d4b
+status: active
+subjects: {}
+tags: []
+beads:
+  default_enabled: false
+edges: []
