@@ -1,0 +1,56 @@
+---
+# Document Registry — Single Source of Truth (SSOT)
+# Per DOCUMENT_CONTROL_PLAN.md §3.2
+# Last updated: 2026-09-02
+
+documents:
+  - doc_id: HAIOS-GOV-013
+    title: Platform Agents Governance V1.0
+    path: docs/GOV/PLATFORM_AGENTS_GOVERNANCE_V1_0.md
+    revision: 1
+    status: review
+    owner: carly
+    created_date: 2026-09-02
+    review_due: 2026-12-01
+    canonical: true
+    retention: permanent
+
+  - doc_id: HAIOS-SPEC-008
+    title: H-ACAT Instrument Specification V0.1
+    path: docs/SPEC/H-ACAT_INSTRUMENT_SPEC_V0_1.md
+    revision: 1
+    status: review
+    owner: carly
+    created_date: 2026-09-02
+    review_due: 2026-12-01
+    canonical: true
+    retention: permanent
+
+  - doc_id: HAIOS-TEST-009
+    title: Bio Systems Mapping V1
+    path: docs/TEST/BIO_SYSTEMS_MAPPING_V1.md
+    revision: 1
+    status: draft
+    owner: carly
+    created_date: 2026-09-02
+    review_due: 2026-12-01
+    canonical: true
+    retention: permanent
+
+  - doc_id: HAIOS-TEST-010
+    title: Shared Memory Census V0.1
+    path: docs/TEST/SHARED_MEMORY_CENSUS_v0_1.md
+    revision: 1
+    status: draft
+    owner: carly
+    created_date: 2026-09-02
+    review_due: 2026-12-01
+    canonical: true
+    retention: permanent
+
+# Reference files (not controlled documents)
+references:
+  - filename: OPERATORS_MANUAL.md
+    path: reference/archive/2026-09-02/OPERATORS_MANUAL.md
+    archived_date: 2026-09-02
+    reason: Operational reference material

@@ -1,0 +1,29 @@
+# CODEOWNERS for humanaios document control
+# Approvers for each document area (HAIOS controlled documents)
+# Per FILE_INTAKE_PIPELINE.md §6.4 + Decision confirmation 2026-09-02
+
+# Governance documents (GOV area)
+docs/GOV/                           @carly
+
+# Processes & runbooks (PROC area)
+docs/PROC/                          @carly
+
+# Specifications (SPEC area)
+docs/SPEC/                          @carly
+
+# Vision & strategy (VIS area)
+docs/VIS/                           @carly
+
+# Test & testimony (TEST area)
+docs/TEST/                          @carly
+
+# Operations & incidents (OPS area)
+docs/OPS/                           @carly
+
+# Document control infrastructure
+.doc-control/                       @carly
+document-registry.yaml              @carly
+DOCUMENT_CONTROL_PLAN.md            @carly
+FILE_INTAKE_PIPELINE.md             @carly
+FILE_CONTEXT_GRAPH.md               @carly
+INTAKE_ACTIVATION_SUMMARY.md        @carly
