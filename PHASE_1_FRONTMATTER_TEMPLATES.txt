@@ -1,0 +1,69 @@
+# Phase 1 Frontmatter Templates (Add to top of each file)
+
+## 1. PLATFORM_AGENTS_GOVERNANCE_V1_0.md
+Copy this to the VERY TOP of the file (before any existing content):
+
+---
+doc_id: HAIOS-GOV-013
+title: Platform Agents Governance V1.0
+revision: 1
+status: review
+owner: @carly
+created_date: 2026-09-02
+review_due: 2026-12-02
+canonical: true
+retention: permanent
+---
+
+
+## 2. H-ACAT_INSTRUMENT_SPEC_V0_1.md
+Copy this to the VERY TOP of the file (before any existing content):
+
+---
+doc_id: HAIOS-SPEC-008
+title: H-ACAT Instrument Specification V0.1
+revision: 1
+status: review
+owner: @carly
+created_date: 2026-09-02
+review_due: 2026-12-02
+canonical: true
+retention: permanent
+---
+
+
+## 3. BIO_SYSTEMS_MAPPING_V1.md
+Copy this to the VERY TOP of the file (before any existing content):
+
+---
+doc_id: HAIOS-TEST-009
+title: Bio Systems Mapping V1
+revision: 1
+status: draft
+owner: @carly
+created_date: 2026-09-02
+review_due: 2026-12-02
+canonical: true
+retention: permanent
+---
+
+
+## 4. SHARED_MEMORY_CENSUS_v0_1.md
+Copy this to the VERY TOP of the file (before any existing content):
+
+---
+doc_id: HAIOS-TEST-010
+title: Shared Memory Census V0.1
+revision: 1
+status: draft
+owner: @carly
+created_date: 2026-09-02
+review_due: 2026-12-02
+canonical: true
+retention: permanent
+---
+
+
+## OPERATORS_MANUAL.md
+This stays in Downloads; will be archived (no frontmatter needed).
+Move to reference/archive/2026-09-02/ in Step 5.
