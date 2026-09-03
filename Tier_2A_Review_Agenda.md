@@ -121,3 +121,93 @@ Fill in your decisions here:
 └───────────────────────┴──────────────┴───────────────────────────┴────────────────────┘
 
 ---
+
+TIER 2B DEEP ANALYSIS AGENDA
+
+Context: Tier 2A complete. BCL (RATIFICATION_BCL_v0.2) is APPROVED and governs both GRBS_CHARTER + AGENTS.
+
+4 Deep-Analysis Documents Ready for Your Assessment:
+
+---
+
+DOCUMENT 1: AGENTS.md (0.60 confidence, draft)
+
+What it does: Governance framework for agent permissions and authority model.
+
+Tier 2A context: BCL (APPROVED) governs AGENTS as GD-15. This means AGENTS is foundational to BCL implementation.
+
+Your decisions needed:
+
+1. Is AGENTS a binding GD-15 or exploratory GD-candidate?
+   - [x] GD-15 (Binding — agent permissions are mandatory)
+   - [ ] GD-candidate (Exploratory — framework under review)
+   - Context: BCL is approved, suggests GD-15
+2. Does AGENTS depend on GRBS_CHARTER?
+   - [x] Yes (Implements GRBS_CHARTER agent rules)
+   - [ ] No (Standalone)
+3. What governance does AGENTS establish?
+   - Your description: [agent roles/permissions? yes, authority chain? yes, cross-practice rules? yes]
+
+---
+
+DOCUMENT 2: GRBS_CHARTER_v0.2.md (0.60 confidence, review)
+
+What it does: Foundational governance charter establishing framework rules.
+
+Tier 2A context: BCL (APPROVED) governs GRBS_CHARTER as GD-14. This means GRBS_CHARTER is the framework BCL operationalizes.
+
+Your decisions needed:
+
+1. Is v0.2 ratified/approved, or still candidate?
+   - [x] GD-14 (ACTIVE) (Approved — binding governance framework)
+   - [ ] GD-candidate (Exploratory — framework under review)
+   - [ ] PENDING (Awaiting Z2 final decision)
+   - Context: BCL is approved, suggests GD-14 should be too
+2. Archive v0.1 with supersession link?
+   - [x] Yes (Preserve decision trail)
+   - [ ] No (Delete v0.1)
+3. Is GRBS_CHARTER the CANONICAL governance framework?
+   - [ ] Yes (Single source of truth)
+   - [x] No (Coexists with other frameworks)
+4. What changed from v0.1 → v0.2?
+   - Your description: [Updates and definitions of language]
+
+---
+
+DOCUMENT 3: TRUST_REGISTRY_UPDATE_S-052126-01.md (0.60 confidence, review)
+
+What it does: Updates trust framework/governance.
+
+AGE WARNING: 105 days in review (May 21 → Sep 3). Requires urgency assessment.
+
+Your decisions needed:
+
+1. Is this still ACTIVE, or stalled/superseded?
+   - [ ] ACTIVE (Still in review, decision pending)
+   - [x] STALLED (Blocked on something)
+   - [ ] SUPERSEDED (Newer version exists)
+   - Note: 3+ month age warrants assessment
+2. Registry class — R (ruling) or GD (governance directive)?
+   - [x] R (Authority decision on trust)
+   - [ ] GD (Governance rules for trust)
+3. What trust framework does this govern?
+   - Your description: [ARTIFACT_REGISTRY of our tools]
+4. Why has review taken 3+ months?
+   - Your assessment: [This document needs to be reviewed and is in relation to our tools]
+
+---
+
+DOCUMENT 4: CALIBRATION_OOO_v0.1.md (0.60 confidence, draft)
+
+What it does: Governance document for calibration framework.
+
+Status: v0.2 already exists and is GD-12 (ACTIVE).
+
+Your decision:
+
+1. Archive v0.1 as historical context?
+   - [x] Yes (Preserve v0.1 → v0.2 evolution)
+   - [ ] No (Delete, focus on current state)
+   - Recommendation: Archive with GD-12 supersession link
+
+---
