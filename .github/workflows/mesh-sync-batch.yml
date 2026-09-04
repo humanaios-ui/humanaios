@@ -1,0 +1,132 @@
+name: Mesh Sync Batch
+# Phase 2 Deployment: Synchronize local changes to Forgejo canonical location
+# Triggered: On push to main, or manual dispatch for emergency sync
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Force full sync (ignore timestamps)'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: mesh-sync-batch
+  cancel-in-progress: false
+
+jobs:
+  sync-to-forgejo:
+    name: Sync to Forgejo Canonical Location
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        remote: ['forgejo']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git credentials
+        run: |
+          git config --global user.name "Empirica Mesh Sync"
+          git config --global user.email "mesh-sync@empirica-foundation.local"
+
+      - name: Verify remotes
+        run: |
+          echo "=== Current git remotes ==="
+          git remote -v
+
+          # Verify forgejo remote exists and is correct
+          FORGEJO_URL=$(git remote get-url forgejo || echo "")
+          if [[ -z "$FORGEJO_URL" ]]; then
+            echo "ERROR: forgejo remote not found"
+            exit 1
+          fi
+
+          if [[ ! "$FORGEJO_URL" == *"getempirica.com"* ]]; then
+            echo "ERROR: forgejo remote is not pointing to getempirica.com"
+            echo "Found: $FORGEJO_URL"
+            exit 1
+          fi
+
+          echo "✓ forgejo remote verified: $FORGEJO_URL"
+
+      - name: Check for divergence
+        id: divergence
+        run: |
+          # Compare local HEAD with forgejo/main
+          git fetch forgejo main --quiet || true
+
+          LOCAL_SHA=$(git rev-parse HEAD)
+          REMOTE_SHA=$(git rev-parse forgejo/main 2>/dev/null || echo "0")
+
+          echo "local_sha=${LOCAL_SHA}" >> $GITHUB_OUTPUT
+          echo "remote_sha=${REMOTE_SHA}" >> $GITHUB_OUTPUT
+
+          if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
+            echo "diverged=true" >> $GITHUB_OUTPUT
+            echo "✓ Divergence detected: local ahead of forgejo"
+            echo "  Local:  ${LOCAL_SHA:0:8}"
+            echo "  Remote: ${REMOTE_SHA:0:8}"
+          else
+            echo "diverged=false" >> $GITHUB_OUTPUT
+            echo "✓ No divergence: repositories in sync"
+          fi
+
+      - name: Sync to Forgejo (if diverged)
+        if: steps.divergence.outputs.diverged == 'true'
+        run: |
+          git push forgejo main --force-with-lease
+          echo "✓ Sync complete: pushed to forgejo/main"
+
+      - name: Record sync decision payload
+        id: decision_payload
+        env:
+          SYNC_DECISION: 'mesh-sync-batch'
+          LOCAL_SHA: ${{ steps.divergence.outputs.local_sha }}
+          REMOTE_SHA: ${{ steps.divergence.outputs.remote_sha }}
+          DIVERGED: ${{ steps.divergence.outputs.diverged }}
+        run: |
+          cat > /tmp/sync-decision.json <<EOF
+          {
+            "decision_type": "mesh_sync_batch",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "local_sha": "$LOCAL_SHA",
+            "remote_sha": "$REMOTE_SHA",
+            "diverged": $DIVERGED,
+            "action": "$([ "$DIVERGED" = "true" ] && echo "pushed" || echo "skipped")",
+            "remote": "forgejo",
+            "practice": "humanaios"
+          }
+          EOF
+          cat /tmp/sync-decision.json
+
+      - name: Report sync results
+        if: always()
+        run: |
+          echo "=== Mesh Sync Batch Results ==="
+          echo "Workflow: mesh-sync-batch"
+          echo "Status: ${{ job.status }}"
+          echo "Local SHA: ${{ steps.divergence.outputs.local_sha }}"
+          echo "Remote SHA: ${{ steps.divergence.outputs.remote_sha }}"
+          echo "Diverged: ${{ steps.divergence.outputs.diverged }}"
+
+  # Notification: Emit completion event for orchestration
+  emit-completion:
+    name: Emit Completion Event
+    runs-on: ubuntu-latest
+    needs: sync-to-forgejo
+    if: always()
+
+    steps:
+      - name: Report completion
+        run: |
+          echo "Mesh sync batch workflow completed for humanaios practice"
+          echo "Status: ${{ needs.sync-to-forgejo.result }}"
