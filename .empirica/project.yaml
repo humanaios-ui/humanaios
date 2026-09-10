@@ -1,11 +1,11 @@
 version: '3.0'
-ai_id: empirica-foundation.carly.humanaios
+ai_id: humanaios
 canonical_seat: empirica-foundation.carly.humanaios
 classification: internal
 created_at: '2026-06-26'
 created_by: andersonfamily
-description: humanaios — practice for AI human-in-the-loop operations, state machine
-  harmonization, and per-practice calibration.
+description: "humanaios \u2014 practice for AI human-in-the-loop operations, state\
+  \ machine harmonization, and per-practice calibration."
 org_id: org-empirica-foundation
 tenant_slug: carly
 type: software
