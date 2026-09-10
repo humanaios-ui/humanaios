@@ -11,7 +11,7 @@ import { AssessmentsRepository } from './assessments.repository';
 @Injectable()
 export class AssessmentJobWorkerService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(AssessmentJobWorkerService.name);
-  private workerInterval: NodeJS.Timer | null = null;
+  private workerInterval: NodeJS.Timeout | null = null;
   private isRunning = false;
   private readonly POLL_INTERVAL_MS = 5000; // Poll every 5 seconds
 

@@ -23,7 +23,6 @@ import {
 import { Assessment, EpistemicArtifact, CalibrationVectors } from '../assessments/assessment.entity';
 import { AssessmentsRepository } from '../assessments/assessments.repository';
 import { ACATPromptTemplateService } from './acat-prompt-templates';
-import { ACATSystemClient } from './acat-system-client';
 import { ACATFlagDetector } from './acat-flag-detector';
 
 @Injectable()
@@ -34,7 +33,6 @@ export class ACATService {
     @Inject('DATABASE_POOL') private pool: Pool,
     private assessmentsRepository: AssessmentsRepository,
     private promptTemplates: ACATPromptTemplateService,
-    private systemClient: ACATSystemClient,
     private flagDetector: ACATFlagDetector
   ) {}
 
@@ -515,6 +513,6 @@ export class ACATService {
 
         return [dimension, phaseAdjustedScore];
       })
-    ) as DimensionScores;
+    ) as unknown as DimensionScores;
   }
 }

@@ -7,7 +7,7 @@
     "dev": "tsx watch src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
-    "test": "jest",
+    "test": "tsx --test src/**/*.test.ts",
     "lint": "eslint src --ext .ts",
     "migrate": "tsx src/database/migrate.ts",
     "seed": "tsx src/database/seed.ts"

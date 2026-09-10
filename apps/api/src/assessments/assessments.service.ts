@@ -176,7 +176,9 @@ export class AssessmentsService {
     // Parse result_summary if available
     if (assessment.result_summary) {
       try {
-        return JSON.parse(assessment.result_summary);
+        return typeof assessment.result_summary === 'string'
+          ? JSON.parse(assessment.result_summary)
+          : assessment.result_summary;
       } catch (e) {
         return assessment.result_summary;
       }
