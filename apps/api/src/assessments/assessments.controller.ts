@@ -3,7 +3,7 @@
  * HTTP API for assessment submission and status polling
  */
 
-import { Controller, Post, Get, Body, Param, BadRequestException, NotFoundException, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, BadRequestException, NotFoundException, Req } from '@nestjs/common';
 import { AssessmentsService, AssessmentSubmitRequest } from './assessments.service';
 
 @Controller('api/v1/assessments')

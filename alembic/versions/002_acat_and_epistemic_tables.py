@@ -33,7 +33,7 @@ def upgrade() -> None:
         "assessments",
         sa.Column("id", postgresql.UUID(as_uuid=True), server_default=sa.func.gen_random_uuid(), primary_key=True),
         sa.Column("org_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column("system_id", postgresql.UUID(as_uuid=True), nullable=False),
+        sa.Column("system_id", sa.String(255), nullable=False),
         sa.Column("system_name", sa.String(255), nullable=False),
         sa.Column("system_info", postgresql.JSONB, nullable=False, server_default="{}"),
         sa.Column("status", sa.String(50), nullable=False, server_default="pending"),
@@ -151,8 +151,8 @@ def upgrade() -> None:
     # ============================================
     # Add columns to organizations if not exists (for future subscription tier)
     try:
-        with op.batch_operations.Operations.context() as batch_op:
-            batch_op.add_column("organizations", sa.Column("assessment_quota", sa.Integer, nullable=True))
+        with op.batch_alter_table("organizations") as batch_op:
+            batch_op.add_column(sa.Column("assessment_quota", sa.Integer, nullable=True))
     except Exception:
         # Column may already exist
         pass
