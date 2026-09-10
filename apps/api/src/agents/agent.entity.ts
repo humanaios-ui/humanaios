@@ -20,10 +20,12 @@ export interface Agent {
 export interface AgentActivity {
   id: string;
   agent_id: string;
+  org_id: string;
   activity_type: 'tool_call' | 'completion' | 'error' | 'custom';
   description: string;
   input_data?: Record<string, any>;
   output_data?: Record<string, any>;
+  status?: 'success' | 'error' | 'pending';
   duration_ms?: number;
   tokens_used?: number;
   cost_usd?: number;
@@ -44,6 +46,7 @@ export interface CreateActivityDto {
   description: string;
   input_data?: Record<string, any>;
   output_data?: Record<string, any>;
+  status?: 'success' | 'error' | 'pending';
   duration_ms?: number;
   tokens_used?: number;
   cost_usd?: number;

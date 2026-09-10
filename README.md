@@ -75,40 +75,42 @@ This repo contains the foundation layer:
 
 ```
 humanaios/
-├── apps/api/              # NestJS API application (scaffold)
+├── apps/api/              # Canonical NestJS API application
 ├── packages/mcp-sdk/      # MCP integration (design spec — not implemented)
-├── src/auth-system/       # Authentication module (functional)
+├── src/auth-system/       # Legacy auth scaffold (deprecated reference only)
 ├── docs/                  # Documentation
 ├── infrastructure/        # Infrastructure as code
 ├── schema.sql             # Database schema
 └── docker-compose.yml     # Local dev environment
 ```
 
-### Authentication system (what actually runs)
+### Canonical API surface
 
-- 8 API endpoints: register, login, refresh, logout, password reset, profile
-- JWT access + refresh token rotation
-- bcrypt password hashing (10 rounds)
-- Rate limiting, account lockout after 5 failed attempts
-- PostgreSQL with TypeORM
+- `apps/api` is the single authoritative backend and auth stack
+- Primary endpoints: auth, agents, agent activities, assessments
+- JWT authentication with organization-scoped access
+- PostgreSQL + Redis infrastructure wiring via Nest modules
+- `src/auth-system` remains in-repo only as a legacy reference and is not the deployed path
 
 ---
 
 ## Quick Start (Local Dev Only)
 
-Prerequisites: Node.js 18+, PostgreSQL 14+
+Prerequisites: Node.js 18+, PostgreSQL 14+, Redis
 
 ```bash
 git clone https://github.com/humanaios-ui/humanaios.git
-cd humanaios
+cd humanaios/apps/api
 npm install
-cp .env.example .env   # Edit with your local DB credentials
+export DATABASE_URL=******localhost:5432/humanaios
+export REDIS_URL=redis://localhost:6379
+export JWT_SECRET=replace-me-with-a-long-random-secret
 createdb humanaios
-psql -d humanaios -f schema.sql
-npm run start:dev
+psql -d humanaios -f /home/runner/work/humanaios/humanaios/schema.sql
+npm run dev
 ```
 
-The auth API will be available at `http://localhost:3000`. There is no `/docs` Swagger endpoint yet.
+The canonical API will be available at `http://localhost:3001/api/v1`. OpenAPI source lives at `/home/runner/work/humanaios/humanaios/api-docs/openapi/api-spec.yml`.
 
 ---
 

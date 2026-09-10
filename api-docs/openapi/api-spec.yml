@@ -1,176 +1,520 @@
 openapi: 3.0.0
 info:
-  title: HumanAIOS API
+  title: HumanAIOS Canonical API
   version: 1.0.0
-  description: Comprehensive API for HumanAIOS platform
-  contact:
-    name: API Support
-    email: api@humanaios.com
-  license:
-    name: MIT
+  description: Canonical NestJS API surface implemented under /apps/api.
 
 servers:
-  - url: https://api.humanaios.com/v1
-    description: Production
-  - url: https://staging-api.humanaios.com/v1
-    description: Staging
+  - url: http://localhost:3001/api/v1
+    description: Local development
+
+tags:
+  - name: Authentication
+  - name: Agents
+  - name: Assessments
 
 paths:
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register a user and issue an access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Registration succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
   /auth/login:
     post:
-      summary: User login
-      tags:
-        - Authentication
+      tags: [Authentication]
+      summary: Authenticate an existing user
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-              required:
-                - email
-                - password
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          description: Login successful
+          description: Authentication succeeded
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-                  refreshToken:
-                    type: string
-                  user:
-                    $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/AuthResponse'
         '401':
           description: Invalid credentials
-
-  /auth/refresh:
+  /auth/verify:
     post:
-      summary: Refresh access token
-      tags:
-        - Authentication
+      tags: [Authentication]
+      summary: Verify the current bearer token
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                refreshToken:
-                  type: string
-              required:
-                - refreshToken
       responses:
         '200':
-          description: Token refreshed
+          description: Token is valid
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  accessToken:
-                    type: string
+                  valid:
+                    type: boolean
+                  user:
+                    $ref: '#/components/schemas/AuthenticatedUser'
 
-  /users/{userId}:
+  /agents:
     get:
-      summary: Get user profile
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
+      tags: [Agents]
+      summary: List agents for the authenticated organization
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: User profile retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: User not found
-
-  /projects:
-    get:
-      summary: List projects
-      tags:
-        - Projects
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Projects retrieved
+          description: Agents retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: '#/components/schemas/Agent'
+    post:
+      tags: [Agents]
+      summary: Create an agent in the authenticated organization
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentRequest'
+      responses:
+        '201':
+          description: Agent created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+
+  /agents/{agentId}:
+    get:
+      tags: [Agents]
+      summary: Fetch one agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      responses:
+        '200':
+          description: Agent retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '404':
+          description: Agent not found
+
+  /agents/{agentId}/activities:
+    get:
+      tags: [Agents]
+      summary: List activities for an agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 100
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Activities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentActivity'
+    post:
+      tags: [Agents]
+      summary: Record an activity for an agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActivityRequest'
+      responses:
+        '201':
+          description: Activity recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentActivity'
+
+  /assessments:
+    get:
+      tags: [Assessments]
+      summary: List assessments for the authenticated organization
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [pending, running, completed, failed]
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 100
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Assessments retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assessment'
+    post:
+      tags: [Assessments]
+      summary: Submit an assessment job
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentSubmitRequest'
+      responses:
+        '201':
+          description: Assessment accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentSubmitResponse'
+
+  /assessments/{assessmentId}:
+    get:
+      tags: [Assessments]
+      summary: Get assessment job status
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AssessmentId'
+      responses:
+        '200':
+          description: Job status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '404':
+          description: Assessment not found
+
+  /assessments/{assessmentId}/result:
+    get:
+      tags: [Assessments]
+      summary: Get assessment result after completion
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AssessmentId'
+      responses:
+        '200':
+          description: Assessment result retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Assessment not yet completed
 
 components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-          format: email
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-          enum: [admin, user, viewer]
-        createdAt:
-          type: string
-          format: date-time
-
-    Project:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        owner:
-          $ref: '#/components/schemas/User'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 
-tags:
-  - name: Authentication
-    description: Authentication endpoints
-  - name: Users
-    description: User management
-  - name: Projects
-    description: Project management
+  parameters:
+    AgentId:
+      in: path
+      name: agentId
+      required: true
+      schema:
+        type: string
+    AssessmentId:
+      in: path
+      name: assessmentId
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        name:
+          type: string
+        org_name:
+          type: string
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        org_id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum: [admin, operator, viewer]
+    AuthenticatedUser:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            user_id:
+              type: string
+    CreateAgentRequest:
+      type: object
+      required: [name, type]
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum: [mcp, langchain, crewai, custom]
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+        org_id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+        last_activity_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CreateActivityRequest:
+      type: object
+      required: [activity_type, description]
+      properties:
+        activity_type:
+          type: string
+          enum: [tool_call, completion, error, custom]
+        description:
+          type: string
+        input_data:
+          type: object
+          additionalProperties: true
+        output_data:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum: [success, error, pending]
+        duration_ms:
+          type: integer
+        tokens_used:
+          type: integer
+        cost_usd:
+          type: number
+        error_message:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    AgentActivity:
+      type: object
+      properties:
+        id:
+          type: string
+        agent_id:
+          type: string
+        org_id:
+          type: string
+        activity_type:
+          type: string
+        description:
+          type: string
+        input_data:
+          type: object
+          additionalProperties: true
+        output_data:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+        duration_ms:
+          type: integer
+          nullable: true
+        tokens_used:
+          type: integer
+          nullable: true
+        cost_usd:
+          type: number
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    AssessmentSubmitRequest:
+      type: object
+      required: [system_id, system_name, system_info]
+      properties:
+        system_id:
+          type: string
+        system_name:
+          type: string
+        tier:
+          type: string
+          enum: [T1_STANDARD, T2_IDENTITY_CHALLENGE]
+        system_info:
+          type: object
+          additionalProperties: true
+    AssessmentSubmitResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+        assessment_id:
+          type: string
+        status_url:
+          type: string
+    Assessment:
+      type: object
+      properties:
+        id:
+          type: string
+        org_id:
+          type: string
+        system_id:
+          type: string
+        system_name:
+          type: string
+        system_info:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+    JobStatus:
+      type: object
+      properties:
+        job_id:
+          type: string
+        assessment_id:
+          type: string
+        status:
+          type: string
+          enum: [queued, running, completed, failed]
+        progress_percent:
+          type: integer
+        current_phase:
+          type: integer
+        total_phases:
+          type: integer
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        error_message:
+          type: string
+          nullable: true

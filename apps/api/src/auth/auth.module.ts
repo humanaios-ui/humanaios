@@ -8,16 +8,25 @@ import { DatabaseModule } from '../database/database.module';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
+const getJwtConfig = () => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET must be configured');
+  }
+
+  return {
+    secret,
+    signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
+  };
+};
+
 @Module({
   imports: [
     DatabaseModule,
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
-        signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
-      }),
+      useFactory: getJwtConfig,
     }),
   ],
   controllers: [AuthController],

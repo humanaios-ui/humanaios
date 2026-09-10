@@ -15,7 +15,7 @@ from sqlalchemy.dialects import postgresql
 
 # Revision identifiers
 revision = "004_smcu_telemetry"
-down_revision = "003_assessment_jobs_persistence"
+down_revision = "003_assessment_jobs"
 branch_labels = None
 depends_on = None
 

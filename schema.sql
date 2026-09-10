@@ -99,30 +99,32 @@ CREATE TABLE agent_activities (
     id UUID DEFAULT uuid_generate_v4(),
     agent_id UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
     org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
-    timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    type VARCHAR(50) NOT NULL,
-    action VARCHAR(255) NOT NULL,
-    payload JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    activity_type VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    input_data JSONB,
+    output_data JSONB,
     status VARCHAR(50) DEFAULT 'success',
     error_message TEXT,
     cost_usd DECIMAL(10, 6) DEFAULT 0,
     duration_ms INTEGER,
+    tokens_used INTEGER,
     metadata JSONB DEFAULT '{}',
     
-    CONSTRAINT valid_activity_type CHECK (type IN ('tool_call', 'decision', 'error', 'human_request', 'message', 'other')),
+    CONSTRAINT valid_activity_type CHECK (activity_type IN ('tool_call', 'completion', 'error', 'custom')),
     CONSTRAINT valid_status CHECK (status IN ('success', 'error', 'pending'))
 );
 
 -- Convert to TimescaleDB hypertable
-SELECT create_hypertable('agent_activities', 'timestamp', 
+SELECT create_hypertable('agent_activities', 'created_at', 
     chunk_time_interval => INTERVAL '1 day',
     if_not_exists => TRUE
 );
 
 -- Indexes for common queries
-CREATE INDEX idx_agent_activities_agent_id ON agent_activities(agent_id, timestamp DESC);
-CREATE INDEX idx_agent_activities_org_id ON agent_activities(org_id, timestamp DESC);
-CREATE INDEX idx_agent_activities_type ON agent_activities(type, timestamp DESC);
+CREATE INDEX idx_agent_activities_agent_id ON agent_activities(agent_id, created_at DESC);
+CREATE INDEX idx_agent_activities_org_id ON agent_activities(org_id, created_at DESC);
+CREATE INDEX idx_agent_activities_type ON agent_activities(activity_type, created_at DESC);
 
 -- ============================================
 -- HUMAN TASK TABLES

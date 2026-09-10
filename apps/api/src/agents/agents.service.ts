@@ -75,6 +75,7 @@ export class AgentsService {
       description,
       input_data,
       output_data,
+      status,
       duration_ms,
       tokens_used,
       cost_usd,
@@ -84,20 +85,22 @@ export class AgentsService {
 
     const query = `
       INSERT INTO agent_activities (
-        id, agent_id, activity_type, description, input_data, output_data,
-        duration_ms, tokens_used, cost_usd, error_message, metadata, created_at
+        id, agent_id, org_id, activity_type, description, input_data, output_data,
+        status, duration_ms, tokens_used, cost_usd, error_message, metadata, created_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW())
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW())
       RETURNING *
     `;
 
     const values = [
       uuidv4(),
       agentId,
+      orgId,
       activity_type,
       description,
       input_data ? JSON.stringify(input_data) : null,
       output_data ? JSON.stringify(output_data) : null,
+      status || 'success',
       duration_ms || null,
       tokens_used || null,
       cost_usd || null,
@@ -159,10 +162,12 @@ export class AgentsService {
     return {
       id: row.id,
       agent_id: row.agent_id,
+      org_id: row.org_id,
       activity_type: row.activity_type,
       description: row.description,
       input_data: row.input_data,
       output_data: row.output_data,
+      status: row.status,
       duration_ms: row.duration_ms,
       tokens_used: row.tokens_used,
       cost_usd: row.cost_usd ? parseFloat(row.cost_usd) : null,

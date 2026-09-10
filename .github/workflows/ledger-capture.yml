@@ -101,29 +101,12 @@ jobs:
           {"ledger_id": "COMM-CAL-$(date +%Y%m%d-%H%M%S)-AUTO", "ledger_type": "communication_calibration", "timestamp": "$TIMESTAMP", "transaction_id": "auto-captured", "communication_pair": "automation", "assessment_metric": "registry_update", "predicted": {"clarification_rate": "logged communication findings", "confidence": 0.75}, "measured": {"clarification_events": 1, "evidence": "REGISTERED.md entry"}, "substrate": {"implementation": "Automated workflow capture"}, "gap_analysis": {"learning": "Communication patterns auto-detected", "lsm_enriched": false}, "source_artifacts": [], "cross_ledger_refs": {"sync_status": "independent"}}
           EOF
 
-      - name: Commit ledger updates
+      - name: Report ledger updates
         if: steps.detect_patterns.outputs.calibration_relevant == 'true' || steps.detect_patterns.outputs.governance_relevant == 'true' || steps.detect_patterns.outputs.communication_relevant == 'true'
         run: |
-          git config user.name "ledger-capture-bot"
-          git config user.email "noreply@humanaios.ai"
-
-          git add audits/*.jsonl
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore(ledger): Auto-capture measurement entries from registry update
-
-Mechanical capture of predicted vs measured outcomes:
-- Calibration validation patterns detected
-- Governance assessment patterns detected
-- Communication calibration patterns detected
-
-Workflow: ledger-capture.yml (SMAG pattern mirror)
-Timestamp: $(date -u +%Y-%m-%d\ %H:%M:%SZ)"
-
-            git push origin HEAD
-          fi
+          echo "Ledger-relevant patterns detected."
+          echo "This workflow no longer commits or pushes repository changes."
+          echo "Review generated audit files in the workflow logs and apply intentional follow-up changes in a normal PR."
 
       - name: Post PR comment with ledger status
         if: github.event_name == 'pull_request'

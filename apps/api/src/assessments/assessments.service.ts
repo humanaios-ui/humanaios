@@ -36,6 +36,7 @@ export interface AssessmentSubmitRequest {
 @Injectable()
 export class AssessmentsService {
   private readonly logger = new Logger(AssessmentsService.name);
+  private activeJobs: Map<string, JobStatus> = new Map();
   private jobTimeouts: Map<string, NodeJS.Timeout> = new Map(); // Track timeouts for cleanup (in-memory, regenerated per restart)
   private readonly DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
@@ -126,7 +127,7 @@ export class AssessmentsService {
 
     if (result.rows.length > 0) {
       const row = result.rows[0];
-      return {
+      const jobStatus: JobStatus = {
         job_id: row.job_id,
         assessment_id: assessmentId,
         status: row.status,
@@ -136,6 +137,10 @@ export class AssessmentsService {
         started_at: row.started_at,
         completed_at: row.completed_at,
         error_message: row.error_message,
+      };
+      this.activeJobs.set(row.job_id, jobStatus);
+      return {
+        ...jobStatus,
       };
     }
 
@@ -200,6 +205,14 @@ export class AssessmentsService {
     try {
       // Update job status: running
       await this.persistJobStatus(jobId, assessmentId, orgId, 'running', 10, 1);
+      const startedAt = new Date();
+      this.activeJobs.set(jobId, {
+        ...job,
+        status: 'running',
+        progress_percent: 10,
+        current_phase: 1,
+        started_at: startedAt,
+      });
 
       // Fetch assessment
       const assessment = await this.assessmentsRepository.getAssessment(assessmentId, orgId);
@@ -217,6 +230,12 @@ export class AssessmentsService {
 
       // Update job progress
       await this.persistJobStatus(jobId, assessmentId, orgId, 'running', 90, 3);
+      this.activeJobs.set(jobId, {
+        ...this.activeJobs.get(jobId)!,
+        status: 'running',
+        progress_percent: 90,
+        current_phase: 3,
+      });
 
       // Store results
       const resultSummary = {
@@ -435,6 +454,16 @@ export class AssessmentsService {
    */
   async markJobCompleted(jobId: string, assessmentId: string, orgId: string): Promise<void> {
     await this.persistJobStatus(jobId, assessmentId, orgId, 'completed', 100, 3);
+    const existing = this.activeJobs.get(jobId);
+    if (existing) {
+      this.activeJobs.set(jobId, {
+        ...existing,
+        status: 'completed',
+        progress_percent: 100,
+        current_phase: 3,
+        completed_at: new Date(),
+      });
+    }
   }
 
   /**
@@ -442,5 +471,16 @@ export class AssessmentsService {
    */
   async markJobFailed(jobId: string, assessmentId: string, orgId: string, errorMessage: string): Promise<void> {
     await this.persistJobStatus(jobId, assessmentId, orgId, 'failed', 0, 0, errorMessage);
+    const existing = this.activeJobs.get(jobId);
+    if (existing) {
+      this.activeJobs.set(jobId, {
+        ...existing,
+        status: 'failed',
+        progress_percent: 0,
+        current_phase: 0,
+        error_message: errorMessage,
+        completed_at: new Date(),
+      });
+    }
   }
 }

@@ -7,8 +7,4 @@ import { DatabaseModule } from '../database/database.module';
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule {
-  constructor() {
-    console.log('UsersModule initialized');
-  }
-}
+export class UsersModule {}
