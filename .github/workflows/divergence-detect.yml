@@ -45,23 +45,28 @@ jobs:
         id: check
         run: |
           # Get latest commits from both local and forgejo
+          FORGEJO_REF="refs/remotes/forgejo/main"
           LOCAL_SHA=$(git rev-parse HEAD)
-          FORGEJO_SHA=$(git rev-parse forgejo/main 2>/dev/null || echo "")
+          FORGEJO_SHA=""
 
           echo "local_sha=${LOCAL_SHA}" >> $GITHUB_OUTPUT
-          echo "remote_sha=${FORGEJO_SHA}" >> $GITHUB_OUTPUT
 
-          if [ -z "$FORGEJO_SHA" ]; then
+          if ! git show-ref --verify --quiet "$FORGEJO_REF"; then
             echo "ERROR: Could not fetch forgejo/main"
             echo "diverged=unknown" >> $GITHUB_OUTPUT
-            exit 1
+            echo "remote_sha=" >> $GITHUB_OUTPUT
+            echo "commit_count=unavailable" >> $GITHUB_OUTPUT
+            exit 0
           fi
+
+          FORGEJO_SHA=$(git rev-parse "${FORGEJO_REF}^{commit}")
+          echo "remote_sha=${FORGEJO_SHA}" >> $GITHUB_OUTPUT
 
           # Check if they differ
           if [ "$LOCAL_SHA" != "$FORGEJO_SHA" ]; then
             # Calculate commit difference
-            COMMITS_AHEAD=$(git rev-list --count forgejo/main..HEAD)
-            COMMITS_BEHIND=$(git rev-list --count HEAD..forgejo/main)
+            COMMITS_AHEAD=$(git rev-list --count "${FORGEJO_REF}..HEAD")
+            COMMITS_BEHIND=$(git rev-list --count "HEAD..${FORGEJO_REF}")
 
             echo "diverged=true" >> $GITHUB_OUTPUT
             echo "commit_count=${COMMITS_AHEAD} ahead, ${COMMITS_BEHIND} behind" >> $GITHUB_OUTPUT
@@ -97,7 +102,7 @@ jobs:
           ## Commits (Local HEAD..Forgejo)
 
           \`\`\`
-          $(git log --oneline forgejo/main..HEAD | head -20)
+          $(git log --oneline refs/remotes/forgejo/main..HEAD | head -20)
           \`\`\`
 
           ## Recommended Action
@@ -121,7 +126,7 @@ jobs:
             "practice": "humanaios",
             "local_sha": "${{ steps.check.outputs.local_sha }}",
             "remote_sha": "${{ steps.check.outputs.remote_sha }}",
-            "diverged": ${{ steps.check.outputs.diverged }},
+            "diverged": "${{ steps.check.outputs.diverged }}",
             "commit_data": "${{ steps.check.outputs.commit_count }}"
           }
           EOF
