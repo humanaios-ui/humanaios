@@ -121,20 +121,20 @@ learning_trajectory:
 # fully measure holistic epistemic state. Use alongside self-assessment,
 # not as a replacement. See dual-track calibration philosophy in docs.
 grounded_calibration:
-  last_updated: "2026-09-10T09:56:34.810213"
+  last_updated: "2026-09-10T11:16:49.043416"
   ai_id: humanaios
-  observations: 1456
+  observations: 1504
   grounded_coverage: 0.92
   divergence:
     impact: +0.77
     completion: +0.71
     uncertainty: -0.48
-    do: +0.42
-    know: +0.36
-    signal: +0.19
+    do: +0.39
+    know: +0.35
+    signal: +0.18
     change: +0.16
     context: +0.10
-    state: -0.10
+    state: -0.08
     density: -0.07
     clarity: -0.03
   ungrounded: [engagement]
@@ -144,56 +144,56 @@ grounded_calibration:
     completion: -0.25
     impact: -0.25
     uncertainty: +0.25
-    signal: -0.19
+    signal: -0.18
     change: -0.16
     context: -0.10
-    state: +0.10
+    state: +0.08
     density: +0.07
     clarity: +0.03
   phase_weights:
-    noetic: 0.25
-    praxic: 0.75
-    source: tool_classification
-  holistic_calibration_score: 0.2208
+    noetic: 0.5
+    praxic: 0.5
+    source: no_tool_data
+  holistic_calibration_score: 0.1401
   holistic_gaps:
-    uncertainty: -0.4692
-    state: +0.3004
-    know: +0.2800
-    change: +0.2160
-    do: +0.1875
-    context: +0.1700
-    signal: -0.1250
+    signal: -0.3500
+    uncertainty: -0.1638
+    context: -0.1617
+    do: -0.1500
+    know: -0.1050
+    change: -0.0560
+    state: -0.0247
   insights:
-    - vector: do
+    - vector: signal
       phase: both
-      pattern: chronic_overestimate
-      severity: 0.75
-      description: "do overestimated in 5/5 calibrations (mean gap +0.25)"
-      suggestion: "reduce_self_assessment:do"
+      pattern: chronic_underestimate
+      severity: 0.69
+      description: "signal underestimated in 9/10 calibrations (mean gap -0.23)"
+      suggestion: "increase_self_assessment:signal"
     - vector: uncertainty
       phase: both
       pattern: chronic_underestimate
       severity: 1.00
-      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.44)"
+      description: "uncertainty underestimated in 8/8 calibrations (mean gap -0.40)"
       suggestion: "increase_self_assessment:uncertainty"
+    - vector: completion
+      phase: both
+      pattern: evidence_gap
+      severity: 0.63
+      description: "completion has evidence in only 1/10 verifications (mean coverage 0.38)"
+      suggestion: "add_evidence_source:completion"
     - vector: coherence
       phase: both
       pattern: evidence_gap
       severity: 0.70
-      description: "coherence has evidence in only 0/10 verifications (mean coverage 0.46)"
+      description: "coherence has evidence in only 0/10 verifications (mean coverage 0.38)"
       suggestion: "add_evidence_source:coherence"
-    - vector: signal
-      phase: noetic
-      pattern: phase_mismatch
-      severity: 0.72
-      description: "signal gap is 3.4x larger in noetic phase (noetic=0.24, praxic=0.07)"
-      suggestion: "phase_evidence_imbalance:signal:noetic"
-    - vector: uncertainty
-      phase: praxic
-      pattern: phase_mismatch
-      severity: 0.42
-      description: "uncertainty gap is 2.4x larger in praxic phase (noetic=0.26, praxic=0.62)"
-      suggestion: "phase_evidence_imbalance:uncertainty:praxic"
+    - vector: impact
+      phase: both
+      pattern: evidence_gap
+      severity: 0.63
+      description: "impact has evidence in only 1/10 verifications (mean coverage 0.38)"
+      suggestion: "add_evidence_source:impact"
 # Brier calibration (auto-updated by Empirica post-test verification)
 brier_calibration:
   last_updated: "2026-09-10T09:56:30.148494"
