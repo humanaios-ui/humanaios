@@ -86,33 +86,34 @@ task:
 
 
 
+
 # Learning trajectory (PREFLIGHT→POSTFLIGHT deltas — measures learning, NOT calibration bias)
 # For actual bias corrections see grounded_calibration.grounded_bias_corrections
 learning_trajectory:
-  last_updated: "2026-09-10T09:47:39.611581"
+  last_updated: "2026-09-10T09:56:30.079034"
   ai_id: humanaios
-  observations: 369
+  observations: 382
   session_deltas:
-    completion: +0.25
-    change: +0.22
-    do: +0.19
-    state: +0.15
-    clarity: +0.13
-    know: +0.12
-    uncertainty: -0.12
-    coherence: +0.10
-    density: +0.09
-    context: +0.08
-    signal: +0.07
+    completion: +0.10
+    know: +0.07
+    uncertainty: -0.07
     impact: +0.07
     engagement: +0.06
+    clarity: +0.04
+    context: +0.04
+    change: +0.03
+    signal: +0.03
+    do: -0.01
+    density: -0.01
+    coherence: +0.00
+    state: +0.00
   readiness:
     min_know: 0.70
     max_uncertainty: 0.35
   summary:
-    overestimates: [uncertainty]
-    underestimates: [completion, change, state, coherence, clarity, do, know]
-    well_calibrated: [impact, density, signal, context, engagement]
+    overestimates: []
+    underestimates: [completion]
+    well_calibrated: [uncertainty, impact, change, state, density]
 
 # Grounded calibration (auto-updated by Empirica post-test verification)
 # NOTE: These scores are drift indicators from deterministic proxies, not
@@ -120,20 +121,20 @@ learning_trajectory:
 # fully measure holistic epistemic state. Use alongside self-assessment,
 # not as a replacement. See dual-track calibration philosophy in docs.
 grounded_calibration:
-  last_updated: "2026-09-10T09:47:40.903667"
+  last_updated: "2026-09-10T09:56:34.810213"
   ai_id: humanaios
-  observations: 1426
+  observations: 1456
   grounded_coverage: 0.92
   divergence:
     impact: +0.77
-    completion: +0.70
+    completion: +0.71
     uncertainty: -0.48
     do: +0.42
-    know: +0.37
-    signal: +0.20
-    change: +0.15
-    state: -0.12
+    know: +0.36
+    signal: +0.19
+    change: +0.16
     context: +0.10
+    state: -0.10
     density: -0.07
     clarity: -0.03
   ungrounded: [engagement]
@@ -143,79 +144,79 @@ grounded_calibration:
     completion: -0.25
     impact: -0.25
     uncertainty: +0.25
-    signal: -0.20
-    change: -0.15
-    state: +0.12
+    signal: -0.19
+    change: -0.16
     context: -0.10
+    state: +0.10
     density: +0.07
     clarity: +0.03
   phase_weights:
-    noetic: 0.3333
-    praxic: 0.6667
+    noetic: 0.25
+    praxic: 0.75
     source: tool_classification
-  holistic_calibration_score: 0.1632
+  holistic_calibration_score: 0.2208
   holistic_gaps:
-    uncertainty: -0.3562
-    know: +0.2767
-    state: +0.1939
-    signal: -0.1667
-    do: +0.1667
-    change: +0.1621
-    context: +0.1428
+    uncertainty: -0.4692
+    state: +0.3004
+    know: +0.2800
+    change: +0.2160
+    do: +0.1875
+    context: +0.1700
+    signal: -0.1250
   insights:
-    - vector: know
-      phase: both
-      pattern: chronic_overestimate
-      severity: 0.60
-      description: "know overestimated in 8/10 calibrations (mean gap +0.20)"
-      suggestion: "reduce_self_assessment:know"
     - vector: do
       phase: both
       pattern: chronic_overestimate
-      severity: 0.58
-      description: "do overestimated in 5/6 calibrations (mean gap +0.19)"
+      severity: 0.75
+      description: "do overestimated in 5/5 calibrations (mean gap +0.25)"
       suggestion: "reduce_self_assessment:do"
-    - vector: state
-      phase: both
-      pattern: chronic_underestimate
-      severity: 0.70
-      description: "state underestimated in 5/6 calibrations (mean gap -0.23)"
-      suggestion: "increase_self_assessment:state"
     - vector: uncertainty
       phase: both
       pattern: chronic_underestimate
       severity: 1.00
-      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.43)"
+      description: "uncertainty underestimated in 10/10 calibrations (mean gap -0.44)"
       suggestion: "increase_self_assessment:uncertainty"
-    - vector: clarity
+    - vector: coherence
       phase: both
-      pattern: chronic_underestimate
-      severity: 0.46
-      description: "clarity underestimated in 5/5 calibrations (mean gap -0.15)"
-      suggestion: "increase_self_assessment:clarity"
+      pattern: evidence_gap
+      severity: 0.70
+      description: "coherence has evidence in only 0/10 verifications (mean coverage 0.46)"
+      suggestion: "add_evidence_source:coherence"
+    - vector: signal
+      phase: noetic
+      pattern: phase_mismatch
+      severity: 0.72
+      description: "signal gap is 3.4x larger in noetic phase (noetic=0.24, praxic=0.07)"
+      suggestion: "phase_evidence_imbalance:signal:noetic"
+    - vector: uncertainty
+      phase: praxic
+      pattern: phase_mismatch
+      severity: 0.42
+      description: "uncertainty gap is 2.4x larger in praxic phase (noetic=0.26, praxic=0.62)"
+      suggestion: "phase_evidence_imbalance:uncertainty:praxic"
 # Brier calibration (auto-updated by Empirica post-test verification)
 brier_calibration:
-  last_updated: "2026-09-10T09:47:39.646668"
+  last_updated: "2026-09-10T09:56:30.148494"
   ai_id: humanaios
   note: "Murphy (1973) decomposition: BS = Reliability - Resolution + Uncertainty"
   noetic:
-    brier_score: 0.0968
-    reliability: 0.0667
-    resolution: 0.0124
-    uncertainty: 0.0426
+    brier_score: 0.0900
+    reliability: 0.0622
+    resolution: 0.0132
+    uncertainty: 0.0411
     n_predictions: 50
     trend: improving
   praxic:
-    brier_score: 0.1971
-    reliability: 0.0949
-    resolution: 0.0212
-    uncertainty: 0.1233
-    n_predictions: 50
-    trend: degrading
-  combined:
-    brier_score: 0.1762
-    reliability: 0.0655
-    resolution: 0.0139
-    uncertainty: 0.1246
+    brier_score: 0.1898
+    reliability: 0.0885
+    resolution: 0.0197
+    uncertainty: 0.1210
     n_predictions: 50
     trend: stable
+  combined:
+    brier_score: 0.1517
+    reliability: 0.0536
+    resolution: 0.0078
+    uncertainty: 0.1060
+    n_predictions: 50
+    trend: improving
