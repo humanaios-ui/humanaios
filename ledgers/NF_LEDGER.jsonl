@@ -1,0 +1,4 @@
+{"type": "PIN", "target": "quality_forecast", "predictor": "specimen-intake-c1", "p": 0.75, "at": "2026-09-10T21:09:18.083653+00:00", "molt_id": null, "prediction_id": "molt-rq1-quality-intake-SPC-01-c1-1789257600.0"}
+{"type": "PIN", "target": "acceptance_rate_forecast", "predictor": "specimen-intake-c1", "p": 0.85, "at": "2026-09-10T21:09:18.083657+00:00", "molt_id": null, "prediction_id": "molt-rq3-acceptance-intake-SPC-01-c1-1789257600.0"}
+{"type": "PIN", "target": "quality_forecast", "predictor": "specimen-intake-c1", "p": 0.75, "at": "2026-09-10T21:09:18.087697+00:00", "molt_id": null, "prediction_id": "molt-rq1-quality-intake-SPC-01-c1-1789257600.0"}
+{"type": "PIN", "target": "acceptance_rate_forecast", "predictor": "specimen-intake-c1", "p": 0.85, "at": "2026-09-10T21:09:18.087700+00:00", "molt_id": null, "prediction_id": "molt-rq3-acceptance-intake-SPC-01-c1-1789257600.0"}
