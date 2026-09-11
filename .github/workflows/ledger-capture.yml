@@ -106,7 +106,18 @@ jobs:
         run: |
           echo "Ledger-relevant patterns detected."
           echo "This workflow no longer commits or pushes repository changes."
-          echo "Review generated audit files in the workflow logs and apply intentional follow-up changes in a normal PR."
+          echo "Generated audit files are uploaded as a workflow artifact for review."
+
+      - name: Upload generated audit files
+        if: steps.detect_patterns.outputs.calibration_relevant == 'true' || steps.detect_patterns.outputs.governance_relevant == 'true' || steps.detect_patterns.outputs.communication_relevant == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ledger-capture-audits-${{ github.run_id }}
+          path: |
+            audits/calibration_validation_ledger.jsonl
+            audits/governance_assessment_ledger.jsonl
+            audits/communication_calibration_ledger.jsonl
+          if-no-files-found: warn
 
       - name: Post PR comment with ledger status
         if: github.event_name == 'pull_request'
@@ -122,14 +133,14 @@ jobs:
 
             const comment = `## 📊 Ledger Capture Summary
 
-**Predicted vs Measured Outcomes Tracked:**
-- Calibration Validation: ${calibrationCount} entries
-- Governance Assessment: ${governanceCount} entries
-- Communication Calibration: ${commCount} entries
+            **Predicted vs Measured Outcomes Tracked:**
+            - Calibration Validation: ${calibrationCount} entries
+            - Governance Assessment: ${governanceCount} entries
+            - Communication Calibration: ${commCount} entries
 
-[View ledgers](/audits/) for full transaction records.
+            [View ledgers](/audits/) for full transaction records.
 
-Mirror of [SMAG pilot ledger pattern](https://github.com/humanaios-ui/operations/issues/103). Cross-linked with operations repo for ecosystem-wide learning.`;
+            Mirror of [SMAG pilot ledger pattern](https://github.com/humanaios-ui/operations/issues/103). Cross-linked with operations repo for ecosystem-wide learning.`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
