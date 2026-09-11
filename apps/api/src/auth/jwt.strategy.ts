@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
@@ -20,12 +20,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     const user = await this.usersService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('User is not active or no longer exists');
+    }
+
     return {
-      id: payload.sub,
-      user_id: payload.sub,
-      email: payload.email,
-      role: user?.role ?? payload.role,
-      org_id: user?.org_id ?? payload.org_id,
+      id: user.id,
+      user_id: user.id,
+      email: user.email,
+      role: user.role,
+      org_id: user.org_id,
     };
   }
 }

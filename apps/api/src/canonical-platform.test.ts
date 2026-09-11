@@ -20,7 +20,7 @@ test('AuthController delegates register, login, and verify to the canonical auth
   };
 
   const controller = new AuthController(authService as any);
-  const createUserDto = { email: 'test@example.com', password: 'pw', name: 'Test' };
+  const createUserDto = { email: 'test@example.com', password: 'pw', name: 'Test', org_name: 'Test Org' };
   const user = { id: 'user-1', org_id: 'org-1', email: 'test@example.com', role: 'admin' };
 
   const registerResponse = await controller.register(createUserDto);

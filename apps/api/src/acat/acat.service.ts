@@ -24,6 +24,7 @@ import { Assessment, EpistemicArtifact, CalibrationVectors } from '../assessment
 import { AssessmentsRepository } from '../assessments/assessments.repository';
 import { ACATPromptTemplateService } from './acat-prompt-templates';
 import { ACATFlagDetector } from './acat-flag-detector';
+import { ACATSystemClient } from './acat-system-client';
 
 @Injectable()
 export class ACATService {
@@ -33,7 +34,8 @@ export class ACATService {
     @Inject('DATABASE_POOL') private pool: Pool,
     private assessmentsRepository: AssessmentsRepository,
     private promptTemplates: ACATPromptTemplateService,
-    private flagDetector: ACATFlagDetector
+    private flagDetector: ACATFlagDetector,
+    private systemClient: ACATSystemClient
   ) {}
 
   /**
@@ -279,7 +281,7 @@ export class ACATService {
 
       // Step implementations will be added in next phase
       // For now, scaffold with placeholder logic
-      result.output = this.executeStepLogic(stepNumber, assessment, protocolRun);
+      result.output = await this.executeStepLogic(stepNumber, assessment, protocolRun);
       result.duration_ms = Date.now() - stepStart;
 
       this.logger.debug(`[${assessment.id}] Step ${stepNumber} completed (${result.duration_ms}ms)`);
@@ -295,11 +297,11 @@ export class ACATService {
    * Execute step-specific logic
    * Integrates system communication, prompt templates, and behavioral validation
    */
-  private executeStepLogic(
+  private async executeStepLogic(
     stepNumber: number,
     assessment: Assessment,
     protocolRun: ACATProtocolRun
-  ): Record<string, any> {
+  ): Promise<Record<string, any>> {
     switch (stepNumber) {
       case 1:
         // Collect system info (already in assessment)
@@ -307,17 +309,35 @@ export class ACATService {
 
       case 2:
         // Verify connectivity to system
-        return { connectivity_verified: true, endpoint: assessment.system_info?.endpoint };
+        const connectivityResponse = await this.systemClient.callSystem(
+          this.buildSystemConfig(assessment),
+          'Connectivity check: reply exactly with "ok".'
+        );
+        return {
+          connectivity_verified: true,
+          endpoint: assessment.system_info?.endpoint || assessment.system_info?.api_endpoint,
+          model: connectivityResponse.model,
+          duration_ms: connectivityResponse.duration_ms,
+        };
 
-      case 3:
+      case 3: {
         // Generate Phase 1 prompt (de-anchored, no numeric anchors)
         const phase1Prompt = this.promptTemplates.getPrompt(1, assessment.system_info?.name || 'AI System');
         return { prompt_generated: true, prompt: phase1Prompt, phase: 1 };
+      }
 
-      case 4:
+      case 4: {
+        const phase1Prompt = this.promptTemplates.getPrompt(1, assessment.system_info?.name || 'AI System');
+        const phase1Response = await this.systemClient.callSystem(
+          this.buildSystemConfig(assessment),
+          phase1Prompt
+        );
         return {
-          scores: this.generateDeterministicScores(assessment, 1),
+          scores: this.extractScoresFromSystemText(phase1Response.text),
+          raw_response: phase1Response.text,
+          model: phase1Response.model,
         };
+      }
 
       case 6:
         // Validate Phase 1 for behavioral flags
@@ -331,20 +351,30 @@ export class ACATService {
         }
         return { flags: [] };
 
-      case 9:
+      case 9: {
         // Generate calibration data (Phase 2)
         const phase2Prompt = this.promptTemplates.getPrompt(2, assessment.system_info?.name || 'AI System');
         return { calibration_prompt: phase2Prompt, calibration_data_points: 7 };
+      }
 
-      case 11:
+      case 11: {
         // Generate Phase 3 prompt (mirrors Phase 1, informed by calibration)
         const phase3Prompt = this.promptTemplates.getPrompt(3, assessment.system_info?.name || 'AI System');
         return { prompt_generated: true, prompt: phase3Prompt, phase: 3 };
+      }
 
-      case 12:
+      case 12: {
+        const phase3Prompt = this.promptTemplates.getPrompt(3, assessment.system_info?.name || 'AI System');
+        const phase3Response = await this.systemClient.callSystem(
+          this.buildSystemConfig(assessment),
+          phase3Prompt
+        );
         return {
-          scores: this.generateDeterministicScores(assessment, 3),
+          scores: this.extractScoresFromSystemText(phase3Response.text),
+          raw_response: phase3Response.text,
+          model: phase3Response.model,
         };
+      }
 
       case 14:
         // Validate Phase 3 for behavioral flags and compare with Phase 1
@@ -396,6 +426,62 @@ export class ACATService {
     }
 
     return scores as DimensionScores;
+  }
+
+  private buildSystemConfig(assessment: Assessment): {
+    type: 'http-api' | 'local-model' | 'mcp';
+    endpoint?: string;
+    model?: string;
+    api_key?: string;
+  } {
+    const systemInfo = assessment.system_info || {};
+    const endpoint = systemInfo.endpoint || systemInfo.api_endpoint;
+    const model = systemInfo.model || systemInfo.model_name;
+    const api_key = systemInfo.api_key || systemInfo.authentication?.api_key;
+    const provider = String(systemInfo.provider || '').toLowerCase();
+    const type: 'http-api' | 'local-model' | 'mcp' =
+      systemInfo.type === 'mcp'
+        ? 'mcp'
+        : systemInfo.type === 'local-model' || provider === 'local' || provider === 'ollama'
+          ? 'local-model'
+          : 'http-api';
+
+    const inferredEndpoint =
+      endpoint ||
+      (api_key && provider === 'anthropic'
+        ? 'https://api.anthropic.com/v1/messages'
+        : api_key
+          ? 'https://api.openai.com/v1/chat/completions'
+          : undefined);
+
+    return {
+      type,
+      endpoint: inferredEndpoint,
+      model,
+      api_key,
+    };
+  }
+
+  private extractScoresFromSystemText(text: string): DimensionScores {
+    const jsonBlockMatch = text.match(/```json\s*([\s\S]*?)```/i);
+    const candidate = jsonBlockMatch ? jsonBlockMatch[1] : text;
+
+    let parsed: Record<string, any>;
+    try {
+      parsed = JSON.parse(candidate);
+    } catch {
+      throw new BadRequestException('ACAT response must be valid JSON containing all 12 dimension scores');
+    }
+
+    const normalized = Object.fromEntries(
+      Object.entries(parsed).map(([key, value]) => [key.toLowerCase(), value])
+    );
+
+    const scores = Object.fromEntries(
+      ACAT_DIMENSIONS.map((dimension) => [dimension, normalized[String(dimension).toLowerCase()]])
+    );
+
+    return this.parseScoresFromResponse({ scores });
   }
 
   /**
@@ -454,7 +540,7 @@ export class ACATService {
     if (protocolRun.phase_1) {
       await this.assessmentsRepository.createArtifact(assessmentId, {
         finding: 'Phase 1 baseline scores recorded',
-        description: 'Deterministic Phase 1 score set persisted for assessment review',
+        description: 'Phase 1 score set persisted from assessed system response',
         confidence: 0.9,
         impact: 0.7,
         scores: protocolRun.phase_1.scores,
@@ -464,7 +550,7 @@ export class ACATService {
     if (protocolRun.phase_3) {
       await this.assessmentsRepository.createArtifact(assessmentId, {
         finding: 'Phase 3 post-calibration scores recorded',
-        description: 'Deterministic Phase 3 score set persisted for assessment review',
+        description: 'Phase 3 score set persisted from assessed system response',
         confidence: 0.9,
         impact: 0.8,
         scores: protocolRun.phase_3.scores,
@@ -496,23 +582,4 @@ export class ACATService {
     return createHash('sha256').update(json).digest('hex');
   }
 
-  private generateDeterministicScores(
-    assessment: Assessment,
-    phase: 1 | 3
-  ): DimensionScores {
-    const seedBase = `${assessment.system_id}:${assessment.system_name}:${phase}`;
-
-    return Object.fromEntries(
-      ACAT_DIMENSIONS.map((dimension, index) => {
-        const hash = createHash('sha256')
-          .update(`${seedBase}:${dimension}:${index}`)
-          .digest('hex');
-        const rawScore = 45 + (parseInt(hash.slice(0, 8), 16) % 36);
-        const phaseAdjustedScore =
-          phase === 3 ? Math.max(0, Math.min(100, rawScore - 8)) : rawScore;
-
-        return [dimension, phaseAdjustedScore];
-      })
-    ) as unknown as DimensionScores;
-  }
 }

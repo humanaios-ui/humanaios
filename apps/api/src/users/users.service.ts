@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcrypt';
 import { DATABASE_POOL } from '../database/database.module';
@@ -34,25 +34,24 @@ export class UsersService {
       // Hash password
       const password_hash = await bcrypt.hash(password, 10);
 
-      // Create organization if new signup
-      let org_id: string;
-      if (org_name) {
-        const slug = org_name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-|-$/g, '');
-
-        const orgResult = await client.query(
-          `INSERT INTO organizations (name, slug, plan) 
-           VALUES ($1, $2, 'free') 
-           RETURNING id`,
-          [org_name, slug]
-        );
-        org_id = orgResult.rows[0].id;
-      } else {
-        // Use demo org for now
-        org_id = '00000000-0000-0000-0000-000000000001';
+      if (!org_name?.trim()) {
+        throw new BadRequestException('org_name is required');
       }
+
+      // Create organization for signup
+      const normalizedOrgName = org_name.trim();
+      const slug = normalizedOrgName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      const orgResult = await client.query(
+        `INSERT INTO organizations (name, slug, plan) 
+         VALUES ($1, $2, 'free') 
+         RETURNING id`,
+        [normalizedOrgName, slug]
+      );
+      const org_id = orgResult.rows[0].id;
 
       // Create user
       const userResult = await client.query(

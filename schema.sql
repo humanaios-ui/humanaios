@@ -206,13 +206,13 @@ CREATE MATERIALIZED VIEW daily_costs AS
 SELECT 
     org_id,
     agent_id,
-    DATE(timestamp) as date,
+    DATE(created_at) as date,
     SUM(cost_usd) as total_cost,
     COUNT(*) as activity_count,
     AVG(duration_ms) as avg_duration_ms
 FROM agent_activities
 WHERE status = 'success'
-GROUP BY org_id, agent_id, DATE(timestamp);
+GROUP BY org_id, agent_id, DATE(created_at);
 
 CREATE UNIQUE INDEX idx_daily_costs_unique ON daily_costs(org_id, agent_id, date);
 
@@ -335,7 +335,7 @@ SELECT
     (SELECT COUNT(*) FROM organizations) as total_orgs,
     (SELECT COUNT(*) FROM users WHERE is_active = true) as active_users,
     (SELECT COUNT(*) FROM agents WHERE status = 'active') as active_agents,
-    (SELECT COUNT(*) FROM agent_activities WHERE timestamp > NOW() - INTERVAL '1 hour') as activities_last_hour,
+    (SELECT COUNT(*) FROM agent_activities WHERE created_at > NOW() - INTERVAL '1 hour') as activities_last_hour,
     (SELECT COUNT(*) FROM human_tasks WHERE status IN ('pending', 'approved', 'assigned', 'in_progress')) as active_tasks;
 
 -- ============================================
