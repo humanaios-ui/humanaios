@@ -96,7 +96,7 @@ humanaios/
 
 ## Quick Start (Local Dev Only)
 
-Prerequisites: Node.js 18+, PostgreSQL 14+, Redis
+Prerequisites: Node.js 18+, PostgreSQL 14+ with TimescaleDB extension, Redis
 
 ```bash
 git clone https://github.com/humanaios-ui/humanaios.git
