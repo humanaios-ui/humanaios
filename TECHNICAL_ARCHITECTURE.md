@@ -68,9 +68,9 @@
 ### Backend
 - **Runtime**: Node.js 20+ (TypeScript)
 - **Framework**: NestJS (enterprise-grade, modular architecture)
-- **API**: REST + GraphQL (Apollo Server)
-- **Authentication**: JWT + OAuth 2.0
-- **Real-time**: WebSockets (Socket.io)
+- **API**: REST under `/apps/api` with `/api/v1` path versioning
+- **Authentication**: JWT on the canonical Nest API path
+- **Real-time**: Redis-backed infrastructure; SSE/WebSocket work remains phased
 
 ### Database
 - **Primary**: PostgreSQL 15+ (relational data, ACID compliance)
@@ -79,11 +79,10 @@
 - **Search**: PostgreSQL Full-Text (initial), Elasticsearch (later)
 
 ### Frontend
-- **Framework**: Next.js 14+ (React, Server Components)
-- **UI Library**: shadcn/ui + Tailwind CSS
-- **State Management**: Zustand + React Query
-- **Charts**: Recharts + D3.js
-- **Real-time**: Socket.io client
+- **Canonical app**: Vite + React + TypeScript under `/apps/humanaios-ui`
+- **UI focus**: waveform visualization and marker monitoring
+- **State Management**: local React state in current implementation
+- **Real-time**: EventSource/SSE client in current implementation
 
 ### Mobile (Phase 2)
 - **Framework**: React Native + Expo
@@ -181,25 +180,23 @@
 GET    /api/v1/agents                    # List all agents
 POST   /api/v1/agents                    # Register new agent
 GET    /api/v1/agents/:id                # Get agent details
+POST   /api/v1/agents/:id/activities     # Record activity
 GET    /api/v1/agents/:id/activities     # Get activity log
-GET    /api/v1/agents/:id/metrics        # Get performance metrics
 ```
 
-### Human Tasks
+### Authentication
 ```
-GET    /api/v1/tasks                     # List all tasks
-POST   /api/v1/tasks                     # Create task
-GET    /api/v1/tasks/:id                 # Get task details
-PATCH  /api/v1/tasks/:id                 # Update task
-POST   /api/v1/tasks/:id/approve         # Approve pending task
-POST   /api/v1/tasks/:id/complete        # Mark task complete
+POST   /api/v1/auth/register             # Register and issue access token
+POST   /api/v1/auth/login                # Login and issue access token
+POST   /api/v1/auth/verify               # Verify current bearer token
 ```
 
-### Analytics
+### Assessments
 ```
-GET    /api/v1/analytics/costs           # Cost breakdown
-GET    /api/v1/analytics/performance     # Performance metrics
-GET    /api/v1/analytics/tasks           # Task completion rates
+POST   /api/v1/assessments               # Submit ACAT assessment
+GET    /api/v1/assessments               # List organization assessments
+GET    /api/v1/assessments/:id           # Poll assessment status
+GET    /api/v1/assessments/:id/result    # Retrieve completed result
 ```
 
 ---

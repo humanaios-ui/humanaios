@@ -1,7 +1,7 @@
 {
   "name": "humanaios-auth",
   "version": "1.0.0",
-  "description": "Authentication system for HumanAIOS - Physical execution layer for AI agents",
+  "description": "Deprecated legacy authentication scaffold retained for reference; apps/api is the canonical runtime",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

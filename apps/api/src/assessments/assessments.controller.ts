@@ -3,10 +3,22 @@
  * HTTP API for assessment submission and status polling
  */
 
-import { Controller, Post, Get, Body, Param, BadRequestException, NotFoundException, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  BadRequestException,
+  NotFoundException,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AssessmentsService, AssessmentSubmitRequest } from './assessments.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@Controller('api/v1/assessments')
+@Controller('assessments')
+@UseGuards(JwtAuthGuard)
 export class AssessmentsController {
   constructor(private assessmentsService: AssessmentsService) {}
 
@@ -34,9 +46,9 @@ export class AssessmentsController {
    */
   @Post()
   async submitAssessment(@Body() request: AssessmentSubmitRequest, @Req() req: any) {
-    const orgId = req.user?.org_id ?? req.headers?.['x-org-id'];
+    const orgId = req.user?.org_id;
     if (!orgId) {
-      throw new BadRequestException('Missing org id (JWT user org_id or X-Org-ID header)');
+      throw new BadRequestException('Missing org_id in authenticated user context');
     }
     return this.assessmentsService.submitAssessment(orgId, request);
   }
@@ -58,7 +70,10 @@ export class AssessmentsController {
    */
   @Get(':id')
   async getAssessmentStatus(@Param('id') assessmentId: string, @Req() req: any) {
-    const orgId = req.user?.org_id || 'default-org';
+    const orgId = req.user?.org_id;
+    if (!orgId) {
+      throw new BadRequestException('Missing org_id in authenticated user context');
+    }
     const jobStatus = await this.assessmentsService.getJobStatus(assessmentId, orgId);
 
     if (!jobStatus) {
@@ -85,7 +100,10 @@ export class AssessmentsController {
    */
   @Get(':id/result')
   async getAssessmentResult(@Param('id') assessmentId: string, @Req() req: any) {
-    const orgId = req.user?.org_id || 'default-org';
+    const orgId = req.user?.org_id;
+    if (!orgId) {
+      throw new BadRequestException('Missing org_id in authenticated user context');
+    }
     return this.assessmentsService.getAssessmentResult(assessmentId, orgId);
   }
 
@@ -100,10 +118,13 @@ export class AssessmentsController {
    */
   @Get()
   async listAssessments(@Req() req: any) {
-    const orgId = req.user?.org_id || 'default-org';
+    const orgId = req.user?.org_id;
+    if (!orgId) {
+      throw new BadRequestException('Missing org_id in authenticated user context');
+    }
     const status = req.query.status;
-    const limit = parseInt(req.query.limit) || 100;
-    const offset = parseInt(req.query.offset) || 0;
+    const limit = parseInt(req.query.limit, 10) || 100;
+    const offset = parseInt(req.query.offset, 10) || 0;
 
     return this.assessmentsService.listAssessments(orgId, status, limit, offset);
   }

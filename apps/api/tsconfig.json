@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["node"],
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "useUnknownInCatchVariables": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/asc-gateway/**/*",
+    "src/acat/track2/**/*",
+    "src/acat/acat-system-client.ts"
+  ]
+}

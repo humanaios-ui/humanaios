@@ -9,8 +9,12 @@ updates:
   - package-ecosystem: "npm"
     directories:
       - "/apps/api"
+      - "/apps/humanaios-ui"
+      - "/api-docs"
+      - "/load-tests"
+      - "/packages/email-service"
       - "/packages/mcp-sdk"
-      - "/src/auth-system"
+      - "/packages/token-service"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5

@@ -1,61 +1,62 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
-import { CreateAgentDto, LogActivityDto } from './agent.entity';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { AgentsService } from './agents.service';
+import { CreateAgentDto, CreateActivityDto } from './agent.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('agents')
+@UseGuards(JwtAuthGuard)
 export class AgentsController {
-  constructor() {}
+  constructor(private readonly agentsService: AgentsService) {}
 
   @Post()
-  async createAgent(@Body() createAgentDto: CreateAgentDto) {
-    // Bypass service - return mock for SDK testing
-    return {
-      id: 'agent-' + Date.now(),
-      name: createAgentDto.name,
-      type: createAgentDto.type,
-      description: createAgentDto.description,
-      status: 'active',
-      created_at: new Date().toISOString(),
-      user_id: 'test-user-id',
-    };
+  async create(@Request() req, @Body() createAgentDto: CreateAgentDto) {
+    return this.agentsService.createAgent(req.user.org_id, createAgentDto);
   }
 
   @Get()
-  async getAgents() {
-    return [];
+  async findAll(@Request() req) {
+    return this.agentsService.findAllByOrg(req.user.org_id);
   }
 
   @Get(':id')
-  async getAgent(@Param('id') id: string) {
-    return {
-      id: id,
-      name: 'Mock Agent',
-      type: 'test',
-      status: 'active',
-      created_at: new Date().toISOString(),
-    };
+  async findOne(@Request() req, @Param('id') id: string) {
+    return this.agentsService.findOne(id, req.user.org_id);
   }
 
   @Post(':id/activities')
-  async logActivity(
+  async createActivity(
+    @Request() req,
     @Param('id') agentId: string,
-    @Body() logActivityDto: LogActivityDto
+    @Body() createActivityDto: CreateActivityDto
   ) {
-    return {
-      id: 'activity-' + Date.now(),
-      agent_id: agentId,
-      activity_type: logActivityDto.activity_type,
-      description: logActivityDto.description,
-      metadata: logActivityDto.metadata,
-      created_at: new Date().toISOString(),
-    };
+    return this.agentsService.createActivity(
+      agentId,
+      req.user.org_id,
+      createActivityDto
+    );
   }
 
   @Get(':id/activities')
-  async getActivities(
+  async findActivities(
+    @Request() req,
     @Param('id') agentId: string,
-    @Query('limit') limit?: number,
-    @Query('offset') offset?: number
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string
   ) {
-    return [];
+    return this.agentsService.findActivities(
+      agentId,
+      req.user.org_id,
+      limit ? parseInt(limit, 10) : 100,
+      offset ? parseInt(offset, 10) : 0
+    );
   }
 }
