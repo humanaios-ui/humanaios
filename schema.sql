@@ -111,8 +111,8 @@ CREATE TABLE agent_activities (
     tokens_used INTEGER,
     metadata JSONB DEFAULT '{}',
     
-    CONSTRAINT valid_activity_type CHECK (activity_type IN ('tool_call', 'completion', 'error', 'custom')),
-    CONSTRAINT valid_status CHECK (status IN ('success', 'error', 'pending'))
+    CONSTRAINT valid_activity_type CHECK (activity_type IN ('tool_call', 'completion', 'error', 'custom', 'llm_request', 'task_complete')),
+    CONSTRAINT valid_status CHECK (status IN ('success', 'error', 'pending', 'failed'))
 );
 
 -- Convert to TimescaleDB hypertable
