@@ -110,7 +110,7 @@ jobs:
 
       - name: Upload generated audit files
         if: steps.detect_patterns.outputs.calibration_relevant == 'true' || steps.detect_patterns.outputs.governance_relevant == 'true' || steps.detect_patterns.outputs.communication_relevant == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ledger-capture-audits-${{ github.run_id }}
           path: |
