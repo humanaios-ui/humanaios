@@ -7,7 +7,7 @@
     "dev": "tsx watch src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
-    "test": "tsx --test \"src/**/*.test.ts\" \"src/**/*.spec.ts\"",
+    "test": "find src \\( -name '*.test.ts' -o -name '*.spec.ts' \\) -print0 | xargs -0 tsx --test",
     "lint": "eslint src --ext .ts",
     "migrate": "tsx src/database/migrate.ts",
     "seed": "tsx src/database/seed.ts"
