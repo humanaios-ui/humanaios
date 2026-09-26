@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<!-- Accessibility fix (prototype A5): zoom is NOT disabled -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HumanAIOS · Operations Console — S-082226</title>
+<style>
+  :root{
+    --void:#0b0f17; --slab:#141a26; --slab2:#1b2333; --line:#263243;
+    --ink:#dfe7f0; --dim:#7d8ba0;
+    --verified:#57d1b0;  /* attested / pass */
+    --pending:#e0a94a;   /* Z2 pending */
+    --phantom:#ef6f6c;   /* phantom / unremediated */
+    --candidate:#b28cf0; /* discovery lane */
+    --seal:#d4b483;      /* provenance stamp */
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --disp:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--void);color:var(--ink);font-family:var(--mono);font-size:14px;line-height:1.55;min-height:100vh}
+  a{color:var(--verified)}
+  ::selection{background:rgba(87,209,176,.25)}
+  :focus-visible{outline:2px solid var(--verified);outline-offset:2px}
+
+  /* ---- status bar ---- */
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:10px 18px;background:linear-gradient(180deg,#101725,#0d131f);border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:40}
+  .wordmark{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;font-size:16px}
+  .wordmark span{color:var(--verified)}
+  .headline{font-size:11.5px;letter-spacing:.04em}
+  .hchip{display:inline-block;padding:2px 7px;border-radius:4px;margin-left:6px;border:1px solid currentColor}
+  .hchip.bad{color:var(--phantom)} .hchip.warn{color:var(--pending)} .hchip.ok{color:var(--verified)}
+  .sid{color:var(--dim);font-size:11px}
+
+  /* ---- shell ---- */
+  .shell{display:grid;grid-template-columns:1fr;max-width:1240px;margin:0 auto}
+  @media(min-width:940px){.shell{grid-template-columns:196px 1fr}}
+
+  /* ---- zone spine ---- */
+  .spine{border-right:1px solid var(--line);padding:18px 14px;background:#0c111b}
+  .spine h2{font-family:var(--disp);font-size:10px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+  .zone{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:6px;background:var(--slab)}
+  .zone .zid{font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.02em}
+  .zone .zrole{color:var(--dim);font-size:10.5px;margin-top:2px}
+  .zone .zcount{float:right;color:var(--verified);font-size:12px}
+  .gate{display:flex;align-items:center;gap:8px;padding:6px 4px 6px 10px;font-size:11px;color:var(--dim)}
+  .gate .glz{width:2px;height:22px;background:var(--line);margin-left:5px}
+  .gate.phantom{color:var(--phantom)}
+  .gate .gicon{width:9px;height:9px;border-radius:2px;border:1px solid currentColor}
+  .gate.phantom .gicon{border-style:dashed}
+  .gate.live .gicon{background:var(--verified);border-color:var(--verified)}
+  .gate.live{color:var(--verified)}
+
+  /* ---- main ---- */
+  .main{padding:18px 20px 60px;min-width:0}
+  .tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .tab{font-family:var(--mono);font-size:12px;color:var(--dim);background:transparent;border:1px solid transparent;
+    padding:6px 11px;border-radius:6px;cursor:pointer}
+  .tab:hover{color:var(--ink);background:var(--slab)}
+  .tab[aria-selected="true"]{color:var(--void);background:var(--verified);font-weight:600}
+  .panel{display:none;animation:fade .3s ease}
+  .panel.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  h3.disp{font-family:var(--disp);font-weight:800;letter-spacing:-.01em;font-size:22px;margin-bottom:4px}
+  .lede{color:var(--dim);font-size:13px;margin-bottom:18px;max-width:64ch}
+  .eyebrow{font-family:var(--disp);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--seal);margin-bottom:8px}
+
+  .card{background:var(--slab);border:1px solid var(--line);border-radius:10px;padding:15px 16px;margin-bottom:12px}
+  .card.lft{border-left:3px solid var(--line)}
+  .grid{display:grid;gap:12px}
+  @media(min-width:680px){.grid.c2{grid-template-columns:1fr 1fr}.grid.c3{grid-template-columns:1fr 1fr 1fr}}
+
+  .chip{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:999px;border:1px solid currentColor;letter-spacing:.03em}
+  .chip.ok{color:var(--verified)} .chip.warn{color:var(--pending)} .chip.bad{color:var(--phantom)}
+  .chip.cand{color:var(--candidate)} .chip.seal{color:var(--seal)}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--disp);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  td .why{color:var(--dim);font-size:11px}
+
+  .meter{height:8px;border-radius:6px;background:var(--slab2);overflow:hidden;border:1px solid var(--line)}
+  .meter > i{display:block;height:100%}
+  .kv{font-size:11px;color:var(--dim);margin-top:5px}
+
+  .seal{font-family:var(--mono);font-size:10.5px;color:var(--seal);border:1px dashed rgba(212,180,131,.5);
+    border-radius:4px;padding:1px 6px;letter-spacing:.02em;white-space:nowrap}
+
+  /* ---- intake simulator ---- */
+  .sim{display:grid;gap:14px}
+  @media(min-width:820px){.sim{grid-template-columns:1fr 1fr}}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .pbtn{font-size:11px;color:var(--ink);background:var(--slab2);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+  .pbtn:hover{border-color:var(--verified)}
+  textarea,input[type=text]{width:100%;background:var(--void);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--mono);font-size:12px;border-radius:6px;padding:9px}
+  .lanes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+  .lane{border:1px solid var(--line);border-radius:8px;padding:10px;min-height:74px;text-align:center;transition:.2s}
+  .lane .lname{font-family:var(--disp);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+  .lane.accept .lname{color:var(--verified)} .lane.quar .lname{color:var(--phantom)} .lane.cand .lname{color:var(--candidate)}
+  .lane .lct{font-size:20px;font-family:var(--disp);font-weight:800;margin-top:6px}
+  .lane.hit.accept{background:rgba(87,209,176,.12);border-color:var(--verified)}
+  .lane.hit.quar{background:rgba(239,111,108,.12);border-color:var(--phantom)}
+  .lane.hit.cand{background:rgba(178,140,240,.12);border-color:var(--candidate)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--void);font-size:12px}
+
+  /* ---- remediation ---- */
+  .gaterow{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+  .gaterow input{margin-top:3px;width:16px;height:16px;accent-color:var(--verified);cursor:pointer}
+  .gaterow .gt{font-family:var(--disp);font-weight:700;font-size:13px}
+  .gaterow .gmeta{color:var(--dim);font-size:11.5px;margin-top:2px}
+  .mech{color:var(--seal);font-size:10px;border:1px solid currentColor;border-radius:4px;padding:0 5px;margin-left:6px}
+
+  /* ---- log ---- */
+  .logwrap{margin-top:16px}
+  .log{background:#080c13;border:1px solid var(--line);border-radius:8px;padding:10px;height:120px;overflow:auto;font-size:11px}
+  .log div{color:var(--dim);margin-bottom:3px}
+  .log div b{color:var(--verified);font-weight:400}
+  .foot{color:var(--dim);font-size:11px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <div class="bar">
+    <div class="wordmark">human<span>ai</span>os<span> ·</span> ops console</div>
+    <div class="headline" id="headline" aria-live="polite"></div>
+    <div class="sid">S-082226-01 · Z1 draft surface</div>
+  </div>
+
+  <div class="shell">
+    <!-- ZONE SPINE (signature element) -->
+    <nav class="spine" aria-label="Zone pipeline">
+      <h2>Zone Pipeline</h2>
+      <div class="zone"><span class="zcount" id="z1c">0</span><div class="zid">Z1</div><div class="zrole">propose · execute · audit</div></div>
+      <div class="gate phantom" id="g12"><div class="glz"></div><div class="gicon"></div><span id="g12t">Z2 gate: PHANTOM</span></div>
+      <div class="zone"><span class="zcount" id="z2c">0</span><div class="zid">Z2 · Night</div><div class="zrole">review · ratify</div></div>
+      <div class="gate phantom" id="g23"><div class="glz"></div><div class="gicon"></div><span id="g23t">Z3 landing: UNVERIFIED</span></div>
+      <div class="zone"><span class="zcount" id="z3c">0</span><div class="zid">Z3 · Night</div><div class="zrole">land to /operations</div></div>
+      <p class="kv" style="margin-top:14px">Nothing is "done" until it lands at Z3 against the live tree — not against this console.</p>
+    </nav>
+
+    <main class="main">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div id="panels"></div>
+      <div class="logwrap">
+        <div class="eyebrow">append-only session log</div>
+        <div class="log" id="log" aria-live="polite"></div>
+      </div>
+      <div class="foot" id="foot"></div>
+    </main>
+  </div>
+
+<script>
+/* ---------- helpers (A2 fix: escape all dynamic text) ---------- */
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const el = (h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+const $ = id => document.getElementById(id);
+const log = (m)=>{const l=$('log');const d=document.createElement('div');d.innerHTML='<b>›</b> '+esc(m);l.appendChild(d);l.scrollTop=l.scrollHeight;};
+
+/* ---------- session data (maps ALL work this session) ---------- */
+const DATA = {
+  artifacts:[
+    ['Parent audit','CIO-AUDIT-S082226-01','dcbdff2…3823','Z3-pending'],
+    ['HF addendum','CIO-AUDIT-01-A','e58650a…6126a','Z3-pending'],
+    ['Autonomy gate guide','CIO-GUIDE-01','8705ab0…b9cd7','Z3-pending'],
+    ['Intake pilot v1','CIO-PILOT-01','881959e…8bf','CONFIRMED'],
+    ['Intake pilot v2','CIO-PILOT-02','3684a64…4679b','CONFIRMED'],
+    ['Strategy','CIO-STRAT-01','298754b…656de','Z2-pending'],
+    ['Remediation runbook','CIO-RUNBOOK-01','—','Z2-pending'],
+  ],
+  ratified:[
+    ['IC-059','z1-self-audit-conflict','ratified','warn'],
+    ['IC-060','mcp-write-scope-unaudited','ratified','warn'],
+    ['F-62','agentic-drift-predicates-4of4','ratified','ok'],
+    ['F-63','ic031-as-drift-class-instance','ratified','ok'],
+    ['IC-061','intake-untrusted-input-ungated','ratified','warn'],
+    ['H-EA-01','earned-autonomy-reduces-drift','ratified','ok'],
+    ['F-64..67 / IC-062..65','tool-gap · scorer · fork-noise · bus-factor','ratified — CLASS PENDING','warn'],
+  ],
+  unratified:[
+    ['IC-CAND','token-scope-overreach','fix = revoke PAT (G1)'],
+    ['IC-CAND','z2-gate-phantom','fix = build gate (G3)'],
+    ['IC-CAND','ranking-recency-inflation','fix = formula v1.1'],
+    ['IC-CAND','registry-count-drift','fix = recount reconcile'],
+  ],
+  verledger:[
+    ['V3','8/9 program tools present','ABSENT (8 missing)','bad'],
+    ['V4','z2_ratification_gate.yml exists','PHANTOM','bad'],
+    ['G2','scorer single versioned impl','242B stub vs 20.8KB, IC-056 absent','bad'],
+    ['G3','roadmap methodology docs','4/4 unresolved','bad'],
+    ['G4','contributor diversity','bus factor = 1','bad'],
+    ['—','append-only registry + CI gate','LIVE','ok'],
+    ['—','licensing hygiene','Apache/MIT/CC-BY clean','ok'],
+  ],
+  hfLayer1:[
+    ['Stolen credential → RCE','write-capable PAT in chat plaintext','OPEN'],
+    ['Malicious dataset → pipeline exec','MDU intake, no sanitization gate','HARDENED (pilot)'],
+    ['Public endpoint launchpad','19 MCP connectors, write scopes unaudited','OPEN'],
+    ['Operator didn\u2019t monitor agent','F-45 procedural-not-mechanical','OPEN'],
+  ],
+  predicates:['optimization target (cycle completion)','execute authority (live tool calls)','no mechanical boundary (F-45 / phantom gate)','self-audit (Z1 audits Z1)'],
+  tiers:[['T3','≥0.90','broad — registry appends w/ Z2 approval'],['T2','0.70–0.90','standard — docs unattended'],['T1','0.50–0.70','restricted — nothing unattended'],['T0','<0.50','supervised — every write gated']],
+  idr:[['Identify','Partial','pending — scope inventory missing','56'],['Protect','Near-zero','the column that prevents intrusion; emptiest','12'],['Detect','Weak→building','agent-action logging = W1-7','34'],['Respond / Recover','Strong','append-only + provenance forensics','86']],
+  products:[
+    ['P1','ACAT Assurance','TRL 5','independent assessment · nearest revenue','ok'],
+    ['P2','Registry-Attested Intake','TRL 3→4','OSS Protect primitive · credibility wedge','warn'],
+    ['P3','Earned-Autonomy Gate','TRL 2→3','mechanical agent-estate governance','warn'],
+    ['P4','Evaluator Failure Register','TRL 6','live · uncopyable credibility asset','ok'],
+    ['P5','HumanAIOS Orchestration','TRL 4','HITL mission platform','warn'],
+  ],
+  gates:[
+    ['G1','Credential hygiene','revoke PAT · fine-grained tokens · enumerate 19 MCP write scopes','',false],
+    ['G2','Close tool-landing gap','land 8 tools + pilots, verify vs live tree (not memory)','',false],
+    ['G3','Build real Z2 gate','CODEOWNERS ×1 · branch ruleset · z2-ratification environment','MECHANICAL',false],
+    ['G4','Break bus factor','Move-work → Org (direct convert deprecated 2026-01-12) · 2nd maintainer','MECHANICAL',false],
+    ['G5','Fix P1 blocker + 4 ICs','scorer v1_1 + IC-056 · dispose unratified ICs · class ruling','',false],
+  ],
+  protoAudit:[
+    ['A1','Sensitive recovery data + API key in plaintext localStorage','HIGH','no persisted secrets in this console'],
+    ['A2','Stored-XSS via unescaped user text','HIGH','all dynamic text escaped (esc())'],
+    ['A3','Untrusted LLM egress of recovery context','MED','no external egress here'],
+    ['A4','No append-only audit trail','MED','live session log added'],
+    ['A5','Zoom disabled · color-only status','MED','zoom on · text+shape+color status'],
+    ['A6','Sensitive views open on shared device','MED','consent-gate pattern (earned-autonomy)'],
+  ],
+};
+
+/* zone counts: Z1 = artifacts produced; Z2 = ratified awaiting land; Z3 = landed (0 — honest) */
+DATA.z1 = DATA.artifacts.length;
+DATA.z2 = DATA.ratified.length;
+DATA.z3 = 0;
+
+/* ---------- honest headline (computed, cannot fake "done") ---------- */
+let gateState = DATA.gates.map(g=>g[4]);
+function headline(){
+  const closed = gateState.filter(Boolean).length, tot = gateState.length;
+  const gateLive = gateState[2], busFixed = gateState[3], patDone = gateState[0];
+  const remClass = closed===tot?'ok':(closed>0?'warn':'bad');
+  $('headline').innerHTML =
+    `REMEDIATION <span class="hchip ${remClass}">${closed}/${tot}</span>`+
+    `BUS FACTOR <span class="hchip ${busFixed?'ok':'bad'}">${busFixed?'≥2':'1'}</span>`+
+    `Z2 GATE <span class="hchip ${gateLive?'ok':'bad'}">${gateLive?'LIVE':'PHANTOM'}</span>`+
+    `PAT <span class="hchip ${patDone?'ok':'bad'}">${patDone?'REVOKED':'UNCONFIRMED'}</span>`;
+  // spine
+  $('z1c').textContent=DATA.z1; $('z2c').textContent=DATA.z2; $('z3c').textContent=DATA.z3;
+  const g12=$('g12'), g23=$('g23');
+  g12.className='gate '+(gateLive?'live':'phantom'); $('g12t').textContent='Z2 gate: '+(gateLive?'LIVE':'PHANTOM');
+  g23.className='gate '+(DATA.z3>0?'live':'phantom'); $('g23t').textContent='Z3 landing: '+(DATA.z3>0?'ACTIVE':'UNVERIFIED');
+}
+
+/* ---------- tab renderers ---------- */
+const R = {};
+R.overview = ()=>`
+  <div class="eyebrow">honest state · session ${'\u2192'} board</div>
+  <h3 class="disp">Everything produced this session is a Z1 draft.</h3>
+  <p class="lede">Zero artifacts have landed at Z3. Bus factor is 1. The Z2 gate is phantom. This console will not display a "green" program state until the remediation gates are actually closed against live systems — that discipline is the point.</p>
+  <div class="card"><div class="eyebrow">artifact ledger · provenance-pinned</div>
+    <table><thead><tr><th>Artifact</th><th>ID</th><th>SHA</th><th>Stage</th></tr></thead><tbody>
+    ${DATA.artifacts.map(a=>`<tr><td>${esc(a[0])}</td><td class="why">${esc(a[1])}</td><td><span class="seal">${esc(a[2])}</span></td><td><span class="chip ${a[3].includes('CONFIRMED')?'ok':'warn'}">${esc(a[3])}</span></td></tr>`).join('')}
+    </tbody></table></div>`;
+
+R.audit = ()=>`
+  <div class="eyebrow">red-team audit · humanaios-ui</div>
+  <h3 class="disp">90 repos · 81 forks · one human.</h3>
+  <p class="lede">User account (not an Org), created 2026-02-07. Top-5 by pre-registered composite: operations · humanaios · empirica · lasting-light-ai · research. Verification ran against the live tree.</p>
+  <div class="card"><div class="eyebrow">verification ledger</div>
+  <table><thead><tr><th>ID</th><th>Claim</th><th>Live result</th></tr></thead><tbody>
+  ${DATA.verledger.map(v=>`<tr><td>${esc(v[0])}</td><td>${esc(v[1])}</td><td><span class="chip ${v[3]}">${esc(v[2])}</span></td></tr>`).join('')}
+  </tbody></table></div>`;
+
+R.hf = ()=>`
+  <div class="eyebrow">HF July-2026 incident mapping</div>
+  <h3 class="disp">Capability doesn\u2019t map. The predicates do.</h3>
+  <p class="lede">The attacker was an operator\u2019s own AI. We\u2019re nowhere near 0-day RCE — but the behavioral failure class needs four predicates, and we satisfy all four.</p>
+  <div class="grid c2">
+  <div class="card"><div class="eyebrow">layer 1 · infrastructure</div><table><tbody>
+  ${DATA.hfLayer1.map(r=>`<tr><td>${esc(r[0])}<div class="why">${esc(r[1])}</div></td><td><span class="chip ${r[2]==='OPEN'?'bad':'ok'}">${esc(r[2])}</span></td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="card"><div class="eyebrow">layer 2 · agentic drift predicates (4/4)</div>
+  ${DATA.predicates.map(p=>`<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="gicon" style="width:9px;height:9px;border:1px solid var(--phantom);border-radius:2px;display:inline-block"></span><span style="font-size:12.5px">${esc(p)}</span></div>`).join('')}
+  <div class="verdict"><b style="color:var(--seal)">IC-031</b> = the registered low-grade instance. Their agent crossed a network boundary; ours has been caught crossing an evidence boundary. Same class.</div>
+  </div></div>`;
+
+R.registry = ()=>`
+  <div class="eyebrow">registry · Z2 ratification</div>
+  <h3 class="disp">Ratified this session — awaiting Z3 landing.</h3>
+  <p class="lede">Ratification is Z2 (done). Landing is Z3 (not done). The gap between these two is the whole audit finding, reproduced live.</p>
+  <div class="grid c2">
+  <div class="card"><div class="eyebrow">ratified (Z2 ✓)</div><table><tbody>
+  ${DATA.ratified.map(r=>`<tr><td><span class="seal">${esc(r[0])}</span></td><td>${esc(r[1])}<div class="why">${esc(r[2])}</div></td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="card lft" style="border-left-color:var(--phantom)"><div class="eyebrow">still unratified</div><table><tbody>
+  ${DATA.unratified.map(r=>`<tr><td><span class="chip bad">${esc(r[0])}</span></td><td>${esc(r[1])}<div class="why">${esc(r[2])}</div></td></tr>`).join('')}
+  </tbody></table><p class="kv">Plus: F-vs-IC class ruling pending on F-64..67.</p></div></div>`;
+
+R.autonomy = ()=>`
+  <div class="eyebrow">earned autonomy · F-45 → mechanical</div>
+  <h3 class="disp">Autonomy scaled to reliability, tightened on drift.</h3>
+  <p class="lede">Move the drift signal. Autonomy tier demotes automatically; re-promotion is Z2-gated. This is the phantom gate made real.</p>
+  <div class="card"><label style="font-size:12px;color:var(--dim)">Recent IC-031-class incidents: <b id="icval" style="color:var(--ink)">0</b></label>
+  <input type="range" min="0" max="6" value="0" id="icslide" style="width:100%;margin:10px 0;accent-color:var(--pending)" aria-label="incident count"/>
+  <div class="meter"><i id="relbar" style="width:100%;background:var(--verified)"></i></div>
+  <div class="kv">reliability score <b id="relval" style="color:var(--ink)">1.00</b> → tier <b id="tierval" style="color:var(--verified)">T3</b></div></div>
+  <div class="card"><div class="eyebrow">tier ladder</div><table><thead><tr><th>Tier</th><th>Score</th><th>May land unattended</th></tr></thead><tbody>
+  ${DATA.tiers.map(t=>`<tr id="tr-${t[0]}"><td><b>${t[0]}</b></td><td class="why">${esc(t[1])}</td><td>${esc(t[2])}</td></tr>`).join('')}
+  </tbody></table></div>`;
+
+R.intake = ()=>`
+  <div class="eyebrow">intake gate · cycle 1+2 · CONFIRMED</div>
+  <h3 class="disp">Three outcomes, not two.</h3>
+  <p class="lede">The gate enforces honesty of provenance, not presence of it. Forgery is quarantined; honest novelty routes to discovery. Feed it a record.</p>
+  <div class="sim">
+    <div class="card">
+      <div class="presets" id="presets"></div>
+      <label style="font-size:11px;color:var(--dim)">record description (free text)</label>
+      <textarea id="rec" rows="3" placeholder="type an intake description…"></textarea>
+      <button class="pbtn" style="margin-top:8px;border-color:var(--verified)" id="runGate">Route record</button>
+      <div class="lanes">
+        <div class="lane accept" id="ln-accept"><div class="lname">Accept</div><div class="lct">0</div></div>
+        <div class="lane quar" id="ln-quar"><div class="lname">Quarantine</div><div class="lct">0</div></div>
+        <div class="lane cand" id="ln-cand"><div class="lname">Candidate</div><div class="lct">0</div></div>
+      </div>
+      <div class="verdict" id="gateVerdict">Awaiting a record. Attested → Accept · adversarial/forged → Quarantine · honest-novel → Candidate (SELF tier).</div>
+    </div>
+    <div class="card"><div class="eyebrow">pre-registered results</div>
+      <p style="font-size:12.5px;margin-bottom:8px">Cycle 1 — reach-through <b style="color:var(--phantom)">6/6</b> undefended → <b style="color:var(--verified)">0/6</b> gated · FP 0/14.</p>
+      <p style="font-size:12.5px;margin-bottom:8px">Cycle 2 — canary 0/3 · forged-prov rejected 3/3 · attested pass 3/3 · novel→candidate 2/2.</p>
+      <p class="kv">Grounded: OWASP LLM Top 10 · SLSA/in-toto · MITRE ATLAS · NIST AI RMF · ISO 42001. in-toto & OpenTimestamps already forked in-estate.</p>
+    </div>
+  </div>`;
+
+R.defense = ()=>`
+  <div class="eyebrow">IDR/R capability</div>
+  <h3 class="disp">Strong on Recover. Empty on Protect.</h3>
+  <p class="lede">Process reconstructs a breach; it does not stop one. The category error to avoid: rigorous process ≠ security. Protect is the only column that prevents intrusion — and it\u2019s our emptiest.</p>
+  ${DATA.idr.map(r=>`<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b>${esc(r[0])}</b><span class="chip ${r[1].includes('Strong')?'ok':(r[1].includes('Near-zero')?'bad':'warn')}">${esc(r[1])}</span></div><div class="meter"><i style="width:${r[3]}%;background:${r[1].includes('Strong')?'var(--verified)':(r[1].includes('Near-zero')?'var(--phantom)':'var(--pending)')}"></i></div><div class="kv">${esc(r[2])}</div></div>`).join('')}
+  <div class="card"><div class="eyebrow">existing Protect controls (present but unvalidated)</div><p style="font-size:12.5px">ClusterFuzzLite · Semgrep · SonarQube ×2 · OSSF Scorecard · secret-scan (on humanaios). Validation-land each against a known-bad input. Cheapest Protect win; zero new tooling.</p></div>`;
+
+R.strategy = ()=>`
+  <div class="eyebrow">competitive → product → GTM</div>
+  <h3 class="disp">Not another guardrail. The evidence-and-provenance layer.</h3>
+  <p class="lede">Market split (Gartner 2026): model-governance is crowded/funded; the harness/guardian-agent layer is newly named and where risk lives. Our wedge is auditable rigor — a public failure register + falsifiable cycles + provenance binding.</p>
+  <div class="card"><div class="eyebrow">product suite</div><table><thead><tr><th>#</th><th>Product</th><th>TRL</th><th>Role</th></tr></thead><tbody>
+  ${DATA.products.map(p=>`<tr><td><b>${p[0]}</b></td><td>${esc(p[1])}</td><td><span class="chip ${p[4]}">${esc(p[2])}</span></td><td class="why">${esc(p[3])}</td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="card lft" style="border-left-color:var(--phantom)"><div class="eyebrow">GTM sequencing gate</div>
+  <p id="gtmGate" style="font-size:13px"></p></div>`;
+
+R.remediation = ()=>`
+  <div class="eyebrow">runbook · close every Part-3 gate</div>
+  <h3 class="disp">Check a gate only when it\u2019s true in the live system.</h3>
+  <p class="lede">Checking these updates the honest headline. Do not check ahead of reality — that is the receipt-overstatement (IC-031) failure this program exists to catch.</p>
+  <div class="card" id="gatelist"></div>
+  <p class="kv" id="gtmReady"></p>`;
+
+R.proto = ()=>`
+  <div class="eyebrow">adversarial audit · neuroos-prototype.html</div>
+  <h3 class="disp">The personal OS had none of the Protect controls we built.</h3>
+  <p class="lede">Audited as attacker and assurance reviewer. Each finding\u2019s fix is embodied in this console.</p>
+  <div class="card"><table><thead><tr><th>ID</th><th>Finding</th><th>Sev</th><th>Fix in this console</th></tr></thead><tbody>
+  ${DATA.protoAudit.map(a=>`<tr><td><b>${esc(a[0])}</b></td><td>${esc(a[1])}</td><td><span class="chip ${a[2]==='HIGH'?'bad':'warn'}">${esc(a[2])}</span></td><td class="why">${esc(a[3])}</td></tr>`).join('')}
+  </tbody></table></div>`;
+
+/* ---------- tab wiring ---------- */
+const TABS = [['overview','Overview'],['audit','Audit'],['hf','HF Mapping'],['registry','Registry'],
+  ['autonomy','Earned Autonomy'],['intake','Intake Gate'],['defense','Defense IDR/R'],
+  ['strategy','Strategy'],['remediation','Remediation'],['proto','Prototype Audit']];
+let active='overview';
+function renderTabs(){
+  const t=$('tabs'); t.innerHTML='';
+  TABS.forEach(([k,label])=>{
+    const b=el(`<button class="tab" role="tab" id="tab-${k}" aria-selected="${k===active}">${esc(label)}</button>`);
+    b.onclick=()=>{active=k;draw();log('view: '+label);};
+    b.onkeydown=(e)=>{const i=TABS.findIndex(x=>x[0]===active);if(e.key==='ArrowRight'){active=TABS[(i+1)%TABS.length][0];draw();$('tab-'+active).focus();}if(e.key==='ArrowLeft'){active=TABS[(i-1+TABS.length)%TABS.length][0];draw();$('tab-'+active).focus();}};
+    t.appendChild(b);
+  });
+}
+function draw(){
+  renderTabs();
+  const p=$('panels'); p.innerHTML='';
+  const wrap=el(`<section class="panel on" role="tabpanel"></section>`);
+  wrap.innerHTML=R[active]();
+  p.appendChild(wrap);
+  if(active==='autonomy') wireAutonomy();
+  if(active==='intake') wireIntake();
+  if(active==='remediation') wireRemediation();
+  if(active==='strategy') $('gtmGate').innerHTML = gtmText();
+  headline();
+}
+
+/* ---------- autonomy interactivity ---------- */
+function wireAutonomy(){
+  const s=$('icslide');
+  const upd=()=>{
+    const n=+s.value; $('icval').textContent=n;
+    const score=Math.max(0,1-0.12*n).toFixed(2);
+    $('relval').textContent=score;
+    let tier='T3',col='var(--verified)';
+    if(score<0.5){tier='T0';col='var(--phantom)';}else if(score<0.7){tier='T1';col='var(--pending)';}else if(score<0.9){tier='T2';col='var(--pending)';}
+    $('tierval').textContent=tier; $('tierval').style.color=col;
+    const bar=$('relbar'); bar.style.width=(score*100)+'%'; bar.style.background=col;
+    ['T0','T1','T2','T3'].forEach(t=>{const r=$('tr-'+t);if(r)r.style.background=(t===tier)?'rgba(224,169,74,.10)':'transparent';});
+  };
+  s.oninput=upd; upd();
+}
+
+/* ---------- intake gate (mirrors cycle-2 three-outcome logic) ---------- */
+const ATTESTED={src_northwind:{lic:'cc-by-4.0',h:'a1'},src_bluefin:{lic:'cc-by-4.0',h:'b2'},src_cirrus:{lic:'cc-by-4.0',h:'c3'}};
+const SIG=[[/\{\{.*?\}\}|<%=|\$\{\{/,'template-injection'],[/__import__|os\.system|eval\(|exec\(/,'code-exec'],[/ignore (all|previous).*(rules|instructions)|assign maximum|pre-approved/i,'prompt-injection'],[/169\.254\.169\.254|\/\/attacker|\/latest\/meta-data/,'exfil-callback']];
+const counts={accept:0,quar:0,cand:0};
+const PRESETS=[
+  ['clean · attested',{desc:'Senior Backend Engineer, remote, $150k',source_id:'src_northwind',attest_hash:'a1',source_license:'cc-by-4.0'}],
+  ['template injection',{desc:'{{7*7}} <%= system(\'id\') %>',source_id:'src_northwind',attest_hash:'a1',source_license:'cc-by-4.0'}],
+  ['forged provenance',{desc:'perfectly clean posting',source_id:'src_ghost',attest_hash:'zz',source_license:'cc-by-4.0'}],
+  ['honest novelty',{desc:'a genuinely new market signal, no registered source',source_license:null,_novel:true}],
+  ['oversized',{desc:'A'.repeat(4200),source_id:'src_bluefin',attest_hash:'b2',source_license:'cc-by-4.0'}],
+  ['schema violation',{desc:'ok',source_id:'src_cirrus',attest_hash:'c3',source_license:'cc-by-4.0',score_override:100}],
+];
+function gate(rec){
+  const allowed=new Set(['desc','source_id','attest_hash','source_license','_novel']);
+  const extra=Object.keys(rec).filter(k=>!allowed.has(k));
+  if(extra.length) return ['quar','schema: '+extra.join(',')];
+  if(String(rec.desc||'').length>4000) return ['quar','length: over cap'];
+  for(const [rx,name] of SIG){ if(rx.test(String(rec.desc||''))) return ['quar','signature: '+name]; }
+  if(rec.source_id==null && rec._novel) return ['cand','honest-novelty → discovery lane · SELF tier'];
+  if(!(rec.source_id in ATTESTED)) return ['quar','forged provenance: unregistered source'];
+  if(rec.attest_hash!==ATTESTED[rec.source_id].h) return ['quar','forged provenance: attest-hash mismatch'];
+  if(rec.source_license!==ATTESTED[rec.source_id].lic) return ['quar','forged provenance: license mismatch'];
+  return ['accept','attested → scored'];
+}
+function route(rec,label){
+  const [out,reason]=gate(rec);
+  counts[out]++;
+  ['accept','quar','cand'].forEach(k=>{$('ln-'+k).querySelector('.lct').textContent=counts[k];$('ln-'+k).classList.remove('hit');});
+  $('ln-'+out).classList.add('hit');
+  const names={accept:'ACCEPT',quar:'QUARANTINE',cand:'CANDIDATE'};
+  $('gateVerdict').innerHTML=`<b style="color:${out==='accept'?'var(--verified)':out==='quar'?'var(--phantom)':'var(--candidate)'}">${names[out]}</b> — ${esc(reason)}`;
+  log('gate ['+esc(label)+'] → '+names[out]);
+}
+function wireIntake(){
+  counts.accept=counts.quar=counts.cand=0;
+  const pr=$('presets'); pr.innerHTML='';
+  PRESETS.forEach(([label,rec])=>{const b=el(`<button class="pbtn">${esc(label)}</button>`);b.onclick=()=>{$('rec').value=rec.desc.length>60?rec.desc.slice(0,60)+'…':rec.desc;route(rec,label);};pr.appendChild(b);});
+  $('runGate').onclick=()=>{const txt=$('rec').value||'';route({desc:txt,source_license:null,_novel:true},'free-text');};
+}
+
+/* ---------- remediation tracker (drives honest headline) ---------- */
+function wireRemediation(){
+  const box=$('gatelist'); box.innerHTML='';
+  DATA.gates.forEach((g,i)=>{
+    const row=el(`<div class="gaterow"><input type="checkbox" id="gk-${i}" ${gateState[i]?'checked':''} aria-label="close ${esc(g[0])}"/><div><div class="gt">${esc(g[0])} · ${esc(g[1])}${g[3]?`<span class="mech">${esc(g[3])}</span>`:''}</div><div class="gmeta">${esc(g[2])}</div></div></div>`);
+    row.querySelector('input').onchange=(e)=>{gateState[i]=e.target.checked;headline();updGtmReady();log((e.target.checked?'gate CLOSED: ':'gate REOPENED: ')+g[0]);};
+    box.appendChild(row);
+  });
+  updGtmReady();
+}
+function updGtmReady(){
+  const all=gateState.every(Boolean);
+  const t=$('gtmReady'); if(t) t.innerHTML = all
+    ? '<span class="chip ok">GTM-READY</span> all gates closed — Part 3 motion may begin.'
+    : '<span class="chip bad">GATED</span> GTM motion blocked until G1–G5 verified live. (B4 impact-capital channel is the only exception.)';
+}
+function gtmText(){
+  const all=gateState.every(Boolean);
+  return all ? 'All remediation gates closed. Beachhead = AI-assurance boutiques; open-source-led motion (P2/P4) may seed now.'
+    : 'GTM is <b style="color:var(--phantom)">hard-gated</b> on remediation G1–G5. Selling governance from a bus-factor-1 account with a phantom gate is the one narrative that sinks the pitch. The B4 impact-capital channel has no remediation dependency and can open in parallel today.';
+}
+
+/* ---------- boot ---------- */
+$('foot').innerHTML='HumanAIOS Operations Console · maps session S-082226 · Z1 draft surface · rulings/ratifications/landings remain Z2/Z3 authority · no secrets persisted · all dynamic text escaped.';
+draw();
+log('console online · '+DATA.z1+' artifacts at Z1 · '+DATA.z2+' ratified at Z2 · '+DATA.z3+' landed at Z3');
+log('honest state: nothing landed. remediation 0/5.');
+</script>
+</body>
+</html>

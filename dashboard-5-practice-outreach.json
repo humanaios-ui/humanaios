@@ -1,0 +1,274 @@
+{
+  "dashboard": {
+    "title": "Practice Deep-Dive: outreach",
+    "description": "Single-practice operational view (autonomy)",
+    "tags": [
+      "phase-3.5",
+      "observability"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Session Timeline (Autonomy)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | json | session_id, phase, duration_ms | count by phase"
+          }
+        ],
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max"
+            ],
+            "displayMode": "table"
+          },
+          "tooltip": {
+            "mode": "multi"
+          },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      {
+        "title": "Total Traces (Autonomy)",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Error Traces (Autonomy)",
+        "type": "stat",
+        "gridPos": {
+          "x": 3,
+          "y": 8,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | json | result=\"error\" | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Avg Latency (Autonomy)",
+        "type": "stat",
+        "gridPos": {
+          "x": 6,
+          "y": 8,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | json | duration_ms > 0 | avg(duration_ms)"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Vector Values (Autonomy)",
+        "type": "heatmap",
+        "gridPos": {
+          "x": 9,
+          "y": 8,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | json | vector_name != \"\" | value by vector_name"
+          }
+        ],
+        "options": {
+          "calculate": false,
+          "cellGap": 2,
+          "cellRadius": 2,
+          "color": {
+            "scheme": "Spectral"
+          },
+          "exemplars": {
+            "color": "rgba(255,0,255,0.7)"
+          },
+          "filterValues": {
+            "le": 1E-9
+          },
+          "legend": {
+            "show": true
+          },
+          "tooltip": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "title": "Error Logs (Autonomy)",
+        "type": "table",
+        "gridPos": {
+          "x": 0,
+          "y": 12,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\", level=\"error\"} | json | timestamp, message"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "transformations": []
+      }
+    ],
+    "refresh": "30s",
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h"
+      ]
+    }
+  }
+}

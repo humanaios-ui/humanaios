@@ -1,0 +1,14 @@
+# Pre-commit hooks for project.yaml v3.0 validation
+# Runs validation before each commit to prevent schema drift
+
+repos:
+  - repo: local
+    hooks:
+      - id: validate-project-yaml-v3
+        name: Validate project.yaml v3.0 compliance
+        entry: scripts/validate_project_yaml_v3.sh
+        language: script
+        files: '\.empirica/project\.yaml$'
+        pass_filenames: false
+        stages: [commit]
+        description: "Ensure project.yaml follows v3.0 schema with alphabetical field ordering"

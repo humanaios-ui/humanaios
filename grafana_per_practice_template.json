@@ -1,0 +1,79 @@
+{
+  "dashboard": {
+    "title": "Practice Metrics — [[practice_name]]",
+    "description": "Per-practice transaction metrics, artifact production, uncertainty trends",
+    "timezone": "UTC",
+    "refresh": "1m",
+    "templating": {
+      "list": [
+        {
+          "name": "practice_name",
+          "type": "variable",
+          "datasource": "Prometheus"
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Transaction Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "count(transactions{practice='$practice_name'})",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Uncertainty Trend",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "uncertainty_vector{practice='$practice_name'}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Artifact Production",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "artifacts_logged{practice='$practice_name', type='finding'}",
+            "legendFormat": "Findings",
+            "refId": "A"
+          },
+          {
+            "expr": "artifacts_logged{practice='$practice_name', type='unknown'}",
+            "legendFormat": "Unknowns",
+            "refId": "B"
+          },
+          {
+            "expr": "artifacts_logged{practice='$practice_name', type='decision'}",
+            "legendFormat": "Decisions",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Goal Completion Rate",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "goals_completed{practice='$practice_name'} / goals_created{practice='$practice_name'}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit"
+          }
+        }
+      }
+    ]
+  }
+}

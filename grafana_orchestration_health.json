@@ -1,0 +1,116 @@
+{
+  "dashboard": {
+    "title": "Foundation Orchestration Health",
+    "description": "Phase progression, blocker tracking, practice participation, SER coordination state",
+    "timezone": "UTC",
+    "refresh": "30s",
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "templating": {
+      "list": [
+        {
+          "name": "practice_filter",
+          "type": "multi-select",
+          "options": ["evaluator", "mesh-support", "autonomy", "outreach", "humanaios", "resource-miner", "acat-x", "grok-crossref", "extension"]
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Current Phase Progress",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "phase_completion_percent",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 25, "color": "orange"},
+                {"value": 50, "color": "yellow"},
+                {"value": 75, "color": "lightgreen"},
+                {"value": 90, "color": "green"}
+              ]
+            },
+            "unit": "percent"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Active Goals Timeline",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "goals_in_progress",
+            "legendFormat": "In Progress",
+            "refId": "A"
+          },
+          {
+            "expr": "goals_planned",
+            "legendFormat": "Planned",
+            "refId": "B"
+          },
+          {
+            "expr": "goals_completed",
+            "legendFormat": "Completed",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Critical Blockers",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "count(blockers{severity='critical'})",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 1, "color": "orange"},
+                {"value": 2, "color": "red"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Practice Participation Heatmap",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "practice_phase_readiness",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "SER Coordination State",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "count by (state) (ser_state)",
+            "refId": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

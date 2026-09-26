@@ -1,0 +1,15 @@
+{
+  "export_time": "2026-09-17T11:04:49.664358",
+  "alerts": [],
+  "summary": {
+    "total_alerts": 0,
+    "by_severity": {
+      "critical": 0,
+      "warning": 0,
+      "info": 0
+    },
+    "by_type": {},
+    "by_practice": {},
+    "timestamp": "2026-09-17T11:04:49.664459"
+  }
+}

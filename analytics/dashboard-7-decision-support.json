@@ -1,0 +1,292 @@
+{
+  "dashboard": {
+    "title": "Decision Support & Recommendations",
+    "description": "Analytics layer: anomaly-driven recommendations, practice scorecards, resource allocation insights",
+    "tags": [
+      "phase-3.5",
+      "observability",
+      "analytics",
+      "decision-support"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Active Anomalies by Severity",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "count(anomaly_severity='critical')"
+          },
+          {
+            "refId": "B",
+            "datasource": "Prometheus",
+            "expr": "count(anomaly_severity='warning')"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            }
+          }
+        }
+      },
+      {
+        "title": "Critical Alerts - Immediate Action Required",
+        "type": "table",
+        "gridPos": {
+          "x": 4,
+          "y": 0,
+          "w": 8,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "format": "table",
+            "expr": "topk(10, anomaly_severity='critical')"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "displayName": "timestamp",
+              "desc": true
+            }
+          ],
+          "customizations": {
+            "severity": {
+              "color": "red"
+            }
+          }
+        }
+      },
+      {
+        "title": "Practice Health Scorecard",
+        "type": "heatmap",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "empirica_practice_health_score by (practice)"
+          }
+        ],
+        "options": {
+          "calculate": false,
+          "cellRadius": 2,
+          "cellSize": {
+            "mode": "auto"
+          },
+          "color": {
+            "mode": "scheme",
+            "scheme": "Reds"
+          },
+          "exemplars": {
+            "color": "rgba(255,0,255,0.7)"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        }
+      },
+      {
+        "title": "Recommendation Engine: Top 5 Actions",
+        "type": "state-timeline",
+        "gridPos": {
+          "x": 0,
+          "y": 6,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "topk(5, decision_support_recommendation_priority)"
+          }
+        ],
+        "options": {
+          "showLegend": "bottom",
+          "tooltip": {
+            "mode": "multi"
+          }
+        }
+      },
+      {
+        "title": "Resource Allocation Suggestions",
+        "type": "table",
+        "gridPos": {
+          "x": 12,
+          "y": 6,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "format": "table",
+            "expr": "resource_allocation_recommendation"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "displayName": "impact",
+              "desc": true
+            }
+          ]
+        }
+      },
+      {
+        "title": "Anomaly Trend (24h)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 14,
+          "w": 12,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "rate(anomaly_detection_total[1h])",
+            "legendFormat": "{{anomaly_type}}"
+          }
+        ],
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max"
+            ],
+            "displayMode": "table"
+          }
+        }
+      },
+      {
+        "title": "Decision Quality Metrics",
+        "type": "gauge",
+        "gridPos": {
+          "x": 12,
+          "y": 14,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "decision_support_recommendation_accuracy"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "max": 1,
+            "min": 0,
+            "unit": "percentunit",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 0.75
+                },
+                {
+                  "color": "green",
+                  "value": 0.9
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Implementation Impact Forecast",
+        "type": "barchart",
+        "gridPos": {
+          "x": 18,
+          "y": 14,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "topk(5, decision_support_recommendation_impact)"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "title": "Cross-Practice Recommendations",
+        "type": "table",
+        "gridPos": {
+          "x": 0,
+          "y": 20,
+          "w": 24,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "format": "table",
+            "expr": "decision_support_cross_practice_recommendation"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "displayName": "impact",
+              "desc": true
+            }
+          ],
+          "customizations": {
+            "priority": {
+              "custom": {
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

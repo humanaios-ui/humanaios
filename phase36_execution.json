@@ -1,0 +1,296 @@
+{
+  "phase": "3.6",
+  "export_time": "2026-09-17T16:16:55.727887",
+  "total_executions": 2,
+  "last_execution": {
+    "phase": "3.6",
+    "execution_id": "exec_1789679815",
+    "timestamp": "2026-09-17T16:16:55.709975",
+    "alerts_processed": 3,
+    "escalations_triggered": 3,
+    "critical_escalations": 2,
+    "proposals_created": 3,
+    "ser_created": 2,
+    "details": [
+      {
+        "alert_id": "alert_latency_001",
+        "rule": "Query Latency Critical",
+        "severity": "critical",
+        "decision_id": {
+          "alert_id": "alert_latency_001",
+          "actions": [
+            "create_ser",
+            "send_to_practice",
+            "log_incident"
+          ],
+          "target_practice": "empirica-autonomy",
+          "admiral_escalate": true,
+          "ser_id": "ser_d080cf0a8eb1_1789679815",
+          "reasoning": "CRITICAL alert: Query Latency Critical. Metric loki_query_duration_seconds at 2.80 exceeds threshold 2.00. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+          "timestamp": 1789679815.71005
+        },
+        "proposal_id": "prop_fdd60901fe2a",
+        "targets": [
+          "empirica-autonomy",
+          "empirica-foundation.carly.empirica-foundation-evaluator"
+        ],
+        "status": "escalated"
+      },
+      {
+        "alert_id": "alert_health_001",
+        "rule": "Practice Health Critical",
+        "severity": "critical",
+        "decision_id": {
+          "alert_id": "alert_health_001",
+          "actions": [
+            "create_ser",
+            "send_to_practice",
+            "log_incident"
+          ],
+          "target_practice": "empirica-mesh-support",
+          "admiral_escalate": true,
+          "ser_id": "ser_c1c67d0dd293_1789679815",
+          "reasoning": "CRITICAL alert: Practice Health Critical. Metric empirica_practice_health_score at 0.45 exceeds threshold 0.50. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+          "timestamp": 1789679815.7170172
+        },
+        "proposal_id": "prop_6b9214d4cea5",
+        "targets": [
+          "empirica-mesh-support",
+          "empirica-foundation.carly.empirica-foundation-evaluator"
+        ],
+        "status": "escalated"
+      },
+      {
+        "alert_id": "alert_ingestion_001",
+        "rule": "Log Ingestion Rate Drop",
+        "severity": "warning",
+        "decision_id": {
+          "alert_id": "alert_ingestion_001",
+          "actions": [
+            "send_to_practice",
+            "log_incident"
+          ],
+          "target_practice": "empirica-outreach",
+          "admiral_escalate": false,
+          "ser_id": null,
+          "reasoning": "WARNING alert: Log Ingestion Rate Drop. Metric loki_ingester_chunks_flushed_total at 6.50 approaches threshold 10.00. Routed to practice empirica-outreach for investigation.",
+          "timestamp": 1789679815.721291
+        },
+        "proposal_id": "prop_ef78506bf497",
+        "targets": [
+          "empirica-outreach"
+        ],
+        "status": "escalated"
+      }
+    ],
+    "metrics": {
+      "total_escalations": 8,
+      "critical_escalations": 5,
+      "warning_escalations": 3,
+      "ser_created": 5,
+      "critical_rate": 0.625,
+      "by_practice": {
+        "empirica-autonomy": 3,
+        "empirica-mesh-support": 3,
+        "empirica-outreach": 2
+      }
+    }
+  },
+  "summary": {
+    "total_alerts_processed": 6,
+    "total_escalations": 6,
+    "total_critical": 4,
+    "total_proposals": 6,
+    "success_rate": 100.0
+  },
+  "executions": [
+    {
+      "phase": "3.6",
+      "execution_id": "exec_1789667327",
+      "timestamp": "2026-09-17T12:48:47.201041",
+      "alerts_processed": 3,
+      "escalations_triggered": 3,
+      "critical_escalations": 2,
+      "proposals_created": 3,
+      "ser_created": 2,
+      "details": [
+        {
+          "alert_id": "alert_latency_001",
+          "rule": "Query Latency Critical",
+          "severity": "critical",
+          "decision_id": {
+            "alert_id": "alert_latency_001",
+            "actions": [
+              "create_ser",
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-autonomy",
+            "admiral_escalate": true,
+            "ser_id": "ser_d080cf0a8eb1_1789667327",
+            "reasoning": "CRITICAL alert: Query Latency Critical. Metric loki_query_duration_seconds at 2.80 exceeds threshold 2.00. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+            "timestamp": 1789667327.201112
+          },
+          "proposal_id": "prop_1efa6d2c5935",
+          "targets": [
+            "empirica-autonomy",
+            "empirica-foundation.carly.empirica-foundation-evaluator"
+          ],
+          "status": "escalated"
+        },
+        {
+          "alert_id": "alert_health_001",
+          "rule": "Practice Health Critical",
+          "severity": "critical",
+          "decision_id": {
+            "alert_id": "alert_health_001",
+            "actions": [
+              "create_ser",
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-mesh-support",
+            "admiral_escalate": true,
+            "ser_id": "ser_c1c67d0dd293_1789667327",
+            "reasoning": "CRITICAL alert: Practice Health Critical. Metric empirica_practice_health_score at 0.45 exceeds threshold 0.50. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+            "timestamp": 1789667327.213068
+          },
+          "proposal_id": "prop_664ab7131baf",
+          "targets": [
+            "empirica-mesh-support",
+            "empirica-foundation.carly.empirica-foundation-evaluator"
+          ],
+          "status": "escalated"
+        },
+        {
+          "alert_id": "alert_ingestion_001",
+          "rule": "Log Ingestion Rate Drop",
+          "severity": "warning",
+          "decision_id": {
+            "alert_id": "alert_ingestion_001",
+            "actions": [
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-outreach",
+            "admiral_escalate": false,
+            "ser_id": null,
+            "reasoning": "WARNING alert: Log Ingestion Rate Drop. Metric loki_ingester_chunks_flushed_total at 6.50 approaches threshold 10.00. Routed to practice empirica-outreach for investigation.",
+            "timestamp": 1789667327.214845
+          },
+          "proposal_id": "prop_6bc610332995",
+          "targets": [
+            "empirica-outreach"
+          ],
+          "status": "escalated"
+        }
+      ],
+      "metrics": {
+        "total_escalations": 5,
+        "critical_escalations": 3,
+        "warning_escalations": 2,
+        "ser_created": 3,
+        "critical_rate": 0.6,
+        "by_practice": {
+          "empirica-autonomy": 2,
+          "empirica-mesh-support": 2,
+          "empirica-outreach": 1
+        }
+      }
+    },
+    {
+      "phase": "3.6",
+      "execution_id": "exec_1789679815",
+      "timestamp": "2026-09-17T16:16:55.709975",
+      "alerts_processed": 3,
+      "escalations_triggered": 3,
+      "critical_escalations": 2,
+      "proposals_created": 3,
+      "ser_created": 2,
+      "details": [
+        {
+          "alert_id": "alert_latency_001",
+          "rule": "Query Latency Critical",
+          "severity": "critical",
+          "decision_id": {
+            "alert_id": "alert_latency_001",
+            "actions": [
+              "create_ser",
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-autonomy",
+            "admiral_escalate": true,
+            "ser_id": "ser_d080cf0a8eb1_1789679815",
+            "reasoning": "CRITICAL alert: Query Latency Critical. Metric loki_query_duration_seconds at 2.80 exceeds threshold 2.00. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+            "timestamp": 1789679815.71005
+          },
+          "proposal_id": "prop_fdd60901fe2a",
+          "targets": [
+            "empirica-autonomy",
+            "empirica-foundation.carly.empirica-foundation-evaluator"
+          ],
+          "status": "escalated"
+        },
+        {
+          "alert_id": "alert_health_001",
+          "rule": "Practice Health Critical",
+          "severity": "critical",
+          "decision_id": {
+            "alert_id": "alert_health_001",
+            "actions": [
+              "create_ser",
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-mesh-support",
+            "admiral_escalate": true,
+            "ser_id": "ser_c1c67d0dd293_1789679815",
+            "reasoning": "CRITICAL alert: Practice Health Critical. Metric empirica_practice_health_score at 0.45 exceeds threshold 0.50. SER created for sustained tracking. Admiral escalation triggered per escalation protocol.",
+            "timestamp": 1789679815.7170172
+          },
+          "proposal_id": "prop_6b9214d4cea5",
+          "targets": [
+            "empirica-mesh-support",
+            "empirica-foundation.carly.empirica-foundation-evaluator"
+          ],
+          "status": "escalated"
+        },
+        {
+          "alert_id": "alert_ingestion_001",
+          "rule": "Log Ingestion Rate Drop",
+          "severity": "warning",
+          "decision_id": {
+            "alert_id": "alert_ingestion_001",
+            "actions": [
+              "send_to_practice",
+              "log_incident"
+            ],
+            "target_practice": "empirica-outreach",
+            "admiral_escalate": false,
+            "ser_id": null,
+            "reasoning": "WARNING alert: Log Ingestion Rate Drop. Metric loki_ingester_chunks_flushed_total at 6.50 approaches threshold 10.00. Routed to practice empirica-outreach for investigation.",
+            "timestamp": 1789679815.721291
+          },
+          "proposal_id": "prop_ef78506bf497",
+          "targets": [
+            "empirica-outreach"
+          ],
+          "status": "escalated"
+        }
+      ],
+      "metrics": {
+        "total_escalations": 8,
+        "critical_escalations": 5,
+        "warning_escalations": 3,
+        "ser_created": 5,
+        "critical_rate": 0.625,
+        "by_practice": {
+          "empirica-autonomy": 3,
+          "empirica-mesh-support": 3,
+          "empirica-outreach": 2
+        }
+      }
+    }
+  ]
+}

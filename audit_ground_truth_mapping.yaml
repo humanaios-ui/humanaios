@@ -1,0 +1,322 @@
+# Audit Method Ground Truth Mapping v1.0
+#
+# External sources that validate each audit method (M1-M12).
+# Each method maps to published standards, frameworks, or recognized best practices.
+# This layer grounds the audit against industry/academic consensus.
+
+version: "1.0"
+timestamp: "2026-08-19"
+schema: "audit-ground-truth-mapping-v1"
+
+# Meta: How to read this file
+# Each method has:
+#   - description: what it checks
+#   - ground_truth_sources: published references (URLs, standards bodies, books)
+#   - validation_mechanism: how findings can be validated indirectly
+#   - severity_mapping: how finding severity maps to impact/standards-compliance
+#   - applicability: which practices/repos should run this method
+
+audit_methods:
+  M1_inventory_baseline:
+    description: "Capture git tree, .gitignore, HEAD drift. Baseline reproducibility."
+    ground_truth_sources:
+      - name: "Git Best Practices"
+        url: "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository"
+        standard_body: "Open source (Linus Torvalds et al.)"
+      - name: "Semantic Versioning + Git Tags"
+        url: "https://semver.org/"
+        standard_body: "Community standard"
+      - name: "GitHub Repository Management"
+        url: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features"
+        standard_body: "GitHub Inc."
+    validation_mechanism: |
+      Findings validated via: git log --oneline, git status, .gitignore interpretation.
+      Cross-check: HEAD commit matches expected baseline (PINNED_COMMIT).
+      Indirect validation: consistent git tree → reproducible audits.
+    severity_mapping:
+      P0: "Repository in unknown state (security/compliance risk)"
+      P1: "HEAD drift or missing .gitignore (reproducibility broken)"
+      P2: "Minor git metadata inconsistency"
+      P3: "Informational only"
+    applicability: ["all_practices"]
+
+  M2_claim_lint:
+    description: "Untagged universal quantifiers in markdown (always/never/all/every). Rigor check."
+    ground_truth_sources:
+      - name: "Academic Claim Verification & Falsifiability"
+        url: "https://plato.stanford.edu/entries/falsifiability/"
+        standard_body: "Stanford Encyclopedia of Philosophy"
+      - name: "Technical Writing Best Practices"
+        url: "https://en.wikipedia.org/wiki/Technical_writing"
+        standard_body: "IEEE, ASME, STC (Society for Technical Communication)"
+      - name: "Empirica Epistemic Discipline"
+        url: "https://empirica.foundation/docs/constitution"
+        standard_body: "Empirica Foundation"
+    validation_mechanism: |
+      Findings validated via: regex scan for universal words + scope tag verification.
+      Indirect validation: unscoped claims indicate lack of epistemic rigor.
+      Cross-check: claims in docstrings vs. findings in epistemic artifacts (should align).
+    severity_mapping:
+      P0: "Untagged universal in security/compliance docs (high risk)"
+      P1: "Untagged universal in API/interface docs (breaks contract)"
+      P2: "Untagged universal in explanatory text (rigor gap)"
+      P3: "Untagged universal in comments or examples"
+    applicability: ["all_practices", "especially_empirica_practices"]
+
+  M3_schema_completeness:
+    description: "Frontmatter schema validation (v2.1 required fields). Metadata integrity."
+    ground_truth_sources:
+      - name: "JSON Schema Specification"
+        url: "https://json-schema.org/"
+        standard_body: "IETF Draft Standard"
+      - name: "YAML Specification"
+        url: "https://yaml.org/"
+        standard_body: "YAML.Org"
+      - name: "Markdown Frontmatter (YAML)"
+        url: "https://jekyllrb.com/docs/front-matter/"
+        standard_body: "Jekyll (GitHub Pages standard)"
+    validation_mechanism: |
+      Findings validated via: YAML schema validation against v2.1 spec.
+      Indirect validation: missing fields → incomplete metadata → downstream tools fail.
+      Cross-check: frontmatter present AND parsed correctly AND contains required fields.
+    severity_mapping:
+      P0: "Missing critical schema fields (e.g., security_level, approval)"
+      P1: "Missing standard v2.1 fields (evidence, substrate, reliability)"
+      P2: "Legacy schema version detected (v1.0 where v2.1 expected)"
+      P3: "Optional fields missing"
+    applicability: ["empirica_practices", "documentation_heavy_repos"]
+
+  M4_reference_resolution:
+    description: "Markdown links (broken/missing anchors), workflow script references. Link integrity."
+    ground_truth_sources:
+      - name: "Diátaxis: A systems approach to technical documentation"
+        url: "https://diataxis.fr/"
+        standard_body: "Daniele Procida et al."
+      - name: "GitHub Markdown Reference"
+        url: "https://guides.github.com/features/mastering-markdown/"
+        standard_body: "GitHub Inc."
+      - name: "CI/CD Best Practices (GitHub Actions)"
+        url: "https://docs.github.com/en/actions"
+        standard_body: "GitHub Inc."
+    validation_mechanism: |
+      Findings validated via: URL resolution (does path exist in repo?), anchor verification.
+      Indirect validation: broken link → documentation decay → users get 404s.
+      Cross-check: link target exists, anchor (if present) exists in target file.
+    severity_mapping:
+      P0: "Broken workflow script reference (CI/CD fails)"
+      P1: "Broken document link (readers lost)"
+      P2: "Missing anchor in target (partial reference broken)"
+      P3: "Link to future/deprecated resource (informational)"
+    applicability: ["all_practices"]
+
+  M5_id_integrity:
+    description: "Duplicate IDs, dual-status entries. Identity uniqueness."
+    ground_truth_sources:
+      - name: "Database Normalization (3NF)"
+        url: "https://en.wikipedia.org/wiki/Third_normal_form"
+        standard_body: "E.F. Codd, ISO/IEC 27001"
+      - name: "UUID/URN Standards"
+        url: "https://tools.ietf.org/html/rfc4122"
+        standard_body: "IETF RFC 4122"
+    validation_mechanism: |
+      Findings validated via: ID uniqueness scan, duplicate resolution.
+      Indirect validation: duplicate IDs → merge conflicts → data loss.
+      Cross-check: all IDs unique, all references resolvable.
+    severity_mapping:
+      P0: "Duplicate ID in critical data (entity registry, proposal store)"
+      P1: "Duplicate ID in findings/goals"
+      P2: "Stale ID reference (target deleted)"
+      P3: "ID hygiene note"
+    applicability: ["empirica_practices"]
+
+  M6_org_url_drift:
+    description: "Non-canonical org references, URL drift. Canonical consistency."
+    ground_truth_sources:
+      - name: "REST API Canonical Naming"
+        url: "https://restfulapi.net/resource-naming/"
+        standard_body: "RESTful API Design community"
+      - name: "Empirica Org Conventions"
+        url: "https://github.com/empirica-foundation/empirica/docs/ORG_CONVENTIONS.md"
+        standard_body: "Empirica Foundation"
+    validation_mechanism: |
+      Findings validated via: URL regex scan, org-slug verification.
+      Indirect validation: non-canonical references → routing failures, missed updates.
+      Cross-check: all org references match canonical form (hyphen, not underscore).
+    severity_mapping:
+      P0: "Critical service URL drifted"
+      P1: "Org reference non-canonical"
+      P2: "Deprecated URL still in use"
+      P3: "Reference hygiene"
+    applicability: ["mesh_active_practices"]
+
+  M7_coverage_mapping:
+    description: "Site/practice coverage. Documentation completeness."
+    ground_truth_sources:
+      - name: "Documentation Coverage Metrics"
+        url: "https://www.writethedocs.org/guide/writing/best-practices/"
+        standard_body: "Write the Docs community"
+      - name: "API Documentation Standards"
+        url: "https://swagger.io/specification/"
+        standard_body: "OpenAPI Initiative"
+    validation_mechanism: |
+      Findings validated via: coverage ratio (documented / total), gap analysis.
+      Indirect validation: low coverage → undocumented behaviors → user confusion.
+      Cross-check: every exported API/feature has discoverable docs.
+    severity_mapping:
+      P0: "Security feature undocumented"
+      P1: "Critical API undocumented (>20% gap)"
+      P2: "Minor feature gap (<20%)"
+      P3: "Nice-to-have doc note"
+    applicability: ["public_practices", "api_providers"]
+
+  M8_duplicate_file_detection:
+    description: "Same basename in multiple directories. DRY principle violation."
+    ground_truth_sources:
+      - name: "DRY Principle (Don't Repeat Yourself)"
+        url: "https://en.wikipedia.org/wiki/Don%27t_repeat_yourself"
+        standard_body: "Software engineering best practice"
+      - name: "Code Organization Best Practices"
+        url: "https://google.github.io/styleguide/"
+        standard_body: "Google Style Guides"
+    validation_mechanism: |
+      Findings validated via: file-basename deduplication, hash comparison.
+      Indirect validation: duplicate files → confusion about which to edit, sync problems.
+      Cross-check: if duplicates exist, are they intentional? (test fixtures, examples, etc.)
+    severity_mapping:
+      P0: "Duplicate of critical file (config, schema, secrets)"
+      P1: "Duplicate README/docs in multiple dirs"
+      P2: "Duplicate utility files"
+      P3: "Duplicate test fixtures"
+    applicability: ["all_practices"]
+
+  M9_versioned_filename_consistency:
+    description: "Versioned filenames (_vX.Y). Version consistency."
+    ground_truth_sources:
+      - name: "Semantic Versioning"
+        url: "https://semver.org/"
+        standard_body: "Semantic Versioning community"
+      - name: "File Naming Conventions"
+        url: "https://en.wikipedia.org/wiki/Filename"
+        standard_body: "Industry practice"
+    validation_mechanism: |
+      Findings validated via: regex scan for _vX.Y pattern, version uniqueness per base.
+      Indirect validation: multiple files with same version → build ambiguity.
+      Cross-check: each (base, version) pair appears exactly once.
+    severity_mapping:
+      P0: "Multiple schema files with same version"
+      P1: "Multiple release files with same version"
+      P2: "Duplicate version in test data"
+      P3: "Version numbering hygiene"
+    applicability: ["all_practices"]
+
+  M10_executable_permissions:
+    description: "Unix executable bit on scripts (.sh, .py). Usability."
+    ground_truth_sources:
+      - name: "POSIX File Permissions"
+        url: "https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html"
+        standard_body: "IEEE/Open Group"
+      - name: "Shebang (#!) Best Practices"
+        url: "https://en.wikipedia.org/wiki/Shebang_(Unix)"
+        standard_body: "Unix tradition"
+    validation_mechanism: |
+      Findings validated via: os.access(X_OK), file permissions stat.
+      Indirect validation: non-executable scripts → requires `python3 script.py` instead of `./script.py`.
+      Cross-check: scripts with shebang MUST be executable.
+    severity_mapping:
+      P0: "Critical setup/deployment script not executable"
+      P1: "Documented runnable script not executable"
+      P2: "Utility script missing exec bit"
+      P3: "Informational"
+    applicability: ["all_practices", "especially_automation_repos"]
+
+  M11_ci_workflow_validation:
+    description: "GitHub Actions workflows. CI/CD integrity."
+    ground_truth_sources:
+      - name: "GitHub Actions Documentation"
+        url: "https://docs.github.com/en/actions"
+        standard_body: "GitHub Inc."
+      - name: "CI/CD Best Practices"
+        url: "https://github.com/lbesson/awesome-github-actions"
+        standard_body: "GitHub Actions community"
+    validation_mechanism: |
+      Findings validated via: workflow YAML validation, action reference resolution.
+      Indirect validation: invalid workflow → CI fails silently or runs wrong job.
+      Cross-check: all referenced actions exist (local or public registry).
+    severity_mapping:
+      P0: "Workflow syntax error (CI broken)"
+      P1: "Referenced action missing"
+      P2: "Deprecated action version"
+      P3: "Workflow hygiene note"
+    applicability: ["all_practices"]
+
+  M12_security_pattern_scan:
+    description: "Hardcoded secrets (API keys, passwords, tokens). OWASP CWE-798."
+    ground_truth_sources:
+      - name: "CWE-798: Use of Hard-Coded Credentials"
+        url: "https://cwe.mitre.org/data/definitions/798.html"
+        standard_body: "MITRE/NIST"
+      - name: "OWASP A02:2021 – Cryptographic Failures"
+        url: "https://owasp.org/Top10/A02_2021-Cryptographic_Failures/"
+        standard_body: "OWASP Foundation"
+      - name: "Secret Management Best Practices"
+        url: "https://12factor.net/config"
+        standard_body: "12 Factor App methodology"
+    validation_mechanism: |
+      Findings validated via: regex pattern matching, manual verification.
+      Indirect validation: hardcoded secrets → credential leak → compromise.
+      Cross-check: all suspected secrets flagged for human review (not auto-deleted).
+    severity_mapping:
+      P0: "Hardcoded API key, AWS secret, or database password (CRITICAL)"
+      P1: "Hardcoded token or auth header"
+      P2: "Possible secret (manual review needed)"
+      P3: "False positive (e.g., example credentials)"
+    applicability: ["all_practices"]
+
+# Holographic consistency rules
+# Each practice's audit view is a subset of the master audit,
+# but the overall system is coherent (genetic logic):
+holographic_principles:
+  - level: "master"
+    scope: "empirica-foundation-evaluator"
+    visibility: "all_findings"
+    responsibility: "Orchestration, cross-practice correlation, escalation"
+
+  - level: "practice"
+    scope: "per_practice_audit_repo"
+    visibility: "findings_relevant_to_practice_scope"
+    responsibility: "Local remediation, discipline improvements"
+
+  - level: "file"
+    scope: "per_file_audit_summary"
+    visibility: "findings_for_this_file_only"
+    responsibility: "Developer awareness, local fix priorities"
+
+# Scalability: genetic logic
+# Each audit run produces findings → findings feed into inventory → inventory drives config
+# Config determines which methods run in which practices → results become new findings
+# Loop closes: audit → inventory → config → audit (self-correcting)
+feedback_loop:
+  - step: 1
+    name: "Audit Execution"
+    input: "repo_audit_v1_1.py + methods M1-M12"
+    output: "47 findings (operations repo)"
+
+  - step: 2
+    name: "Inventory Ingestion"
+    input: "empirica log-artifacts (findings batch)"
+    output: "findings in epistemic graph + YAML registry"
+
+  - step: 3
+    name: "Configuration Update"
+    input: "YAML registry + ground truth mapping"
+    output: ".empirica/audit_config.yaml (which methods, which practices, severity thresholds)"
+
+  - step: 4
+    name: "Next Audit Cycle"
+    input: ".empirica/audit_config.yaml"
+    output: "targeted audit runs (e.g., only M2 on empirica practices)"
+
+  - step: 5
+    name: "Convergence Measurement"
+    input: "before/after findings per method"
+    output: "calibration signals (is M2 fixing working? measure improvement)"

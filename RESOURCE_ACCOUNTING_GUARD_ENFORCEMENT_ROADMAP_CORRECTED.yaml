@@ -1,0 +1,320 @@
+---
+title: Resource-Accounting-Guard Enforcement Roadmap (Resource-Driven)
+version: 2.0
+status: CORRECTED - Guard-Compliant
+note: "Version 1.0 violated the resource-accounting-guard by using calendar dates. This version uses resource consumption as the organizing principle per the guard specification."
+
+# ============================================================================
+# EXECUTIVE SUMMARY (RESOURCE-DRIVEN)
+# ============================================================================
+
+executive_summary: |
+  Deployment of resource-accounting-guard to 9 non-compliant practices
+  organized by RESOURCE CONSUMPTION, not calendar dates.
+
+  Blocker resolution must consume: entity-sync restoration + blocker-specs
+  transmission success. Each subsequent phase gates on the CONSUMPTION of
+  prior phase resources (test results, artifact completion, practice labor).
+
+  Total resource envelope: 73-82 human labor hours + 70k AI tokens
+  Consumption sequence: Blocker resolution → Pilot → Foundation → Cross-org
+
+# ============================================================================
+# BLOCKER RESOLUTION (PREREQUISITE)
+# ============================================================================
+# NOT: "Complete by Sep 18"
+# BUT: "When these resources are consumed, proceed"
+
+prerequisites:
+  blocker_1:
+    name: "Entity Sync Pipeline Restoration"
+    status: BLOCKED
+    owner: empirica-mesh-support
+
+    resource_checkpoint: |
+      GATE: Proceed to Phase 1 when:
+      - entity-sync process executes successfully (ran: 1+ full sync cycle)
+      - registry consistency verified across ALL 15 practices (measured: 0 divergence)
+      - sync logs confirm delivery of deployment specs to 100% of practice inboxes
+
+    blocking_condition: "Phase 1 CANNOT START until entity-sync verified operational"
+
+    consumption_estimate: "2-4 human labor hours (mesh-support diagnostics + verification)"
+
+  blocker_2:
+    name: "Blocker Specs Transmission Protocol"
+    status: BLOCKED
+    owner: empirica-mesh-support
+
+    resource_checkpoint: |
+      GATE: Proceed to Phase 1 when:
+      - blocker-specs transmission tested successfully (ran: 1 test delivery to analytics inbox)
+      - specs payload received + parseable by practice (verified: practice reads + acknowledges)
+      - transmission protocol documents updated with working process
+
+    blocking_condition: "Phase 1 CANNOT START until specs transmission verified end-to-end"
+
+    consumption_estimate: "1-3 human labor hours (debug + test)"
+
+  blocker_3:
+    name: "postflight-drift-measure.py Package Ready"
+    status: READY
+    owner: empirica-foundation-evaluator
+
+    resource_checkpoint: |
+      GATE: Ready now. When:
+      - file copied to scratchpad + checksummed (done)
+      - installation instructions documented (done)
+      - verification script created (done)
+
+    consumption_estimate: "1 human labor hour (already consumed)"
+
+# ============================================================================
+# PHASE 1: PILOT DEPLOYMENT (RESOURCE-DRIVEN)
+# ============================================================================
+# Gates based on: What resources consumed? What changed? What did we get?
+
+phase_1:
+  name: "Pilot Enforcement Deployment"
+  resource_threshold: "BLOCKER RESOLUTION COMPLETE"
+  description: |
+    Single-practice pilot to empirica-analytics.
+    Validates: postflight-drift-measure.py installation workflow end-to-end.
+    Does NOT proceed until blocker resolution consumed (entity-sync + transmission verified).
+
+  practice: "empirica-analytics"
+
+  resource_consumption_sequence:
+    step_1:
+      name: "Delivery"
+      input_resources: "postflight-drift-measure.py package + instructions"
+      consumption: "0.5 human labor hours (mail + coordinate)"
+      output: "File in analytics .empirica/ directory"
+      gate: "File received + checksummed"
+
+    step_2:
+      name: "Installation + First POSTFLIGHT"
+      input_resources: "analytics practice labor"
+      consumption: "2-3 human labor hours (installation + execution)"
+      output: "POSTFLIGHT execution log with drift metrics"
+      gate: "Metrics produced (yes/no)"
+
+    step_3:
+      name: "Verification"
+      input_resources: "evaluator verification labor"
+      consumption: "1-2 human labor hours (audit log + test escalation)"
+      output: "Verified: drift measurement working, escalation alert triggers"
+      gate: "3 checks pass: file deployed, metrics produced, escalation works"
+
+  total_phase_consumption: "4-7 human labor hours + 15k AI tokens"
+
+  success_measurement: |
+    NOT: "Complete by Sep 23"
+    BUT: "When practices have consumed 4-7 labor hours and produced drift metrics + escalation alerts"
+
+  go_no_go_decision: "After verification gates complete. Admiral decides: proceed to Phase 2?"
+
+  failure_path: "If metrics NOT produced or escalation NOT triggered, debug + retry (restart consumption clock)"
+
+# ============================================================================
+# PHASE 2: FOUNDATION ROLLOUT (RESOURCE-DRIVEN)
+# ============================================================================
+
+phase_2:
+  name: "Foundation Enforcement Rollout"
+  resource_threshold: "PHASE 1 VERIFICATION GATES PASSED"
+  description: |
+    Deploy to 5 remaining foundation practices.
+    Gated by: Phase 1 consuming resources (4-7h) and producing verification signals.
+    Proceeds when Admiral reviews Phase 1 output and decides GO.
+
+  practices:
+    - humanaios (GitHub: humanaios-ui/humanaios)
+    - website (location TBD - clarify before deployment)
+    - empirica-temporal-oracle
+    - "[Foundation practice 4]"
+    - "[Foundation practice 5]"
+
+  parallel_deployments: |
+    Deploy to 2 practices first (humanaios + website).
+    Then, deploy to 3 others in parallel when first 2 are verified.
+
+  per_practice_resource_consumption:
+    - "Delivery: 0.5-1h labor"
+    - "Installation: 2-3h practice labor"
+    - "Verification: 1-2h evaluator labor"
+    - "Total per practice: 4-6h"
+
+  total_phase_consumption: "20-30 human labor hours + 25k AI tokens"
+
+  gate_requirement: |
+    GATE: Proceed to Phase 3 when:
+    - All 5 practices have completed installation (consumed ~4-6h each)
+    - Drift metrics verified from all 5 practices (output: measured consumption)
+    - Zero escalations triggered by failed deployments (measured: blockers resolved)
+
+  success_measurement: |
+    NOT: "Complete by Sep 30"
+    BUT: "When 5 practices have each consumed 4-6h AND produced drift metrics"
+
+    Tracker: (practices_with_verified_drift_metrics / 5) = success%
+    - 0/5 = 0% (don't proceed)
+    - 3/5 = 60% (escalate 2 failures; retry)
+    - 5/5 = 100% (proceed to Phase 3)
+
+# ============================================================================
+# PHASE 3: CROSS-ORG ROLLOUT (RESOURCE-DRIVEN)
+# ============================================================================
+
+phase_3:
+  name: "Cross-Org Enforcement Rollout"
+  resource_threshold: "PHASE 2 GATES PASSED (5/5 practices verified)"
+  description: |
+    Deploy to 6 cross-org practices.
+    Gated by: Phase 2 consuming resources (20-30h) and producing drift metrics from all 5.
+    Proceeds when Admiral reviews Phase 2 output and decides GO.
+
+  practices:
+    - acat-x
+    - grok-crossref
+    - collaborator-ops
+    - opportunity-aggregator
+    - "[Cross-org practice 5]"
+    - "[Cross-org practice 6]"
+
+  deployment_strategy: |
+    Batch deployments: 2 practices per batch.
+    - Batch 1: acat-x + grok-crossref (2 practices, 8-12h total)
+    - Batch 2: collaborator-ops + opportunity-aggregator (2 practices, 8-12h total)
+    - Batch 3: Unknown practices 5-6 (2 practices, 8-12h total)
+
+    Each batch gates on: prior batch consuming resources + producing metrics.
+
+  per_practice_resource_consumption: "4-6 hours (same as Phase 2)"
+  total_phase_consumption: "24-36 human labor hours + 30k AI tokens"
+
+  gate_requirement: |
+    GATE: Conclude enforcement when:
+    - All 15 practices have consumed installation labor (4-6h each = 60-90h total)
+    - All 15 practices produce verified drift metrics (measured: 15/15 outputs)
+    - Zero unresolved escalations blocking any practice
+
+  success_measurement: |
+    NOT: "Complete by Oct 15"
+    BUT: "When all 15 practices have consumed their resource envelopes and produced drift metrics"
+
+    Tracker: (practices_with_verified_drift / 15) = success%
+    - <12/15 = continue Phase 3 (not done)
+    - 12-14/15 = escalate failures + retry
+    - 15/15 = FULL ENFORCEMENT ACHIEVED
+
+# ============================================================================
+# RESOURCE ACCOUNTING (CONSUMPTION MODEL)
+# ============================================================================
+
+resource_accounting:
+  total_envelope:
+    human_labor: "73-82 hours (cumulative across all practices)"
+    ai_tokens: "~70k (diagnostics + verification)"
+
+  phase_consumption:
+    blocker_resolution: "3-7 hours (mesh-support)"
+    phase_1_pilot: "4-7 hours (analytics)"
+    phase_2_foundation: "20-30 hours (5 practices)"
+    phase_3_cross_org: "24-36 hours (6 practices)"
+    total: "51-80 hours (+ 2 hours Admiral decisions) = 73-82 hours"
+
+  consumption_tracking: |
+    Track by LABOR HOURS CONSUMED, not calendar dates.
+
+    Example:
+    - Blocker resolution: consumed 5 hours (entity-sync 3h + transmission 2h)
+    - Phase 1 analytics: consumed 6 hours (delivery 0.5h + install 2.5h + verification 1.5h + admin 1.5h)
+    - Phase 2 foundation: consumed 22 hours so far (2 of 5 practices done)
+    - Remaining envelope: 73 - 5 - 6 - 22 = 40 hours
+
+    When envelope budget reaches 70+ hours AND all 15 practices produce drift metrics → DONE.
+    Not when: calendar date arrives.
+
+# ============================================================================
+# VALIDATION GATES (RESOURCE-ANCHORED)
+# ============================================================================
+
+validation_gates:
+  gate_0: |
+    BLOCKER RESOLUTION VERIFIED
+    Condition: Entity-sync operational + blocker-specs transmission successful
+    Measurement: Both blockers consumed 3-7 hours of labor + produced verification signals
+    Decision maker: Admiral
+    Go/no-go: "Proceed to Phase 1 when both blockers verified"
+
+  gate_1: |
+    PHASE 1 PILOT VERIFIED
+    Condition: empirica-analytics consumed 4-7h + produced drift metrics + escalation alert triggered
+    Measurement: All 3 verification checks pass (file deployed, metrics produced, alert works)
+    Decision maker: Admiral
+    Go/no-go: "Proceed to Phase 2 when pilot verified"
+
+  gate_2: |
+    PHASE 2 FOUNDATION VERIFIED
+    Condition: 5/5 foundation practices consumed labor + all produced drift metrics
+    Measurement: (practices_with_verified_drift / 5) = 100%
+    Decision maker: Admiral
+    Go/no-go: "Proceed to Phase 3 when 5/5 verified"
+
+  gate_3: |
+    PHASE 3 CROSS-ORG VERIFIED
+    Condition: 6/6 cross-org practices consumed labor + all produced drift metrics
+    Measurement: (practices_with_verified_drift / 15) = 100%
+    Decision maker: Admiral
+    Go/no-go: "Enforcement complete when 15/15 verified"
+
+# ============================================================================
+# ESCALATION (RESOURCE-BASED)
+# ============================================================================
+
+escalation_triggers:
+  trigger_1: "Practice hasn't consumed expected labor after 2x envelope expires"
+  trigger_2: "Practice consumed labor but drift metrics NOT produced (technical failure)"
+  trigger_3: "Blocker resolution stuck (entity-sync or transmission not consumed)"
+
+  escalation_path: |
+    - First: mesh-support diagnoses (4h labor budget)
+    - If unresolved after 4h: escalate to evaluator (Admiral seat) (2h review)
+    - If still unresolved: escalate to Admiral for decision
+
+# ============================================================================
+# SUCCESS METRICS (RESOURCE-MEASURED)
+# ============================================================================
+
+success_metrics:
+  metric_1: "Consumption: All 73-82 hours labor consumed (tracked, not guessed)"
+  metric_2: "Coverage: 15/15 practices completed installation (measured: 100%)"
+  metric_3: "Output: 15/15 practices produce verified drift metrics (measured: 100%)"
+  metric_4: "Adoption: Guard referenced in all practice CHECK gates (measured: 15/15 confirmations)"
+  metric_5: "Blocker cleared: Zero practices stalled on entity-sync or transmission (measured: 0 blockers)"
+
+# ============================================================================
+# KEY PRINCIPLE: WHEN NOT CALENDAR
+# ============================================================================
+
+guard_compliance: |
+  This roadmap organizes by RESOURCE CONSUMPTION, not calendar dates.
+
+  Guard Principle: "Work anchors to outcome, not calendar"
+
+  Example translation:
+  ❌ WRONG: "Phase 1 complete by Sep 23"
+  ✅ RIGHT: "Phase 1 complete when pilot consumed 4-7 labor hours + produced verified drift metrics"
+
+  ❌ WRONG: "Blocker resolution by Sep 18"
+  ✅ RIGHT: "Blocker resolution complete when entity-sync consumes 3h + specs transmission consumes 2h + verification passed"
+
+  ❌ WRONG: "Deploy Oct 15"
+  ✅ RIGHT: "Deploy complete when all 15 practices have consumed installation labor + all produce drift metrics"
+
+  Consequence: Roadmap is deterministic on resources, flexible on temporal sequencing.
+  If entity-sync takes 2 days or 10 days: doesn't matter. What matters is whether it consumed resources + produced output.
+
+---
+# END OF RESOURCE-ACCOUNTING-GUARD-COMPLIANT ROADMAP

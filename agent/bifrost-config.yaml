@@ -1,0 +1,132 @@
+# Bifrost Configuration for Empirica Foundation Evaluator
+# Gateway for internal agent: Kimi K2.6 (planning) + Laguna M.1 (execution)
+
+gateway:
+  name: empirica-foundation-evaluator-agent
+  description: Shared agent gateway for foundation practices
+  port: 8080
+  log_level: info
+
+# Provider: OpenRouter (unified gateway for multiple models)
+providers:
+  - name: openrouter
+    type: openrouter
+    api_key: ${OPENROUTER_API_KEY}  # Injected from environment
+    base_url: https://openrouter.ai/api/v1
+    enabled: true
+
+# Model routing rules
+models:
+  # Planning/orchestration model
+  - name: kimi-k2.6
+    provider: openrouter
+    model_id: moonshotai/kimi-k2.6
+    type: planning
+    context_window: 262144
+    max_output_tokens: 262144
+    capabilities:
+      - reasoning
+      - planning
+      - multi_agent_orchestration
+      - long_context
+    routing:
+      default_for_type: planning
+      priority: 1
+    config:
+      temperature: 0.7
+      top_p: 0.95
+
+  # Execution/code generation model
+  - name: laguna-m.1
+    provider: openrouter
+    model_id: poolside/laguna-m.1
+    type: execution
+    context_window: 262144
+    max_output_tokens: 33000
+    capabilities:
+      - code_generation
+      - code_reasoning
+      - function_calling
+    routing:
+      default_for_type: execution
+      priority: 1
+    config:
+      temperature: 0.3  # Lower temp for code execution
+      top_p: 0.95
+
+# MCP (Model Context Protocol) server registration
+mcp_servers:
+  - name: empirica-cli
+    type: stdio
+    command: empirica
+    args: ["mcp-server"]
+    enabled: true
+    tools:
+      - finding-log
+      - decision-log
+      - unknown-log
+      - deadend-log
+      - assumption-log
+      - goals-create
+      - goals-add-task
+      - goals-complete-task
+
+  - name: cortex-mesh
+    type: stdio
+    command: empirica
+    args: ["cortex", "mcp-server"]
+    enabled: true
+    tools:
+      - cortex_collab
+      - cortex_propose
+      - cortex_inbox_poll
+
+  - name: file-io
+    type: stdio
+    command: python3
+    args: ["-m", "empirica.mcp.file_io_server"]
+    enabled: true
+    tools:
+      - read_file
+      - write_file
+      - list_directory
+
+# Caching and performance
+cache:
+  enabled: true
+  ttl_seconds: 3600
+  type: memory
+
+# Observability and audit
+observability:
+  tracing_enabled: true
+  trace_destination: file  # or: jaeger, datadog, etc.
+  trace_file_path: ./data/traces.jsonl
+  audit_log_enabled: true
+  audit_log_path: ./data/audit.log
+  metrics_enabled: true
+
+# Rate limiting (respects OpenRouter free tier)
+rate_limits:
+  requests_per_minute: 20  # Free tier limit
+  requests_per_day: 200    # Conservative free tier
+  burst_size: 5
+  per_model_limits:
+    kimi-k2.6: 10/min
+    laguna-m.1: 10/min
+
+# Fallback and resilience
+resilience:
+  retry_attempts: 3
+  retry_backoff_seconds: 2
+  timeout_seconds: 60
+  circuit_breaker_enabled: true
+  circuit_breaker_failure_threshold: 5
+
+# Security and governance
+security:
+  enable_authentication: false  # Internal use only
+  sanitize_logs: true
+  redact_api_keys: true
+  allow_function_calling: true
+  allowed_tools: ["empirica_cli", "cortex_mesh", "file_io"]

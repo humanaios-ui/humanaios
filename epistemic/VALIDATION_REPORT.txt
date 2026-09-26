@@ -1,0 +1,11 @@
+T1 AST import audit: PASS — imports exactly ['__future__', 'copy', 'dataclasses', 'numpy', 'typing']
+Sweep: 180 runs (36 configs x 5 seeds, 16 cycles)
+DECOUPLED runs (conf slope>+0.005 AND residual slope>=-0.005): 94/180 = 52.2%
+Leading indicator (mvar collapse precedes confidence peak): 94/94 = 100.0% of decoupled runs
+
+Example decoupled configs (h_lr, m_lr, noise_h, noise_m | conf-slope, res-slope | t_collapse<t_peak):
+  lr=(0.05,0.05) noise=(0.10,0.10) | conf +0.0145, res +0.1123 | mvar-min@14 vs conf-max@15
+  lr=(0.05,0.05) noise=(0.10,0.10) | conf +0.0178, res +0.2543 | mvar-min@13 vs conf-max@14
+  lr=(0.05,0.05) noise=(0.10,0.25) | conf +0.0121, res +0.0883 | mvar-min@14 vs conf-max@15
+
+CAVEAT: residual is god-view only; agents cannot compute it. This experiment demonstrates the regime EXISTS and whether an internal signal foreshadows it — it does not give agents ground access.

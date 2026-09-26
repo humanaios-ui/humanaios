@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mesh Decision Sync State",
+  "description": "Schema for tracking mesh-sync decision application state in target repos (PNS). Each repo maintains a local mesh_decision_sync.json file recording which decisions have been applied.",
+  "type": "object",
+  "required": ["repo", "generated_at", "decisions"],
+  "properties": {
+    "repo": {
+      "type": "string",
+      "description": "Target repo identifier (e.g., 'humanaios-ui/operations')",
+      "example": "humanaios-ui/operations"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this state was last updated",
+      "example": "2026-07-21T14:30:00Z"
+    },
+    "mesh_sync_version": {
+      "type": "string",
+      "description": "Version of mesh-sync protocol this repo implements",
+      "example": "1.0"
+    },
+    "decisions": {
+      "type": "array",
+      "description": "Array of applied decisions (ordered by application timestamp)",
+      "items": {
+        "type": "object",
+        "required": ["decision_id", "status", "applied_at_timestamp"],
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "description": "Unique decision identifier from CNS (D-YYMMDD-NNN format)",
+            "example": "D-072621-001"
+          },
+          "decision_type": {
+            "type": "string",
+            "enum": [
+              "authority_boundary_change",
+              "state_machine_gate_update",
+              "config_standard_update",
+              "dependency_version_pin",
+              "naming_versioning_standard",
+              "schema_lock_update"
+            ],
+            "description": "Type of decision (M2 Rank 1-6)",
+            "example": "state_machine_gate_update"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["APPLIED", "PENDING", "FAILED", "ROLLED_BACK"],
+            "description": "Current status of this decision",
+            "example": "APPLIED"
+          },
+          "applied_at_commit": {
+            "type": "string",
+            "description": "Git commit SHA where decision was applied",
+            "example": "a1b2c3d4e5f6..."
+          },
+          "applied_at_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when decision was applied",
+            "example": "2026-07-21T14:30:00Z"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when decision was received from CNS",
+            "example": "2026-07-21T14:29:00Z"
+          },
+          "validated": {
+            "type": "boolean",
+            "description": "Whether decision passed schema + signature validation",
+            "example": true
+          },
+          "validation_errors": {
+            "type": "array",
+            "description": "Any validation errors encountered",
+            "items": {"type": "string"},
+            "example": ["schema_version mismatch"]
+          },
+          "files_modified": {
+            "type": "array",
+            "description": "Files updated by this decision",
+            "items": {"type": "string"},
+            "example": ["CLAUDE.md", ".empirica/project.yaml"]
+          },
+          "rollback_available": {
+            "type": "boolean",
+            "description": "Whether this decision can be rolled back",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "Any additional notes or issues",
+            "example": "Applied successfully, awaiting Admiral verification"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "description": "Summary statistics for quick assessment",
+      "properties": {
+        "total_decisions": {
+          "type": "integer",
+          "description": "Total decisions in sync state",
+          "example": 3
+        },
+        "applied_count": {
+          "type": "integer",
+          "description": "Number of successfully applied decisions",
+          "example": 3
+        },
+        "pending_count": {
+          "type": "integer",
+          "description": "Number of pending decisions",
+          "example": 0
+        },
+        "failed_count": {
+          "type": "integer",
+          "description": "Number of failed decisions",
+          "example": 0
+        },
+        "last_applied": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of most recent applied decision",
+          "example": "2026-07-21T14:30:00Z"
+        },
+        "consistency_status": {
+          "type": "string",
+          "enum": ["SYNC", "DRIFT", "INIT", "ERROR"],
+          "description": "Quick consistency status vs CNS",
+          "example": "SYNC"
+        }
+      }
+    },
+    "divergence_log": {
+      "type": "array",
+      "description": "Historical log of divergence events (when this repo fell out of sync)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "divergence_type": {
+            "type": "string",
+            "enum": ["MISSING_DECISION", "STALE_ACK", "VALIDATION_FAILURE", "NETWORK_FAILURE"],
+            "description": "Type of divergence detected"
+          },
+          "description": {
+            "type": "string"
+          },
+          "resolved": {
+            "type": "boolean",
+            "description": "Whether this divergence has been resolved"
+          },
+          "resolved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "properties": {
+        "repo_branch": {
+          "type": "string",
+          "description": "Branch where decisions are applied (typically 'main')",
+          "example": "main"
+        },
+        "last_dispatch_received": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of last mesh-sync dispatch event received"
+        },
+        "health_check_passed": {
+          "type": "boolean",
+          "description": "Whether last health check passed"
+        },
+        "automatic_sync_enabled": {
+          "type": "boolean",
+          "description": "Whether automatic decision application is enabled (vs manual review)"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "repo": "humanaios-ui/operations",
+      "generated_at": "2026-07-21T14:30:00Z",
+      "mesh_sync_version": "1.0",
+      "decisions": [
+        {
+          "decision_id": "D-072621-001",
+          "decision_type": "state_machine_gate_update",
+          "status": "APPLIED",
+          "applied_at_commit": "a1b2c3d4",
+          "applied_at_timestamp": "2026-07-21T14:30:00Z",
+          "received_at": "2026-07-21T14:29:00Z",
+          "validated": true,
+          "validation_errors": [],
+          "files_modified": ["acat_contracts/gates_phase3.json"],
+          "rollback_available": true,
+          "notes": "Applied successfully"
+        }
+      ],
+      "summary": {
+        "total_decisions": 1,
+        "applied_count": 1,
+        "pending_count": 0,
+        "failed_count": 0,
+        "last_applied": "2026-07-21T14:30:00Z",
+        "consistency_status": "SYNC"
+      },
+      "divergence_log": [],
+      "metadata": {
+        "repo_branch": "main",
+        "last_dispatch_received": "2026-07-21T14:29:00Z",
+        "health_check_passed": true,
+        "automatic_sync_enabled": true
+      }
+    }
+  ]
+}

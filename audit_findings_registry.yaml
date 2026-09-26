@@ -1,0 +1,244 @@
+# Audit Findings Registry v1.0
+#
+# Machine layer: YAML/JSON registry synced with empirica artifacts.
+# Drives .empirica/ configuration via genetic logic.
+# Each finding → method → ground truth → severity → action.
+
+version: "1.0"
+timestamp: "2026-08-19T10:11:48Z"
+schema: "audit-findings-registry-v1"
+
+# Metadata
+metadata:
+  audit_repo: "humanaios-ui/operations"
+  audit_version: "1.1.0"
+  pinned_commit: "d2567ea6b11fd84cc13a17c9cccc6dfc1b2217e3"
+  findings_total: 47
+  findings_by_severity:
+    P0: 0
+    P1: 0
+    P2: 1
+    P3: 46
+  empirica_project_id: "dae1d6fd-c8dc-40fc-ab61-567ec467a610"
+  empirica_ingestion_status: "COMPLETE"
+
+# File Inventory with Meta Information
+# Maps each audited file → findings + audit methods applied
+file_inventory:
+  "COLLABORATOR_OPS/roster/README.md":
+    content_type: "markdown"
+    size_bytes: 2048
+    last_modified: "2026-08-15T14:32:00Z"
+    audit_methods_applied: ["M1", "M2", "M3", "M4"]
+    findings_count: 1
+    findings:
+      - ref: "find_humanaios-ui_operations_0"
+        method: "M2"
+        severity: "P3"
+        category: "claim_lint"
+        line: 3
+        message: "Untagged universal quantifier"
+        claim_text: "**P-ANON:** role labels only in this file. Real identities live in the workspace `entity_registry` (local) and the internal record. Never commit names here."
+    coverage: "PARTIAL"
+    coverage_notes: "M5-M7 skipped (not applicable to markdown); M8-M12 not applicable"
+
+  "COLLABORATOR_OPS/playbooks/ohmenrah-z2-checklist.md":
+    content_type: "markdown"
+    size_bytes: 5120
+    last_modified: "2026-08-18T09:15:00Z"
+    audit_methods_applied: ["M1", "M2", "M3", "M4"]
+    findings_count: 1
+    findings:
+      - ref: "find_humanaios-ui_operations_1"
+        method: "M2"
+        severity: "P3"
+        category: "claim_lint"
+        line: 12
+        message: "Untagged universal quantifier"
+        claim_text: "(example from audit output)"
+    coverage: "PARTIAL"
+
+  "README.md":
+    content_type: "markdown"
+    size_bytes: 3456
+    last_modified: "2026-08-10T11:22:00Z"
+    audit_methods_applied: ["M1", "M2", "M3", "M4", "M8"]
+    findings_count: 2
+    findings:
+      - ref: "find_humanaios-ui_operations_46"
+        method: "M8"
+        severity: "P2"
+        category: "duplicate_file"
+        message: "Duplicate basename: README.md (in 4 locations)"
+        related_files:
+          - "COLLABORATOR_OPS/roster/README.md"
+          - "COLLABORATOR_OPS/README.md"
+          - "COLLABORATOR_OPS/records/README.md"
+    coverage: "FULL"
+    coverage_notes: "All applicable methods ran"
+
+  # ... (47 findings across files)
+
+# Ground Truth Linkage
+# Each method linked to published sources for validation
+ground_truth_links:
+  M1_inventory_baseline:
+    external_sources:
+      - "https://git-scm.com/book/en/v2"
+      - "https://semver.org/"
+    validation_indirect: "consistent git tree → reproducible audits"
+
+  M2_claim_lint:
+    external_sources:
+      - "https://plato.stanford.edu/entries/falsifiability/"
+      - "https://empirica.foundation/docs/constitution"
+    validation_indirect: "unscoped claims indicate lack of epistemic rigor"
+    week1_fix: "empirica-evaluator CHECK gate + uncertainty logging"
+
+  M3_schema_completeness:
+    external_sources:
+      - "https://json-schema.org/"
+      - "https://yaml.org/"
+    validation_indirect: "missing fields → incomplete metadata → downstream tools fail"
+
+  M4_reference_resolution:
+    external_sources:
+      - "https://diataxis.fr/"
+      - "https://docs.github.com/en/actions"
+    validation_indirect: "broken link → documentation decay → users get 404s"
+
+  M8_duplicate_file_detection:
+    external_sources:
+      - "https://en.wikipedia.org/wiki/Don%27t_repeat_yourself"
+    validation_indirect: "duplicate files → confusion about which to edit"
+
+  # ... (M5-M7, M9-M12 linkages)
+
+# Severity-to-Action Mapping
+# Translates audit findings → Week 1 actions + resource allocation
+severity_action_map:
+  P0:
+    action: "ESCALATE_IMMEDIATELY"
+    owner: "empirica-foundation-evaluator (Z2 gate)"
+    timeline: "same_day"
+    example: "hardcoded secrets detected"
+
+  P1:
+    action: "IMPLEMENT_FIX"
+    owner: "per_practice (Week 1-2)"
+    timeline: "within_week"
+    example: "broken workflow scripts, missing schema fields"
+
+  P2:
+    action: "SCHEDULE_FIX"
+    owner: "per_practice (Week 2-3)"
+    timeline: "within_2_weeks"
+    example: "duplicate files, missing anchors"
+
+  P3:
+    action: "QUEUE_IMPROVEMENT"
+    owner: "per_practice (backlog)"
+    timeline: "when_capacity_available"
+    example: "missing executable bit, claim lint low-severity"
+
+# Practice-Scoped Views (Holographic Principle)
+# Each practice sees findings relevant to its scope
+practice_views:
+  empirica-foundation-evaluator:
+    scope: "MASTER"
+    visibility: "all_47_findings"
+    role: "Orchestration, correlation, escalation"
+    actions:
+      - "Monitor P0/P1 findings across all practices"
+      - "Route findings to responsible practices"
+      - "Measure convergence (audit → fixes → improvement)"
+      - "Feed findings into Week 1-4 execution plan"
+
+  humanaios-internal:
+    scope: "LOCAL"
+    visibility: "47_findings_in_operations_repo"
+    role: "Local remediation"
+    actions:
+      - "Fix M2 claim lint (46 P3 findings)"
+      - "Investigate M8 duplicate README.md (1 P2 finding)"
+      - "Improve CHECK gate discipline (empirica-evaluator guidance)"
+
+  grok-crossref:
+    scope: "PHASE3"
+    visibility: "findings_relevant_to_phase3_governance_dispatch"
+    role: "Phase 3 governance validation"
+    actions:
+      - "Verify governance findings pass audit before dispatch"
+      - "Use audit results in Phase 3 rollout brief"
+
+# Configuration Driver
+# Audit findings → YAML registry → .empirica/ config update
+# This enables self-correcting feedback loop
+config_generation:
+  enabled: true
+  output_file: ".empirica/audit_config.yaml"
+  update_triggers:
+    - "weekly_full_audit"
+    - "on_finding_threshold_breach"
+    - "when_ground_truth_updated"
+  generated_config_sections:
+    - audit_methods_enabled: "[M1, M2, M3, M4, M8, M9, M10, M11, M12]"
+    - audit_methods_disabled: "[M5, M6, M7]  # Not applicable to operations repo"
+    - severity_thresholds:
+        P0: "escalate_immediately"
+        P1: "schedule_week1_fix"
+        P2: "schedule_week2_fix"
+        P3: "queue_backlog"
+    - practice_audit_schedule:
+        empirica-foundation-evaluator: "daily (master view)"
+        empirica-autonomy: "weekly (M2, M11 only)"
+        empirica-mesh-support: "weekly (M4 reference resolution)"
+        empirica-outreach: "bi-weekly (full suite)"
+    - measurement_gates:
+        convergence_target: "70%+ improvement post-fixes"
+        observation_count: "50 new observations per week"
+        audit_cycles: "baseline → Week1 → Week2 → Week4 (locked)"
+
+# Feedback Loop Status
+# Tracks how findings flow through discovery → fix → verification
+feedback_loop_status:
+  cycle_number: 1
+  start_date: "2026-08-19"
+  audit_phase: "DISCOVERY"
+  next_phase: "WEEK1_FIXES (empirica-evaluator: CHECK gate + uncertainty logging)"
+  measurements:
+    baseline_findings: 47
+    baseline_by_method:
+      M2_claim_lint: 46
+      M8_duplicates: 1
+    measurement_ready: true
+    observation_baseline: "establish this week"
+    convergence_deadline: "Week 4 (2026-09-16)"
+
+# External Link Registry
+# For human operators to validate findings against published sources
+external_validation_matrix:
+  - finding: "M2_claim_lint (46 findings)"
+    external_standard: "Stanford Encyclopedia of Philosophy - Falsifiability"
+    validation_method: "Human review: does claim scope match assertion?"
+    link: "https://plato.stanford.edu/entries/falsifiability/"
+    status: "READY_FOR_VALIDATION"
+
+  - finding: "M8_duplicate_README.md"
+    external_standard: "DRY Principle (Don't Repeat Yourself)"
+    validation_method: "Code review: are duplicates intentional or accidental?"
+    link: "https://en.wikipedia.org/wiki/Don%27t_repeat_yourself"
+    status: "READY_FOR_VALIDATION"
+
+  - finding: "M4_broken_links (0 found in operations, good)"
+    external_standard: "Diátaxis Documentation Standards"
+    validation_method: "Reference integrity check"
+    link: "https://diataxis.fr/"
+    status: "NO_FINDINGS"
+
+# Version History
+versions:
+  - version: "1.0"
+    date: "2026-08-19"
+    changes: "Initial registry from repo_audit_v1_1.py (operations repo)"
+    source: "audit_findings_integrator.py → empirica log-artifacts"

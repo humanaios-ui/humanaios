@@ -1,0 +1,206 @@
+# Jaeger Deployment Configuration — Phase 3.5.1 Task 2
+# Runs on Phase 3.4 observability stack (Kubernetes or Docker)
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jaeger-config
+  namespace: observability
+data:
+  sampling.json: |
+    {
+      "default_strategy": {
+        "type": "probabilistic",
+        "param": 0.1
+      },
+      "service_strategies": [
+        {
+          "service": "gateway",
+          "type": "probabilistic",
+          "param": 0.5
+        },
+        {
+          "service": "autonomy",
+          "type": "probabilistic",
+          "param": 0.1
+        },
+        {
+          "service": "mesh-support",
+          "type": "probabilistic",
+          "param": 0.5
+        }
+      ]
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+      - name: jaeger
+        image: jaegertracing/all-in-one:latest
+        ports:
+        - containerPort: 6831
+          protocol: UDP
+          name: jaeger-compact
+        - containerPort: 6832
+          protocol: UDP
+          name: jaeger-binary
+        - containerPort: 5778
+          protocol: TCP
+          name: jaeger-serve-configs
+        - containerPort: 16686
+          protocol: TCP
+          name: jaeger-ui
+        - containerPort: 14250
+          protocol: TCP
+          name: jaeger-grpc
+        env:
+        - name: COLLECTOR_ZIPKIN_HOST_PORT
+          value: ":9411"
+        - name: SPAN_STORAGE_TYPE
+          value: elasticsearch
+        - name: ES_SERVER_URLS
+          value: http://elasticsearch:9200
+        - name: ES_USERNAME
+          value: elastic
+        - name: ES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: es-credentials
+              key: password
+        - name: SAMPLING_CONFIG_TYPE
+          value: http
+        - name: SAMPLING_ENDPOINT
+          value: http://localhost:5778/sampling
+        volumeMounts:
+        - name: sampling-config
+          mountPath: /etc/jaeger
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 14269
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 14269
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      
+      volumes:
+      - name: sampling-config
+        configMap:
+          name: jaeger-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: observability
+spec:
+  selector:
+    app: jaeger
+  ports:
+  - protocol: UDP
+    port: 6831
+    targetPort: 6831
+    name: jaeger-compact
+  - protocol: UDP
+    port: 6832
+    targetPort: 6832
+    name: jaeger-binary
+  - protocol: TCP
+    port: 5778
+    targetPort: 5778
+    name: jaeger-serve-configs
+  - protocol: TCP
+    port: 16686
+    targetPort: 16686
+    name: jaeger-ui
+  - protocol: TCP
+    port: 14250
+    targetPort: 14250
+    name: jaeger-grpc
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+        env:
+        - name: discovery.type
+          value: single-node
+        - name: ES_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: es-storage
+          mountPath: /usr/share/elasticsearch/data
+      
+      volumes:
+      - name: es-storage
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: observability
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - protocol: TCP
+    port: 9200
+    targetPort: 9200
+  - protocol: TCP
+    port: 9300
+    targetPort: 9300
+  type: ClusterIP

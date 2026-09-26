@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-08-15T20:27:12.356184Z",
+  "practice_id": "humanaios",
+  "vectors": {
+    "know": 0.0,
+    "uncertainty": 0.0,
+    "engagement": 0.0,
+    "completion": 0.0
+  },
+  "found_summary": "Learning Trajectory Dimension designed for ACAT (commit f3ca775): explicitly makes recursive learnin",
+  "raw_result": {
+    "score": 0.55256605,
+    "type": "fact",
+    "content": "Learning Trajectory Dimension designed for ACAT (commit f3ca775): explicitly makes recursive learning observable via artifact edges + causal strength. Schema ready (learning_trajectories table, 8 trajectory_types, metrics view). Integration plan: CLI flags \u2192 POSTFLIGHT prompts \u2192 visualization \u2192 ACAT vectors. Observable: learning_trajectory_density (artifact link coverage) + recursive_learning_coefficient (chain depth \u00d7 coverage). Example: this session has 6/7 artifacts with documented links (85%",
+    "confidence": 0.664,
+    "domain": null,
+    "created_at": 1784221155.351444,
+    "first_seen": 1784221155.351445
+  }
+}

@@ -1,0 +1,35 @@
+---
+# Document Control Registry — empirica-foundation-evaluator
+# Single source of truth for all controlled documents
+# Last updated: 2026-08-21
+
+documents:
+  - doc_id: EMPIRICA-EVAL-001
+    title: Wave 1 Ranked Opportunities - Implementation Specifications
+    canonical_path: docs/WAVE1_IMPLEMENTATION_SPECS.md
+    revision: 1
+    status: approved
+    owner: empirica-foundation-evaluator
+    approved_by: carly
+    approved_date: 2026-08-21
+    review_due: 2026-09-21
+    retention: permanent
+    description: Implementation details for Wave 1 deployment (Utility Module Library, CI/CD Consolidation, API Documentation Generator)
+
+  - doc_id: EMPIRICA-EVAL-002
+    title: Phase 2 Resource Bottleneck Analysis
+    canonical_path: PHASE2_RESOURCE_BOTTLENECK_ANALYSIS.md
+    revision: 1
+    status: approved
+    owner: empirica-foundation-evaluator
+    approved_by: carly
+    approved_date: 2026-08-21
+    review_due: 2026-09-21
+    retention: permanent
+    description: Resource-based bottleneck identification and cascade analysis
+
+registry_metadata:
+  last_scanned: 2026-08-21T00:00:00Z
+  total_documents: 2
+  validated: true
+  status: active

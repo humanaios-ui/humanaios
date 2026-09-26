@@ -1,0 +1,89 @@
+---
+# Phase 3.9: Alert Rules for Tier 2 Practices
+# Extended Foundation - Standard SLAs (5 practices)
+# Generated: 2026-09-17
+
+apiVersion: monitoring.empirica.io/v1
+kind: AlertRuleSet
+metadata:
+  name: sla-tier2-alerts
+  namespace: empirica-monitoring
+  labels:
+    phase: "3.9"
+    tier: "2"
+    sla_enforcement: "true"
+
+spec:
+  alert_rules:
+    - name: Tier2_QueryLatency_P95_Warning
+      severity: warning
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS * 0.8"
+      duration: "5m"
+      escalation_response_minutes: 10
+      thresholds:
+        empirica-analytics: 1200
+        empirica-resource-miner: 1600
+        empirica-temporal-oracle: 1600
+        humanaios: 1440
+        humanaios-ui: 1200
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier2_QueryLatency_P95_Critical
+      severity: critical
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS"
+      duration: "2m"
+      escalation_response_minutes: 5
+      thresholds:
+        empirica-analytics: 1500
+        empirica-resource-miner: 2000
+        empirica-temporal-oracle: 2000
+        humanaios: 1800
+        humanaios-ui: 1500
+      actions: [ESCALATE:L2, PAGE:evaluator]
+
+    - name: Tier2_HealthScore_Warning
+      severity: warning
+      condition: "health_score < 0.75"
+      duration: "10m"
+      escalation_response_minutes: 10
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier2_HealthScore_Critical
+      severity: critical
+      condition: "health_score < 0.70"
+      duration: "5m"
+      escalation_response_minutes: 5
+      actions: [ESCALATE:L2, NOTIFY:evaluator]
+
+    - name: Tier2_IngestionRate_Low
+      severity: warning
+      condition: "ingestion_rate_cps < PRACTICE_MIN_CPS"
+      duration: "20m"
+      escalation_response_minutes: 10
+      thresholds:
+        empirica-analytics: 20
+        empirica-resource-miner: 8
+        empirica-temporal-oracle: 10
+        humanaios: 12
+        humanaios-ui: 12
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier2_TraceCorrelation_Low
+      severity: warning
+      condition: "trace_correlation < 0.90"
+      duration: "10m"
+      escalation_response_minutes: 10
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier2_CoordinationLatency_High
+      severity: warning
+      condition: "coordination_latency_p95_s > PRACTICE_COORD_P95_S"
+      duration: "5m"
+      escalation_response_minutes: 10
+      thresholds:
+        empirica-analytics: 10
+        empirica-resource-miner: 12
+        empirica-temporal-oracle: 15
+        humanaios: 10
+        humanaios-ui: 10
+      actions: [NOTIFY:mesh-support]

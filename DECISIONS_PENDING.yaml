@@ -1,0 +1,195 @@
+# Decisions Awaiting Ratification (Feedback Loop Hub)
+#
+# PURPOSE: Single source of truth for pending ratifications.
+# System-discovered issues are logged here. Admiral reviews and ratifies.
+# Once ratified, decisions move to GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+#
+# WORKFLOW:
+#   M3R2/R3 discovers issue → Log PENDING entry
+#       ↓
+#   Admiral reviews DECISIONS_PENDING.yaml
+#       ↓
+#   Admiral ratifies (approval)
+#       ↓
+#   Decision moves to GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+#       ↓
+#   M3R1 dispatches approved decision
+#       ↓
+#   M3R2/R3 verifies applied
+
+metadata:
+  registry_version: "1.0"
+  created_at: 2026-07-23T18:00:00Z
+  updated_at: 2026-07-23T18:00:00Z
+  authority: "empirica-foundation Admiral (Carly R. Anderson)"
+  purpose: "Master queue for ratifications awaiting Admiral approval"
+  canonical_location: "empirica-foundation-evaluator/DECISIONS_PENDING.yaml"
+
+  parent_registry: "GOVERNANCE_RATIFICATIONS_REGISTRY.yaml"
+  parent_location: "empirica-foundation-evaluator/GOVERNANCE_RATIFICATIONS_REGISTRY.yaml"
+  relationship: "PENDING → (Admiral ratifies) → RATIFIED"
+
+  feedback_loop:
+    discovery: "M3R2 divergence-detect.yml + M3R3 state-validate.yml"
+    submission: "Workflows write PENDING entries"
+    review: "Admiral reads DECISIONS_PENDING.yaml daily"
+    ratification: "Admiral approves → entry removed from PENDING, added to REGISTRY"
+    application: "M3R1 mesh-sync-batch.yml dispatches ratified decisions"
+    verification: "M3R2/R3 verify applied"
+
+  pending_decision_types:
+    DIVERGENCE: "Repo out of sync (missing decisions, stale ACKs)"
+    VALIDATION_FAILURE: "Decision rejected during validation"
+    NETWORK_FAILURE: "Repo unreachable during discovery"
+    STATE_MISMATCH: "Applied state differs from expected"
+    ACK_TIMEOUT: "ACK not received within tolerance window"
+    SIGNATURE_MISMATCH: "Admiral signature verification failed"
+
+---
+
+# PENDING DECISIONS QUEUE
+
+pending_ratifications:
+  summary:
+    total_pending: 1
+    pending_by_type:
+      DIVERGENCE: 1
+      VALIDATION_FAILURE: 0
+      NETWORK_FAILURE: 0
+      STATE_MISMATCH: 0
+      ACK_TIMEOUT: 0
+      SIGNATURE_MISMATCH: 0
+    oldest_pending_age_hours: 0
+    last_discovery: "2026-07-20T22:30:00Z"
+
+  entries:
+    - pending_id: "PEN-072024-001"
+      decision_type: "DIVERGENCE"
+      title: "Test: Webhook integration verification"
+      severity: "LOW"
+      discovered_by: "claude-code-test"
+      discovered_at: "2026-07-20T22:30:00Z"
+      discovery_run: "manual-test"
+      repo_affected: "empirica-foundation-evaluator"
+      details:
+        test_run: true
+        purpose: "Verify Edge Function webhook is receiving updates"
+      recommended_action: "Acknowledge test - webhook confirmed working"
+      proposed_decision:
+        decision_type: "test_decision"
+        title: "Test Decision - Webhook Verification"
+        scope: "Test only - no operational impact"
+        target_repos: ["empirica-foundation-evaluator"]
+      admiral_notes: "Test decision for webhook verification"
+      status: "PENDING_REVIEW"
+      expires_at: "2026-07-27T22:30:00Z"
+    # TEMPLATE FOR PENDING DECISION ENTRY:
+    #
+    # - pending_id: "PEN-YYMMDD-NNN"
+    #   decision_type: "DIVERGENCE"
+    #   title: "Repo out of sync: humanaios-ui/operations"
+    #   severity: "HIGH" | "MEDIUM" | "LOW"
+    #
+    #   discovered_by: "divergence-detect.yml"
+    #   discovered_at: "2026-07-23T00:15:00Z"
+    #   discovery_run: "https://github.com/...workflows/divergence-detect/runs/123"
+    #
+    #   repo_affected: "humanaios-ui/operations"
+    #   details:
+    #     divergence_count: 2
+    #     missing_decisions: ["D-072621-001", "D-071821-002"]
+    #     stale_acks: ["D-071821-003"]
+    #
+    #   recommended_action: "Re-dispatch mesh-sync to repo"
+    #   proposed_decision:
+    #     decision_type: "state_machine_gate_update"
+    #     title: "Resync: humanaios-ui/operations"
+    #     scope: "Trigger re-dispatch of queued decisions"
+    #     target_repos: ["humanaios-ui/operations"]
+    #
+    #   admiral_notes: ""
+    #   status: "PENDING_REVIEW"
+    #   expires_at: "2026-07-30T00:15:00Z"  # 7-day auto-expire if not ratified
+
+---
+
+# RATIFICATION WORKFLOW (Admiral Process)
+
+admiral_workflow:
+  review_cadence: "Daily (recommend: morning, before 09:00 UTC)"
+
+  steps:
+    1_load_pending: "Load DECISIONS_PENDING.yaml, sort by severity (HIGH first)"
+    2_assess: "For each pending entry:"
+      - "Read discovery details (which repo, what divergence)"
+      - "Check recommended_action"
+      - "Verify proposed_decision makes sense"
+    3_decide: "For each entry, choose:"
+      - "APPROVE: Ratify the proposed decision"
+      - "MODIFY: Edit proposed_decision, then ratify"
+      - "REJECT: Decline ratification (log reason)"
+      - "DEFER: Review later (re-assess in 24h)"
+    4_execute: "For APPROVED entries:"
+      - "Move entry from DECISIONS_PENDING to GOVERNANCE_RATIFICATIONS_REGISTRY"
+      - "Update entry.status: PENDING_REVIEW → RATIFIED"
+      - "Commit both files with ratification summary"
+    5_apply: "M3R1 mesh-sync-batch.yml picks up RATIFIED decisions next hourly cycle"
+    6_verify: "M3R2/R3 verify applied at next daily cycle"
+
+  decision_template:
+    pending_id: "PEN-072623-001"
+    admiral_decision: "APPROVE | MODIFY | REJECT | DEFER"
+    ratified_at: "2026-07-23T09:30:00Z"
+    ratified_decision_id: "D-072623-001"  # Assigned by Admiral
+    notes: "Approved: repo was offline, resync appropriate"
+
+---
+
+# ESCALATION (Admiral → Cortex)
+
+escalation_rules:
+  high_severity_unreviewed: ">2 HIGH entries unreviewed for >24h"
+    action: "Alert Admiral (Slack/email)"
+
+  divergence_cascade: ">50% repos in DRIFT state"
+    action: "Escalate to mesh-support (cross-org collab)"
+
+  persistent_failure: "Same repo fails >3 consecutive days"
+    action: "Investigate (network issue? broken listener?)"
+
+---
+
+# AUTO-EXPIRE POLICY
+
+expiration:
+  pending_ttl_days: 7
+  rule: "PENDING entries auto-expire if not ratified within 7 days"
+  on_expire: "Move to DECISIONS_EXPIRED.yaml (archive), alert Admiral"
+  rationale: "Forces decision-making; prevents stale queue"
+
+---
+
+# INTEGRATION CHECKLIST (Auto-Populated by M3R2/R3)
+
+# M3R2 (divergence-detect.yml) writes entries when:
+#   - divergence_count >= DIVERGENCE_THRESHOLD
+#   - Status = ALERT (not OK, not INIT)
+
+# M3R3 (state-validate.yml) writes entries when:
+#   - validation_status = WARNINGS or ERROR
+#   - issue_type = VALIDATION_FAILURE, STALE_ACK, or NETWORK_FAILURE
+
+# Admiral reads/ratifies when:
+#   - entries exist in pending_ratifications.entries[]
+#   - Daily review cycle (recommend 09:00 UTC)
+
+# System applies when:
+#   - Entry ratified (status = RATIFIED)
+#   - Next M3R1 hourly dispatch cycle
+#   - Decision payload created from entry.proposed_decision
+
+# M3R2/R3 verify when:
+#   - Next daily cycle (00:00 UTC for M3R2, 12:00 UTC for M3R3)
+#   - Check if ratified decisions have been applied
+#   - If applied: remove from DECISIONS_PENDING, log to REGISTRY
+#   - If not applied: escalate (possible dispatch failure)

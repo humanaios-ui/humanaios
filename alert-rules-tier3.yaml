@@ -1,0 +1,83 @@
+---
+# Phase 3.9: Alert Rules for Tier 3 Practices
+# Ecosystem - Relaxed SLAs (8 practices)
+# Generated: 2026-09-17
+
+apiVersion: monitoring.empirica.io/v1
+kind: AlertRuleSet
+metadata:
+  name: sla-tier3-alerts
+  namespace: empirica-monitoring
+  labels:
+    phase: "3.9"
+    tier: "3"
+    sla_enforcement: "true"
+
+spec:
+  alert_rules:
+    - name: Tier3_QueryLatency_P95_Warning
+      severity: warning
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS * 0.8"
+      duration: "10m"
+      escalation_response_minutes: 15
+      thresholds:
+        humanaios-internal: 1600
+        website: 1600
+        acat-x: 1600
+        collaborator-ops: 1600
+        flta-app-empirica: 1600
+        grok-crossref: 2400
+        local-machine-optimizer: 2400
+        opportunity-aggregator: 1600
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier3_QueryLatency_P95_Critical
+      severity: critical
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS"
+      duration: "5m"
+      escalation_response_minutes: 10
+      thresholds:
+        humanaios-internal: 2000
+        website: 2000
+        acat-x: 2000
+        collaborator-ops: 2000
+        flta-app-empirica: 2000
+        grok-crossref: 3000
+        local-machine-optimizer: 3000
+        opportunity-aggregator: 2000
+      actions: [ESCALATE:L2, NOTIFY:evaluator]
+
+    - name: Tier3_HealthScore_Warning
+      severity: warning
+      condition: "health_score < 0.70"
+      duration: "15m"
+      escalation_response_minutes: 15
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier3_HealthScore_Critical
+      severity: critical
+      condition: "health_score < 0.60"
+      duration: "10m"
+      escalation_response_minutes: 10
+      actions: [ESCALATE:L2, NOTIFY:evaluator]
+
+    - name: Tier3_IngestionRate_Low
+      severity: warning
+      condition: "ingestion_rate_cps < PRACTICE_MIN_CPS * 0.8"
+      duration: "30m"
+      escalation_response_minutes: 15
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier3_TraceCorrelation_Low
+      severity: warning
+      condition: "trace_correlation < 0.85"
+      duration: "15m"
+      escalation_response_minutes: 15
+      actions: [NOTIFY:mesh-support]
+
+    - name: Tier3_CoordinationLatency_High
+      severity: warning
+      condition: "coordination_latency_p95_s > PRACTICE_COORD_P95_S * 1.2"
+      duration: "10m"
+      escalation_response_minutes: 15
+      actions: [NOTIFY:mesh-support]

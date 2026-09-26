@@ -1,0 +1,188 @@
+---
+# M2 Rank 4: Schema Discovery Summary — Phase 2 Input
+
+task: "M2 Rank 4: Phase 1 Schema Discovery & Cataloging"
+date: 2026-07-23
+investigator: "empirica-foundation-evaluator"
+scope: "6 foundation practices (empirica-foundation-evaluator, empirica-autonomy, empirica-mesh-support, empirica-outreach, humanaios, website)"
+
+discovery_results:
+  total_schemas_examined: 4
+  practices_examined: 6
+  breaking_inconsistencies_found: 3
+  medium_severity_issues: 3
+  automation_blockers: 2
+
+schema_inventory:
+
+  project_yaml:
+    status: "BROKEN"
+    instances: 6
+    consistency: "2 variants (Type A: 2 practices, Type B: 4 practices)"
+    severity: "HIGH"
+    summary: "Field ordering differs — org_id/tenant_slug/mesh_id_prefix/canonical_seat positioned after domain in Type A, after calibration_weights in Type B. Both are v2.0. Calibration weights structure identical across all."
+    action_required: true
+    action: "Define canonical field order, create migration script for Type B → Type A, update bootstrap/setup-claude-code to enforce ordering"
+    practices_type_a: ["empirica-foundation-evaluator", "humanaios"]
+    practices_type_b: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+
+  config_yaml:
+    status: "CONSISTENT"
+    instances: 6
+    consistency: "100% identical"
+    severity: "NONE"
+    summary: "All 6 practices have identical v2.0 schema with same root path, paths, settings, and env_overrides. Ready for automation."
+    action_required: false
+    action: null
+
+  authority_matrix_yaml:
+    status: "CENTRALIZED"
+    instances: 3
+    distribution: "Only 2 of 6 practices have it (evaluator, humanaios with copy)"
+    severity: "HIGH"
+    summary: "AUTHORITY_MATRIX.yaml exists in evaluator/docs and humanaios/docs (identical copy). Missing from autonomy, mesh-support, outreach, website. All 6 practices reference it in CLAUDE.md but 4 use @../docs/ to non-existent parent."
+    practices_with_file: ["empirica-foundation-evaluator", "humanaios"]
+    practices_missing: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+    action_required: true
+    action: "Centralize to single location (recommend evaluator/docs), establish @-include mechanism for importing practices, add CI/CD validation for reference resolution"
+
+  claude_md_authority_section:
+    status: "INCONSISTENT"
+    instances: 6
+    consistency: "2 variants"
+    severity: "HIGH"
+    summary: "Variant 1 (evaluator, humanaios) uses @docs/ absolute paths, has managed block, references Z3_PROTOCOL upstream. Variant 2 (autonomy, mesh-support, outreach, website) uses @../docs/ relative paths, no managed block, auto-approval logic differs."
+    variant_1_practices: ["empirica-foundation-evaluator", "humanaios"]
+    variant_2_practices: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+    action_required: true
+    action: "Define canonical Authority section template, standardize path reference format (@docs/ vs @../docs/), establish managed/non-managed block convention, standardize decision-maker field (individual vs role title)"
+
+  governance_supporting_documents:
+    status: "FRAGMENTED"
+    summary: "Governance docs distributed across practices with inconsistent locations and no sync mechanism for duplicates"
+    documents:
+      authority_mapping_z3:
+        name: "AUTHORITY_MAPPING_Z3_EMPIRICA_V1.md"
+        size_bytes: 12609
+        locations: ["empirica-foundation-evaluator/docs", "humanaios/docs", "humanaios/empirica/empirica-foundation-evaluator/docs (duplicate)"]
+        missing_from: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+        referenced_by: ["all 6 practices"]
+        severity: "HIGH"
+        action: "Centralize in evaluator/docs, establish @-include for other practices"
+      escalation_protocol:
+        name: "ESCALATION_PROTOCOL.md"
+        size_bytes: 24812
+        locations: ["empirica-foundation-evaluator/docs", "humanaios/docs", "humanaios/empirica/empirica-foundation-evaluator/docs (duplicate)"]
+        missing_from: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+        referenced_by: ["all 6 practices"]
+        severity: "HIGH"
+        action: "Centralize in evaluator/docs, establish @-include for other practices"
+      z3_protocol:
+        name: "Z3_PROTOCOL.md"
+        size_bytes: 18493
+        locations: ["empirica-outreach (root)", "humanaios/operations"]
+        missing_from: ["empirica-foundation-evaluator", "empirica-autonomy", "empirica-mesh-support", "website"]
+        referenced_by: ["empirica-foundation-evaluator CLAUDE.md (as 'Upstream')"]
+        severity: "MEDIUM"
+        action: "Clarify if local or imported, standardize location if local, update references if imported"
+      charter:
+        name: "CHARTER.md"
+        size_bytes: 4346
+        locations: ["empirica-autonomy/docs"]
+        missing_from: ["empirica-foundation-evaluator", "empirica-mesh-support", "empirica-outreach", "humanaios", "website"]
+        referenced_by: ["empirica-autonomy CLAUDE.md only"]
+        severity: "LOW-MEDIUM"
+        action: "Clarify if autonomy-specific or should all practices have one"
+      claude_md_authority_template:
+        name: "CLAUDE_MD_AUTHORITY_TEMPLATE.md"
+        size_bytes: 7974
+        locations: ["empirica-foundation-evaluator/docs", "humanaios/docs"]
+        missing_from: ["empirica-autonomy", "empirica-mesh-support", "empirica-outreach", "website"]
+        referenced_by: ["none (template only)"]
+        severity: "LOW"
+        action: "Use as basis for standardizing CLAUDE.md Authority sections in Phase 2"
+
+critical_findings:
+
+  - id: "finding_1"
+    description: "project.yaml field ordering inconsistency"
+    severity: "HIGH"
+    impact: 0.8
+    details: "Type A places org_id/tenant_slug/mesh_id_prefix/canonical_seat after domain (line 8). Type B places them at end after calibration_weights. Both v2.0."
+    blocking: true
+
+  - id: "finding_2"
+    description: "Governance document distribution gap"
+    severity: "HIGH"
+    impact: 0.9
+    details: "4 practices reference governance docs they don't have. Relative paths (@../docs/) assume non-existent shared parent directory."
+    blocking: true
+
+  - id: "finding_3"
+    description: "CLAUDE.md Authority section split into 2 variants"
+    severity: "HIGH"
+    impact: 0.8
+    details: "Variant 1 uses absolute paths (@docs/), has managed block. Variant 2 uses relative paths (@../docs/), no managed block. Auto-approval rules differ."
+    blocking: true
+
+  - id: "finding_4"
+    description: "Duplicate governance docs (humanaios copy of evaluator)"
+    severity: "MEDIUM"
+    impact: 0.6
+    details: "humanaios copies AUTHORITY_MATRIX.yaml, AUTHORITY_MAPPING.md, ESCALATION_PROTOCOL.md with no sync mechanism. If evaluator updates, humanaios becomes stale."
+    blocking: false
+
+  - id: "finding_5"
+    description: "Z3_PROTOCOL placement inconsistency"
+    severity: "MEDIUM"
+    impact: 0.6
+    details: "Z3_PROTOCOL.md at empirica-outreach (root) and humanaios (operations/). Evaluator references as upstream. Unclear if local or imported."
+    blocking: false
+
+unknowns:
+
+  - id: "unknown_1"
+    description: "Governance document centralization strategy"
+    details: "Should governance docs live in evaluator/docs and be imported by others? Or moved to shared foundation location? How to prevent stale copies?"
+    priority: "HIGH"
+
+  - id: "unknown_2"
+    description: "Z3_PROTOCOL location and ownership"
+    details: "Is Z3_PROTOCOL supposed to be local to practices or imported from upstream operations repo? Why inconsistent locations?"
+    priority: "HIGH"
+
+  - id: "unknown_3"
+    description: "Path reference convention"
+    details: "Should @../docs/ references work? If so, what's the shared parent directory? Or should all use @docs/ with local copies?"
+    priority: "HIGH"
+
+  - id: "unknown_4"
+    description: "Practice charters"
+    details: "Should all practices have CHARTER.md, or is autonomy-specific sufficient? What should charters contain?"
+    priority: "MEDIUM"
+
+  - id: "unknown_5"
+    description: "Field ordering rule"
+    details: "Current order is neither alphabetical nor chronological. Should we enforce alphabetical or keep implicit grouping?"
+    priority: "MEDIUM"
+
+ready_for_phase_2: true
+phase_2_tasks:
+  - task_1: "Design canonical schemas (v3.0) for project.yaml, AUTHORITY_MATRIX.yaml, CLAUDE.md Authority section"
+  - task_2: "Define governance document centralization and import strategy"
+  - task_3: "Create migration script for Type B → Type A project.yaml transformation"
+  - task_4: "Establish path reference validation rules and CI/CD checks"
+  - task_5: "Define CLAUDE.md Authority section template and field specifications"
+  - task_6: "Create rollout plan for practices to adopt canonical schemas"
+
+evidence:
+  report_location: "/private/tmp/claude-501/-Users-andersonfamily-practices-empirica-foundation-evaluator/ba0ae64c-8038-47e6-a63e-d8dc4f89e5ac/scratchpad/M2_RANK4_SCHEMA_DISCOVERY_REPORT.md"
+  findings_logged:
+    - "finding_1: project.yaml field ordering inconsistency (ID: 28e8fb40-38a8-493a-9864-83f63315b4e3)"
+    - "finding_2: config.yaml consistency (ID: f05b6a13-6821-471a-a697-3102b8724d1b)"
+    - "finding_3: governance document distribution (ID: 8162d2f8-5389-4500-b660-88b8bcb482a7)"
+    - "finding_4: CLAUDE.md Authority section variants (ID: 036f3e24-45ee-4516-84cb-286ae5c2da15)"
+    - "unknown_1: governance doc centralization (ID: d08097c9-c13f-4add-9e73-4ec912c331fd)"
+    - "unknown_2: Z3_PROTOCOL placement (ID: 7cca29b0-6c23-4b83-b75e-c272441c8e53)"
+
+status: "DISCOVERY COMPLETE — Ready for Admiral Review and Phase 2 Schema Design"

@@ -1,0 +1,510 @@
+{
+  "dashboard": {
+    "title": "Cross-Practice Integration",
+    "description": "Mesh-wide coordination and bottleneck detection",
+    "tags": [
+      "phase-3.5",
+      "observability"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Practice Health Score",
+        "type": "heatmap",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | practice != \"\" | avg(vector_values) by practice"
+          }
+        ],
+        "options": {
+          "calculate": false,
+          "cellGap": 2,
+          "cellRadius": 2,
+          "color": {
+            "scheme": "Spectral"
+          },
+          "exemplars": {
+            "color": "rgba(255,0,255,0.7)"
+          },
+          "filterValues": {
+            "le": 1e-09
+          },
+          "legend": {
+            "show": true
+          },
+          "tooltip": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "title": "autonomy Requests",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 2.4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"autonomy\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "mesh-support Requests",
+        "type": "stat",
+        "gridPos": {
+          "x": 2.4,
+          "y": 8,
+          "w": 2.4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"mesh-support\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "outreach Requests",
+        "type": "stat",
+        "gridPos": {
+          "x": 4.8,
+          "y": 8,
+          "w": 2.4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"outreach\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "website Requests",
+        "type": "stat",
+        "gridPos": {
+          "x": 7.199999999999999,
+          "y": 8,
+          "w": 2.4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"website\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "humanaios Requests",
+        "type": "stat",
+        "gridPos": {
+          "x": 9.6,
+          "y": 8,
+          "w": 2.4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{practice=\"humanaios\"} | count"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Mesh P50 Latency",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 16,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | duration_ms > 0 | quantile_over_time(0.5, duration_ms[5m])"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Mesh P95 Latency",
+        "type": "stat",
+        "gridPos": {
+          "x": 3,
+          "y": 16,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | duration_ms > 0 | quantile_over_time(0.95, duration_ms[5m])"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Mesh P99 Latency",
+        "type": "stat",
+        "gridPos": {
+          "x": 6,
+          "y": 16,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | duration_ms > 0 | quantile_over_time(0.99, duration_ms[5m])"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Error Rate",
+        "type": "stat",
+        "gridPos": {
+          "x": 9,
+          "y": 16,
+          "w": 3,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | result=\"error\" | count / ({job=\"empirica-sessions\"} | count)"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "custom": {}
+          }
+        }
+      },
+      {
+        "title": "Cross-Practice Request Matrix",
+        "type": "table",
+        "gridPos": {
+          "x": 0,
+          "y": 20,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Loki",
+            "expr": "{job=\"empirica-sessions\"} | json | source_practice != \"\" | target_practice != \"\" | count by source_practice, target_practice, avg(duration_ms)"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "transformations": []
+      }
+    ],
+    "refresh": "30s",
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h"
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+# OpenTelemetry Collector Configuration for Phase 3.4
+# Receives traces via gRPC on :4317 and HTTP on :4318
+# Exports traces to stdout and (optionally) to cloud backends
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 10s
+    send_batch_size: 100
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+  attributes:
+    actions:
+      - key: service.version
+        value: "3.4"
+        action: insert
+      - key: deployment.environment
+        value: "phase-3.4"
+        action: insert
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlphttp:
+    endpoint: "http://jaeger-empirica-evaluator:14268"
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, attributes]
+      exporters: [debug, otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]

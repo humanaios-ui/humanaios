@@ -1,0 +1,12 @@
+{
+  "description": "Example sentinel-verify configuration: Strong vectors ready for deployment",
+  "vectors": {
+    "know": 0.95,
+    "uncertainty": 0.05,
+    "context": 0.95,
+    "engagement": 0.98,
+    "clarity": 0.95,
+    "coherence": 0.90
+  },
+  "action": "deploy"
+}

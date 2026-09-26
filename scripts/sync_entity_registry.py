@@ -35,22 +35,15 @@ def compute_hash(file_path: str) -> str:
         return hashlib.sha256(f.read()).hexdigest()
 
 def discover_project_yamls() -> List[str]:
-    """Find all .empirica/project.yaml files in GitHub-synced repositories."""
+    """Find all .empirica/project.yaml files in foundation practices."""
     results = []
-    # Look in all subdirectories under github/ for .empirica/project.yaml files
-    base_path = Path("/Users/andersonfamily/github")
-    if not base_path.exists():
-        logger.warning(f"GitHub sync path not found: {base_path}")
-        return results
-
-    # Recursively search for .empirica/project.yaml in all repos
-    for project_yaml in base_path.glob("**/.empirica/project.yaml"):
+    # Look in all subdirectories under practices/
+    base_path = Path("/Users/andersonfamily/practices")
+    for practice_dir in base_path.glob("*/"):
+        project_yaml = practice_dir / ".empirica" / "project.yaml"
         if project_yaml.exists():
             results.append(str(project_yaml))
-            repo_name = project_yaml.parent.parent.parent.name
-            logger.info(f"Discovered project.yaml in repo: {repo_name}")
-
-    logger.info(f"Discovered {len(results)} project.yaml files total")
+    logger.info(f"Discovered {len(results)} project.yaml files")
     return results
 
 def load_project_yaml(file_path: str) -> Dict:

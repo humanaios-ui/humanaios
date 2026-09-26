@@ -1,0 +1,159 @@
+# Prometheus Configuration for Foundation Orchestration
+# Phase 3.4: Observability Stack Deployment
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'foundation'
+    environment: 'production'
+
+# Retention: 15 days for time-series data
+storage:
+  tsdb:
+    retention_size: 500GB
+    retention_duration: 15d
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Foundation Practices — Metrics Emission Endpoints
+  # 9 Foundation Practices
+  - job_name: 'empirica-foundation-evaluator'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8001']
+        labels:
+          practice: 'evaluator'
+          tier: 'command-center'
+
+  - job_name: 'empirica-mesh-support'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8002']
+        labels:
+          practice: 'mesh-support'
+          tier: 'infrastructure'
+
+  - job_name: 'empirica-autonomy'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8003']
+        labels:
+          practice: 'autonomy'
+          tier: 'execution'
+
+  - job_name: 'empirica-outreach'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8004']
+        labels:
+          practice: 'outreach'
+          tier: 'external'
+
+  - job_name: 'humanaios'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8005']
+        labels:
+          practice: 'humanaios'
+          tier: 'domain-specific'
+
+  - job_name: 'empirica-resource-miner'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8006']
+        labels:
+          practice: 'resource-miner'
+          tier: 'infrastructure'
+
+  - job_name: 'acat-x'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8007']
+        labels:
+          practice: 'acat-x'
+          tier: 'external'
+
+  - job_name: 'grok-crossref'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8008']
+        labels:
+          practice: 'grok-crossref'
+          tier: 'external'
+
+  - job_name: 'empirica-extension'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8009']
+        labels:
+          practice: 'extension'
+          tier: 'infrastructure'
+
+  # 6 Cross-Org Practices (company-side)
+  - job_name: 'empirica'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8010']
+        labels:
+          practice: 'empirica'
+          org: 'empirica'
+          tier: 'core'
+
+  - job_name: 'empirica-cortex'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8011']
+        labels:
+          practice: 'cortex'
+          org: 'empirica'
+          tier: 'mesh'
+
+  - job_name: 'empirica-mesh-support-company'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8012']
+        labels:
+          practice: 'mesh-support'
+          org: 'empirica'
+          tier: 'infrastructure'
+
+  - job_name: 'empirica-outreach-company'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8013']
+        labels:
+          practice: 'outreach'
+          org: 'empirica'
+          tier: 'external'
+
+  - job_name: 'empirica-extension-company'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8014']
+        labels:
+          practice: 'extension'
+          org: 'empirica'
+          tier: 'infrastructure'
+
+  - job_name: 'empirica-cockpit'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8015']
+        labels:
+          practice: 'cockpit'
+          org: 'empirica'
+          tier: 'infrastructure'
+
+# Recording Rules: Computed Metrics
+rule_files:
+  - '/etc/prometheus/rules/*.yml'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']

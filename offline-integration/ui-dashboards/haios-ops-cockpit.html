@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HAIOS·OPS — Program Cockpit · Pilot: Audit → Remediation → GTM</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg-elevated:#161b22; --bg-card:#21262d; --border:#30363d;
+    --text:#e6edf3; --text-muted:#8b949e;
+    --green:#3fb950; --green-dim:#238636; --amber:#d29922; --red:#f85149;
+    --blue:#58a6ff; --purple:#a371f7;
+    --accent:#58a6ff;
+    --mono:"SF Mono","Fira Code","Cascadia Code","Roboto Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;overflow-x:hidden}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+  .status-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:10px 16px;background:var(--bg-elevated);border-bottom:1px solid var(--border);
+    font-family:var(--mono);font-size:13px;position:sticky;top:0;z-index:100}
+  .status-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .logo{font-weight:700;letter-spacing:.05em;color:var(--green)}
+  .logo b{color:var(--text);font-weight:400}
+  .status-item{display:flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot.on{background:var(--green);box-shadow:0 0 6px var(--green)} .dot.off{background:var(--red)}
+  .cap-value{cursor:pointer;padding:2px 6px;border-radius:4px}
+  .cap-value:hover{background:var(--bg-card)}
+  .headline-mini{font-size:11px;color:var(--text-muted)}
+  .headline-mini .bad{color:var(--red)} .headline-mini .ok{color:var(--green)} .headline-mini .warn{color:var(--amber)}
+
+  .app{display:grid;grid-template-columns:1fr;max-width:1140px;margin:0 auto;min-height:calc(100vh - 44px)}
+  @media(min-width:920px){.app{grid-template-columns:1fr 340px}}
+  .main{padding:20px 16px 48px;min-width:0}
+  .section-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:8px;font-family:var(--mono)}
+
+  .primary-section{margin-bottom:24px}
+  .primary-box{background:var(--bg-elevated);border:1px solid var(--border);border-left:4px solid var(--green);
+    border-radius:8px;padding:16px 18px;font-size:17px;font-weight:600;min-height:58px;cursor:pointer}
+  .primary-box:hover{border-color:var(--green)}
+  .primary-box .ptag{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--amber);margin-top:6px}
+  .primary-box.empty{color:var(--text-muted);font-weight:400;font-size:15px}
+
+  .wip-section{margin-bottom:24px}
+  .wip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .wip-count{font-family:var(--mono);font-size:13px}
+  .wip-count.full{color:var(--amber)}
+  .wip-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:640px){.wip-grid{grid-template-columns:repeat(3,1fr)}}
+  .wip-slot{background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:13px;min-height:150px;position:relative}
+  .wip-slot.active{border-color:var(--green);background:rgba(63,185,80,.06)}
+  .wip-slot.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;cursor:pointer;text-align:center}
+  .wip-slot.empty:hover{border-color:var(--blue);color:var(--blue)}
+  .slot-id{position:absolute;top:9px;right:11px;font-family:var(--mono);font-size:11px;color:var(--text-muted)}
+  .slot-title{font-size:14px;font-weight:600;padding-right:26px;margin-bottom:4px;word-break:break-word}
+  .slot-meta{font-family:var(--mono);font-size:10.5px;color:var(--text-muted);margin-bottom:8px}
+  .mech{color:var(--amber);border:1px solid currentColor;border-radius:3px;padding:0 4px;font-size:9.5px;margin-left:4px}
+  .rmix{display:flex;gap:4px;margin-bottom:8px}
+  .rseg{height:6px;border-radius:3px}
+  .rseg.h{background:var(--purple)} .rseg.m{background:var(--blue)} .rseg.c{background:var(--amber)}
+  .rlabel{font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-bottom:8px}
+  .slot-actions{display:flex;gap:5px;flex-wrap:wrap}
+  .slot-actions button{font-size:10.5px;padding:3px 7px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;cursor:pointer}
+  .slot-actions button:hover{color:var(--text);border-color:var(--text-muted)}
+
+  .meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:22px;font-family:var(--mono);font-size:13px;color:var(--text-muted)}
+  .meta-item strong{color:var(--text)}
+  .meta-item.bad strong{color:var(--red)}
+
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+  .btn{font-family:var(--sans);font-size:13.5px;font-weight:500;padding:9px 15px;border-radius:6px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);cursor:pointer}
+  .btn:hover{background:var(--bg-card)}
+  .btn-primary{background:var(--green-dim);border-color:var(--green);color:#fff}
+  .btn-primary:hover{background:var(--green)}
+  .btn-amber{border-color:var(--amber);color:var(--amber)} .btn-amber:hover{background:rgba(210,153,34,.12)}
+  .btn-purple{border-color:var(--purple);color:var(--purple)} .btn-purple:hover{background:rgba(163,113,247,.15)}
+  .btn-danger{border-color:var(--red);color:var(--red)} .btn-danger:hover{background:rgba(248,81,73,.12)}
+  .btn-blue{border-color:var(--blue);color:var(--blue)} .btn-blue:hover{background:rgba(88,166,255,.12)}
+
+  /* Resource Harness (from the sonic co-processor pattern) */
+  .harness{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:8px 0 20px}
+  .harness h4{font-size:13px;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;margin-bottom:4px}
+  .harness .sub{font-size:11px;color:var(--text-muted);margin-bottom:12px}
+  .hrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .hmode{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;cursor:pointer}
+  .hmode.active{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.08)}
+  .hmode:hover{border-color:var(--text-muted)}
+  .pool{margin-bottom:10px}
+  .pool-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+  .pool-top .pcap{font-family:var(--mono);font-size:11px;color:var(--text-muted)}
+  .pool-bar{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--border);overflow:hidden;display:flex}
+  .pool-bar > i{display:block;height:100%}
+  .pool.over .pool-top .pcap{color:var(--red)}
+  .harness-warn{font-size:11.5px;color:var(--amber);margin-top:8px;line-height:1.45}
+  .harness-warn.crit{color:var(--red)}
+  .hlegend{display:flex;gap:14px;font-family:var(--mono);font-size:10.5px;color:var(--text-muted);margin-top:8px;flex-wrap:wrap}
+  .hlegend b{font-weight:400}
+  .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:middle}
+
+  /* backlog */
+  .backlog{margin-bottom:20px}
+  .backlog-list{display:grid;gap:8px}
+  @media(min-width:640px){.backlog-list{grid-template-columns:1fr 1fr}}
+  .bcard{background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:11px 13px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .bcard .bt{font-size:13px;font-weight:600;margin-bottom:2px}
+  .bcard .bm{font-family:var(--mono);font-size:10.5px;color:var(--text-muted)}
+  .bcard.landing{border-left:3px solid var(--amber)}
+  .bcard.locked{opacity:.6}
+  .pull{font-size:11px;padding:4px 9px;background:var(--green-dim);border:1px solid var(--green);color:#fff;border-radius:5px;cursor:pointer;white-space:nowrap}
+  .pull.disabled{background:var(--bg-card);border-color:var(--border);color:var(--text-muted);cursor:not-allowed}
+  .lane-tag{font-family:var(--mono);font-size:9.5px;padding:1px 5px;border-radius:3px;border:1px solid currentColor}
+  .lane-tag.z1{color:var(--blue)} .lane-tag.z2{color:var(--amber)} .lane-tag.z3{color:var(--green)}
+
+  .constraint{font-size:12px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)}
+
+  /* co-processor aside */
+  .ai-panel{background:var(--bg-elevated);border-left:1px solid var(--border);padding:16px;display:flex;flex-direction:column;height:calc(100vh - 44px);position:sticky;top:44px}
+  .ai-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-family:var(--mono);font-size:13px;color:var(--green)}
+  .ai-state{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:11px;font-family:var(--mono);font-size:11.5px;line-height:1.6;margin-bottom:12px;white-space:pre-wrap}
+  .ai-actions{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .ai-actions .btn{width:100%;text-align:left;font-size:12.5px}
+  .ai-log{flex:1;overflow-y:auto;font-size:12.5px;border-top:1px solid var(--border);padding-top:10px}
+  .ai-msg{margin-bottom:10px;padding:9px;border-radius:6px;background:var(--bg);border:1px solid var(--border)}
+  .ai-msg.z1{border-left:3px solid var(--blue)} .ai-msg.z2{border-left:3px solid var(--amber)} .ai-msg.sys{border-left:3px solid var(--green)}
+  .ai-msg .role{font-size:10.5px;color:var(--text-muted);margin-bottom:3px;font-family:var(--mono)}
+  .ai-toggle{display:none;position:fixed;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green);color:#fff;font-size:15px;font-family:var(--mono);cursor:pointer;z-index:200}
+  @media(max-width:919px){
+    .ai-panel{position:fixed;top:0;right:0;width:100%;max-width:360px;height:100vh;z-index:300;transform:translateX(100%);transition:transform .25s ease}
+    .ai-panel.open{transform:translateX(0)}
+    .ai-toggle{display:flex;align-items:center;justify-content:center}
+  }
+
+  /* overlays */
+  .flow-overlay{position:fixed;inset:0;background:var(--bg);z-index:450;display:none;flex-direction:column;overflow-y:auto}
+  .flow-overlay.active{display:flex}
+  .flow-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--bg);z-index:10}
+  .flow-header h2{font-family:var(--mono);font-size:15px;color:var(--green);letter-spacing:.05em}
+  .flow-body{flex:1;padding:28px 22px;max-width:640px;margin:0 auto;width:100%}
+  .flow-step{display:none} .flow-step.active{display:block}
+  .flow-step h3{font-size:19px;margin-bottom:8px} .flow-step p{color:var(--text-muted);margin-bottom:18px;font-size:14px}
+  .flow-progress{display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap}
+  .pdot{width:26px;height:4px;border-radius:2px;background:var(--border)} .pdot.on{background:var(--green)}
+  .check-list{list-style:none;margin-bottom:18px} .check-list li{padding:6px 0;font-size:14px}
+  .gauge-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .gauge{flex:1;min-width:120px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:12px}
+  .gauge .label{font-family:var(--mono);font-size:11px;color:var(--text-muted)}
+  .gauge .value{font-size:20px;font-weight:700;margin:4px 0}
+  .gauge .sub{font-size:11px;color:var(--text-muted)}
+  .patch-card{background:rgba(163,113,247,.08);border:1px solid var(--purple);border-radius:8px;padding:14px;margin-bottom:14px}
+  .patch-card h4{font-size:12px;letter-spacing:.06em;color:var(--purple);text-transform:uppercase;margin-bottom:8px}
+  fieldset{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:16px}
+  legend{font-family:var(--mono);font-size:11px;color:var(--text-muted);padding:0 6px}
+  input[type=text],textarea,input[type=number]{width:100%;padding:9px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:var(--sans);font-size:14px}
+  textarea{min-height:70px;resize:vertical}
+  .hidden{display:none!important}
+
+  .peak-overlay{position:fixed;inset:0;background:#000;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+  .peak-overlay.active{display:flex}
+  .peak-label{font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--green);margin-bottom:22px}
+  .peak-instruction{font-size:26px;font-weight:600;max-width:620px;margin-bottom:32px;line-height:1.3}
+  .peak-timer{font-family:var(--mono);font-size:44px;color:var(--text-muted);margin-bottom:40px}
+  .peak-hint{font-size:13px;color:var(--text-muted);margin-bottom:28px}
+
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:520;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-backdrop.active{display:flex}
+  .modal{background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:480px;width:100%;max-height:88vh;overflow:auto}
+  .modal h3{margin-bottom:12px}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg-card);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:8px;font-size:13px;z-index:600;opacity:0;transition:opacity .2s;font-family:var(--mono)}
+  .toast.show{opacity:1}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <header class="status-bar">
+    <div class="status-left">
+      <span class="logo">HAIOS·OPS<b> // program cockpit</b></span>
+      <div class="status-item"><span>Peak-Lock:</span><span id="maskLabel">OFF</span><span class="dot off" id="maskDot"></span></div>
+    </div>
+    <div class="status-left">
+      <div class="status-item"><span>Operator capacity:</span><span class="cap-value" id="capValue" title="Click to update — this is the real throttle at bus-factor 1">6/10</span></div>
+      <div class="headline-mini" id="headlineMini"></div>
+    </div>
+  </header>
+
+  <div class="app">
+    <main class="main">
+      <section class="primary-section">
+        <div class="section-label">Primary Instruction · the one thing that must execute flawlessly</div>
+        <div class="primary-box" id="primaryBox" onclick="editPrimary()"></div>
+      </section>
+
+      <section class="wip-section">
+        <div class="wip-header">
+          <div class="section-label" style="margin:0">WIP · Active Workstreams</div>
+          <div class="wip-count" id="wipCount">0/3</div>
+        </div>
+        <div class="wip-grid" id="wipGrid"></div>
+      </section>
+
+      <div class="meta-row">
+        <div class="meta-item">Pending Z3 landings: <strong id="landCount">0</strong></div>
+        <div class="meta-item bad">Gates closed: <strong id="gateCount">0/5</strong></div>
+        <div class="meta-item">Backlog depth: <strong id="backlogCount">0</strong></div>
+      </div>
+
+      <!-- RESOURCE HARNESS — modulation of Human / Machine / Capital -->
+      <div class="harness" id="harness">
+        <h4>Resource Harness · Modulation</h4>
+        <div class="sub">Marshal available resources against active WIP. Modes re-modulate the allocation the way the sonic co-processor re-tuned attention. At bus-factor 1, Human is the scarce pool — the harness makes that visible.</div>
+        <div class="hrow" id="harnessModes">
+          <button class="hmode" data-mode="balanced" onclick="setHarness('balanced')">Balanced</button>
+          <button class="hmode" data-mode="ai" onclick="setHarness('ai')">AI-led · offload to Z1</button>
+          <button class="hmode" data-mode="human" onclick="setHarness('human')">Human-led · gate-first</button>
+          <button class="hmode" data-mode="capital" onclick="setHarness('capital')">Capital-injection · fund the human gate</button>
+        </div>
+        <div id="pools"></div>
+        <div class="harness-warn" id="harnessWarn"></div>
+        <div class="hlegend">
+          <b><span class="sw" style="background:var(--purple)"></span>Human (bus-factor 1)</b>
+          <b><span class="sw" style="background:var(--blue)"></span>Machine · Z1 + CI + MCP</b>
+          <b><span class="sw" style="background:var(--amber)"></span>Capital · impact channel</b>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="startPeak()">Start Peak Window</button>
+        <button class="btn btn-blue" onclick="openAiPanel()">Query Co-Processor</button>
+        <button class="btn btn-amber" onclick="startBoot()">Standup (Boot)</button>
+        <button class="btn btn-amber" onclick="startShutdown()">Cycle Review (Shutdown)</button>
+      </div>
+
+      <section class="backlog">
+        <div class="section-label">Backlog · Open Loops on Disk — pull into WIP when a slot frees (max 3)</div>
+        <div class="backlog-list" id="backlogList"></div>
+        <p class="constraint">Constraint: max 3 active WIP · Human pool = 1 (bus-factor) · pull respects gate dependencies · nothing shows "done" until it lands at Z3.</p>
+      </section>
+
+      <div class="actions" style="margin-top:8px">
+        <button class="btn" onclick="exportData()">Export Program State</button>
+        <button class="btn" onclick="importData()">Import</button>
+        <button class="btn btn-danger" onclick="resetProgram()">Reset to Pilot</button>
+      </div>
+    </main>
+
+    <aside class="ai-panel" id="aiPanel">
+      <div class="ai-header"><span>Z1 CO-PROCESSOR</span><button class="btn" style="padding:4px 10px;font-size:12px" onclick="closeAiPanel()">Close</button></div>
+      <div class="section-label">Shared State Snapshot</div>
+      <div class="ai-state" id="aiState">Loading…</div>
+      <div class="ai-actions">
+        <button class="btn" onclick="aiValidateWip()">Validate WIP load</button>
+        <button class="btn" onclick="aiSuggestPull()">Suggest next pull</button>
+        <button class="btn" onclick="aiGateDiagnostic()">Gate diagnostic</button>
+        <button class="btn" onclick="aiProposePatch()">Propose microcode patch</button>
+      </div>
+      <div class="section-label">Exchange · Z1 proposes / Z2 ratifies</div>
+      <div class="ai-log" id="aiLog"></div>
+    </aside>
+  </div>
+  <button class="ai-toggle" onclick="openAiPanel()" title="Co-Processor">Z1</button>
+
+  <!-- PEAK -->
+  <div class="peak-overlay" id="peakOverlay">
+    <div class="peak-label">PEAK WINDOW · INTERRUPT MASK ON</div>
+    <div class="peak-instruction" id="peakInstruction">—</div>
+    <div class="peak-timer" id="peakTimer">25:00</div>
+    <div class="peak-hint">Execute only the primary instruction.<br>Every other workstream is background noise.</div>
+    <button class="btn btn-danger" onclick="endPeak()">End Peak Early</button>
+  </div>
+
+  <!-- BOOT / STANDUP -->
+  <div class="flow-overlay" id="bootOverlay">
+    <div class="flow-header"><h2>STANDUP · BOOT SEQUENCE</h2><button class="btn" onclick="closeBoot()">Skip</button></div>
+    <div class="flow-body">
+      <div class="flow-progress" id="bootProgress"></div>
+      <div class="flow-step active" data-step="0">
+        <h3>1 · Capacity Check</h3>
+        <p>Operator capacity is the real throttle at bus-factor 1. Set it honestly; the harness will refuse to over-allocate Human.</p>
+        <label class="section-label">Operator capacity (1–10)</label>
+        <input type="number" id="bootCap" min="1" max="10" value="6" />
+        <label class="section-label" style="margin-top:14px">Residual blockers still spinning</label>
+        <textarea id="bootBlockers" placeholder="e.g. PAT still live · Z2 gate not built · no 2nd maintainer"></textarea>
+        <button class="btn btn-primary" style="margin-top:16px" onclick="bootNext()">Continue</button>
+      </div>
+      <div class="flow-step" data-step="1">
+        <h3>2 · Decision Batch · quick ratifications</h3>
+        <p>Offload low-level rulings so they consume zero peak cycles. These are the items sitting at Z2.</p>
+        <ul class="check-list" id="bootRatify"></ul>
+        <button class="btn btn-primary" onclick="bootNext()">Continue</button>
+      </div>
+      <div class="flow-step" data-step="2">
+        <h3>3 · Load Primary + WIP</h3>
+        <label class="section-label">Primary Instruction</label>
+        <input type="text" id="bootPrimary" />
+        <p style="margin-top:12px;font-size:13px">WIP is preloaded with the three active gates. Park any you won't touch this cycle from the dashboard.</p>
+        <button class="btn btn-primary" style="margin-top:12px" onclick="bootNext()">Continue</button>
+      </div>
+      <div class="flow-step" data-step="3">
+        <h3>4 · Validation</h3>
+        <div class="ai-state" id="bootSummary" style="margin-bottom:18px"></div>
+        <button class="btn btn-primary" onclick="finishBoot()">Accept & Enter Cockpit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHUTDOWN / CYCLE REVIEW -->
+  <div class="flow-overlay" id="shutdownOverlay">
+    <div class="flow-header"><h2>CYCLE REVIEW · SHUTDOWN DIAGNOSTIC</h2><button class="btn" onclick="closeShutdown()">Close</button></div>
+    <div class="flow-body">
+      <h3 style="margin-bottom:8px">End-of-Cycle System Check</h3>
+      <p style="color:var(--text-muted);margin-bottom:22px">Classic gauges + one proposed microcode patch (a CQI to the process itself).</p>
+      <div class="gauge-row">
+        <div class="gauge"><div class="label">top</div><div class="value" id="gaugeTop">—</div><div class="sub">Dominant workstream</div></div>
+        <div class="gauge"><div class="label">free -h</div><div class="value" id="gaugeFree">—</div><div class="sub">Open loops on disk</div></div>
+        <div class="gauge"><div class="label">landed</div><div class="value" id="gaugeLanded">—</div><div class="sub">Reached Z3 this cycle</div></div>
+      </div>
+      <label class="section-label">What actually advanced this cycle?</label>
+      <textarea id="shutdownNote" placeholder="Be honest. 'Drafted' is not 'landed.'"></textarea>
+      <button class="btn btn-primary" style="margin:14px 0 22px" onclick="runShutdownDiagnostic()">Generate Co-Processor Report</button>
+      <div id="shutdownReport" class="hidden">
+        <div class="patch-card"><h4>Co-Processor Report</h4><div id="shutdownReportText" style="font-size:14px;white-space:pre-wrap;line-height:1.5"></div></div>
+        <div class="patch-card"><h4>Proposed Microcode Patch</h4><div id="shutdownPatch" style="font-size:14px;margin-bottom:12px"></div>
+          <button class="btn btn-primary" onclick="acceptPatch()">Accept Patch → Backlog</button>
+          <button class="btn" onclick="closeShutdown()">Dismiss</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="modal-backdrop" id="editBackdrop">
+    <div class="modal">
+      <h3 id="editTitle">Edit</h3>
+      <label class="section-label" id="editLabel">Value</label>
+      <input type="text" id="editInput" />
+      <div class="modal-actions"><button class="btn" onclick="closeEdit()">Cancel</button><button class="btn btn-primary" onclick="saveEdit()">Save</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ============ helpers ============ */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
+function aiMsg(role,txt){const l=$('aiLog');const roles={z1:'Z1 · co-processor',z2:'Z2 · you',sys:'system'};const d=document.createElement('div');d.className='ai-msg '+role;d.innerHTML=`<div class="role">${roles[role]}</div>${esc(txt)}`;l.insertBefore(d,l.firstChild);}
+
+/* ============ pilot project data (this session's work) ============ */
+const PILOT=()=>({
+  capacity:6, mask:false, harness:'balanced',
+  primary:{title:'Revoke the PAT — no landing until credentials are clean.', tag:'G1 · credential hygiene · owner Z3 · ~1h'},
+  // resource mix per item: [human, machine, capital]
+  wip:[
+    {id:'G1',title:'Credential hygiene',meta:'revoke PAT · fine-grained tokens · enumerate 19 MCP scopes',mech:false,zone:'z3',mix:[1,1,0]},
+    {id:'G2',title:'Close tool-landing gap',meta:'land 8 tools + pilots · VERIFY vs live tree, not memory',mech:false,zone:'z1',mix:[0,3,0]},
+    {id:'G3',title:'Build real Z2 gate',meta:'CODEOWNERS×1 · branch ruleset · z2 environment',mech:true,zone:'z1',mix:[0,3,0]},
+  ],
+  backlog:[
+    {id:'G4',title:'Break bus factor',meta:'Move-work→Org (direct convert deprecated 2026-01-12) · 2nd maintainer',mech:true,zone:'z3',mix:[1,0,3],needs:['G1']},
+    {id:'G5',title:'Fix P1 blocker + dispose 4 ICs',meta:'scorer v1_1 + IC-056 · class ruling',mech:false,zone:'z1',mix:[1,2,0],needs:['G2']},
+    {id:'P2',title:'Ship Registry-Attested Intake (OSS)',meta:'TRL 3→4 · credibility wedge · bind to in-toto',mech:false,zone:'z1',mix:[0,3,0],needs:['G2']},
+    {id:'P4',title:'Publish Evaluator Failure Register (standard)',meta:'TRL 6 live · uncopyable asset',mech:false,zone:'z1',mix:[1,1,0],needs:[]},
+    {id:'P1',title:'ACAT Assurance pilot w/ boutique',meta:'TRL 5 · nearest revenue · blocked on scorer',mech:false,zone:'z2',mix:[1,1,1],needs:['G5']},
+    {id:'P3',title:'Earned-Autonomy Gate product',meta:'TRL 2→3 · mechanical estate governance',mech:true,zone:'z1',mix:[0,3,1],needs:['G3']},
+    {id:'B4',title:'Open impact-capital channel',meta:'no remediation dependency — start now',mech:false,zone:'z2',mix:[1,0,3],needs:[]},
+    {id:'GTM',title:'Launch GTM motion',meta:'HARD-GATED on G1–G5',mech:false,zone:'z2',mix:[1,1,2],needs:['G1','G2','G3','G4','G5']},
+  ],
+  // ratified, awaiting Z3 landing
+  landings:[
+    {id:'IC-059',title:'z1-self-audit-conflict'},{id:'IC-060',title:'mcp-write-scope-unaudited'},
+    {id:'F-62/63',title:'agentic-drift + ic031-instance'},{id:'IC-061',title:'intake-untrusted-input'},
+    {id:'H-EA-01',title:'earned-autonomy hypothesis'},{id:'F-64..67',title:'tool-gap·scorer·fork·bus (class pending)'},
+  ],
+  // Z2 pending ratifications (for the standup decision-batch)
+  pending:[
+    'token-scope-overreach (fix = revoke PAT)','z2-gate-phantom (fix = build gate)',
+    'ranking-recency-inflation (fix = formula v1.1)','registry-count-drift (recount)',
+    'F-vs-IC class ruling on F-64..67',
+  ],
+  gatesClosed:[false,false,false,false,false], // G1..G5
+});
+let S = load() || PILOT();
+
+/* resource pools */
+const POOLS={human:{cap:1,label:'Human',cls:'h',color:'var(--purple)'},machine:{cap:6,label:'Machine',cls:'m',color:'var(--blue)'},capital:{cap:3,label:'Capital',cls:'c',color:'var(--amber)'}};
+const HARNESS_MODES={
+  balanced:i=>i.mix,
+  ai:i=>[Math.min(i.mix[0],0)|0, Math.max(i.mix[1],i.mix[0]+i.mix[1]?3:0)?i.mix[1]||3:i.mix[1], i.mix[2]], // push to machine
+  human:i=>i.mix,
+  capital:i=>[i.mix[0], i.mix[1], Math.max(i.mix[2],1)],
+};
+
+/* ============ persistence ============ */
+function save(){try{localStorage.setItem('haios-ops',JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem('haios-ops')||'null');}catch(e){return null;}}
+
+/* ============ render ============ */
+function render(){
+  // primary
+  const pb=$('primaryBox');
+  pb.innerHTML = S.primary.title? `${esc(S.primary.title)}<span class="ptag">${esc(S.primary.tag||'')}</span>` : 'Click to set the one critical instruction';
+  pb.classList.toggle('empty',!S.primary.title);
+  // capacity + mask
+  $('capValue').textContent=S.capacity+'/10';
+  $('maskLabel').textContent=S.mask?'ON':'OFF';
+  $('maskDot').className='dot '+(S.mask?'on':'off');
+  // wip
+  const wg=$('wipGrid'); wg.innerHTML='';
+  for(let s=0;s<3;s++){
+    const it=S.wip[s];
+    if(it){
+      const [h,m,c]=it.mix, tot=Math.max(h+m+c,1);
+      wg.appendChild(node(`<div class="wip-slot active">
+        <span class="slot-id">${esc(it.id)}</span>
+        <div class="slot-title">${esc(it.title)}${it.mech?'<span class="mech">MECH</span>':''}</div>
+        <div class="slot-meta">${esc(it.meta)}</div>
+        <div class="rmix">
+          <div class="rseg h" style="flex:${h}"></div><div class="rseg m" style="flex:${m}"></div><div class="rseg c" style="flex:${c}"></div>
+        </div>
+        <div class="rlabel">H${h} · M${m} · C${c}</div>
+        <div class="slot-actions">
+          <button onclick="completeWip(${s})">Complete</button>
+          <button onclick="parkWip(${s})">Park</button>
+          <button onclick="focusPrimary(${s})">Set Primary</button>
+        </div></div>`));
+    } else {
+      wg.appendChild(node(`<div class="wip-slot empty" onclick="pullPrompt()">+ pull from backlog</div>`));
+    }
+  }
+  const wc=$('wipCount'); wc.textContent=S.wip.length+'/3'; wc.classList.toggle('full',S.wip.length>=3);
+  // meta
+  $('landCount').textContent=S.landings.length;
+  const closed=S.gatesClosed.filter(Boolean).length;
+  $('gateCount').textContent=closed+'/5';
+  $('gateCount').parentElement.classList.toggle('bad',closed<5);
+  $('backlogCount').textContent=S.backlog.length;
+  // headline
+  const patDone=S.gatesClosed[0],gateLive=S.gatesClosed[2],busFixed=S.gatesClosed[3];
+  $('headlineMini').innerHTML=`REMEDIATION <span class="${closed===5?'ok':(closed?'warn':'bad')}">${closed}/5</span> · BUS <span class="${busFixed?'ok':'bad'}">${busFixed?'≥2':'1'}</span> · Z2GATE <span class="${gateLive?'ok':'bad'}">${gateLive?'LIVE':'PHANTOM'}</span> · PAT <span class="${patDone?'ok':'bad'}">${patDone?'REVOKED':'LIVE?'}</span>`;
+  renderHarness();
+  renderBacklog();
+  renderAiState();
+  save();
+}
+function node(h){const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;}
+
+function renderHarness(){
+  document.querySelectorAll('.hmode').forEach(b=>b.classList.toggle('active',b.dataset.mode===S.harness));
+  // sum allocation across WIP (apply mode)
+  const use={human:0,machine:0,capital:0};
+  S.wip.forEach(it=>{const mix=HARNESS_MODES[S.harness]?HARNESS_MODES[S.harness](it):it.mix;use.human+=mix[0];use.machine+=mix[1];use.capital+=mix[2];});
+  const box=$('pools');box.innerHTML='';
+  [['human',use.human],['machine',use.machine],['capital',use.capital]].forEach(([k,u])=>{
+    const p=POOLS[k],over=u>p.cap;
+    const pct=Math.min(100,Math.round(u/Math.max(p.cap,u)*100));
+    box.appendChild(node(`<div class="pool ${over?'over':''}">
+      <div class="pool-top"><span>${p.label}</span><span class="pcap">${u} / ${p.cap} units${over?' · OVER':''}</span></div>
+      <div class="pool-bar"><i style="width:${pct}%;background:${over?'var(--red)':p.color}"></i></div></div>`));
+  });
+  const w=$('harnessWarn');
+  if(use.human>POOLS.human.cap){
+    w.className='harness-warn crit';
+    w.textContent=`Human over-allocated (${use.human} > 1). At bus-factor 1 this cycle is over-committed. Options: park a Human-dependent WIP item, switch to AI-led (offload to Z1), or Capital-injection (fund a 2nd maintainer — closes G4).`;
+  } else if(S.harness==='ai'){
+    w.className='harness-warn'; w.textContent='AI-led: buildable work (G2/G3/P2) routed to Z1. Human pool reserved for ratification + landing approval only.';
+  } else if(S.harness==='capital'){
+    w.className='harness-warn'; w.textContent='Capital-injection: capital directed at the human gate (2nd maintainer, impact-capital channel). This is the only lever that raises the Human cap above 1.';
+  } else { w.className='harness-warn'; w.textContent='Within capacity. Human pool is the binding constraint — watch it before adding WIP.'; }
+}
+
+function renderBacklog(){
+  const bl=$('backlogList'); bl.innerHTML='';
+  S.backlog.forEach((it,idx)=>{
+    const blocked=(it.needs||[]).some(n=>!isDone(n));
+    const isLanding=false;
+    bl.appendChild(node(`<div class="bcard ${blocked?'locked':''}">
+      <div><div class="bt">${esc(it.title)} <span class="lane-tag ${it.zone}">${it.zone.toUpperCase()}</span>${it.mech?'<span class="mech">MECH</span>':''}</div>
+        <div class="bm">${esc(it.id)} · ${esc(it.meta)}${blocked?' · blocked by '+it.needs.filter(n=>!isDone(n)).join(','):''}</div></div>
+      <button class="pull ${blocked||S.wip.length>=3?'disabled':''}" ${blocked||S.wip.length>=3?'disabled':''} onclick="pullToWip(${idx})">Pull</button>
+    </div>`));
+  });
+  // pending landings appended as read-only cards
+  S.landings.forEach(l=>{
+    bl.appendChild(node(`<div class="bcard landing"><div><div class="bt">${esc(l.title)} <span class="lane-tag z2">RATIFIED</span></div><div class="bm">${esc(l.id)} · awaiting Z3 landing</div></div><span class="pull disabled" title="Z3 action">Land</span></div>`));
+  });
+}
+function isDone(id){const gi={G1:0,G2:1,G3:2,G4:3,G5:4}[id];return gi!=null?S.gatesClosed[gi]:false;}
+
+/* ============ interactions ============ */
+function pullToWip(idx){
+  if(S.wip.length>=3){toast('WIP full — complete or park a slot (max 3).');return;}
+  const it=S.backlog[idx];
+  if((it.needs||[]).some(n=>!isDone(n))){toast('Blocked by dependency.');return;}
+  S.backlog.splice(idx,1); S.wip.push(it); aiMsg('sys','pulled '+it.id+' into WIP'); render();
+}
+function pullPrompt(){toast('Pull a card from the backlog below.');document.querySelector('.backlog').scrollIntoView({behavior:'smooth'});}
+function parkWip(s){const it=S.wip.splice(s,1)[0]; S.backlog.unshift(it); render(); toast(it.id+' parked to backlog');}
+function completeWip(s){
+  const it=S.wip[s];
+  const gi={G1:0,G2:1,G3:2,G4:3,G5:4}[it.id];
+  if(gi!=null){S.gatesClosed[gi]=true; aiMsg('z2','ratified complete: '+it.id+' — gate closed'); }
+  S.wip.splice(s,1); render();
+  toast(it.id+' complete'+(gi!=null?' · gate closed':''));
+}
+function focusPrimary(s){const it=S.wip[s]; S.primary={title:it.title, tag:it.id+' · '+it.meta}; render(); toast('Primary set to '+it.id);}
+
+function editPrimary(){openEdit('Primary Instruction','The one critical instruction',S.primary.title,v=>{S.primary.title=v;S.primary.tag='custom';render();});}
+function setCapacity(){openEdit('Operator Capacity','1–10 (the real throttle at bus-factor 1)',S.capacity,v=>{S.capacity=Math.max(1,Math.min(10,parseInt(v)||6));render();});}
+$('capValue').addEventListener('click',setCapacity);
+
+/* edit modal */
+let editCb=null;
+function openEdit(t,l,val,cb){$('editTitle').textContent=t;$('editLabel').textContent=l;$('editInput').value=val;editCb=cb;$('editBackdrop').classList.add('active');$('editInput').focus();}
+function closeEdit(){$('editBackdrop').classList.remove('active');editCb=null;}
+function saveEdit(){if(editCb)editCb($('editInput').value);closeEdit();}
+
+/* harness */
+function setHarness(m){S.harness=m; render(); toast('Harness → '+m);}
+
+/* ============ co-processor (rule-based Z1) ============ */
+function renderAiState(){
+  const closed=S.gatesClosed.filter(Boolean).length;
+  const use=S.wip.reduce((a,it)=>{a[0]+=it.mix[0];a[1]+=it.mix[1];a[2]+=it.mix[2];return a;},[0,0,0]);
+  $('aiState').textContent=
+`primary  : ${S.primary.title.slice(0,42)}
+wip      : ${S.wip.length}/3  [${S.wip.map(w=>w.id).join(', ')}]
+harness  : ${S.harness}   H${use[0]}/1 M${use[1]}/6 C${use[2]}/3
+gates    : ${closed}/5 closed
+landings : ${S.landings.length} ratified, 0 landed at Z3
+capacity : ${S.capacity}/10 operator`;
+}
+function aiValidateWip(){
+  openAiPanel();
+  const hUse=S.wip.reduce((a,it)=>a+it.mix[0],0);
+  if(hUse>1) aiMsg('z1',`WIP over-commits Human (${hUse}>1). Bus-factor 1 can't run these in parallel. Recommend: keep G3 (Machine-buildable) in WIP, park a Human-gated item, or switch harness to AI-led.`);
+  else if(S.wip.length>3) aiMsg('z1','More than 3 active. WIP-limit exists to protect the single operator. Park one.');
+  else aiMsg('z1','WIP within limit and Human pool not over-allocated. Proceed. Reminder: none of these count until they land at Z3.');
+}
+function aiSuggestPull(){
+  openAiPanel();
+  if(S.wip.length>=3){aiMsg('z1','WIP is full. Complete or park before pulling. Do not break the limit — that is the discipline the audit says is missing.');return;}
+  const cand=S.backlog.find(it=>!(it.needs||[]).some(n=>!isDone(n)));
+  if(!cand){aiMsg('z1','Every backlog item is dependency-blocked. Unblock by closing an upstream gate first (see gate diagnostic).');return;}
+  aiMsg('z1',`Pull ${cand.id} — ${cand.title}. Its dependencies are met and its mix is ${cand.mix[0]?'Human-touching':'Machine-led'}. ${cand.id==='B4'?'It has no remediation dependency; safe parallel work.':''}`);
+}
+function aiGateDiagnostic(){
+  openAiPanel();
+  const open=['G1','G2','G3','G4','G5'].filter(g=>!isDone(g));
+  aiMsg('z1', open.length? `GTM is hard-gated. Open gates: ${open.join(', ')}. Critical path: G1 (hours) → G2+G3 (days) → G5 → G4 (week+, human-gated). Earliest realistic GTM-ready ~2–3 weeks; G4 is the long pole and cannot be compressed.` : 'All gates closed. GTM motion may begin; open-source seed (P2/P4) first.');
+}
+function aiProposePatch(){
+  openAiPanel();
+  const patches=[
+    'Add a Z3 landing-verification step to the cycle-close ritual: diff session outputs against the live tree. This closes the tool-landing gap by construction.',
+    'Route one audit arm off-Z1 (cross-provider) so Z1 stops attesting its own work (IC-059).',
+    'Add a per-cycle IC-031 rate to the shutdown gauges so drift is a monitored number, not a discovered surprise.',
+  ];
+  const p=patches[Math.floor(Math.random()*patches.length)];
+  aiMsg('z1','PROPOSED PATCH — '+p+' Ratify to add to backlog.');
+}
+
+/* panel toggles */
+function openAiPanel(){$('aiPanel').classList.add('open');}
+function closeAiPanel(){$('aiPanel').classList.remove('open');}
+
+/* ============ peak ============ */
+let peakTimer=null,peakLeft=1500;
+function startPeak(){
+  if(!S.primary.title){toast('Set a Primary Instruction first.');return;}
+  S.mask=true;render();
+  $('peakInstruction').textContent=S.primary.title;
+  peakLeft=1500;$('peakOverlay').classList.add('active');tickPeak();
+  peakTimer=setInterval(tickPeak,1000);
+}
+function tickPeak(){const m=String(Math.floor(peakLeft/60)).padStart(2,'0'),s=String(peakLeft%60).padStart(2,'0');$('peakTimer').textContent=m+':'+s;if(peakLeft<=0){endPeak();return;}peakLeft--;}
+function endPeak(){clearInterval(peakTimer);$('peakOverlay').classList.remove('active');S.mask=false;render();toast('Peak window closed');}
+
+/* ============ boot / standup ============ */
+let bootStep=0;
+function startBoot(){bootStep=0;$('bootOverlay').classList.add('active');renderBootRatify();showBootStep();$('bootPrimary').value=S.primary.title;$('bootCap').value=S.capacity;}
+function renderBootRatify(){const ul=$('bootRatify');ul.innerHTML='';S.pending.forEach(p=>{const li=document.createElement('li');li.innerHTML=`<label><input type="checkbox"> ${esc(p)}</label>`;ul.appendChild(li);});}
+function showBootStep(){document.querySelectorAll('#bootOverlay .flow-step').forEach(s=>s.classList.toggle('active',+s.dataset.step===bootStep));const pr=$('bootProgress');pr.innerHTML='';for(let i=0;i<4;i++){const d=document.createElement('div');d.className='pdot'+(i<=bootStep?' on':'');pr.appendChild(d);}}
+function bootNext(){
+  if(bootStep===0){S.capacity=Math.max(1,Math.min(10,parseInt($('bootCap').value)||6));}
+  if(bootStep===2){const v=$('bootPrimary').value.trim();if(v){S.primary.title=v;S.primary.tag='standup-set';}}
+  bootStep++;
+  if(bootStep===3){
+    const ratified=[...$('bootRatify').querySelectorAll('input:checked')].length;
+    $('bootSummary').textContent=`capacity ${S.capacity}/10 · primary set · ${ratified}/${S.pending.length} pending items ratified this standup · WIP ${S.wip.length}/3 · gates ${S.gatesClosed.filter(Boolean).length}/5 closed.\nHonest note: ratification ≠ landing. Landings are Z3.`;
+  }
+  showBootStep();
+}
+function closeBoot(){$('bootOverlay').classList.remove('active');}
+function finishBoot(){closeBoot();render();toast('Standup complete');aiMsg('sys','standup complete · capacity '+S.capacity+'/10');}
+
+/* ============ shutdown / cycle review ============ */
+function startShutdown(){
+  $('shutdownOverlay').classList.add('active');$('shutdownReport').classList.add('hidden');
+  $('gaugeTop').textContent=S.wip[0]?S.wip[0].id:'—';
+  $('gaugeFree').textContent=S.backlog.length;
+  $('gaugeLanded').textContent='0';
+}
+function runShutdownDiagnostic(){
+  const closed=S.gatesClosed.filter(Boolean).length;
+  $('shutdownReportText').textContent=
+`Dominant workstream : ${S.wip[0]?S.wip[0].id+' — '+S.wip[0].title:'none in WIP'}
+Open loops on disk   : ${S.backlog.length}
+Gates closed         : ${closed}/5
+Landed to Z3         : 0  ← the number that actually matters
+Read: activity is high, consummation is zero. This is the Claim-4′ pattern — recursion without the landing read.`;
+  $('shutdownPatch').textContent='Add a mechanical Z3 landing-verification to the close ritual: a cycle cannot be marked complete until session outputs are diffed against the live tree. Converts "drafted" into "landed" as a gate, not a hope.';
+  $('shutdownReport').classList.remove('hidden');
+}
+function acceptPatch(){
+  S.backlog.unshift({id:'CQI',title:'Add Z3 landing-verification to close ritual',meta:'microcode patch · mechanical',mech:true,zone:'z1',mix:[0,2,0],needs:[]});
+  render();closeShutdown();toast('Patch added to backlog');
+}
+function closeShutdown(){$('shutdownOverlay').classList.remove('active');}
+
+/* ============ data ============ */
+function exportData(){const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='haios-ops-state.json';a.click();toast('Exported');}
+function importData(){const i=document.createElement('input');i.type='file';i.accept='.json';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=JSON.parse(r.result);render();toast('Imported');}catch(err){toast('Invalid file');}};r.readAsText(f);};i.click();}
+function resetProgram(){if(confirm('Reset to the pilot project (Audit → Remediation → GTM)? Local changes are lost.')){S=PILOT();render();toast('Reset to pilot');}}
+
+/* ============ boot ============ */
+render();
+aiMsg('sys','cockpit online · pilot loaded: Audit → Remediation → GTM');
+aiMsg('z1','Primary is G1 (revoke PAT). Nothing lands until credentials are clean. Query me for WIP validation or the gate diagnostic.');
+</script>
+</body>
+</html>

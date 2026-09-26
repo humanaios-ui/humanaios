@@ -1,0 +1,201 @@
+name: Setup Supabase Webhook — Governance Sync
+
+permissions:
+  contents: read
+on:
+  workflow_dispatch:
+    inputs:
+      supabase_project_id:
+        description: 'Supabase Project ID'
+        required: true
+      supabase_url:
+        description: 'Supabase Project URL (https://...supabase.co)'
+        required: true
+
+env:
+  WEBHOOK_ENDPOINT: ${{ github.server_url }}/${{ github.repository }}/actions/runs
+  GITHUB_WEBHOOK_PATH: /functions/v1/sync-governance-state
+
+jobs:
+  setup-webhook:
+    name: Register GitHub Webhook with Supabase
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Validate Supabase credentials
+        id: validate
+        run: |
+          python3 << 'PYTHON_EOF'
+          import os
+          import urllib.request
+          import json
+
+          supabase_url = "${{ inputs.supabase_url }}"
+          project_id = "${{ inputs.supabase_project_id }}"
+
+          # Validate URL format
+          if not supabase_url.startswith('https://') or not 'supabase.co' in supabase_url:
+              print("::error::Invalid Supabase URL format")
+              exit(1)
+
+          # Extract project name
+          project_name = supabase_url.split('https://')[1].split('.supabase.co')[0]
+          print(f"::set-output name=project_name::{project_name}")
+          print(f"✓ Supabase URL validated: {supabase_url}")
+          PYTHON_EOF
+
+      - name: Generate webhook URL
+        id: webhook
+        run: |
+          WEBHOOK_URL="${{ inputs.supabase_url }}${{ env.GITHUB_WEBHOOK_PATH }}"
+          echo "webhook_url=$WEBHOOK_URL" >> $GITHUB_OUTPUT
+          echo "✓ Webhook URL: $WEBHOOK_URL"
+
+      - name: Display setup instructions
+        run: |
+          cat << 'EOF'
+
+          ╔════════════════════════════════════════════════════════════════╗
+          ║ Supabase + Witness Integration Setup                          ║
+          ╚════════════════════════════════════════════════════════════════╝
+
+          📋 STEP 1: Deploy Edge Function (in your Supabase project)
+          ──────────────────────────────────────────────────────────────────
+          Run locally:
+
+            supabase functions deploy sync-governance-state \
+              --project-id ${{ inputs.supabase_project_id }}
+
+          Then set environment variables:
+
+            supabase secrets set --project-id ${{ inputs.supabase_project_id }} \
+              SUPABASE_URL="${{ inputs.supabase_url }}" \
+              SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+
+          ──────────────────────────────────────────────────────────────────
+
+          📋 STEP 2: Create GitHub Webhook (via GitHub Settings)
+          ──────────────────────────────────────────────────────────────────
+          Go to: Settings → Webhooks → Add webhook
+
+          Payload URL:
+            ${{ steps.webhook.outputs.webhook_url }}
+
+          Content type: application/json
+          Events: Push events
+          Active: ✓
+
+          ──────────────────────────────────────────────────────────────────
+
+          📋 STEP 3: Create Supabase Tables
+          ──────────────────────────────────────────────────────────────────
+          Run locally:
+
+            psql "postgresql://[user]:[password]@${{ inputs.supabase_url }}/postgres" \
+              -f supabase/schema.sql
+
+          Or via Supabase dashboard:
+            SQL Editor → New Query → Paste supabase/schema.sql → Run
+
+          ──────────────────────────────────────────────────────────────────
+
+          📋 STEP 4: Update Witness v2 Credentials
+          ──────────────────────────────────────────────────────────────────
+          Get your API keys from Supabase dashboard:
+            Settings → API → Anon Key
+
+          Update docs/WitnessV2.html:
+            sed -i 's|https://YOUR-PROJECT.supabase.co|${{ inputs.supabase_url }}|g' docs/WitnessV2.html
+            sed -i 's|YOUR-ANON-KEY|<your-anon-key>|g' docs/WitnessV2.html
+
+          ──────────────────────────────────────────────────────────────────
+
+          📋 STEP 5: Test the Integration
+          ──────────────────────────────────────────────────────────────────
+          1. Make a change to DECISIONS_PENDING.yaml or GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+          2. Commit and push to main
+          3. Watch Supabase → sync_log table for successful syncs
+          4. Open docs/WitnessV2.html to see live updates
+
+          ──────────────────────────────────────────────────────────────────
+
+          🎯 SUCCESS: Witness will now receive real-time updates from your
+             governance system (DECISIONS_PENDING + GOVERNANCE_RATIFICATIONS).
+
+          For help, see: docs/SUPABASE_WITNESS_INTEGRATION.md
+
+          EOF
+
+      - name: Verify connectivity
+        run: |
+          python3 << 'PYTHON_EOF'
+          import urllib.request
+          import json
+
+          webhook_url = "${{ steps.webhook.outputs.webhook_url }}"
+
+          print(f"🔍 Testing connectivity to Supabase Edge Function...")
+          print(f"   Webhook URL: {webhook_url}")
+
+          # Note: This will fail (404) because the function isn't deployed yet
+          # But it confirms the URL is reachable
+          try:
+              req = urllib.request.Request(webhook_url, method='HEAD')
+              urllib.request.urlopen(req)
+              print("✓ Webhook endpoint is reachable")
+          except Exception as e:
+              # Expected 404 or 403 until function deployed
+              print(f"⚠ Webhook endpoint not yet deployed (expected)")
+              print(f"   Deploy the function first: supabase functions deploy sync-governance-state")
+          PYTHON_EOF
+
+      - name: Create setup summary
+        run: |
+          cat > /tmp/setup_summary.txt << 'EOF'
+          ═══════════════════════════════════════════════════════════════
+          Supabase + Witness Integration Setup Summary
+          ═══════════════════════════════════════════════════════════════
+
+          Project:       ${{ inputs.supabase_project_id }}
+          URL:           ${{ inputs.supabase_url }}
+          Webhook:       ${{ steps.webhook.outputs.webhook_url }}
+          Repository:    ${{ github.repository }}
+          Triggered at:  $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          ───────────────────────────────────────────────────────────────
+
+          Next Steps:
+            1. Deploy Edge Function (supabase functions deploy ...)
+            2. Create GitHub Webhook (Settings → Webhooks)
+            3. Create database tables (psql ... -f supabase/schema.sql)
+            4. Update WitnessV2.html with API credentials
+            5. Push test change to DECISIONS_PENDING.yaml
+            6. Verify sync in Supabase → sync_log table
+
+          ───────────────────────────────────────────────────────────────
+
+          Full docs: docs/SUPABASE_WITNESS_INTEGRATION.md
+
+          ═══════════════════════════════════════════════════════════════
+          EOF
+
+          cat /tmp/setup_summary.txt
+
+      - name: Summary
+        run: |
+          echo "✓ Setup workflow complete"
+          echo ""
+          echo "Next: Deploy Edge Function in your Supabase project"
+          echo "Then: Register webhook in GitHub Settings"
+          echo ""
+          echo "📚 See docs/SUPABASE_WITNESS_INTEGRATION.md for full guide"

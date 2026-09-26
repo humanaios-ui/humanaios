@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HumanAIOS Observability Control Room</title>
+<meta name="description" content="Dual-sensory governance observability: Witness V2 (visual) + Epistemic DJ (audio) + Strudel REPL. Real-time mesh state monitoring and pattern tweaking."/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a0a;color:#d0d0d0;font-family:'IBM Plex Mono',monospace;overflow:hidden;}
+.control-room{display:flex;height:100vh;}
+.witness-panel{flex:1;display:flex;flex-direction:column;border-right:1px solid #333;overflow:hidden;}
+.dj-panel{flex:1;display:flex;flex-direction:column;border-left:1px solid #333;overflow:hidden;}
+.panel-header{padding:12px 16px;border-bottom:1px solid #333;background:#111;font-size:12px;color:#a0a0a0;text-transform:uppercase;letter-spacing:1px;}
+.canvas-container{flex:1;display:flex;align-items:center;justify-content:center;background:#000;}
+canvas{display:block;max-width:100%;max-height:100%;}
+.dj-content{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.dj-repl{flex:1;display:flex;flex-direction:column;background:#0d0d0d;border-bottom:1px solid #333;}
+.repl-editor{flex:1;padding:12px;overflow-y:auto;background:#0a0a0a;border-bottom:1px solid #1a1a1a;}
+.repl-editor textarea{width:100%;height:100%;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#88a7d8;background:transparent;border:none;resize:none;outline:none;line-height:1.4;}
+.repl-controls{padding:8px 12px;display:flex;gap:8px;background:#111;border-bottom:1px solid #333;}
+.btn{padding:6px 12px;background:#1a3a3a;color:#87b68b;border:1px solid #2a5a5a;border-radius:3px;cursor:pointer;font-size:11px;transition:all 0.2s;}
+.btn:hover{background:#2a4a4a;border-color:#4a7a7a;}
+.btn.playing{background:#2a5a5a;color:#b8e0bc;}
+.mesh-metrics{padding:12px;background:#0d0d0d;border-top:1px solid #333;font-size:10px;line-height:1.6;color:#7ab8b0;}
+.metric-row{display:grid;grid-template-columns:120px 1fr;gap:8px;margin:4px 0;}
+.metric-label{color:#a0a0a0;opacity:0.7;}
+.metric-value{color:#87b68b;font-weight:bold;}
+.status-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;}
+.status-indicator.live{background:#87b68b;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+.vector-controls{padding:12px;background:#111;border-bottom:1px solid #333;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:10px;}
+.vector-control{display:flex;flex-direction:column;gap:4px;}
+.vector-control label{color:#a0a0a0;opacity:0.7;}
+.vector-control input{width:100%;height:20px;background:#0a0a0a;border:1px solid #333;cursor:pointer;}
+.mood-presets{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;background:#0d0d0d;border-bottom:1px solid #333;}
+.preset-btn{padding:4px 8px;background:#1a1a3a;color:#88a7d8;border:1px solid #3a3a5a;border-radius:2px;cursor:pointer;font-size:9px;transition:all 0.2s;}
+.preset-btn:hover{background:#2a2a4a;border-color:#4a4a7a;}
+.preset-btn.active{background:#3a5a5a;color:#87b68b;border-color:#5a8a8a;}
+.connection-status{position:absolute;top:12px;right:12px;padding:6px 12px;background:#1a3a3a;border:1px solid #3a5a5a;border-radius:3px;font-size:10px;color:#87b68b;display:flex;align-items:center;gap:6px;}
+.info-panel{position:absolute;top:60px;right:12px;background:#0d0d0d;border:1px solid #333;border-radius:3px;padding:8px 12px;font-size:8px;color:#7ab8b0;max-width:220px;line-height:1.3;z-index:5;}
+.vector-tooltip{position:absolute;pointer-events:none;background:#0d0d0d;border:1px solid;border-radius:4px;padding:10px 12px;font-size:9px;font-family:'IBM Plex Mono',monospace;max-width:200px;line-height:1.4;opacity:0;transition:opacity 0.2s;z-index:10;white-space:pre-wrap;}
+.vector-tooltip.visible{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="control-room">
+  <!-- LEFT: WITNESS V2 VISUAL -->
+  <div class="witness-panel">
+    <div class="panel-header">🧠 Witness V2 · Governance State</div>
+    <div class="canvas-container">
+      <canvas id="witness-canvas"></canvas>
+      <div class="vector-tooltip" id="vector-tooltip"></div>
+    </div>
+    <div class="connection-status">
+      <span class="status-indicator live" id="witness-status"></span>
+      <span id="witness-connection">Connecting...</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: EPISTEMIC DJ + STRUDEL REPL -->
+  <div class="dj-panel">
+    <div class="panel-header">🎧 Epistemic DJ · Generative Music from Mesh State</div>
+
+    <!-- Mood Presets -->
+    <div class="mood-presets">
+      <button class="preset-btn active" data-mood="focus">Focus</button>
+      <button class="preset-btn" data-mood="energize">Energize</button>
+      <button class="preset-btn" data-mood="reflect">Reflect</button>
+      <button class="preset-btn" data-mood="debug">Debug</button>
+      <button class="preset-btn" data-mood="celebrate">Celebrate</button>
+      <button class="preset-btn" data-mood="auto">Auto (from mesh)</button>
+    </div>
+
+    <!-- Vector Controls for Manual Tweaking -->
+    <div class="vector-controls">
+      <div class="vector-control">
+        <label>know: <span id="know-val">0.77</span></label>
+        <input type="range" id="know-slider" min="0" max="100" value="77">
+      </div>
+      <div class="vector-control">
+        <label>do: <span id="do-val">0.79</span></label>
+        <input type="range" id="do-slider" min="0" max="100" value="79">
+      </div>
+      <div class="vector-control">
+        <label>clarity: <span id="clarity-val">0.78</span></label>
+        <input type="range" id="clarity-slider" min="0" max="100" value="78">
+      </div>
+      <div class="vector-control">
+        <label>coherence: <span id="coherence-val">0.76</span></label>
+        <input type="range" id="coherence-slider" min="0" max="100" value="76">
+      </div>
+      <div class="vector-control">
+        <label>engagement: <span id="engagement-val">0.80</span></label>
+        <input type="range" id="engagement-slider" min="0" max="100" value="80">
+      </div>
+      <div class="vector-control">
+        <label>uncertainty: <span id="uncertainty-val">0.30</span></label>
+        <input type="range" id="uncertainty-slider" min="0" max="100" value="30">
+      </div>
+    </div>
+
+    <!-- Strudel REPL -->
+    <div class="dj-repl">
+      <div class="repl-editor">
+        <textarea id="strudel-code" spellcheck="false" placeholder="// Strudel pattern (read-only, auto-generated from mesh state)&#10;// Paste into Strudel.cc to hear the pattern&#10;"></textarea>
+      </div>
+      <div class="repl-controls">
+        <button class="btn" id="copy-btn">📋 Copy Strudel Code</button>
+        <button class="btn" id="regenerate-btn">🔄 Regenerate from Mesh</button>
+        <button class="btn" id="play-btn">▶️ (Open in Strudel.cc)</button>
+      </div>
+    </div>
+
+    <!-- Mesh State Metrics -->
+    <div class="mesh-metrics">
+      <div class="metric-row">
+        <span class="metric-label">Pending Decisions</span>
+        <span class="metric-value" id="pending-count">0</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">High Severity</span>
+        <span class="metric-value" id="high-severity">0</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Ratified / Applied</span>
+        <span class="metric-value" id="ratified-ratio">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Mesh Health</span>
+        <span class="metric-value" id="mesh-health">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Field State</span>
+        <span class="metric-value" id="field-state">Calibrated</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Live Updates</span>
+        <span class="metric-value"><span class="status-indicator live"></span>Supabase</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="MeshToMusicTheory.js"></script>
+<script src="mesh-to-music.js"></script>
+
+<!-- Witness V2 Core -->
+<script>
+const SUPABASE_URL = 'https://ksinisdzgtnqzsymhfya.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzaW5pc2R6Z3RucXpzeW1oZnlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDEzMzEsImV4cCI6MjA4OTg3NzMzMX0.2M9uE_JQOeDPy8obGweyNlPNMiJoISSf3xx4qeYbUU8';
+
+// Witness visualization parameters
+const SOLFEGGIO = [55,174,285,396,417,528,594,639,741,963];
+const RESP_RATES = [28,22,17,13,10,8,7,6,5,4];
+const DIM_COLORS = ['#88a7d8','#87b68b','#d97d70','#b48fd8','#d4c47a','#7ab8b0'];
+
+let supabaseClient = null;
+let meshToMusic = new MeshToMusic();
+let musicTheory = new MeshToMusicTheory();
+let liveData = meshToMusic.defaultVectors();
+let manualVectors = null;
+let useTheoryEngine = true;  // Use sophisticated music theory by default
+
+// Witness animation state
+let tSecs = 0, lastTs = null, cometAngle = -Math.PI/2, animId;
+const canvas = document.getElementById('witness-canvas');
+
+// ── SUPABASE SETUP ──────────────────────────────────────
+async function initSupabase() {
+  try {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    document.getElementById('witness-connection').textContent = 'Connecting...';
+
+    await subscribeToMeshState();
+    document.getElementById('witness-connection').textContent = 'Connected';
+    return true;
+  } catch (e) {
+    console.error('Supabase init failed:', e);
+    document.getElementById('witness-connection').textContent = 'Disconnected';
+    return false;
+  }
+}
+
+async function subscribeToMeshState() {
+  if (!supabaseClient) return;
+
+  try {
+    const meshChannel = supabaseClient
+      .channel('public:mesh_state')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'mesh_state' },
+        (payload) => {
+          console.log('Mesh state update:', payload);
+          updateFromMeshState(payload.new);
+          updateStrudelPattern();
+          updateMetricsDisplay();
+        }
+      )
+      .subscribe();
+
+    // Initial fetch
+    const { data } = await supabaseClient
+      .from('mesh_state')
+      .select('*')
+      .single();
+
+    if (data) {
+      updateFromMeshState(data);
+      updateStrudelPattern();
+      updateMetricsDisplay();
+    }
+  } catch (e) {
+    console.error('Subscription error:', e);
+  }
+}
+
+function updateFromMeshState(meshState) {
+  if (!manualVectors) {  // Only auto-update if not manually tweaking
+    liveData = meshToMusic.meshStateToVectors(meshState);
+    updateVectorDisplay();
+  }
+}
+
+// ── VECTOR TWEAKING ────────────────────────────────────
+function setupVectorControls() {
+  const vectors = ['know', 'do', 'clarity', 'coherence', 'engagement', 'uncertainty'];
+
+  vectors.forEach(v => {
+    const slider = document.getElementById(`${v}-slider`);
+    const valSpan = document.getElementById(`${v}-val`);
+
+    slider.addEventListener('input', (e) => {
+      const val = e.target.value / 100;
+      valSpan.textContent = val.toFixed(2);
+
+      // Switch to manual mode
+      if (!manualVectors) manualVectors = { ...liveData };
+      manualVectors[v] = val;
+
+      // Update pattern immediately
+      updateStrudelPattern();
+    });
+  });
+}
+
+function updateVectorDisplay() {
+  const vectors = ['know', 'do', 'clarity', 'coherence', 'engagement', 'uncertainty'];
+  vectors.forEach(v => {
+    const val = liveData[v] || 0;
+    document.getElementById(`${v}-val`).textContent = val.toFixed(2);
+    document.getElementById(`${v}-slider`).value = Math.round(val * 100);
+  });
+}
+
+// ── MOOD PRESETS ────────────────────────────────────────
+function setupMoodPresets() {
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mood = btn.dataset.mood;
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (mood === 'auto') {
+        manualVectors = null;  // Switch back to auto
+      } else {
+        manualVectors = meshToMusic.moodPreset(mood);
+        updateVectorDisplay();
+      }
+
+      updateStrudelPattern();
+    });
+  });
+}
+
+// ── STRUDEL PATTERN GENERATION ──────────────────────────
+function updateStrudelPattern() {
+  const vectors = manualVectors || liveData;
+  let code;
+
+  if (useTheoryEngine) {
+    // Use sophisticated music theory engine
+    code = musicTheory.compose(vectors);
+
+    // Show theory explanation in browser console
+    const explanation = musicTheory.explain(vectors);
+    console.log('🎼 Music Theory Composition:', explanation);
+  } else {
+    // Fallback to basic pattern generation
+    code = meshToMusic.vectorsToStrudelPattern(vectors);
+  }
+
+  document.getElementById('strudel-code').value = code;
+}
+
+function setupStrudelControls() {
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const code = document.getElementById('strudel-code').value;
+    navigator.clipboard.writeText(code).then(() => {
+      alert('Strudel code copied to clipboard!');
+    });
+  });
+
+  document.getElementById('regenerate-btn').addEventListener('click', () => {
+    manualVectors = null;  // Return to auto mode
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-mood="auto"]').classList.add('active');
+    updateStrudelPattern();
+  });
+
+  document.getElementById('play-btn').addEventListener('click', () => {
+    const code = document.getElementById('strudel-code').value;
+    const encoded = encodeURIComponent(code);
+    window.open(`https://strudel.cc/?code=${encoded}`, '_blank');
+  });
+}
+
+// ── METRICS DISPLAY ────────────────────────────────────
+function updateMetricsDisplay() {
+  document.getElementById('pending-count').textContent = liveData.pending_count;
+  document.getElementById('high-severity').textContent = liveData.high_severity;
+
+  const ratRatio = (liveData.ratified_applied / Math.max(1, liveData.ratified_applied + liveData.pending_count)) * 100;
+  document.getElementById('ratified-ratio').textContent = `${ratRatio.toFixed(0)}%`;
+
+  document.getElementById('mesh-health').textContent = (liveData.state * 100).toFixed(0) + '%';
+
+  const fieldInfo = getFieldState(liveData.state);
+  document.getElementById('field-state').textContent = fieldInfo.label;
+}
+
+function getFieldState(li) {
+  if (li < 0.8) return { label: 'Force Dominant', primary: '#d97d70' };
+  if (li < 0.97) return { label: 'Power', primary: '#d4a04a' };
+  if (li <= 1.0) return { label: 'Calibrated', primary: '#87b68b' };
+  return { label: 'Force Active', primary: '#d97d70' };
+}
+
+// ── WITNESS VISUALIZATION ──────────────────────────────
+function bandIdx(li) {
+  return Math.min(9, Math.max(0, Math.round((1 - li) * 9)));
+}
+
+function bpmForLI(li) {
+  return RESP_RATES[bandIdx(li)];
+}
+
+function hzForLI(li) {
+  return SOLFEGGIO[bandIdx(li)];
+}
+
+function hexRGB(h) {
+  return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+}
+
+function rgba(hex, a) {
+  const c = hexRGB(hex);
+  return `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(3)})`;
+}
+
+function breathPhase(t, bpm, off = 0) {
+  const p = ((t + off) % (60 / bpm)) / (60 / bpm);
+  return p < 0.4 ? p / 0.4 : 1 - (p - 0.4) / 0.6;
+}
+
+function cometRadPerSec(bpm) {
+  return (Math.PI * 2) / (60 / bpm);
+}
+
+// [Drawing functions unchanged from WitnessV2 — abbreviated for brevity]
+function drawOuterArc(ctx, cx, cy, R, queuePressure, fieldColor) {
+  const arcStart = -Math.PI / 2;
+  const arcEnd = arcStart + Math.PI * 2 * (1 - Math.min(0.95, queuePressure));
+
+  ctx.strokeStyle = rgba(fieldColor.primary, 0.3);
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, arcStart, arcStart + Math.PI * 2);
+  ctx.stroke();
+
+  ctx.strokeStyle = fieldColor.primary;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, arcStart, arcEnd);
+  ctx.stroke();
+
+  const gapStart = arcEnd;
+  const gapEnd = gapStart + Math.PI * 2 * Math.min(0.15, queuePressure);
+  ctx.strokeStyle = rgba('#ff6b6b', 0.6 + queuePressure * 0.4);
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, gapStart, gapEnd);
+  ctx.stroke();
+}
+
+function drawSkull(ctx, cx, cy, R, scores) {
+  const dims = 6;
+  const dimNames = ['know', 'do', 'context', 'clarity', 'coherence', 'signal'];
+  const angles = Array.from({ length: dims }, (_, i) => (-Math.PI / 2) + (i / dims) * Math.PI * 2);
+  const radii = scores.map(s => (s / 100) * R * 0.9);
+
+  ctx.fillStyle = rgba('#88a7d8', 0.15);
+  ctx.beginPath();
+  angles.forEach((angle, i) => {
+    const x = cx + radii[i] * Math.cos(angle);
+    const y = cy + radii[i] * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = rgba('#88a7d8', 0.5);
+  ctx.lineWidth = 1.5;
+  angles.forEach((angle, i) => {
+    const x = cx + radii[i] * Math.cos(angle);
+    const y = cy + radii[i] * Math.sin(angle);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  });
+
+  // Draw dimension labels around perimeter
+  ctx.font = 'bold 10px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  angles.forEach((angle, i) => {
+    const labelR = R * 1.2;
+    const x = cx + labelR * Math.cos(angle);
+    const y = cy + labelR * Math.sin(angle);
+    ctx.fillStyle = rgba(DIM_COLORS[i], 0.95);
+    ctx.fillText(dimNames[i], x, y);
+  });
+}
+
+function drawComet(ctx, cx, cy, R, cometAngle, color, speed) {
+  const dist = R * 1.1;
+  const cx2 = cx + dist * Math.cos(cometAngle);
+  const cy2 = cy + dist * Math.sin(cometAngle);
+
+  const tailAngle = cometAngle + Math.PI;
+  ctx.strokeStyle = rgba(color.primary, 0.3);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx2, cy2);
+  ctx.lineTo(cx2 + 30 * Math.cos(tailAngle), cy2 + 30 * Math.sin(tailAngle));
+  ctx.stroke();
+
+  ctx.fillStyle = rgba(color.primary, 0.8);
+  ctx.beginPath();
+  ctx.arc(cx2, cy2, 4, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawBreathRing(ctx, cx, cy, R, phase, hz, color) {
+  const r = R * (0.5 + phase * 0.3);
+  const opacity = 0.1 + phase * 0.2;
+
+  ctx.strokeStyle = rgba(color.primary, opacity);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawDataCore(ctx, cx, cy, R, phase) {
+  const coreR = R * 0.15 * (0.7 + phase * 0.3);
+  const opacity = 0.3 + phase * 0.5;
+
+  ctx.fillStyle = rgba('#87b68b', opacity);
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = rgba('#87b68b', opacity * 0.5);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR * 1.5, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function getFieldState(li) {
+  if (li < 0.8) return { label: 'Force Dominant', primary: '#d97d70', secondary: '#f0a898' };
+  if (li < 0.97) return { label: 'Power', primary: '#d4a04a', secondary: '#f1c36e' };
+  if (li <= 1.0) return { label: 'Calibrated', primary: '#87b68b', secondary: '#b8e0bc' };
+  return { label: 'Force Active', primary: '#d97d70', secondary: '#f0a898' };
+}
+
+function drawSigilGlow(ctx, cx, cy, R, fieldInfo, phase) {
+  // Sigil-style glow effect with field state coloring
+  const glowR = [R * 1.35, R * 1.5, R * 1.65];
+  const c = hexRGB(fieldInfo.primary);
+  const alpha = [0.15 + phase * 0.1, 0.08 + phase * 0.05, 0.03];
+
+  glowR.forEach((r, i) => {
+    ctx.strokeStyle = rgba(fieldInfo.primary, alpha[i]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+
+  // Breathing glow pulse
+  const breathGlow = R * (1.25 + phase * 0.15);
+  ctx.strokeStyle = rgba(fieldInfo.primary, 0.3 * phase);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, breathGlow, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawSignaturePanel(ctx, W, H, li, hz, bpm, fieldInfo) {
+  // Signature data panel (bottom-left)
+  const panelW = 180, panelH = 110;
+  const px = 16, py = H - panelH - 16;
+
+  // Panel background with border
+  ctx.fillStyle = rgba('#0d0d0d', 0.85);
+  ctx.fillRect(px, py, panelW, panelH);
+  ctx.strokeStyle = rgba(fieldInfo.primary, 0.4);
+  ctx.lineWidth = 1;
+  ctx.strokeRect(px, py, panelW, panelH);
+
+  ctx.font = 'bold 9px monospace';
+  ctx.fillStyle = rgba('#a0a0a0', 0.7);
+  ctx.textAlign = 'left';
+
+  let ty = py + 10;
+  const lineH = 14;
+
+  // LI value
+  ctx.fillStyle = rgba(fieldInfo.primary, 0.95);
+  ctx.fillText(`LI: ${li.toFixed(3)}`, px + 8, ty);
+  ctx.fillStyle = rgba('#7ab8b0', 0.7);
+  ctx.font = '8px monospace';
+  ctx.fillText(fieldInfo.label, px + 8 + 35, ty);
+
+  // Solfeggio frequency
+  ty += lineH;
+  ctx.font = 'bold 9px monospace';
+  ctx.fillStyle = rgba('#d4a04a', 0.8);
+  ctx.fillText(`Sound: ${hz} Hz`, px + 8, ty);
+
+  // Respiration rate
+  ty += lineH;
+  ctx.fillStyle = rgba('#87b68b', 0.8);
+  ctx.fillText(`Breath: ${bpm} BPM`, px + 8, ty);
+
+  // Field state bar
+  ty += lineH;
+  const barW = panelW - 16;
+  const liRatio = li / 1.0;
+  const filledW = Math.min(barW, barW * liRatio);
+
+  ctx.strokeStyle = rgba(fieldInfo.primary, 0.3);
+  ctx.lineWidth = 1;
+  ctx.strokeRect(px + 8, ty, barW, 6);
+
+  ctx.fillStyle = rgba(fieldInfo.primary, 0.6);
+  ctx.fillRect(px + 8, ty, filledW, 6);
+
+  ty += 12;
+  ctx.font = '7px monospace';
+  ctx.fillStyle = rgba('#a0a0a0', 0.6);
+  ctx.textAlign = 'center';
+  ctx.fillText('Governance Sigil · Real-Time', px + panelW / 2, ty + 8);
+}
+
+function drawWitness(size, phase, hz, cAngle, tS, li, scores) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const W = size, H = size, cx = W / 2, cy = H * 0.47, R = Math.min(W, H) * 0.35;
+
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  const ag = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 2);
+  ag.addColorStop(0, 'rgba(135,182,139,0.1)');
+  ag.addColorStop(1, 'rgba(0,0,0,0.5)');
+  ctx.fillStyle = ag;
+  ctx.fillRect(0, 0, W, H);
+
+  const fieldInfo = getFieldState(li);
+  const queuePressure = liveData.pending_count / Math.max(1, liveData.pending_count + liveData.ratified_applied);
+  const bpm = bpmForLI(li);
+
+  // Sigil glow
+  drawSigilGlow(ctx, cx, cy, R, fieldInfo, phase);
+
+  // Visualization layers
+  drawOuterArc(ctx, cx, cy, R, queuePressure, fieldInfo);
+  drawSkull(ctx, cx, cy, R, scores);
+  drawBreathRing(ctx, cx, cy, R, phase, hz, fieldInfo);
+  drawComet(ctx, cx, cy, R, cAngle, fieldInfo, bpm);
+  drawDataCore(ctx, cx, cy, R, phase);
+
+  // Title
+  ctx.fillStyle = rgba('#d4a04a', 0.7);
+  ctx.font = 'bold 14px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('WITNESS V2', cx, 40);
+
+  // Field state label
+  ctx.fillStyle = fieldInfo.primary;
+  ctx.font = '11px monospace';
+  ctx.fillText(fieldInfo.label, cx, cy + R * 1.6);
+}
+
+function updateSize() {
+  const s = Math.min(window.innerWidth / 2, window.innerHeight);
+  canvas.width = s;
+  canvas.height = s;
+}
+
+updateSize();
+window.addEventListener('resize', updateSize);
+
+// ── ANIMATION LOOP ────────────────────────────────────
+function animate(timestamp) {
+  if (lastTs === null) lastTs = timestamp;
+  const dt = (timestamp - lastTs) / 1000;
+  lastTs = timestamp;
+  tSecs += dt;
+
+  const li = liveData.state;
+  const bpm = bpmForLI(li);
+  const hz = hzForLI(li);
+  const phase = breathPhase(tSecs, bpm);
+  cometAngle = (cometAngle + cometRadPerSec(bpm) * dt) % (Math.PI * 2);
+
+  const scores = liveData.know ? [liveData.know, liveData.do, liveData.context, liveData.clarity, liveData.coherence, liveData.signal].map(s => s * 100) : [77.5, 79.1, 77.8, 78.3, 76.2, 75.0];
+
+  drawWitness(canvas.width, phase, hz, cometAngle, tSecs, li, scores);
+  animId = requestAnimationFrame(animate);
+}
+
+// ── VECTOR TOOLTIP (HOVER) ────────────────────────────
+const vectorMeta = {
+  know: { label: 'know', desc: 'Epistemic clarity\nScale consonance:\npentatonic (high)\n→ diminished (low)' },
+  do: { label: 'do', desc: 'Execution ability\nDrum coherence:\nlocked groove ↔\nscattered' },
+  context: { label: 'context', desc: 'State awareness\nBass movement:\nstable ↔ searching' },
+  clarity: { label: 'clarity', desc: 'Path clarity\nFilter brightness:\ndark ↔ bright' },
+  coherence: { label: 'coherence', desc: 'Belief consistency\nRhythmic stability:\nchaotic ↔ locked' },
+  signal: { label: 'signal', desc: 'Info quality\nNote density:\nsparse ↔ dense' }
+};
+
+function setupVectorTooltip() {
+  const dimNames = ['know', 'do', 'context', 'clarity', 'coherence', 'signal'];
+  const tooltip = document.getElementById('vector-tooltip');
+  const container = canvas.parentElement;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const canvasX = e.clientX - rect.left;
+    const canvasY = e.clientY - rect.top;
+
+    // Normalize to canvas coordinates
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.47;
+    const R = Math.min(canvas.width, canvas.height) * 0.35;
+    const labelR = R * 1.2;
+
+    // Check distance to each vector label
+    const angles = Array.from({ length: 6 }, (_, i) => (-Math.PI / 2) + (i / 6) * Math.PI * 2);
+    let closestVec = null;
+    let closestDist = 40; // Hover radius in pixels
+
+    angles.forEach((angle, i) => {
+      const x = cx + labelR * Math.cos(angle);
+      const y = cy + labelR * Math.sin(angle);
+      const dist = Math.sqrt((canvasX - x) ** 2 + (canvasY - y) ** 2);
+
+      if (dist < closestDist) {
+        closestDist = dist;
+        closestVec = dimNames[i];
+      }
+    });
+
+    if (closestVec) {
+      const meta = vectorMeta[closestVec];
+      const val = liveData[closestVec] || 0;
+      const hexColor = DIM_COLORS[dimNames.indexOf(closestVec)];
+
+      tooltip.innerHTML = `<strong>${meta.label.toUpperCase()}</strong> [${(val * 100).toFixed(0)}%]\n\n${meta.desc}`;
+      tooltip.style.borderColor = hexColor;
+      tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+      tooltip.style.top = (e.clientY - rect.top - 60) + 'px';
+      tooltip.classList.add('visible');
+    } else {
+      tooltip.classList.remove('visible');
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+}
+
+// ── INITIALIZATION ────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  setupVectorControls();
+  setupMoodPresets();
+  setupStrudelControls();
+  setupVectorTooltip();
+
+  const success = await initSupabase();
+  if (success) {
+    animate(performance.now());
+  }
+});
+</script>
+
+</body>
+</html>

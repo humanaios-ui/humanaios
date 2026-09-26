@@ -1,0 +1,207 @@
+{
+  "phase": "3.8",
+  "export_time": "2026-09-17T14:31:43.257977",
+  "roster": {
+    "timestamp": "2026-09-17T14:31:43.257286",
+    "total_practices": 17,
+    "tier_1_core": 4,
+    "tier_2_extended": 5,
+    "tier_3_ecosystem": 8,
+    "slas": {
+      "empirica-autonomy": {
+        "practice_name": "empirica-autonomy",
+        "query_latency_p95_ms": 1000,
+        "query_latency_p99_ms": 1500,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 5,
+        "health_score_min": 0.75,
+        "trace_correlation_min": 0.95,
+        "escalation_response_minutes": 5,
+        "critical_response_minutes": 2
+      },
+      "empirica-mesh-support": {
+        "practice_name": "empirica-mesh-support",
+        "query_latency_p95_ms": 1500,
+        "query_latency_p99_ms": 2000,
+        "ingestion_rate_min_cps": 20,
+        "coordination_latency_p95_s": 10,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 10,
+        "critical_response_minutes": 5
+      },
+      "empirica-foundation-evaluator": {
+        "practice_name": "empirica-foundation-evaluator",
+        "query_latency_p95_ms": 1200,
+        "query_latency_p99_ms": 1800,
+        "ingestion_rate_min_cps": 15,
+        "coordination_latency_p95_s": 8,
+        "health_score_min": 0.75,
+        "trace_correlation_min": 0.95,
+        "escalation_response_minutes": 5,
+        "critical_response_minutes": 2
+      },
+      "empirica-outreach": {
+        "practice_name": "empirica-outreach",
+        "query_latency_p95_ms": 2000,
+        "query_latency_p99_ms": 3000,
+        "ingestion_rate_min_cps": 5,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 15,
+        "critical_response_minutes": 10
+      },
+      "empirica-analytics": {
+        "practice_name": "empirica-analytics",
+        "query_latency_p95_ms": 1500,
+        "query_latency_p99_ms": 2500,
+        "ingestion_rate_min_cps": 20,
+        "coordination_latency_p95_s": 10,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 10,
+        "critical_response_minutes": 5
+      },
+      "empirica-resource-miner": {
+        "practice_name": "empirica-resource-miner",
+        "query_latency_p95_ms": 2000,
+        "query_latency_p99_ms": 3000,
+        "ingestion_rate_min_cps": 8,
+        "coordination_latency_p95_s": 12,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      },
+      "empirica-temporal-oracle": {
+        "practice_name": "empirica-temporal-oracle",
+        "query_latency_p95_ms": 2000,
+        "query_latency_p99_ms": 3000,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      },
+      "humanaios": {
+        "practice_name": "humanaios",
+        "query_latency_p95_ms": 1800,
+        "query_latency_p99_ms": 2500,
+        "ingestion_rate_min_cps": 12,
+        "coordination_latency_p95_s": 10,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 10,
+        "critical_response_minutes": 5
+      },
+      "humanaios-internal": {
+        "practice_name": "humanaios-internal",
+        "query_latency_p95_ms": 2000,
+        "query_latency_p99_ms": 3000,
+        "ingestion_rate_min_cps": 8,
+        "coordination_latency_p95_s": 12,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 15,
+        "critical_response_minutes": 10
+      },
+      "humanaios-ui": {
+        "practice_name": "humanaios-ui",
+        "query_latency_p95_ms": 1500,
+        "query_latency_p99_ms": 2000,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 8,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 10,
+        "critical_response_minutes": 5
+      },
+      "website": {
+        "practice_name": "website",
+        "query_latency_p95_ms": 3000,
+        "query_latency_p99_ms": 4000,
+        "ingestion_rate_min_cps": 5,
+        "coordination_latency_p95_s": 20,
+        "health_score_min": 0.6,
+        "trace_correlation_min": 0.8,
+        "escalation_response_minutes": 30,
+        "critical_response_minutes": 15
+      },
+      "acat-x": {
+        "practice_name": "acat-x",
+        "query_latency_p95_ms": 2500,
+        "query_latency_p99_ms": 3500,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      },
+      "collaborator-ops": {
+        "practice_name": "collaborator-ops",
+        "query_latency_p95_ms": 2500,
+        "query_latency_p99_ms": 3500,
+        "ingestion_rate_min_cps": 8,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      },
+      "flta-app-empirica": {
+        "practice_name": "flta-app-empirica",
+        "query_latency_p95_ms": 2500,
+        "query_latency_p99_ms": 3500,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      },
+      "grok-crossref": {
+        "practice_name": "grok-crossref",
+        "query_latency_p95_ms": 2000,
+        "query_latency_p99_ms": 3000,
+        "ingestion_rate_min_cps": 10,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.7,
+        "trace_correlation_min": 0.9,
+        "escalation_response_minutes": 15,
+        "critical_response_minutes": 10
+      },
+      "local-machine-optimizer": {
+        "practice_name": "local-machine-optimizer",
+        "query_latency_p95_ms": 3000,
+        "query_latency_p99_ms": 4000,
+        "ingestion_rate_min_cps": 5,
+        "coordination_latency_p95_s": 20,
+        "health_score_min": 0.6,
+        "trace_correlation_min": 0.8,
+        "escalation_response_minutes": 30,
+        "critical_response_minutes": 15
+      },
+      "opportunity-aggregator": {
+        "practice_name": "opportunity-aggregator",
+        "query_latency_p95_ms": 2500,
+        "query_latency_p99_ms": 3500,
+        "ingestion_rate_min_cps": 8,
+        "coordination_latency_p95_s": 15,
+        "health_score_min": 0.65,
+        "trace_correlation_min": 0.85,
+        "escalation_response_minutes": 20,
+        "critical_response_minutes": 10
+      }
+    }
+  },
+  "summary": {
+    "total_practices": 17,
+    "tier_1_core": 4,
+    "tier_2_extended": 5,
+    "tier_3_ecosystem": 8,
+    "all_practices_covered": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-08-15T20:26:50.707974Z",
+  "practice_id": "empirica-foundation-evaluator",
+  "vectors": {
+    "know": 0.0,
+    "uncertainty": 0.0,
+    "engagement": 0.0,
+    "completion": 0.0
+  },
+  "found_summary": "Phase 1a Success Criteria: CLI tool returns phase + alignment JSON. POSTFLIGHT payload enriched with",
+  "raw_result": {
+    "score": 0.6609925,
+    "type": "fact",
+    "content": "Phase 1a Success Criteria: CLI tool returns phase + alignment JSON. POSTFLIGHT payload enriched with acat_grounding. Vector-phase mapping documented + audited. One-way grounding enforced (no ACAT feedback from empirica vectors).",
+    "confidence": 0.67,
+    "domain": null,
+    "created_at": 1784753771.2885902,
+    "first_seen": 1784753771.2885902
+  }
+}

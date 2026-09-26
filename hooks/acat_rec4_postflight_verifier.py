@@ -127,6 +127,7 @@ class VerifierAgent:
         prompt = self.generate_verifier_prompt(state)
 
         # Stub: return mock verifier scores (placeholder for integration)
+        # When real verifier agent ships, change verifier_source from "stub" to "real"
         verifier_scores = {
             "truth": 72,
             "service": 75,
@@ -141,6 +142,7 @@ class VerifierAgent:
             "fair": 74,
             "handoff": 77,
             "confidence": 0.75,
+            "verifier_source": "stub",  # Will be "real" when verifier agent implementation lands
             "notes": "[STUB: Real verifier agent would score here based on transcript analysis]",
             "verifier_run_at": datetime.utcnow().isoformat() + "Z",
         }

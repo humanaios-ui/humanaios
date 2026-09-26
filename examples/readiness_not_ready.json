@@ -1,0 +1,35 @@
+{
+  "description": "Example readiness-check configuration: NOT READY - insufficient evidence",
+  "evidence": [
+    {
+      "kind": "read",
+      "source": "system-prompt.md (partial)",
+      "confidence": 0.60,
+      "notes": "Skimmed briefly, didn't read CHECK section"
+    }
+  ],
+  "assumptions": [
+    {
+      "text": "Gates probably implement some form of validation",
+      "confidence": 0.40
+    },
+    {
+      "text": "MCP tools will work exactly like empirica CLI tools",
+      "confidence": 0.30
+    },
+    {
+      "text": "No need to verify vector definitions with Sentinel team",
+      "confidence": 0.25
+    }
+  ],
+  "unknowns": [
+    "What exactly does CHECK certification require?",
+    "How do gate thresholds compare to other empirica gates?",
+    "What's the difference between marginal and partial readiness?",
+    "How do we calibrate thresholds per practice?",
+    "What happens if gates conflict with each other?"
+  ],
+  "min_evidence": 3,
+  "max_assumptions": 2,
+  "max_uncertainty": 0.25
+}

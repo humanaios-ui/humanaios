@@ -1,0 +1,686 @@
+{
+  "seed": 20260912,
+  "built_from": "/Users/andersonfamily/practices/empirica-analytics/reports/operational_pilot.json",
+  "items": [
+    {
+      "packet": "P01",
+      "session_id": "c3224da5-20ca-496d-b3d6-976744e71c94",
+      "practice": "opportunity-aggregator",
+      "op_est": {
+        "do": 0.901,
+        "change": 0.393,
+        "completion": 0.7,
+        "state": 0.873,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.85,
+        "completion": 0.85,
+        "change": 0.45,
+        "state": 0.95
+      },
+      "grounded": {
+        "do": 0.35000000000000003,
+        "completion": 0.33333333333333337,
+        "change": 0.7000000000000001,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 55,
+        "edits": 2,
+        "commits": 3,
+        "tests": 0,
+        "errors": 7,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 109,
+      "withheld_calls": 39
+    },
+    {
+      "packet": "P02",
+      "session_id": "73bb35b3-901a-4f17-a2d6-4a09b5f5070e",
+      "practice": "empirica-outreach",
+      "op_est": {
+        "do": 0.481,
+        "change": 0.0,
+        "completion": 0.5,
+        "state": 0.966,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.6,
+        "completion": 0.7,
+        "change": 0.8,
+        "state": 0.8
+      },
+      "grounded": {
+        "do": 0.03125,
+        "completion": null,
+        "change": 0.09999999999999999,
+        "state": 0.9416666666666665
+      },
+      "ops": {
+        "calls": 29,
+        "edits": 0,
+        "commits": 1,
+        "tests": 0,
+        "errors": 1,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 57,
+      "withheld_calls": 24
+    },
+    {
+      "packet": "P03",
+      "session_id": "4810f82f-be78-4f7f-a97e-a5ad2b0861d5",
+      "practice": "schema.sql",
+      "op_est": {
+        "do": 0.982,
+        "change": 0.918,
+        "completion": 0.7,
+        "state": 0.85,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.92,
+        "completion": 1.0,
+        "change": 0.85,
+        "state": 0.92
+      },
+      "grounded": {
+        "do": 0.7323529411764705,
+        "completion": 0.5666666666666668,
+        "change": 0.8617021276595744,
+        "state": 0.6108108108108107
+      },
+      "ops": {
+        "calls": 60,
+        "edits": 10,
+        "commits": 6,
+        "tests": 0,
+        "errors": 9,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 119,
+      "withheld_calls": 24
+    },
+    {
+      "packet": "P04",
+      "session_id": "1239d840-8699-4589-9322-44d82e886999",
+      "practice": "grok-crossref",
+      "op_est": {
+        "do": 0.497,
+        "change": 0.0,
+        "completion": 0.5,
+        "state": 0.733,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": 1.0,
+        "change": 0.4,
+        "state": 0.9
+      },
+      "grounded": {
+        "do": 0.7499999999999999,
+        "completion": 0.7333333333333334,
+        "change": 1.0,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 15,
+        "edits": 0,
+        "commits": 1,
+        "tests": 0,
+        "errors": 4,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 29,
+      "withheld_calls": 9
+    },
+    {
+      "packet": "P05",
+      "session_id": "8549c8e2-cf70-4eb3-8a53-5113932ed120",
+      "practice": "acat-x",
+      "op_est": {
+        "do": 0.57,
+        "change": 0.0,
+        "completion": 0.7,
+        "state": 0.905,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.88,
+        "completion": 0.5,
+        "change": 0.3,
+        "state": 0.88
+      },
+      "grounded": {
+        "do": 0.5599999999999999,
+        "completion": 0.675,
+        "change": 0.7000000000000001,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 21,
+        "edits": 0,
+        "commits": 1,
+        "tests": 0,
+        "errors": 2,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 41,
+      "withheld_calls": 16
+    },
+    {
+      "packet": "P06",
+      "session_id": "eddf46b5-9cb6-4d2e-85fa-e02489bf3b5e",
+      "practice": "empirica-mesh-support",
+      "op_est": {
+        "do": 0.918,
+        "change": 0.0,
+        "completion": 0.7,
+        "state": 0.843,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.85,
+        "completion": 0.9,
+        "change": 0.7,
+        "state": 0.92
+      },
+      "grounded": {
+        "do": 0.15,
+        "completion": 0.9500000000000001,
+        "change": 0.3,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 51,
+        "edits": 0,
+        "commits": 4,
+        "tests": 0,
+        "errors": 8,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 101,
+      "withheld_calls": 41
+    },
+    {
+      "packet": "P07",
+      "session_id": "276f226f-4566-4172-a6e8-93906d9a385f",
+      "practice": "local-machine-optimizer",
+      "op_est": {
+        "do": 0.997,
+        "change": 1.0,
+        "completion": 0.5,
+        "state": 0.945,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.9,
+        "completion": 1.0,
+        "change": 0.95,
+        "state": 0.9
+      },
+      "grounded": {
+        "do": 0.049999999999999996,
+        "completion": null,
+        "change": 0.09999999999999999,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 73,
+        "edits": 31,
+        "commits": 5,
+        "tests": 0,
+        "errors": 4,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 145,
+      "withheld_calls": 15
+    },
+    {
+      "packet": "P08",
+      "session_id": "51ecdc11-684f-4d06-bf24-0f5695ac8ba3",
+      "practice": "opportunity-aggregator",
+      "op_est": {
+        "do": 0.86,
+        "change": 0.675,
+        "completion": 0.7,
+        "state": 0.879,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.85,
+        "completion": 1.0,
+        "change": 0.8,
+        "state": 0.95
+      },
+      "grounded": {
+        "do": 1.0,
+        "completion": 1.0,
+        "change": null,
+        "state": null
+      },
+      "ops": {
+        "calls": 66,
+        "edits": 5,
+        "commits": 1,
+        "tests": 0,
+        "errors": 8,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 131,
+      "withheld_calls": 12
+    },
+    {
+      "packet": "P09",
+      "session_id": "f6608d45-fd88-460a-8f06-4ffe4a94a8e3",
+      "practice": "empirica-mesh-support",
+      "op_est": {
+        "do": 0.86,
+        "change": 0.632,
+        "completion": 0.7,
+        "state": 0.947,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.92,
+        "completion": 0.95,
+        "change": 0.91,
+        "state": 0.84
+      },
+      "grounded": {
+        "do": 0.33333333333333337,
+        "completion": null,
+        "change": 1.0,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 38,
+        "edits": 4,
+        "commits": 2,
+        "tests": 0,
+        "errors": 2,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 75,
+      "withheld_calls": 29
+    },
+    {
+      "packet": "P10",
+      "session_id": "335bde6f-3222-4875-bbd8-3e93cf5bb9b9",
+      "practice": "opportunity-aggregator",
+      "op_est": {
+        "do": 0.952,
+        "change": 0.865,
+        "completion": 0.7,
+        "state": 0.928,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": 0.85,
+        "change": 0.1,
+        "state": 0.85
+      },
+      "grounded": {
+        "do": 0.65,
+        "completion": 0.625,
+        "change": 1.0,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 69,
+        "edits": 10,
+        "commits": 3,
+        "tests": 0,
+        "errors": 5,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 137,
+      "withheld_calls": 19
+    },
+    {
+      "packet": "P11",
+      "session_id": "cb8b1527-5b14-4c6a-9ce5-9c392c084fc7",
+      "practice": "empirica-autonomy",
+      "op_est": {
+        "do": 0.221,
+        "change": 0.0,
+        "completion": null,
+        "state": 1.0,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.85,
+        "completion": 0.9,
+        "change": 0.5,
+        "state": 0.95
+      },
+      "grounded": {
+        "do": 1.0,
+        "completion": null,
+        "change": 1.0,
+        "state": null
+      },
+      "ops": {
+        "calls": 8,
+        "edits": 0,
+        "commits": 0,
+        "tests": 0,
+        "errors": 0,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 15,
+      "withheld_calls": 8
+    },
+    {
+      "packet": "P12",
+      "session_id": "cd15306e-ef9b-4fd5-a073-22cbc3a22b50",
+      "practice": "humanaios",
+      "op_est": {
+        "do": 0.777,
+        "change": 0.0,
+        "completion": 0.7,
+        "state": 0.9,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": null,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": 0.7,
+        "completion": 0.5,
+        "change": 0.5620138888888889,
+        "state": 0.5493518518518519
+      },
+      "ops": {
+        "calls": 50,
+        "edits": 0,
+        "commits": 1,
+        "tests": 0,
+        "errors": 5,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 99,
+      "withheld_calls": 35
+    },
+    {
+      "packet": "P13",
+      "session_id": "a762cdaa-bce4-4d8a-891d-66989b3428fc",
+      "practice": "humanaios-internal",
+      "op_est": {
+        "do": 0.762,
+        "change": 0.393,
+        "completion": 0.7,
+        "state": 0.944,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.9,
+        "completion": 1.0,
+        "change": 0.8,
+        "state": 0.9
+      },
+      "grounded": {
+        "do": 0.7999999999999999,
+        "completion": null,
+        "change": 0.7999999999999999,
+        "state": 0.84375
+      },
+      "ops": {
+        "calls": 36,
+        "edits": 2,
+        "commits": 2,
+        "tests": 0,
+        "errors": 2,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 71,
+      "withheld_calls": 15
+    },
+    {
+      "packet": "P14",
+      "session_id": "56f06f62-7d90-4591-8136-d9b756c160e3",
+      "practice": "empirica-outreach",
+      "op_est": {
+        "do": 0.981,
+        "change": 0.826,
+        "completion": 0.7,
+        "state": 0.912,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.95,
+        "completion": 1.0,
+        "change": 0.95,
+        "state": 0.96
+      },
+      "grounded": {
+        "do": 0.049999999999999996,
+        "completion": null,
+        "change": 0.09999999999999999,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 80,
+        "edits": 7,
+        "commits": 5,
+        "tests": 0,
+        "errors": 7,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 159,
+      "withheld_calls": 40
+    },
+    {
+      "packet": "P15",
+      "session_id": "0b2eff0d-be9b-4250-ac62-55371e99a3f4",
+      "practice": "empirica-outreach",
+      "op_est": {
+        "do": 0.964,
+        "change": 0.393,
+        "completion": 0.5,
+        "state": 0.819,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": null,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": 0.06666666666666667,
+        "completion": null,
+        "change": 0.19999999999999998,
+        "state": 0.8333333333333335
+      },
+      "ops": {
+        "calls": 72,
+        "edits": 2,
+        "commits": 5,
+        "tests": 0,
+        "errors": 13,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 143,
+      "withheld_calls": 33
+    },
+    {
+      "packet": "P16",
+      "session_id": "fd2f593f-8efe-45e4-9101-bc2a8b7a7cd6",
+      "practice": "website",
+      "op_est": {
+        "do": 0.979,
+        "change": 0.583,
+        "completion": 0.7,
+        "state": 0.828,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": 1.0,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": null,
+        "completion": 0.9000000000000001,
+        "change": null,
+        "state": null
+      },
+      "ops": {
+        "calls": 93,
+        "edits": 4,
+        "commits": 4,
+        "tests": 0,
+        "errors": 16,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 185,
+      "withheld_calls": 77
+    },
+    {
+      "packet": "P17",
+      "session_id": "66bd9248-8eb2-4c18-99e5-91486796686d",
+      "practice": "humanaios",
+      "op_est": {
+        "do": 0.979,
+        "change": 0.747,
+        "completion": 0.7,
+        "state": 0.857,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": null,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": 0.049999999999999996,
+        "completion": null,
+        "change": 0.09999999999999999,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 56,
+        "edits": 7,
+        "commits": 7,
+        "tests": 0,
+        "errors": 8,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 111,
+      "withheld_calls": 17
+    },
+    {
+      "packet": "P18",
+      "session_id": "0258c31d-58c2-4e72-8184-925c2b5b6ee4",
+      "practice": "local-machine-optimizer",
+      "op_est": {
+        "do": 0.313,
+        "change": 0.0,
+        "completion": null,
+        "state": 0.833,
+        "impact": null
+      },
+      "self_post": {
+        "do": null,
+        "completion": 1.0,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": null,
+        "completion": null,
+        "change": null,
+        "state": null
+      },
+      "ops": {
+        "calls": 12,
+        "edits": 0,
+        "commits": 0,
+        "tests": 0,
+        "errors": 2,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 23,
+      "withheld_calls": 7
+    },
+    {
+      "packet": "P19",
+      "session_id": "2d5146fb-bdd5-4897-b4ff-42f49cc7d01e",
+      "practice": "humanaios",
+      "op_est": {
+        "do": 0.953,
+        "change": 0.675,
+        "completion": 1.0,
+        "state": 0.929,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.85,
+        "completion": 1.0,
+        "change": null,
+        "state": null
+      },
+      "grounded": {
+        "do": 0.8333333333333335,
+        "completion": 1.0,
+        "change": 0.5,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 56,
+        "edits": 5,
+        "commits": 5,
+        "tests": 1,
+        "errors": 4,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 111,
+      "withheld_calls": 28
+    },
+    {
+      "packet": "P20",
+      "session_id": "40026010-27a8-4e07-9711-02ee6cefeb5d",
+      "practice": "grok-crossref",
+      "op_est": {
+        "do": 0.685,
+        "change": 0.0,
+        "completion": 0.7,
+        "state": 0.941,
+        "impact": null
+      },
+      "self_post": {
+        "do": 0.88,
+        "completion": 1.0,
+        "change": 0.35,
+        "state": 0.85
+      },
+      "grounded": {
+        "do": 0.09999999999999999,
+        "completion": null,
+        "change": 0.09999999999999999,
+        "state": 1.0
+      },
+      "ops": {
+        "calls": 34,
+        "edits": 0,
+        "commits": 1,
+        "tests": 0,
+        "errors": 2,
+        "bracket": "preflight_to_postflight"
+      },
+      "log_lines": 67,
+      "withheld_calls": 32
+    }
+  ]
+}

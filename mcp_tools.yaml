@@ -1,0 +1,425 @@
+# MCP Tool Definitions for Sentinel Validation Gates
+#
+# Three tools enforce transaction discipline boundaries:
+# - readiness_check: Verify noetic phase completion before praxic
+# - resource_check: Validate resource allocation constraints
+# - sentinel_verify: Check epistemic vectors meet action thresholds
+#
+# Integration: Wire via empirica CLI or MCP server configuration
+# Usage: empirica <tool-name> --input-file config.json
+# or:    echo '{"..."}' | empirica <tool-name>
+
+version: "1.0"
+namespace: "empirica.gates"
+
+tools:
+  - name: "readiness-check"
+    description: "Verify that noetic (investigation) work is complete before proceeding to praxic (implementation) phase. Checks evidence collection, assumption documentation, and uncertainty levels."
+    type: "validation"
+    category: "transaction-discipline"
+
+    inputSchema:
+      type: "object"
+      required: ["evidence"]
+      properties:
+        evidence:
+          type: "array"
+          description: "Pieces of evidence gathered during noetic phase"
+          items:
+            type: "object"
+            required: ["kind", "source", "confidence"]
+            properties:
+              kind:
+                type: "string"
+                enum: ["read", "grep", "glob", "query", "external"]
+                description: "Type of evidence (read file, grep pattern, query DB, etc.)"
+              source:
+                type: "string"
+                description: "Where evidence came from (file path, query, etc.)"
+              confidence:
+                type: "number"
+                minimum: 0.0
+                maximum: 1.0
+                description: "Confidence in this evidence (0.0 = uncertain, 1.0 = certain)"
+              notes:
+                type: "string"
+                description: "Optional notes on evidence"
+
+        assumptions:
+          type: "array"
+          description: "Unverified beliefs taken for granted"
+          items:
+            type: "object"
+            properties:
+              text:
+                type: "string"
+                description: "The assumption"
+              confidence:
+                type: "number"
+                minimum: 0.0
+                maximum: 1.0
+                description: "Confidence in assumption being correct"
+          default: []
+
+        unknowns:
+          type: "array"
+          description: "Things known to be unknown"
+          items:
+            type: "string"
+          default: []
+
+        min_evidence:
+          type: "integer"
+          minimum: 1
+          description: "Minimum evidence items required"
+          default: 3
+
+        max_assumptions:
+          type: "integer"
+          minimum: 0
+          description: "Maximum undocumented assumptions allowed"
+          default: 2
+
+        max_uncertainty:
+          type: "number"
+          minimum: 0.0
+          maximum: 1.0
+          description: "Maximum acceptable uncertainty (0.0 = certain required, 1.0 = any uncertainty OK)"
+          default: 0.25
+
+    outputSchema:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum: ["pass", "fail"]
+          description: "Overall gate outcome"
+        level:
+          type: "string"
+          enum: ["ready", "not_ready", "partially_ready"]
+          description: "Readiness level"
+        evidence_gathered:
+          type: "integer"
+          description: "Number of evidence items collected"
+        evidence_required:
+          type: "integer"
+          description: "Minimum evidence items needed"
+        assumptions_undocumented:
+          type: "integer"
+          description: "Count of assumptions not yet documented"
+        uncertainty_level:
+          type: "number"
+          description: "Overall uncertainty (0.0 = certain, 1.0 = fully uncertain)"
+        blockers:
+          type: "array"
+          items: { type: "string" }
+          description: "Gate-blocking issues (must be resolved)"
+        recommendations:
+          type: "array"
+          items: { type: "string" }
+          description: "Recommendations for proceeding"
+
+    exitCodes:
+      0: "Ready (level=ready)"
+      1: "Partially ready (level=partially_ready) - warnings exist"
+      2: "Not ready (level=not_ready) - blockers exist"
+
+    examples:
+      - name: "Ready to implement"
+        input:
+          evidence:
+            - { kind: "read", source: "system-prompt.md", confidence: 0.95 }
+            - { kind: "grep", source: "codebase", confidence: 0.85, notes: "Found 5 references" }
+            - { kind: "query", source: "empirica db", confidence: 0.90 }
+          assumptions: []
+          unknowns: []
+        output:
+          status: "pass"
+          level: "ready"
+          evidence_gathered: 3
+          uncertainty_level: 0.07
+
+
+  - name: "resource-check"
+    description: "Validate that proposed work fits within resource constraints (labor hours, AI tokens, practice capacity, escalations). Enforces resource-based transaction discipline."
+    type: "validation"
+    category: "resource-guard"
+
+    inputSchema:
+      type: "object"
+      required: ["budget", "estimate"]
+      properties:
+        budget:
+          type: "object"
+          description: "Current resource allocation state"
+          required: ["human_labor_hours_remaining", "ai_tokens_remaining"]
+          properties:
+            human_labor_hours_remaining:
+              type: "number"
+              description: "Remaining human labor hours in current budget"
+              default: 100.0
+            ai_tokens_remaining:
+              type: "integer"
+              description: "Remaining AI tokens available"
+              default: 500000
+            practices_active:
+              type: "integer"
+              description: "Number of practices currently active/engaged"
+              default: 5
+            practices_capacity:
+              type: "integer"
+              description: "Maximum practices that should be active simultaneously"
+              default: 15
+            escalations_pending:
+              type: "integer"
+              description: "Number of escalations currently pending"
+              default: 2
+            escalation_sla_hours:
+              type: "number"
+              description: "SLA window for escalation response (hours)"
+              default: 4.0
+
+        estimate:
+          type: "object"
+          description: "Estimated resource consumption for proposed work"
+          required: ["human_labor_hours", "ai_tokens"]
+          properties:
+            human_labor_hours:
+              type: "number"
+              description: "Estimated human labor hours needed"
+            ai_tokens:
+              type: "integer"
+              description: "Estimated AI tokens to consume"
+            practices_affected:
+              type: "integer"
+              description: "Number of practices that will be engaged"
+              default: 1
+            escalations_required:
+              type: "integer"
+              description: "Number of escalations needed"
+              default: 0
+
+    outputSchema:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum: ["pass", "warning", "fail"]
+          description: "Gate outcome"
+        level:
+          type: "string"
+          enum: ["sufficient", "warning", "insufficient"]
+          description: "Resource availability level"
+        budget:
+          type: "object"
+          description: "Current budget state"
+        estimate:
+          type: "object"
+          description: "Work estimate"
+        passed_checks:
+          type: "array"
+          items: { type: "string" }
+          description: "Checks that passed"
+        warnings:
+          type: "array"
+          items: { type: "string" }
+          description: "Warnings (sufficient but tight)"
+        blockers:
+          type: "array"
+          items: { type: "string" }
+          description: "Blocking issues"
+
+    exitCodes:
+      0: "Sufficient resources (level=sufficient)"
+      1: "Warning - tight resources (level=warning)"
+      2: "Insufficient resources (level=insufficient)"
+
+    examples:
+      - name: "Sufficient budget"
+        input:
+          budget:
+            human_labor_hours_remaining: 100
+            ai_tokens_remaining: 500000
+            practices_active: 5
+            practices_capacity: 15
+          estimate:
+            human_labor_hours: 10
+            ai_tokens: 50000
+            practices_affected: 1
+        output:
+          status: "pass"
+          level: "sufficient"
+
+
+  - name: "sentinel-verify"
+    description: "Verify epistemic vector state is sufficient for proposed action. Checks know/uncertainty/context/engagement/clarity/coherence against action-specific thresholds (INVESTIGATE most permissive, DEPLOY most stringent)."
+    type: "validation"
+    category: "epistemic-gating"
+
+    inputSchema:
+      type: "object"
+      required: ["vectors", "action"]
+      properties:
+        vectors:
+          type: "object"
+          description: "Current epistemic state"
+          required: ["know", "uncertainty"]
+          properties:
+            know:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "How much do we understand? (0=confused, 1=clear)"
+            uncertainty:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "How uncertain are we? (0=certain, 1=fully uncertain)"
+            context:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "Is relevant domain knowledge available?"
+              default: 0.5
+            engagement:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "How engaged/motivated for this work?"
+              default: 0.5
+            clarity:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "How clear is the goal/direction?"
+              default: 0.5
+            coherence:
+              type: "number"
+              minimum: 0.0
+              maximum: 1.0
+              description: "How consistent are findings?"
+              default: 0.5
+
+        action:
+          type: "string"
+          enum: ["investigate", "implement", "deploy", "escalate", "publish"]
+          description: "Proposed action requiring verification"
+
+    outputSchema:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum: ["pass", "marginal", "fail"]
+          description: "Gate outcome"
+        level:
+          type: "string"
+          enum: ["pass", "marginal", "fail"]
+          description: "Vector check result"
+        recommended_action:
+          type: "string"
+          description: "Highest-confidence action these vectors support"
+        vectors:
+          type: "object"
+          description: "Current epistemic state"
+        thresholds:
+          type: "object"
+          description: "Action-specific thresholds applied"
+        passed_checks:
+          type: "array"
+          items: { type: "string" }
+          description: "Vectors meeting threshold"
+        marginal_checks:
+          type: "array"
+          items: { type: "string" }
+          description: "Vectors within 10% of threshold"
+        failed_checks:
+          type: "array"
+          items: { type: "string" }
+          description: "Vectors below threshold"
+        recommendations:
+          type: "array"
+          items: { type: "string" }
+          description: "Next steps"
+
+    exitCodes:
+      0: "Vectors sufficient for action (level=pass)"
+      1: "Marginal readiness (level=marginal) - proceed with caution"
+      2: "Vectors insufficient (level=fail) - invest in noetic work"
+
+    thresholdProfile: |
+      INVESTIGATE (learning phase):
+        min_know: 0.2, max_uncertainty: 0.8, min_context: 0.2
+        min_engagement: 0.3, min_clarity: 0.2, min_coherence: 0.1
+
+      IMPLEMENT (development phase):
+        min_know: 0.75, max_uncertainty: 0.25, min_context: 0.80
+        min_engagement: 0.85, min_clarity: 0.80, min_coherence: 0.70
+
+      DEPLOY (production phase - most stringent):
+        min_know: 0.90, max_uncertainty: 0.10, min_context: 0.90
+        min_engagement: 0.95, min_clarity: 0.90, min_coherence: 0.85
+
+      ESCALATE (urgent issue - knowledge can be lower if urgency high):
+        min_know: 0.3, max_uncertainty: 0.7, min_context: 0.3
+        min_engagement: 0.90, min_clarity: 0.3, min_coherence: 0.2
+
+      PUBLISH (output quality matters):
+        min_know: 0.85, max_uncertainty: 0.15, min_context: 0.85
+        min_engagement: 0.90, min_clarity: 0.85, min_coherence: 0.85
+
+    examples:
+      - name: "Strong vectors for deployment"
+        input:
+          vectors:
+            know: 0.95
+            uncertainty: 0.05
+            context: 0.95
+            engagement: 0.98
+            clarity: 0.95
+            coherence: 0.90
+          action: "deploy"
+        output:
+          status: "pass"
+          level: "pass"
+          recommended_action: "deploy"
+
+      - name: "Weak vectors - recommend investigation"
+        input:
+          vectors:
+            know: 0.3
+            uncertainty: 0.7
+            context: 0.2
+            engagement: 0.3
+            clarity: 0.2
+            coherence: 0.1
+          action: "deploy"
+        output:
+          status: "fail"
+          level: "fail"
+          recommended_action: "investigate"
+
+
+# Integration notes
+#
+# 1. CLI Integration:
+#    Commands available via: python3 -m src.gates.cli <tool-name>
+#    Example: python3 -m src.gates.cli readiness-check --input-file config.json
+#
+# 2. MCP Server Integration:
+#    Wire tools into empirica MCP infrastructure via tool registry
+#    Each tool has standard inputSchema + outputSchema for schema-driven validation
+#
+# 3. Cortex Integration:
+#    Tools can be invoked as gated actions within SER coordination layer
+#    Use gate results to control proposal flow (propose only if gates pass)
+#
+# 4. Exit Code Handling:
+#    - 0: Gate passes - proceed to next phase
+#    - 1: Gate warns - proceed with caution, escalate if needed
+#    - 2: Gate blocks - return to prior phase for more work
+#
+# 5. Threshold Tuning:
+#    Thresholds are calibrated per practice via .breadcrumbs.yaml
+#    Tunable at runtime via config overrides if needed
+#    Measurement feedback (POSTFLIGHT) informs future adjustments

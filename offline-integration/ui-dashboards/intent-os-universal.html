@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INTENT·OS — General-Purpose Cockpit</title>
+<style>
+  :root{
+    --bg:#0d1117;--elev:#161b22;--card:#21262d;--border:#30363d;--text:#e6edf3;--dim:#8b949e;
+    --green:#3fb950;--green-dim:#238636;--amber:#d29922;--red:#f85149;--blue:#58a6ff;--purple:#a371f7;--seal:#d4b483;
+    --mono:"SF Mono","Fira Code","Cascadia Code","Roboto Mono",Menlo,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 15px;background:var(--elev);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12.5px;position:sticky;top:0;z-index:100}
+  .logo{font-weight:700;letter-spacing:.05em;color:var(--green)} .logo b{color:var(--text);font-weight:400}
+  .devbtn{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--dim);cursor:pointer} .devbtn:hover{color:var(--text);border-color:var(--blue)}
+  .lr{font-family:var(--mono);font-size:11px} .lr b{color:var(--seal)}
+  .shell{display:grid;grid-template-columns:1fr;max-width:1200px;margin:0 auto}
+  @media(min-width:1000px){.shell{grid-template-columns:1fr 320px}}
+  .main{padding:18px 16px 44px;min-width:0}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:8px;font-family:var(--mono)}
+  section{margin-bottom:20px}
+  .pipeline{display:flex;gap:6px;margin-bottom:18px;font-family:var(--mono);font-size:11px;flex-wrap:wrap}
+  .pstage{flex:1;min-width:90px;border:1px solid var(--border);border-radius:7px;padding:8px 10px;background:var(--elev)} .pstage .pn{font-weight:700} .pstage .pd{color:var(--dim);font-size:10px}
+  .pstage .pc{float:right;color:var(--green)}
+  .primary-box{background:var(--elev);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:8px;padding:15px 17px;font-size:16px;font-weight:600;min-height:54px;cursor:pointer} .primary-box .pt{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--amber);margin-top:6px}
+  .wip-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px} .wip-count{font-family:var(--mono);font-size:13px} .wip-count.full{color:var(--amber)}
+  .wip-grid{display:grid;grid-template-columns:1fr;gap:10px} @media(min-width:620px){.wip-grid{grid-template-columns:repeat(3,1fr)}}
+  .slot{background:var(--elev);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:140px;position:relative} .slot.active{border-color:var(--green);background:rgba(63,185,80,.06)}
+  .slot.landed{border-color:var(--seal);background:rgba(212,180,131,.08)}
+  .slot.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12.5px;cursor:pointer;text-align:center}
+  .slot-id{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:10.5px;color:var(--dim)} .slot-t{font-size:13.5px;font-weight:600;padding-right:22px;margin-bottom:3px} .slot-m{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:8px}
+  .rmix{display:flex;gap:3px;margin-bottom:4px} .rseg{height:6px;border-radius:3px} .rseg.h{background:var(--purple)} .rseg.m{background:var(--blue)} .rseg.c{background:var(--amber)} .rlab{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-bottom:7px}
+  .sa{display:flex;gap:4px;flex-wrap:wrap} .sa button{font-size:10px;padding:3px 6px;background:var(--card);border:1px solid var(--border);color:var(--dim);border-radius:4px;cursor:pointer} .sa button:hover{color:var(--text)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px} .card h4{font-size:12.5px;letter-spacing:.05em;color:var(--blue);text-transform:uppercase;margin-bottom:4px} .card .sub{font-size:11px;color:var(--dim);margin-bottom:11px}
+  .btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 14px;border-radius:6px;border:1px solid var(--border);background:var(--elev);color:var(--text);cursor:pointer} .btn:hover{background:var(--card)}
+  .btn-primary{background:var(--green-dim);border-color:var(--green);color:#fff} .btn-blue{border-color:var(--blue);color:var(--blue)} .btn-danger{border-color:var(--red);color:var(--red)} .btn-purple{border-color:var(--purple);color:var(--purple)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .hrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px} .hmode{padding:6px 11px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:11.5px;cursor:pointer} .hmode.active{border-color:var(--blue);color:var(--blue);background:rgba(88,166,255,.08)}
+  .pool{margin-bottom:9px} .pool-top{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px} .pcap{font-family:var(--mono);font-size:10.5px;color:var(--dim)} .pool.over .pcap{color:var(--red)} .pbar{height:9px;border-radius:5px;background:var(--bg);border:1px solid var(--border);overflow:hidden} .pbar>i{display:block;height:100%}
+  .attest{font-family:var(--mono);font-size:10px;color:var(--seal);border:1px dashed rgba(212,180,131,.5);border-radius:4px;padding:4px 7px;margin-top:8px} .hwarn{font-size:11px;margin-top:8px;color:var(--amber)} .hwarn.crit{color:var(--red)}
+  .legend{display:flex;gap:12px;font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:7px;flex-wrap:wrap} .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+  /* feedback ledger */
+  .fsrc{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap} .fpill{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:999px;border:1px solid currentColor} .fpill.machine{color:var(--blue)} .fpill.system{color:var(--amber)} .fpill.user{color:var(--green)}
+  .fitem{background:var(--elev);border:1px solid var(--border);border-radius:7px;padding:9px 11px;margin-bottom:7px;font-size:12px} .fitem .fh{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px} .ftag{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid currentColor} .ftag.machine{color:var(--blue)} .ftag.system{color:var(--amber)} .ftag.user{color:var(--green)} .ftag.sev-high{color:var(--red)} .ftag.sev-low{color:var(--dim)}
+  .fitem .fm{font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .backlog-list{display:grid;gap:7px} @media(min-width:620px){.backlog-list{grid-template-columns:1fr 1fr}} .bcard{background:var(--elev);border:1px solid var(--border);border-radius:7px;padding:10px 12px;display:flex;justify-content:space-between;gap:9px;align-items:flex-start} .bt{font-size:12.5px;font-weight:600} .bm{font-family:var(--mono);font-size:10px;color:var(--dim)} .pull{font-size:10.5px;padding:4px 8px;background:var(--green-dim);border:1px solid var(--green);color:#fff;border-radius:5px;cursor:pointer} .pull.disabled{background:var(--card);border-color:var(--border);color:var(--dim);cursor:not-allowed}
+  input[type=text],textarea,input[type=number],select{width:100%;padding:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:var(--sans);font-size:13px} textarea{font-family:var(--mono);font-size:12px}
+  /* co-processor */
+  .z1{background:var(--elev);border-left:1px solid var(--border);padding:15px;display:flex;flex-direction:column;height:calc(100vh - 42px);position:sticky;top:42px} @media(max-width:999px){.z1{position:static;height:auto;border-left:none;border-top:1px solid var(--border)}}
+  .z1h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:var(--mono);font-size:12.5px;color:var(--green)} .z1mode{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:3px;border:1px solid currentColor} .z1mode.live{color:var(--green)} .z1mode.local{color:var(--amber)}
+  .z1state{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:var(--mono);font-size:11px;line-height:1.55;white-space:pre-wrap;margin-bottom:10px} .z1in{display:flex;gap:6px;margin-bottom:10px} .z1in input{flex:1}
+  .prop{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:9px;margin-bottom:8px;font-size:12px} .prop .pr{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-bottom:3px} .prop .pa{margin-bottom:6px} .prop .pb{display:flex;gap:6px} .prop .pb button{font-size:10.5px;padding:3px 9px;border-radius:4px;cursor:pointer} .rat{background:var(--green-dim);border:1px solid var(--green);color:#fff} .dis{background:var(--card);border:1px solid var(--border);color:var(--dim)}
+  .z1log{flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:9px;font-size:11.5px} .msg{margin-bottom:8px;padding:8px;border-radius:6px;background:var(--bg);border:1px solid var(--border)} .msg.z1m{border-left:3px solid var(--blue)} .msg.z2m{border-left:3px solid var(--amber)} .msg.sysm{border-left:3px solid var(--green)} .msg .r{font-size:10px;color:var(--dim);margin-bottom:3px;font-family:var(--mono)}
+  /* onboarding */
+  .onb{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;overflow-y:auto} .onb.on{display:flex}
+  .onbb{flex:1;max-width:600px;margin:0 auto;width:100%;padding:36px 22px}
+  .onbstep{display:none} .onbstep.on{display:block} .onbstep h2{font-size:24px;margin-bottom:6px} .onbstep .map{font-family:var(--mono);font-size:10.5px;color:var(--seal);margin-bottom:14px} .onbstep p{color:var(--dim);font-size:14px;margin-bottom:16px}
+  .prog{display:flex;gap:4px;margin-bottom:26px} .pd{width:100%;height:4px;border-radius:2px;background:var(--border)} .pd.on{background:var(--green)}
+  .field{margin-bottom:14px} .field label{display:block;font-size:12px;color:var(--dim);margin-bottom:5px}
+  .confirm{display:flex;gap:8px;align-items:flex-start;padding:9px 0;font-size:13px} .confirm input{margin-top:3px;width:16px;height:16px;accent-color:var(--green)}
+  .modal-bd{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:520;display:none;align-items:center;justify-content:center;padding:20px} .modal-bd.on{display:flex} .modal{background:var(--elev);border:1px solid var(--border);border-radius:10px;padding:18px;max-width:460px;width:100%} .modal h3{margin-bottom:10px} .ma{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);padding:9px 15px;border-radius:8px;font-size:12.5px;z-index:600;opacity:0;transition:opacity .2s;font-family:var(--mono)} .toast.show{opacity:1}
+  .foot{color:var(--dim);font-size:10.5px;margin-top:20px;border-top:1px solid var(--border);padding-top:10px}
+  body.dev [data-sym]{outline:1px dashed rgba(88,166,255,.35);outline-offset:2px;position:relative} body.dev [data-sym]::before{content:attr(data-sym);position:absolute;top:-8px;left:0;font-family:var(--mono);font-size:8.5px;color:var(--blue);background:var(--bg);padding:0 3px;z-index:5}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <header class="bar">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="logo">INTENT·OS<b> // general-purpose cockpit</b></span></div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <span class="lr" id="lrHead"></span>
+      <button class="devbtn" onclick="toggleDev()">Dev</button>
+      <button class="devbtn" onclick="exportSpec()">Spec ↗</button>
+      <button class="devbtn" onclick="startOnb()">Re-onboard</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main class="main">
+      <div class="pipeline" data-sym="sym/pipeline">
+        <div class="pstage"><span class="pc" id="ps1">0</span><div class="pn">Propose</div><div class="pd">machine drafts (Z1)</div></div>
+        <div class="pstage"><span class="pc" id="ps2">0</span><div class="pn">Ratify</div><div class="pd">you approve (Z2)</div></div>
+        <div class="pstage"><span class="pc" id="ps3">0</span><div class="pn">Land</div><div class="pd">verified in use (Z3)</div></div>
+      </div>
+
+      <section><div class="lbl">Primary Intent · the one thing that must execute flawlessly</div>
+        <div class="primary-box" id="primaryBox" data-sym="sym/primary-instruction" onclick="editPrimary()"></div></section>
+
+      <section><div class="wip-head"><div class="lbl" style="margin:0">Active Work · max 3 (WIP limit)</div><div class="wip-count" id="wipCount">0/3</div></div>
+        <div class="wip-grid" id="wipGrid" data-sym="sym/wip-slot"></div></section>
+
+      <section class="card"><h4>Resource Harness · your available resources</h4>
+        <div class="sub">Marshal what you actually have. Modes are real transforms with a conservation law — total effort is preserved, only its split moves. Caps are yours (set at onboarding).</div>
+        <div class="hrow" id="hmodes">
+          <button class="hmode" data-m="balanced" onclick="setHarness('balanced')">Balanced</button>
+          <button class="hmode" data-m="ai" onclick="setHarness('ai')">AI-led</button>
+          <button class="hmode" data-m="human" onclick="setHarness('human')">Human-led</button>
+          <button class="hmode" data-m="capital" onclick="setHarness('capital')">Capital-injection</button>
+        </div>
+        <div id="pools" data-sym="sym/harness-pool"></div>
+        <div class="attest" id="attest"></div>
+        <div class="hwarn" id="hwarn"></div>
+        <div class="legend"><span><span class="sw" style="background:var(--purple)"></span>Human · your time</span><span><span class="sw" style="background:var(--blue)"></span>Machine · AI+tools</span><span><span class="sw" style="background:var(--amber)"></span>Capital · budget</span></div>
+      </section>
+
+      <section class="card" data-sym="sym/feedback-ledger"><h4>Feedback · tri-source, append-only</h4>
+        <div class="sub">Three observers, one ledger. Machine self-reports its own defects & uncertainty; System captures runtime/invariant signals; you (User) report intent-translation mismatches. Every collision → a finding, never discarded.</div>
+        <div class="fsrc" id="fcounts"></div>
+        <div class="actions"><button class="btn btn-blue" onclick="userReport()">Report an issue</button><button class="btn" onclick="runSelfCheck()">Run machine self-check</button></div>
+        <div id="fledger"></div></section>
+
+      <section><div class="lbl">Backlog · pull into active when a slot frees</div><div class="backlog-list" id="blist"></div></section>
+
+      <div class="actions"><button class="btn btn-primary" onclick="startPeak()">Focus Window</button><button class="btn" onclick="exportData()">Export</button><button class="btn" onclick="loadExample()">Load example (HumanAIOS)</button><button class="btn btn-danger" onclick="resetAll()">Reset</button></div>
+      <div class="foot" id="foot"></div>
+    </main>
+
+    <aside class="z1" id="z1panel" data-sym="sym/coprocessor">
+      <div class="z1h"><span>CO-PROCESSOR</span><span class="z1mode local" id="z1mode">local</span></div>
+      <div class="z1state" id="z1state">—</div>
+      <div class="z1in"><input type="text" id="z1q" placeholder="ask… (e.g. what to work next)" /><button class="btn btn-blue" onclick="askZ1()">Ask</button></div>
+      <div class="lbl" style="margin:0 0 6px">Proposals · ratify before act</div>
+      <div id="props" data-sym="sym/proposal-card"></div>
+      <div class="z1log" id="z1log"></div>
+    </aside>
+  </div>
+
+  <!-- ONBOARDING (reverse-engineered from the product schema) -->
+  <div class="onb" id="onb"><div class="onbb">
+    <div class="prog" id="oprog"></div>
+    <div class="onbstep on" data-s="0"><h2>What are you trying to do?</h2><div class="map">↔ product field: Primary Intent</div><p>One sentence. The single outcome that would make this worthwhile. Any domain — a launch, a paper, a recovery plan, a move.</p><div class="field"><textarea id="oIntent" placeholder="e.g. Ship my portfolio site · Pass my thesis defense · Rebuild after a setback"></textarea></div><button class="btn btn-primary" onclick="onbNext()">Continue</button></div>
+    <div class="onbstep" data-s="1"><h2>What's active right now?</h2><div class="map">↔ product field: Active Work (WIP ≤ 3)</div><p>Up to three things you're actually working. The limit is the point — more than three in flight means none get landed.</p><div class="field"><label>Active 1</label><input type="text" id="oW0"/></div><div class="field"><label>Active 2 (optional)</label><input type="text" id="oW1"/></div><div class="field"><label>Active 3 (optional)</label><input type="text" id="oW2"/></div><button class="btn btn-primary" onclick="onbNext()">Continue</button></div>
+    <div class="onbstep" data-s="2"><h2>What can you marshal?</h2><div class="map">↔ product field: Resource Harness caps</div><p>Be honest — these caps are the real throttle. The harness will refuse to over-allocate what you don't have.</p>
+      <div class="field"><label>Human · units of your own time you can give (1–10)</label><input type="number" id="oH" min="1" max="10" value="3"/></div>
+      <div class="field"><label>Machine · AI/tool capacity (1–10)</label><input type="number" id="oM" min="1" max="10" value="6"/></div>
+      <div class="field"><label>Capital · budget you can deploy (0–10)</label><input type="number" id="oC" min="0" max="10" value="2"/></div>
+      <button class="btn btn-primary" onclick="onbNext()">Continue</button></div>
+    <div class="onbstep" data-s="3"><h2>How the loop works</h2><div class="map">↔ product invariants — confirm to install the disciplines</div><p>These aren't settings. They're the scaffold that makes the cockpit work for any intent.</p>
+      <div class="confirm"><input type="checkbox" id="oc1" checked/><label><b>Nothing is "done" until it lands.</b> Producing ≠ finishing. Your score is landing rate = landed ÷ made, not volume made.</label></div>
+      <div class="confirm"><input type="checkbox" id="oc2" checked/><label><b>I propose, you ratify.</b> The co-processor never acts on your work without your approval.</label></div>
+      <div class="confirm"><input type="checkbox" id="oc3" checked/><label><b>Misreads are findings, not failures.</b> When I get your intent wrong, that surfaces as feedback and is conserved, not hidden.</label></div>
+      <div class="confirm"><input type="checkbox" id="oc4" checked/><label><b>Three observers watch.</b> Machine, System, and you all file feedback into one append-only ledger.</label></div>
+      <button class="btn btn-primary" style="margin-top:14px" onclick="finishOnb()">Enter Cockpit</button>
+      <button class="btn" style="margin-top:14px" onclick="loadExample()">Or load the HumanAIOS example</button></div>
+  </div></div>
+
+  <!-- focus window -->
+  <div class="onb" id="peak" style="background:#000;align-items:center;justify-content:center;text-align:center"><div style="max-width:600px;padding:24px">
+    <div style="font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--green);margin-bottom:20px">FOCUS WINDOW</div>
+    <div id="peakI" style="font-size:24px;font-weight:600;margin-bottom:28px">—</div>
+    <div id="peakT" style="font-family:var(--mono);font-size:42px;color:var(--dim);margin-bottom:34px">25:00</div>
+    <button class="btn btn-danger" onclick="endPeak()">End early</button></div></div>
+
+  <div class="modal-bd" id="editBd"><div class="modal"><h3 id="edT">Edit</h3><label class="lbl" id="edL">Value</label><input type="text" id="edI"/><div class="ma"><button class="btn" onclick="closeEdit()">Cancel</button><button class="btn btn-primary" onclick="saveEdit()">Save</button></div></div></div>
+  <div class="modal-bd" id="repBd"><div class="modal"><h3>Report an issue</h3><label class="lbl">What went wrong or felt off?</label><textarea id="repTxt" rows="3" placeholder="e.g. the co-processor misread my intent · a control didn't do what it said"></textarea><label class="lbl" style="margin-top:8px">Severity</label><select id="repSev"><option value="low">low</option><option value="med" selected>medium</option><option value="high">high</option></select><div class="ma"><button class="btn" onclick="closeRep()">Cancel</button><button class="btn btn-primary" onclick="submitRep()">File to ledger</button></div></div></div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const node=h=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
+function msg(role,txt){const l=$('z1log');const r={z1m:'co-proc',z2m:'you',sysm:'system'};const d=node(`<div class="msg ${role}"><div class="r">${r[role]}</div>${esc(txt)}</div>`);l.insertBefore(d,l.firstChild);}
+
+/* ===== design system ===== */
+const TOKENS={'state/verified':{v:'#3fb950',use:'landed·pass'},'state/pending':{v:'#d29922',use:'awaiting ratify'},'state/phantom':{v:'#f85149',use:'blocked·overstatement'},'state/candidate':{v:'#a371f7',use:'divergent-valid'},'state/seal':{v:'#d4b483',use:'provenance·landing'}};
+const SYMBOLS={'sym/primary-instruction':'the flawless-execution target','sym/wip-slot':'active work · WIP≤3','sym/harness-pool':'computed allocation vs cap','sym/feedback-ledger':'tri-source append-only feedback','sym/proposal-card':'co-proc proposal · ratify-before-act','sym/coprocessor':'live model + deterministic fallback','sym/pipeline':'Propose→Ratify→Land'};
+function toggleDev(){document.body.classList.toggle('dev');}
+function exportSpec(){const spec={artifact:'INTENT-OS',generated:new Date().toISOString(),tokens:TOKENS,symbols:SYMBOLS,invariants:['WIP<=3','landing_rate=landed/made','ratify_before_act','tri_source_feedback_append_only','harness_conservation','model_output->allowlist'],onboarding:'reverse-engineered from product schema (intent→primary, active→WIP, resources→harness caps, disciplines→invariants)'};const b=new Blob([JSON.stringify(spec,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='intent-os-spec.json';a.click();toast('Spec exported');}
+
+/* ===== state ===== */
+const BLANK=()=>({onboarded:false,intent:'',primary:{title:'',tag:''},wip:[],backlog:[],pools:{human:3,machine:6,capital:2},harness:'balanced',made:0,landed:0,feedback:[]});
+let S=load()||BLANK();
+let uid=1;
+
+const POOLS={human:{label:'Human',color:'var(--purple)'},machine:{label:'Machine',color:'var(--blue)'},capital:{label:'Capital',color:'var(--amber)'}};
+function transform(mode,it){const[h,m,c]=it.mix;if(mode==='ai')return it.humanOnly?[h,m,c]:[0,m+h,c];return [h,m,c];}
+function humanCap(mode){return mode==='capital'?S.pools.human+1:S.pools.human;}
+
+function save(){try{localStorage.setItem('intent-os',JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem('intent-os')||'null');}catch(e){return null;}}
+
+/* ===== tri-source feedback (machine / system / user) ===== */
+function feedback(source,severity,context,text){
+  S.feedback.unshift({id:uid++,source,severity,context,text,ts:new Date().toLocaleTimeString()});
+  if(S.feedback.length>60)S.feedback.pop();
+  renderFeedback();save();
+}
+window.onerror=function(m){feedback('machine','high','runtime',String(m).slice(0,120));return false;}; // machine self-report of its own faults
+function runSelfCheck(){ // machine inspects its own invariants (self-report source)
+  let found=0;
+  if(S.wip.length>3){feedback('machine','high','invariant','WIP limit exceeded ('+S.wip.length+'>3)');found++;}
+  const use=S.wip.reduce((a,it)=>{const[h]=transform(S.harness,it);return a+h;},0);
+  if(use>humanCap(S.harness)){feedback('machine','med','invariant','Human over-allocated ('+use+'>'+humanCap(S.harness)+')');found++;}
+  // conservation check (anti-overstatement)
+  const bad=S.wip.some(it=>{const t=transform(S.harness,it);return (t[0]+t[1]+t[2])!==(it.mix[0]+it.mix[1]+it.mix[2]);});
+  if(bad){feedback('machine','high','overstatement','allocation conservation violated');found++;}
+  feedback('system','low','self-check','ran invariant self-check · '+found+' issue(s)');
+  if(!found)toast('Self-check clean');
+}
+let repCtx='';
+function userReport(){repCtx='general';$('repBd').classList.add('on');$('repTxt').focus();}
+function closeRep(){$('repBd').classList.remove('on');}
+function submitRep(){const t=$('repTxt').value.trim();if(!t){closeRep();return;}feedback('user',$('repSev').value,repCtx,t);$('repTxt').value='';closeRep();toast('Filed to ledger → finding');}
+function renderFeedback(){
+  const c={machine:0,system:0,user:0};S.feedback.forEach(f=>c[f.source]++);
+  $('fcounts').innerHTML=`<span class="fpill machine">machine ${c.machine}</span><span class="fpill system">system ${c.system}</span><span class="fpill user">user ${c.user}</span>`;
+  const l=$('fledger');l.innerHTML='';
+  S.feedback.slice(0,8).forEach(f=>l.appendChild(node(`<div class="fitem"><div class="fh"><span><span class="ftag ${f.source}">${f.source}</span> <span class="ftag sev-${f.severity==='high'?'high':'low'}">${esc(f.severity)}</span></span><span class="fm">${esc(f.ts)}</span></div>${esc(f.text)} <span class="fm">· ${esc(f.context)}</span></div>`)));
+  if(!S.feedback.length)l.innerHTML='<div class="fm" style="font-family:var(--mono);font-size:11px;color:var(--dim)">No feedback yet. Three observers are watching.</div>';
+}
+
+/* ===== render ===== */
+function render(){
+  const pb=$('primaryBox');pb.innerHTML=S.primary.title?`${esc(S.primary.title)}<span class="pt">${esc(S.primary.tag||'')}</span>`:'Set your primary intent';
+  const wg=$('wipGrid');wg.innerHTML='';
+  for(let s=0;s<3;s++){const it=S.wip[s];
+    if(it){const[h,m,c]=transform(S.harness,it);
+      wg.appendChild(node(`<div class="slot ${it.landed?'landed':'active'}"><span class="slot-id">${it.landed?'LANDED':esc(it.ref||'')}</span><div class="slot-t">${esc(it.title)}</div><div class="slot-m">${esc(it.meta||'')}</div><div class="rmix"><div class="rseg h" style="flex:${h||.01}"></div><div class="rseg m" style="flex:${m||.01}"></div><div class="rseg c" style="flex:${c||.01}"></div></div><div class="rlab">H${h}·M${m}·C${c}</div><div class="sa">${it.landed?'':`<button onclick="landWip(${s})">Mark landed</button><button onclick="parkWip(${s})">Park</button><button onclick="focusPrim(${s})">Primary</button>`}</div></div>`));
+    } else wg.appendChild(node(`<div class="slot empty" onclick="toast('Pull from backlog, or add work.')">+ pull / add work</div>`));
+  }
+  const wc=$('wipCount');wc.textContent=S.wip.length+'/3';wc.classList.toggle('full',S.wip.length>=3);
+  renderHarness();renderBacklog();renderFeedback();renderZ1State();
+  const rate=S.made?(S.landed/S.made):0;
+  $('lrHead').innerHTML=`landing rate <b>${(rate).toFixed(2)}</b> · ${S.landed}/${S.made} landed`;
+  $('ps1').textContent=S.wip.length+S.backlog.length;$('ps2').textContent=S.made;$('ps3').textContent=S.landed;
+  save();
+}
+function renderHarness(){
+  document.querySelectorAll('.hmode').forEach(b=>b.classList.toggle('active',b.dataset.m===S.harness));
+  const use={human:0,machine:0,capital:0};let tot=0,base=0;
+  S.wip.forEach(it=>{const[h,m,c]=transform(S.harness,it);use.human+=h;use.machine+=m;use.capital+=c;tot+=h+m+c;base+=it.mix[0]+it.mix[1]+it.mix[2];});
+  const caps={human:humanCap(S.harness),machine:S.pools.machine,capital:S.pools.capital};
+  const box=$('pools');box.innerHTML='';
+  ['human','machine','capital'].forEach(k=>{const u=use[k],cp=caps[k],over=u>cp,pct=Math.min(100,Math.round(u/Math.max(cp,u||1)*100));
+    box.appendChild(node(`<div class="pool ${over?'over':''}"><div class="pool-top"><span>${POOLS[k].label}</span><span class="pcap">${u} / ${cp}${over?' · OVER':''}</span></div><div class="pbar"><i style="width:${pct}%;background:${over?'var(--red)':POOLS[k].color}"></i></div></div>`));
+  });
+  $('attest').textContent=`attest · Σcomputed=${tot} Σbase=${base} conserved=${tot===base?'✓':'✗ OVERSTATEMENT'} · humanCap=${caps.human}`;
+  const w=$('hwarn');
+  if(use.human>caps.human){w.className='hwarn crit';w.textContent='Human over-allocated. Park an item, switch to AI-led, or Capital-injection (raises your Human cap by funding help).';}
+  else{w.className='hwarn';w.textContent=S.harness==='capital'?'Capital-injection: Human cap +1 (budget buys help).':'Within capacity.';}
+}
+function renderBacklog(){const bl=$('blist');bl.innerHTML='';if(!S.backlog.length){bl.innerHTML='<div class="bm">Backlog empty. Add work or let the co-processor propose.</div>';return;}
+  S.backlog.forEach((it,i)=>bl.appendChild(node(`<div class="bcard"><div><div class="bt">${esc(it.title)}</div><div class="bm">${esc(it.meta||'')}</div></div><button class="pull ${S.wip.length>=3?'disabled':''}" ${S.wip.length>=3?'disabled':''} onclick="pullToWip(${i})">Pull</button></div>`)));
+}
+function renderZ1State(){const rate=S.made?(S.landed/S.made).toFixed(2):'0.00';$('z1state').textContent=`intent: ${(S.primary.title||'—').slice(0,44)}\nactive: ${S.wip.length}/3 [${S.wip.map(w=>w.title.slice(0,10)).join(', ')}]\nharness: ${S.harness}\nlanding rate: ${rate} (${S.landed}/${S.made})\nfeedback: ${S.feedback.length} items (3-source)`;}
+
+/* ===== interactions ===== */
+function pullToWip(i){if(S.wip.length>=3){toast('Active full — max 3.');feedback('system','low','wip','pull blocked · limit 3');return;}const it=S.backlog.splice(i,1)[0];if(!it.mix)it.mix=[1,1,0];S.wip.push(it);render();}
+function parkWip(s){const it=S.wip.splice(s,1)[0];S.backlog.unshift(it);render();toast('Parked');}
+function landWip(s){const it=S.wip[s];it.landed=true;S.made++;S.landed++;msg('z2m','ratified landed: '+it.title);feedback('system','low','landing','landed: '+it.title.slice(0,40));render();setTimeout(()=>{const idx=S.wip.indexOf(it);if(idx>=0){S.wip.splice(idx,1);S.backlog.push({title:it.title+' (landed)',meta:'operated ✓',mix:[0,0,0],done:true});render();}},900);toast('Landed — operated track +1');}
+function focusPrim(s){const it=S.wip[s];S.primary={title:it.title,tag:'from active work'};render();}
+function editPrimary(){openEdit('Primary Intent','one sentence',S.primary.title,v=>{S.primary.title=v;S.primary.tag='edited';render();});}
+function setHarness(m){S.harness=m;render();toast('Harness → '+m);}
+function addWork(title){S.backlog.push({title,meta:'added',mix:[1,1,0]});render();}
+
+let editCb=null;
+function openEdit(t,l,v,cb){$('edT').textContent=t;$('edL').textContent=l;$('edI').value=v;editCb=cb;$('editBd').classList.add('on');$('edI').focus();}
+function closeEdit(){$('editBd').classList.remove('on');editCb=null;}
+function saveEdit(){if(editCb)editCb($('edI').value);closeEdit();}
+
+/* ===== co-processor: live + ratify-before-act + fallback ===== */
+function snapshot(){return `INTENT: ${S.primary.title}\nACTIVE (${S.wip.length}/3): ${S.wip.map(w=>w.title).join('; ')}\nBACKLOG: ${S.backlog.filter(b=>!b.done).map(b=>b.title).join('; ')}\nHARNESS: ${S.harness} (Human cap ${humanCap(S.harness)})\nLANDING RATE: ${S.made?(S.landed/S.made).toFixed(2):'0.00'}`;}
+async function askZ1(){const q=$('z1q').value.trim()||'What should I work next?';$('z1q').value='';msg('z2m',q);
+  const sys="You are a general-purpose execution co-processor. You PROPOSE; the human RATIFIES; work is only done when LANDED. Given the state and question, return ONLY JSON (no fences): {\"proposals\":[{\"action\":\"add|pull|note\",\"target\":\"<short text>\",\"rationale\":\"<one sentence>\"}]}. Max 3. Respect WIP limit 3 and the human's resource caps. Never claim anything is done.";
+  try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:sys,messages:[{role:"user",content:snapshot()+"\n\nQUESTION: "+q}]})});
+    if(!res.ok)throw new Error('http '+res.status);const data=await res.json();
+    const text=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').replace(/```json|```/g,'').trim();
+    const p=JSON.parse(text);$('z1mode').className='z1mode live';$('z1mode').textContent='live';renderProps(p.proposals||[]);
+  }catch(e){$('z1mode').className='z1mode local';$('z1mode').textContent='local';renderProps(localProps());feedback('system','low','coproc','live model unavailable · '+String(e.message).slice(0,50));}
+}
+function localProps(){const p=[];if(!S.primary.title)p.push({action:'note',target:'set your primary intent',rationale:'the cockpit needs one flawless-execution target'});if(S.wip.length<3&&S.backlog.filter(b=>!b.done).length)p.push({action:'pull',target:S.backlog.find(b=>!b.done).title,rationale:'a slot is free'});p.push({action:'note',target:'landing rate '+(S.made?(S.landed/S.made).toFixed(2):'0.00'),rationale:'produce less, land more'});return p.slice(0,3);}
+function renderProps(props){const box=$('props');box.innerHTML='';if(!props.length){box.innerHTML='<div class="bm">No proposals.</div>';return;}
+  props.forEach((p,i)=>box.appendChild(node(`<div class="prop"><div class="pr">${esc(p.action||'note')} · ${esc(p.target||'')}</div><div class="pa">${esc(p.rationale||'')}</div><div class="pb"><button class="rat" onclick="ratify(${i})">Ratify</button><button class="dis" onclick="disP(${i})">Dismiss</button></div></div>`)));
+  window._p=props;}
+function ratify(i){const p=window._p[i];msg('z2m','ratified: '+p.action+' '+p.target);apply(p);document.querySelectorAll('.prop')[i].style.opacity=.4;}
+function disP(i){document.querySelectorAll('.prop')[i].style.opacity=.4;}
+function apply(p){ // untrusted model output → allowlist before mutating state
+  if(p.action==='add')addWork(String(p.target).slice(0,80));
+  else if(p.action==='pull'){const idx=S.backlog.findIndex(b=>b.title===p.target);if(idx>=0)pullToWip(idx);else addWork(String(p.target).slice(0,80));}
+  else msg('sysm','note logged (no state change)');
+}
+
+/* ===== focus window ===== */
+let pT=null,pL=1500;
+function startPeak(){if(!S.primary.title){toast('Set primary first.');return;}$('peakI').textContent=S.primary.title;pL=1500;$('peak').classList.add('on');tickP();pT=setInterval(tickP,1000);}
+function tickP(){const m=String(Math.floor(pL/60)).padStart(2,'0'),s=String(pL%60).padStart(2,'0');$('peakT').textContent=m+':'+s;if(pL<=0){endPeak();return;}pL--;}
+function endPeak(){clearInterval(pT);$('peak').classList.remove('on');}
+
+/* ===== onboarding (reverse-engineered from product) ===== */
+let oStep=0;
+function startOnb(){oStep=0;$('onb').classList.add('on');$('oIntent').value=S.primary.title||'';showOStep();}
+function showOStep(){document.querySelectorAll('#onb .onbstep').forEach(s=>s.classList.toggle('on',+s.dataset.s===oStep));const p=$('oprog');p.innerHTML='';for(let i=0;i<4;i++)p.appendChild(node(`<div class="pd${i<=oStep?' on':''}"></div>`));}
+function onbNext(){if(oStep===0){const v=$('oIntent').value.trim();if(!v){toast('Enter your intent.');return;}S.primary={title:v,tag:'onboarded'};S.intent=v;}
+  if(oStep===1){S.wip=[];[0,1,2].forEach(i=>{const v=$('oW'+i).value.trim();if(v)S.wip.push({title:v,meta:'active',mix:[1,1,0]});});}
+  if(oStep===2){S.pools={human:clamp($('oH').value,1,10),machine:clamp($('oM').value,1,10),capital:clamp($('oC').value,0,10)};}
+  oStep++;showOStep();}
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,parseInt(v)||lo));}
+function finishOnb(){S.onboarded=true;$('onb').classList.remove('on');render();feedback('system','low','onboard','cockpit instantiated for intent: '+S.intent.slice(0,40));toast('Cockpit ready');msg('sysm','onboarded · intent loaded · 3 observers active');}
+
+function loadExample(){S=BLANK();S.onboarded=true;S.intent='HumanAIOS: Audit → Remediation → GTM';S.primary={title:'Revoke the PAT — nothing lands until credentials are clean.',tag:'G1'};
+  S.pools={human:1,machine:6,capital:3};
+  S.wip=[{title:'Credential hygiene (G1)',meta:'revoke PAT · scopes',mix:[1,1,0],humanOnly:true},{title:'Close tool-landing gap (G2)',meta:'land 8 tools · verify tree',mix:[0,3,0]},{title:'Build Z2 gate (G3)',meta:'ruleset · environment',mix:[1,2,0]}];
+  S.backlog=[{title:'Break bus factor (G4)',meta:'Org + 2nd maintainer',mix:[1,0,3]},{title:'Open impact-capital (B4)',meta:'no dependency',mix:[1,0,3]}];
+  $('onb').classList.remove('on');render();toast('HumanAIOS example loaded');}
+
+function exportData(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='intent-os-state.json';a.click();toast('Exported');}
+function resetAll(){if(confirm('Reset everything?')){S=BLANK();save();startOnb();}}
+
+$('foot').textContent='INTENT·OS · general-purpose intent-execution cockpit · onboarding reverse-engineered from the product schema · tri-source feedback (machine/system/user) · WIP-limit · real harness modulation · landing-rate over volume · co-processor ratify-before-act (live + deterministic fallback) · no secrets persisted · dynamic text escaped · zoom + reduced-motion honored.';
+render();
+if(!S.onboarded)startOnb(); else msg('sysm','cockpit online');
+</script>
+</body>
+</html>

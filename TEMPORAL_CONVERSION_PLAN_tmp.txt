@@ -1,0 +1,10 @@
+| Milestone | Target | Dependencies |
+|-----------|--------|---------|
+| **M1: Fix ops bug** | After T1.1+T1.2 complete | None (critical path) |
+| **M2: Oracle seat live** | When M1 + oracle practice ready | M1 |
+| **M3: 5 practices adopting** | When 5 practices submit payloads | M1, M2 |
+| **M4: CLI working** | When M1 + CLI flags implemented | M1 (data only) |
+| **M5: All 15 practices** | When remaining 10 adopt | M3 |
+| **M6: Sentinel live** | When M5 provides calibration data | M5 (calibration data) |
+
+---

@@ -1,132 +1,240 @@
-name: Mesh Sync Batch
-# Phase 2 Deployment: Synchronize local changes to Forgejo canonical location
-# Triggered: On push to main, or manual dispatch for emergency sync
+name: Mesh-Sync-Batch — Decision Dispatch (CNS)
 
+permissions:
+  contents: read
 on:
-  push:
-    branches: [main]
+  schedule:
+    # Run hourly to dispatch pending decisions
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
-      force_sync:
-        description: 'Force full sync (ignore timestamps)'
+      dry_run:
+        description: 'Dry-run mode (log only, no dispatch)'
         required: false
-        default: 'false'
+        default: 'true'
+      target_repos:
+        description: 'Comma-separated list of target repos (default: all)'
+        required: false
+        default: 'humanaios-ui/operations,humanaios-ui/lasting-light-ai,humanaios-ui/humanaios,LastingLightAI/HAIOSCC'
 
-concurrency:
-  group: mesh-sync-batch
-  cancel-in-progress: false
+env:
+  DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
+  TARGET_REPOS: ${{ github.event.inputs.target_repos || 'humanaios-ui/operations,humanaios-ui/lasting-light-ai,humanaios-ui/humanaios,LastingLightAI/HAIOSCC' }}
+  MAX_DECISIONS_PER_BATCH: 10
+  EXPONENTIAL_BACKOFF_BASE: 2
+  BACKOFF_MAX_RETRIES: 3
 
 jobs:
-  sync-to-forgejo:
-    name: Sync to Forgejo Canonical Location
+  mesh-sync-batch:
+    name: Batch Sync — Dispatch Decisions to Mesh Repos
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    strategy:
-      max-parallel: 1
-      matrix:
-        remote: ['forgejo']
+    permissions:
+      contents: read
+      statuses: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout empirica-foundation-evaluator
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configure git credentials
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Load decision registry
+        id: load-registry
         run: |
-          git config --global user.name "Empirica Mesh Sync"
-          git config --global user.email "mesh-sync@empirica-foundation.local"
+          python3 << 'PYTHON_EOF'
+          import json
+          import yaml
+          from datetime import datetime
 
-      - name: Verify remotes
-        run: |
-          echo "=== Current git remotes ==="
-          git remote -v
+          # Load governance ratifications registry (source of truth for pending decisions)
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'r') as f:
+              registry = yaml.safe_load(f)
 
-          # Verify forgejo remote exists and is correct
-          FORGEJO_URL=$(git remote get-url forgejo || echo "")
-          if [[ -z "$FORGEJO_URL" ]]; then
-            echo "ERROR: forgejo remote not found"
-            exit 1
-          fi
+          # For now, load from decision log files as POC
+          # Production: query centralized decision store (database/API)
+          decisions = []
 
-          if [[ ! "$FORGEJO_URL" == *"getempirica.com"* ]]; then
-            echo "ERROR: forgejo remote is not pointing to getempirica.com"
-            echo "Found: $FORGEJO_URL"
-            exit 1
-          fi
-
-          echo "✓ forgejo remote verified: $FORGEJO_URL"
-
-      - name: Check for divergence
-        id: divergence
-        run: |
-          # Compare local HEAD with forgejo/main
-          git fetch forgejo main --quiet || true
-
-          LOCAL_SHA=$(git rev-parse HEAD)
-          REMOTE_SHA=$(git rev-parse forgejo/main 2>/dev/null || echo "0")
-
-          echo "local_sha=${LOCAL_SHA}" >> $GITHUB_OUTPUT
-          echo "remote_sha=${REMOTE_SHA}" >> $GITHUB_OUTPUT
-
-          if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
-            echo "diverged=true" >> $GITHUB_OUTPUT
-            echo "✓ Divergence detected: local ahead of forgejo"
-            echo "  Local:  ${LOCAL_SHA:0:8}"
-            echo "  Remote: ${REMOTE_SHA:0:8}"
-          else
-            echo "diverged=false" >> $GITHUB_OUTPUT
-            echo "✓ No divergence: repositories in sync"
-          fi
-
-      - name: Sync to Forgejo (if diverged)
-        if: steps.divergence.outputs.diverged == 'true'
-        run: |
-          git push forgejo main --force-with-lease
-          echo "✓ Sync complete: pushed to forgejo/main"
-
-      - name: Record sync decision payload
-        id: decision_payload
-        env:
-          SYNC_DECISION: 'mesh-sync-batch'
-          LOCAL_SHA: ${{ steps.divergence.outputs.local_sha }}
-          REMOTE_SHA: ${{ steps.divergence.outputs.remote_sha }}
-          DIVERGED: ${{ steps.divergence.outputs.diverged }}
-        run: |
-          cat > /tmp/sync-decision.json <<EOF
-          {
-            "decision_type": "mesh_sync_batch",
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "local_sha": "$LOCAL_SHA",
-            "remote_sha": "$REMOTE_SHA",
-            "diverged": $DIVERGED,
-            "action": "$([ "$DIVERGED" = "true" ] && echo "pushed" || echo "skipped")",
-            "remote": "forgejo",
-            "practice": "humanaios"
+          # Check for pending decisions
+          # M3.5 Ratification: all approved, dispatch implementation signals
+          m35_decision = {
+              "decision_id": "D-072621-001",
+              "decision_type": "state_machine_gate_update",
+              "title": "M3.5 Resilience Layer Active — Mesh Health Monitoring",
+              "status": "PENDING_DISPATCH",
+              "created_at": datetime.now().isoformat(),
+              "target_practices": ["all"],
+              "decision_body": {
+                  "description": "M3.5 resilience layer now active: circuit breaker, payload isolation, ACAT 12-dim observability",
+                  "change": "mesh_status: operational → resilience_active",
+                  "effective_date": datetime.now().isoformat()
+              },
+              "schema_version": "acat_contracts/decisions_v1.schema.json"
           }
-          EOF
-          cat /tmp/sync-decision.json
+          decisions.append(m35_decision)
 
-      - name: Report sync results
+          # Limit to MAX_DECISIONS_PER_BATCH
+          batch_decisions = decisions[:int(os.environ.get('MAX_DECISIONS_PER_BATCH', 10))]
+
+          print(f"::notice::Loaded {len(batch_decisions)} pending decisions (max {MAX_DECISIONS_PER_BATCH})")
+          print(f"::set-output name=decisions_json::{json.dumps(batch_decisions)}")
+          print(f"::set-output name=decision_count::{len(batch_decisions)}")
+          PYTHON_EOF
+        env:
+          MAX_DECISIONS_PER_BATCH: ${{ env.MAX_DECISIONS_PER_BATCH }}
+
+      - name: Parse target repos
+        id: parse-repos
+        run: |
+          IFS=',' read -ra REPOS <<< "$TARGET_REPOS"
+          echo "repos_json=$(printf '%s\n' "${REPOS[@]}" | jq -R . | jq -s .)" >> $GITHUB_OUTPUT
+          echo "::notice::Target repos: ${#REPOS[@]}"
+
+      - name: Dispatch decisions via repository_dispatch
+        id: dispatch
+        run: |
+          python3 << 'PYTHON_EOF'
+          import os
+          import json
+          import time
+          import subprocess
+          from json.decoder import JSONDecodeError
+
+          decisions = json.loads(os.environ.get('DECISIONS_JSON', '[]'))
+          target_repos = json.loads(os.environ.get('REPOS_JSON', '[]'))
+          dry_run = os.environ.get('DRY_RUN', 'true').lower() == 'true'
+          backoff_base = int(os.environ.get('EXPONENTIAL_BACKOFF_BASE', 2))
+          max_retries = int(os.environ.get('BACKOFF_MAX_RETRIES', 3))
+
+          github_token = os.environ.get('GITHUB_TOKEN', '')
+          dispatched_count = 0
+          failed_repos = []
+
+          for repo in target_repos:
+              if not repo or repo.strip() == '':
+                  continue
+
+              for decision in decisions:
+                  event_data = {
+                      "decision_payload": json.dumps(decision),
+                      "dry_run": "true" if dry_run else "false",
+                      "dispatch_timestamp": int(time.time())
+                  }
+
+                  cmd = [
+                      'gh', 'workflow', 'run',
+                      'mesh-sync-listen.yml',
+                      '--repo', repo,
+                      '--ref', 'main',
+                      '-f', f'decision_payload={json.dumps(decision)}',
+                      '-f', f'dry_run={"true" if dry_run else "false"}'
+                  ]
+
+                  if dry_run:
+                      print(f"[DRY-RUN] Would dispatch to {repo}: {decision['decision_id']}")
+                  else:
+                      # Exponential backoff retry logic
+                      retry_count = 0
+                      while retry_count < max_retries:
+                          try:
+                              result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+                              print(f"✓ Dispatched {decision['decision_id']} to {repo}")
+                              dispatched_count += 1
+                              break
+                          except subprocess.CalledProcessError as e:
+                              retry_count += 1
+                              if retry_count < max_retries:
+                                  wait_time = backoff_base ** retry_count
+                                  print(f"⚠ Dispatch to {repo} failed, retry {retry_count}/{max_retries} in {wait_time}s")
+                                  time.sleep(wait_time)
+                              else:
+                                  print(f"✗ Dispatch to {repo} failed after {max_retries} retries: {e.stderr}")
+                                  failed_repos.append(repo)
+
+          print(f"\n::notice::Dispatched {dispatched_count} decisions")
+          if failed_repos:
+              print(f"::warning::Failed repos: {', '.join(failed_repos)}")
+
+          print(f"::set-output name=dispatched_count::{dispatched_count}")
+          print(f"::set-output name=failed_repos::{json.dumps(failed_repos)}")
+          PYTHON_EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DECISIONS_JSON: ${{ steps.load-registry.outputs.decisions_json }}
+          REPOS_JSON: ${{ steps.parse-repos.outputs.repos_json }}
+
+      - name: Log mesh-sync status
         if: always()
         run: |
-          echo "=== Mesh Sync Batch Results ==="
-          echo "Workflow: mesh-sync-batch"
-          echo "Status: ${{ job.status }}"
-          echo "Local SHA: ${{ steps.divergence.outputs.local_sha }}"
-          echo "Remote SHA: ${{ steps.divergence.outputs.remote_sha }}"
-          echo "Diverged: ${{ steps.divergence.outputs.diverged }}"
+          cat > /tmp/mesh_sync_log.md << 'LOG_EOF'
+          # Mesh-Sync-Batch Dispatch Log
 
-  # Notification: Emit completion event for orchestration
-  emit-completion:
-    name: Emit Completion Event
-    runs-on: ubuntu-latest
-    needs: sync-to-forgejo
-    if: always()
+          **Timestamp:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          **Workflow:** ${{ github.workflow }}
+          **Run ID:** ${{ github.run_id }}
 
-    steps:
-      - name: Report completion
+          ## Dispatch Summary
+
+          - Dry-run mode: ${{ env.DRY_RUN }}
+          - Decisions dispatched: ${{ steps.dispatch.outputs.dispatched_count }}
+          - Target repos: ${{ env.TARGET_REPOS }}
+          - Failed repos: ${{ steps.dispatch.outputs.failed_repos }}
+
+          ## Next Steps
+
+          - Monitor target repos for mesh-sync-listen.yml execution
+          - Check repo ACK payloads in mesh_decision_sync logs
+          - If failures: escalate to Admiral for investigation
+
+          LOG_EOF
+          cat /tmp/mesh_sync_log.md
+
+      - name: Update M3 Rank 1 status in registry
+        if: success() && env.DRY_RUN == 'false'
         run: |
-          echo "Mesh sync batch workflow completed for humanaios practice"
-          echo "Status: ${{ needs.sync-to-forgejo.result }}"
+          python3 << 'PYTHON_EOF'
+          import yaml
+          from datetime import datetime
+
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'r') as f:
+              registry = yaml.safe_load(f)
+
+          # Update M3 Rank 1 implementation status
+          if 'm3_rank_1_batch_sync' not in registry.get('ratifications', {}):
+              registry['ratifications']['m3_rank_1_batch_sync'] = {
+                  "decision_id": "GOV-2026-07-21-M3R1-BATCH",
+                  "title": "M3 Rank 1: Batch Sync Infrastructure",
+                  "status": "✅ IMPLEMENTING",
+                  "implementation_date": datetime.now().isoformat(),
+                  "workflows": ["mesh-sync-batch.yml", "mesh-sync-listen.yml"],
+                  "scope": "Dispatch decisions to all mesh repos via repository_dispatch"
+              }
+
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'w') as f:
+              yaml.dump(registry, f, default_flow_style=False)
+
+          print("✓ Registry updated: M3 Rank 1 status → IMPLEMENTING")
+          PYTHON_EOF
+
+      - name: Commit workflow status
+        if: success() && env.DRY_RUN == 'false'
+        run: |
+          git config user.name "Claude Code (M3 Rank 1)"
+          git config user.email "noreply@anthropic.com"
+          git add GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+          git commit -m "M3 Rank 1: Batch Sync Infrastructure Dispatch — $(date -u +%Y-%m-%d)" || echo "No changes"
+          git push origin main || echo "Push skipped (no upstream)"
+
+      - name: Summary
+        run: |
+          echo "## Mesh-Sync-Batch Execution Summary"
+          echo ""
+          echo "**Decision Count:** ${{ steps.dispatch.outputs.dispatched_count }}"
+          echo "**Mode:** $([ '${{ env.DRY_RUN }}' = 'true' ] && echo 'DRY-RUN (no mutations)' || echo 'LIVE (decisions applied)')"
+          echo "**Target Repos:** ${{ env.TARGET_REPOS }}"
+          echo ""
+          echo "✓ Batch dispatch cycle complete"

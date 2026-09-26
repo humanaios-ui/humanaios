@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: empirica-jaeger
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "6831:6831/udp"  # Jaeger agent (Thrift compact)
+      - "6832:6832/udp"  # Jaeger agent (Thrift binary)
+      - "14268:14268"  # Jaeger collector (HTTP)
+      - "4317:4317"  # OTLP gRPC receiver
+      - "4318:4318"  # OTLP HTTP receiver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:16686/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - empirica-observability
+
+  loki:
+    image: grafana/loki:latest
+    container_name: empirica-loki
+    ports:
+      - "3100:3100"
+    environment:
+      LOKI_CONFIG: /etc/loki/local-config.yaml
+    volumes:
+      - loki_data:/loki
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3100/loki/api/v1/status/buildinfo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - empirica-observability
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: empirica-promtail
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
+    networks:
+      - empirica-observability
+    depends_on:
+      - loki
+
+volumes:
+  loki_data:
+
+networks:
+  empirica-observability:
+    name: empirica-observability

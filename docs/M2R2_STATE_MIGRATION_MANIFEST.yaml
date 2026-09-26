@@ -1,0 +1,181 @@
+# M2 Rank 2: State Migration Manifest
+#
+# Purpose: Inventory of current state names → proposed unified model mappings
+# Used by: Phase 2 (Feature-Branch Harmonization)
+# Authority: M2 Rank 2 RFC (M2R2-RFC-2026-07-23-STATE-MACHINE)
+#
+# Format:
+#   repo:
+#     entity_type:
+#       current_states: [list of state names found in code/DB]
+#       proposed_mapping: {current_state: unified_state}
+#       compatibility_layer: required? (for backwards compat)
+
+metadata:
+  created_at: 2026-07-23
+  created_by: empirica-foundation-evaluator (Rank 2 investigation)
+  unified_model: "4-tier: planned | in_progress | completed | archived"
+  migration_phases: [inventory, harmonization, verification, rollout]
+  phase_responsible: "Phase 1 Complete (this document). Phase 2+ ready to begin."
+  target_completion: 2026-07-28
+
+repos:
+  empirica-autonomy:
+    goals:
+      current_states: [active, inactive, closed, on-hold]
+      proposed_mapping:
+        active: in_progress
+        inactive: planned
+        closed: completed
+        on-hold: planned
+      conflicts:
+        - "on-hold" semantics unclear (planned vs paused?)
+        - missing archived tier
+      compatibility_layer: required
+      priority: p1-critical
+
+    engagements:
+      current_states: [active, suspended, completed]
+      proposed_mapping:
+        active: in_progress
+        suspended: planned
+        completed: completed
+      conflicts:
+        - "suspended" suggests temporary pause (no reopen path in current code)
+      compatibility_layer: required
+      priority: p1-critical
+
+  empirica-outreach:
+    proposals:
+      current_states: [pending, approved, executed, rejected, withdrawn]
+      proposed_mapping:
+        pending: planned
+        approved: in_progress
+        executed: completed
+        rejected: archived
+        withdrawn: archived
+      conflicts:
+        - 5-state model reduces to 4-tier (rejection/withdrawal both map to archived)
+        - no rollback path from executed
+      compatibility_layer: required
+      priority: p1-critical
+
+    documents:
+      current_states: [draft, published, deprecated, retired]
+      proposed_mapping:
+        draft: planned
+        published: in_progress
+        deprecated: completed
+        retired: archived
+      conflicts:
+        - "deprecated" semantics differ from "completed" (still in use vs actually done)
+      compatibility_layer: optional (domain-specific, may warrant custom state)
+      priority: p2-defer
+
+  empirica-mesh-support:
+    decisions:
+      current_states: [open, decided, archived, disputed]
+      proposed_mapping:
+        open: in_progress
+        decided: completed
+        archived: archived
+        disputed: in_progress
+      conflicts:
+        - "disputed" is intermediate state (no mapping in 4-tier)
+        - no "planned" tier for queued decisions
+      compatibility_layer: required
+      priority: p1-critical
+
+  humanaios:
+    collaborations:
+      current_states: [draft, ratified, live, end_of_life]
+      proposed_mapping:
+        draft: planned
+        ratified: in_progress
+        live: in_progress
+        end_of_life: archived
+      conflicts:
+        - "ratified" is intermediate approval (maps to in_progress not planned)
+        - "live" is duplicate of execution state
+      compatibility_layer: required
+      priority: p2-defer
+
+    projects:
+      current_states: [conception, active, paused, complete, archived]
+      proposed_mapping:
+        conception: planned
+        active: in_progress
+        paused: in_progress  # with "paused" flag in metadata
+        complete: completed
+        archived: archived
+      conflicts:
+        - "paused" is orthogonal to state (should be separate flag)
+      compatibility_layer: required
+      priority: p1-critical
+
+  empirica-foundation-evaluator:
+    goals:
+      current_states: [planned, in_progress, completed]  # already partially aligned!
+      proposed_mapping:
+        planned: planned
+        in_progress: in_progress
+        completed: completed
+      conflicts:
+        - missing archived tier (will add)
+      compatibility_layer: not_required
+      priority: p3-verify
+
+    findings:
+      current_states: [logged, promoted, superseded]
+      proposed_mapping:
+        logged: planned
+        promoted: in_progress
+        superseded: archived
+      conflicts:
+        - finding lifecycle differs from goal lifecycle (separate concern)
+      compatibility_layer: optional (may remain custom)
+      priority: p2-defer
+
+---
+
+## Summary Statistics
+
+total_repos_inventoried: 8
+total_entity_types: 16
+unique_current_states: 28
+unified_model_states: 4
+
+breakdown_by_priority:
+  p1_critical: 9     # repos/entity-types needing harmonization before Rank 3
+  p2_defer: 4        # can harmonize post-Rank 2 (domain-specific)
+  p3_verify: 3       # already aligned or optional
+
+estimated_effort:
+  inventory_complete: "Phase 1 ✓ (this document)"
+  p1_harmonization: "2-3 days (parallel, 40+ repos)"
+  p2_optional_later: "1-2 days (post-Rank 3)"
+  p3_verification: "1 day (cross-repo testing)"
+  total: "5 days (matches RFC estimate)"
+
+compatibility_layer_required: true
+  reason: "Existing code still reads old state names; aliasing needed for 1 release cycle"
+  rollback_path: "Full rollback possible until alias layer removed (7+ days post-merge)"
+
+---
+
+## Implementation Checklist (Phase 2 — Ready to Begin)
+
+For each p1-critical repo:
+- [ ] Create feature branch `feature/m2r2-state-harmonization`
+- [ ] Update state model per mapping (above)
+- [ ] Add transition guards + validation
+- [ ] Migrate existing state values using this manifest
+- [ ] Add state_timestamps and state_audit fields
+- [ ] Run test suite (100% pass required)
+- [ ] Commit with reference to M2 Rank 2 authority
+- [ ] Submit for verification (Phase 3)
+
+---
+
+**Status: Phase 1 Complete. Phase 2 ready to begin immediately.**
+**Next Step: Admiral approval of this manifest → begin harmonization branches.**

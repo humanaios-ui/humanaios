@@ -18,12 +18,6 @@ dist/
 .env.local
 .env.*.local
 .env.production
-.secrets
-*.key
-*.pem
-.aws
-.gcloud
-*.pfx
 
 # IDE
 .vscode/
@@ -49,7 +43,6 @@ Thumbs.db
 
 # Empirica practice files (local, never committed)
 .empirica/
-.empirica/sessions/
 .breadcrumbs.yaml
 .claude/
 .empirica_inaugural_sid
@@ -65,3 +58,9 @@ empirica-foundation/
 # Inbox/scratch
 _inbox_files3/
 HAIOS.mermaid
+
+# Secrets and credentials
+*credentials*
+*secrets*
+*.key
+*.pem

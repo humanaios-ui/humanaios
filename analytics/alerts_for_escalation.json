@@ -1,0 +1,43 @@
+{
+  "alerts": [
+    {
+      "alert_id": "alert_latency_001",
+      "severity": "critical",
+      "rule_id": "latency_critical",
+      "rule_name": "Query Latency Critical",
+      "practice": "empirica-autonomy",
+      "metric": "loki_query_duration_seconds",
+      "message": "Query p95 latency exceeds SLA",
+      "current_value": 2.8,
+      "threshold": 2.0,
+      "timestamp": 1726581600,
+      "metadata": {"window": "5m"}
+    },
+    {
+      "alert_id": "alert_health_001",
+      "severity": "critical",
+      "rule_id": "practice_health_critical",
+      "rule_name": "Practice Health Critical",
+      "practice": "empirica-mesh-support",
+      "metric": "empirica_practice_health_score",
+      "message": "Practice health score dropped below critical threshold",
+      "current_value": 0.45,
+      "threshold": 0.5,
+      "timestamp": 1726581600,
+      "metadata": {"window": "5m"}
+    },
+    {
+      "alert_id": "alert_ingestion_001",
+      "severity": "warning",
+      "rule_id": "ingestion_drop",
+      "rule_name": "Log Ingestion Rate Drop",
+      "practice": "empirica-outreach",
+      "metric": "loki_ingester_chunks_flushed_total",
+      "message": "Log ingestion rate dropped",
+      "current_value": 6.5,
+      "threshold": 10.0,
+      "timestamp": 1726581600,
+      "metadata": {"baseline_pct": 65}
+    }
+  ]
+}

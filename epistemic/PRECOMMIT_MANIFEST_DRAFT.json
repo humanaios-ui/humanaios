@@ -1,0 +1,18 @@
+{
+  "session": "S-081626-AUDIT",
+  "version": "v3.2-DRAFT",
+  "status": "PENDING_ZONE2_RATIFICATION",
+  "agent_view.py": "c4d0b61b8cb91dce470e501c295a046961df2c5b52b7854cfe36077eeb9095ab",
+  "ground.py": "4c112a4cd888600e29bac8cdabca8fae5f03c82d3771848be18f043a425edaa3",
+  "validate.py": "a59abfb89c8707789e972197976e5b60fdcade1161305c582661635659c4fd76",
+  "params": {
+    "human_lr": 0.14,
+    "machine_lr": 0.09,
+    "stability_window": 5,
+    "dim": 4,
+    "cycles": 16,
+    "warmup": 3,
+    "cond_limit": 1000000.0,
+    "n_perm": 200
+  }
+}

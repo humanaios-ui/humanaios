@@ -1,0 +1,87 @@
+{
+  "dashboard": {
+    "title": "Measurement Baseline — Phase 3.5 Readiness",
+    "description": "Baseline latencies, vector deltas, artifact distributions for convergence analysis",
+    "timezone": "UTC",
+    "refresh": "5m",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Transaction Latency Distribution (P0/P50/P99)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.0, transaction_latency_seconds)",
+            "legendFormat": "P0",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.5, transaction_latency_seconds)",
+            "legendFormat": "P50",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.99, transaction_latency_seconds)",
+            "legendFormat": "P99",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "PREFLIGHT → POSTFLIGHT Vector Deltas",
+        "type": "boxplot",
+        "targets": [
+          {
+            "expr": "vector_delta_by_dimension",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Baseline Sample Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "count(baseline_samples)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 20, "color": "yellow"},
+                {"value": 30, "color": "green"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Artifact Count Distribution",
+        "type": "histogram",
+        "targets": [
+          {
+            "expr": "artifacts_logged_per_transaction",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Postflight Confidence Trend",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "postflight_confidence",
+            "refId": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

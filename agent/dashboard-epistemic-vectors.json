@@ -1,0 +1,248 @@
+{
+  "dashboard": {
+    "title": "Phase 3.6: Epistemic Vectors — Per-Practice Trends",
+    "tags": ["empirica", "phase-3.6", "epistemic"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 0,
+    "refresh": "30s",
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "13-Vector Epistemic State (Stacked Area)",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "empirica_know_gauge",
+            "legendDisplayMode": "list",
+            "legendPlacement": "bottom"
+          },
+          {
+            "refId": "B",
+            "expr": "empirica_do_gauge"
+          },
+          {
+            "refId": "C",
+            "expr": "empirica_context_gauge"
+          },
+          {
+            "refId": "D",
+            "expr": "empirica_clarity_gauge"
+          },
+          {
+            "refId": "E",
+            "expr": "empirica_coherence_gauge"
+          },
+          {
+            "refId": "F",
+            "expr": "empirica_signal_gauge"
+          },
+          {
+            "refId": "G",
+            "expr": "empirica_density_gauge"
+          },
+          {
+            "refId": "H",
+            "expr": "empirica_state_gauge"
+          },
+          {
+            "refId": "I",
+            "expr": "empirica_change_gauge"
+          },
+          {
+            "refId": "J",
+            "expr": "empirica_completion_gauge"
+          },
+          {
+            "refId": "K",
+            "expr": "empirica_impact_gauge"
+          },
+          {
+            "refId": "L",
+            "expr": "empirica_engagement_gauge"
+          },
+          {
+            "refId": "M",
+            "expr": "empirica_uncertainty_gauge"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "fillOpacity": 50,
+              "gradientMode": "none",
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "hideFrom": {
+                "tooltip": false,
+                "viz": false,
+                "legend": false
+              }
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["mean", "max"],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Phase Duration — Noetic vs Praxic",
+        "type": "barchart",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "increase(empirica_noetic_duration_seconds_bucket[1h])",
+            "legendDisplayMode": "list"
+          },
+          {
+            "refId": "B",
+            "expr": "increase(empirica_praxic_duration_seconds_bucket[1h])"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "lineWidth": 1,
+              "fillOpacity": 70
+            }
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["sum", "mean"],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "orientation": "auto"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Artifact Production Rate (24h)",
+        "type": "stat",
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 0,
+          "y": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "increase(empirica_artifacts_logged_total[24h])"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "area",
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Commits (24h)",
+        "type": "stat",
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 8,
+          "y": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "increase(empirica_commits_total[24h])"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "blue", "value": null}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Transaction Duration Distribution",
+        "type": "histogram",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "empirica_transaction_duration_seconds"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "tooltip": false,
+                "viz": false,
+                "legend": false
+              }
+            }
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["mean", "max"],
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      }
+    ]
+  }
+}

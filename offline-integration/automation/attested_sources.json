@@ -1,0 +1,23 @@
+{
+  "src_northwind": {
+    "title": "Northwind Dataset",
+    "url": "https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs",
+    "license": "cc-by-4.0",
+    "attest_hash": "5e6da699abc1def",
+    "verified_at": "2026-08-22T12:00:00Z"
+  },
+  "src_bluefin": {
+    "title": "Bluefin Market Data",
+    "url": "https://example.com/bluefin-data",
+    "license": "cc-by-4.0",
+    "attest_hash": "b2c3d4e5f6a7b8c9",
+    "verified_at": "2026-08-22T12:00:00Z"
+  },
+  "src_cirrus": {
+    "title": "Cirrus Research Archive",
+    "url": "https://example.com/cirrus",
+    "license": "cc-by-4.0",
+    "attest_hash": "c3d4e5f6a7b8c9d0",
+    "verified_at": "2026-08-22T12:00:00Z"
+  }
+}

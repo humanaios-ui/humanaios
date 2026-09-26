@@ -1,21 +1,147 @@
-# HumanAIOS
+# Empirica Foundation Evaluator
 
-> AI-human orchestration research platform. OR&D phase. Pre-launch.
+## Overview
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-57.9%25-blue)](https://www.typescriptlang.org/)
-[![Building in Public](https://img.shields.io/badge/Building-In%20Public-orange)](https://humanaios.ai)
-[![Pre-Launch](https://img.shields.io/badge/Status-Pre--Launch-yellow)](./README.md)
+Admiral seat and governance authority for the empirica-foundation. Carly R. Anderson serves as the first Evaluator—providing independent assessment, governance oversight, and escalation authority. Coordinates onboarding interviews, audits practices, monitors mesh health, and makes final governance decisions.
 
-> ⚠️ **Pre-launch.** No live API. No customers. No revenue yet.
-> This repository contains an authentication scaffold and research documentation.
-> See [Current Status](#current-status) for what actually exists.
+## Identity
 
-🌐 Website: [humanaios.ai](https://humanaios.ai)
-📧 Contact: aioshuman@gmail.com
-🔗 LinkedIn: [linkedin.com/in/humanaios](https://www.linkedin.com/in/humanaios)
-🐦 Twitter/X: [@HumanAIOS](https://x.com/HumanAIOS)
-🔬 Research: [Observatory](https://humanaios.ai/observatory.html) · [arXiv preprint](https://arxiv.org/abs/2503.09618) · [Dataset](https://huggingface.co/datasets/humanaios/acat-assessments)
+- **ai_id:** empirica-foundation-evaluator
+- **Canonical Seat:** empirica-foundation.carly.empirica-foundation-evaluator
+- **Org:** empirica-foundation
+- **Tenant:** carly
+- **Created:** 2026-06-26
+- **Type:** Operations/Governance
+- **Status:** Active
+- **Classification:** Internal
+- **Role:** Admiral + Evaluator
+
+## Domains & Interfaces
+
+### Owned Domains
+
+- **Governance Authority:** Final decision-making on ecosystem policies, autonomy assignments, and trust boundaries
+- **Practice Audits:** Regular audits of practices for governance, compliance, and performance
+- **Escalation Resolution:** Final arbitration point for cross-practice disputes
+- **Mesh Health Monitoring:** Aggregation and analysis of ecosystem health metrics
+- **Onboarding Coordination:** New practice onboarding and integration protocols
+- **Autonomy Adjustment:** Adjusting practice autonomy levels based on performance
+
+### External Interfaces
+
+| Partner | Protocol | SLA | Purpose |
+|---|---|---|---|
+| empirica-mesh-support | collab/propose | 4 hours | Escalation coordination, mesh health reports |
+| empirica-autonomy | propose | 2 hours | Autonomy policy decisions, trust adjustments |
+| All 13 practices | broadcast/collab | 4-8 hours | Governance decisions, audit results |
+| External stakeholders | collab | 24 hours | Oversight reports, governance notifications |
+
+## SLAs
+
+- **Response Time:** 4 hours for escalations, 2 hours for critical governance decisions
+- **Availability:** 99.5% uptime for governance systems
+- **Escalation Path:** Carly R. Anderson (human decision-maker for Admiral-level issues)
+- **Audit Cycle:** Monthly audits for all active practices
+
+## Key Files
+
+- `audits/` — Practice audit reports and findings
+- `docs/GOVERNANCE.md` — Governance framework and decision authority
+- `ACTIVATION_STATUS.md` — Ecosystem activation and readiness status
+- `12_TRADITIONS_COMPLIANCE_AUDIT.md` — Governance compliance audit
+- `ACAT_FULL_AUDIT_13_PRACTICES.md` — Comprehensive ACAT audit of all practices
+- `ACAT_INTEGRATION_SPEC_FOR_AUTONOMY.md` — ACAT integration with autonomy system
+- `ACTIVATION_ROADMAP_DAYS_2_7.md` — Activation phases and timeline
+- `ADMIRAL_APPROVAL_GATE_POSTFLIGHT.md` — Admiral approval gate documentation
+
+## Getting Started
+
+```bash
+# Navigate to practice
+cd /Users/andersonfamily/practices/empirica-foundation-evaluator
+
+# Check activation status
+cat ACTIVATION_STATUS.md
+
+# Review governance framework
+cat docs/GOVERNANCE.md
+
+# Check compliance audits
+cat 12_TRADITIONS_COMPLIANCE_AUDIT.md
+
+# Review practice audits
+ls audits/
+
+# Check activation roadmap
+cat ACTIVATION_ROADMAP_DAYS_2_7.md
+```
+
+## Architecture
+
+**Empirica Foundation Evaluator** implements the governance and oversight layer:
+
+1. **Governance Authority:**
+   - Policy definition and enforcement
+   - Trust boundary assignment
+   - Autonomy level decisions
+   - Dispute resolution
+
+2. **Audit System:**
+   - Regular practice assessments
+   - Compliance checking
+   - Performance monitoring
+   - Findings and remediation tracking
+
+3. **Escalation Management:**
+   - Receiving escalations from practices
+   - Analysis and investigation
+   - Decision and communication
+   - Follow-up monitoring
+
+4. **Mesh Health:**
+   - Aggregating practice metrics
+   - Detecting anomalies
+   - Identifying systemic issues
+   - Coordinating ecosystem-wide improvements
+
+## Dependencies
+
+**Internal (practices):**
+- All 13 practices (governance subjects)
+- empirica-mesh-support (coordination)
+- empirica-autonomy (autonomy coordination)
+
+**External:**
+- Governance decision framework
+- Audit tools and assessment systems
+- Metrics aggregation
+- Reporting infrastructure
+
+## Escalation
+
+**Contact:** empirica-foundation-evaluator (Admiral seat)
+**Escalation Path:** 
+1. Practices escalate to empirica-foundation-evaluator (4 hour SLA)
+2. Admiral evaluates and decides (2 hour decision SLA)
+3. If human arbitration needed, escalate to Carly R. Anderson
+4. Admiral decision is final authority
+
+**Types of escalations:**
+- Cross-practice disputes
+- Governance policy questions
+- Autonomy level changes
+- Significant compliance violations
+- Mesh-wide anomalies
+
+## Related
+
+- [Empirica Mesh Support](../empirica-mesh-support/README.md) — Mesh coordination
+- [Empirica Autonomy](../empirica-autonomy/README.md) — Autonomy mechanics
+- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) — Governance framework
+- [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md) — Ecosystem status
+- [ACTIVATION_ROADMAP_DAYS_2_7.md](ACTIVATION_ROADMAP_DAYS_2_7.md) — Roadmap
+- [12_TRADITIONS_COMPLIANCE_AUDIT.md](12_TRADITIONS_COMPLIANCE_AUDIT.md) — Compliance audit
+- [ACAT_FULL_AUDIT_13_PRACTICES.md](ACAT_FULL_AUDIT_13_PRACTICES.md) — Practice audits
 
 ---
 
@@ -54,7 +180,7 @@ The research arm of this project — ACAT (AI Calibration Assessment Tool) — i
 - ✅ Database schema designed
 - ✅ ACAT research pipeline live (630+ assessments, 31+ canonical AI systems, [Hugging Face dataset](https://huggingface.co/datasets/humanaios/acat-assessments))
 - ✅ Observatory dashboard live at [humanaios.ai/observatory.html](https://humanaios.ai/observatory.html)
-- ✅ arXiv preprint published ([2503.09618](https://arxiv.org/abs/2503.09618))
+- ✅ arXiv preprint published (Preprint in preparation)
 - ✅ LLC formation complete (HumanAIOS LLC, Florida, effective March 16, 2026)
 - ✅ EIN assigned
 
@@ -75,42 +201,40 @@ This repo contains the foundation layer:
 
 ```
 humanaios/
-├── apps/api/              # Canonical NestJS API application
+├── apps/api/              # NestJS API application (scaffold)
 ├── packages/mcp-sdk/      # MCP integration (design spec — not implemented)
-├── src/auth-system/       # Legacy auth scaffold (deprecated reference only)
+├── src/auth-system/       # Authentication module (functional)
 ├── docs/                  # Documentation
 ├── infrastructure/        # Infrastructure as code
 ├── schema.sql             # Database schema
 └── docker-compose.yml     # Local dev environment
 ```
 
-### Canonical API surface
+### Authentication system (what actually runs)
 
-- `apps/api` is the single authoritative backend and auth stack
-- Primary endpoints: auth, agents, agent activities, assessments
-- JWT authentication with organization-scoped access
-- PostgreSQL + Redis infrastructure wiring via Nest modules
-- `src/auth-system` remains in-repo only as a legacy reference and is not the deployed path
+- 8 API endpoints: register, login, refresh, logout, password reset, profile
+- JWT access + refresh token rotation
+- bcrypt password hashing (10 rounds)
+- Rate limiting, account lockout after 5 failed attempts
+- PostgreSQL with TypeORM
 
 ---
 
 ## Quick Start (Local Dev Only)
 
-Prerequisites: Node.js 18+, PostgreSQL 14+ with TimescaleDB extension, Redis
+Prerequisites: Node.js 18+, PostgreSQL 14+
 
 ```bash
 git clone https://github.com/humanaios-ui/humanaios.git
-cd humanaios/apps/api
+cd humanaios
 npm install
-export DATABASE_URL=******localhost:5432/humanaios
-export REDIS_URL=redis://localhost:6379
-export JWT_SECRET=replace-me-with-a-long-random-secret
+cp .env.example .env   # Edit with your local DB credentials
 createdb humanaios
-psql -d humanaios -f /home/runner/work/humanaios/humanaios/schema.sql
-npm run dev
+psql -d humanaios -f schema.sql
+npm run start:dev
 ```
 
-The canonical API will be available at `http://localhost:3001/api/v1`. OpenAPI source lives at `/home/runner/work/humanaios/humanaios/api-docs/openapi/api-spec.yml`.
+The auth API will be available at `http://localhost:3000`. There is no `/docs` Swagger endpoint yet.
 
 ---
 
@@ -122,7 +246,7 @@ HumanAIOS runs an active OR&D (Observational Research & Development) phase throu
 | --- | --- |
 | Observatory (live dashboard) | [humanaios.ai/observatory.html](https://humanaios.ai/observatory.html) |
 | ACAT Assessment Tool | [humanaios.ai/acat-assessment-tool.html](https://humanaios.ai/acat-assessment-tool.html) |
-| arXiv preprint | [arxiv.org/abs/2503.09618](https://arxiv.org/abs/2503.09618) |
+| arXiv preprint | Preprint (in preparation) |
 | Hugging Face dataset | [huggingface.co/datasets/humanaios/acat-assessments](https://huggingface.co/datasets/humanaios/acat-assessments) |
 | Primary research repo | [github.com/humanaios-ui/lasting-light-ai](https://github.com/humanaios-ui/lasting-light-ai) |
 | Independent replication (Inspect port) | [github.com/humanaios-ui/acat-inspect](https://github.com/humanaios-ui/acat-inspect) |

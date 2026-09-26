@@ -1,0 +1,216 @@
+{
+  "dashboard": {
+    "title": "SER Coordination Health",
+    "description": "Shared Epistemic Record (SER) coordination metrics: participant acknowledgment, decision latency, escalation frequency, cross-practice health",
+    "tags": [
+      "phase-3.5",
+      "observability",
+      "ser",
+      "coordination"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Active SERs by State",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "count by (state) (ser_state{env=\"production\"})"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "textMode": "auto",
+          "colorMode": "background"
+        }
+      },
+      {
+        "title": "Participant Acknowledgment Rate (%)",
+        "type": "gauge",
+        "gridPos": {
+          "x": 6,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "100 * (sum(ser_participants_acknowledged) / sum(ser_participants_total))"
+          }
+        ],
+        "options": {
+          "orientation": "auto",
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "minVizHeight": 75
+        },
+        "fieldConfig": {
+          "defaults": {
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 70
+                },
+                {
+                  "color": "green",
+                  "value": 90
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "SER Decision Latency (seconds)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 4,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "histogram_quantile(0.95, ser_decision_latency_seconds_bucket)"
+          },
+          {
+            "refId": "B",
+            "datasource": "Prometheus",
+            "expr": "histogram_quantile(0.50, ser_decision_latency_seconds_bucket)"
+          }
+        ],
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "right"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        }
+      },
+      {
+        "title": "Escalation Frequency (per hour)",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 12,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "rate(ser_escalations_total[1h])"
+          }
+        ],
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean"
+            ]
+          }
+        }
+      },
+      {
+        "title": "Cross-Practice Coordination Health",
+        "type": "stat",
+        "gridPos": {
+          "x": 6,
+          "y": 12,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "expr": "100 * (sum(ser_cross_org_success) / sum(ser_cross_org_attempts))"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "textMode": "auto",
+          "colorMode": "value"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 85
+                },
+                {
+                  "color": "green",
+                  "value": 95
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "SER Participant Timeline",
+        "type": "table",
+        "gridPos": {
+          "x": 0,
+          "y": 18,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "datasource": "Prometheus",
+            "format": "table",
+            "expr": "topk(20, ser_participants{status=\"required\"} or ser_participants{status=\"participating\"})"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "displayName": "timestamp",
+              "desc": true
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

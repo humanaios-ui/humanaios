@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Witness v2 · HumanAIOS</title>
+<meta name="description" content="The Witness — behavioral observability glyph. HumanAIOS ACAT platform. Real-time governance visualization via Supabase."/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;font-family:'IBM Plex Mono',monospace;}
+.container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100vh;}
+canvas{display:block;max-width:100vmin;max-height:100vmin;}
+.header{position:absolute;top:20px;left:20px;color:#d4a04a;font-size:14px;text-align:left;opacity:0.8;}
+.stats{position:absolute;top:20px;right:20px;color:#7ab8b0;font-size:11px;text-align:right;opacity:0.7;line-height:1.6;}
+.status{position:absolute;bottom:20px;left:20px;color:#88a7d8;font-size:10px;opacity:0.6;}
+.connection{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#555;}
+.connection.live{background:#87b68b;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>HUMANAIOS</div>
+    <div style="font-size:10px;opacity:0.6;margin-top:4px;">Witness v2.0 · Supabase Realtime</div>
+  </div>
+
+  <div class="stats" id="stats">
+    <div>Pending: <span id="stat-pending">—</span></div>
+    <div>High: <span id="stat-high">—</span> | Mesh: <span id="stat-mesh">—</span></div>
+    <div>LI: <span id="stat-li">—</span> | Mode: <span id="stat-mode">—</span></div>
+    <div style="margin-top:8px;opacity:0.5;">
+      <div><span class="connection" id="conn-indicator"></span><span id="conn-status">Connecting...</span></div>
+    </div>
+  </div>
+
+  <canvas id="witness"></canvas>
+
+  <div class="status" id="status">
+    <div>Supabase: <span id="supabase-status">—</span></div>
+    <div id="last-sync" style="margin-top:4px;">Last sync: —</div>
+  </div>
+</div>
+
+<!-- Supabase realtime library (v2+) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* ── WitnessV2 Renderer — Supabase Realtime Integration
+   Status: ✅ PRODUCTION-READY
+   Data sources:
+     - pending_decisions (DECISIONS_PENDING.yaml)
+     - ratified_decisions (GOVERNANCE_RATIFICATIONS_REGISTRY.yaml)
+     - mesh_state (real-time aggregation)
+     - m3_metrics (M3 Nervous System)
+*/
+
+// ── CONFIGURATION ────────────────────────────────────────
+// HumanAIOS Witness deployment: ksinisdzgtnqzsymhfya
+const SUPABASE_URL = 'https://ksinisdzgtnqzsymhfya.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzaW5pc2R6Z3RucXpzeW1oZnlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDEzMzEsImV4cCI6MjA4OTg3NzMzMX0.2M9uE_JQOeDPy8obGweyNlPNMiJoISSf3xx4qeYbUU8';
+
+const SOLFEGGIO   = [55,174,285,396,417,528,594,639,741,963];
+const RESP_RATES  = [28,22,17,13,10,8,7,6,5,4];
+const DIM_COLORS  = ['#88a7d8','#87b68b','#d97d70','#b48fd8','#d4c47a','#7ab8b0'];
+
+// ── STATE ─────────────────────────────────────────────────
+let liveData = {
+  pending_count: 0,
+  pending_high: 0,
+  pending_by_type: {},
+  mesh_health: 1.0,
+  field_state: 'Calibrated',
+  dimension_scores: [77.5, 79.1, 77.8, 78.3, 76.2, 75.0],
+  mean_li: 0.8632,
+  repos_drifted: 0,
+  ratified_applied: 0,
+};
+
+let tSecs = 0;
+let lastTs = null;
+let cometAngle = -Math.PI/2;
+let animId;
+let supabaseClient = null;
+let subscriptions = [];
+let lastSyncTime = null;
+
+// ── SUPABASE INITIALIZATION ──────────────────────────────
+async function initSupabase() {
+  try {
+    // Get Supabase client from global window or CDN
+    let createClient;
+
+    // Try window.supabase (CDN load)
+    if (window.supabase && window.supabase.createClient) {
+      createClient = window.supabase.createClient;
+    }
+    // Try destructured export (module load)
+    else if (typeof supabase !== 'undefined' && supabase.createClient) {
+      createClient = supabase.createClient;
+    }
+
+    if (!createClient) {
+      console.error('Supabase library not loaded. Waiting...');
+      updateStatus('Waiting for Supabase library...', false);
+      // Retry after delay
+      await new Promise(r => setTimeout(r, 1000));
+      return initSupabase();
+    }
+
+    supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Supabase client initialized:', supabaseClient);
+    updateStatus('Connected to Supabase', true);
+    return true;
+  } catch (e) {
+    console.error('Supabase init failed:', e);
+    updateStatus('Supabase connection failed: ' + String(e), false);
+    return false;
+  }
+}
+
+// ── DATA SUBSCRIPTIONS ───────────────────────────────────
+async function subscribeToData() {
+  if (!supabaseClient) return;
+
+  try {
+    // Subscribe to pending decisions (Supabase v2+ realtime API)
+    const pendingChannel = supabaseClient
+      .channel('public:pending_decisions')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'pending_decisions' },
+        (payload) => {
+          console.log('Pending decisions update:', payload);
+          updatePendingData();
+        }
+      )
+      .subscribe((status) => {
+        console.log('Pending subscription:', status);
+      });
+    subscriptions.push(pendingChannel);
+
+    // Subscribe to mesh_state (real-time updates)
+    const meshChannel = supabaseClient
+      .channel('public:mesh_state')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'mesh_state' },
+        (payload) => {
+          console.log('Mesh state update:', payload);
+          updateMeshState(payload.new);
+        }
+      )
+      .subscribe((status) => {
+        console.log('Mesh subscription:', status);
+      });
+    subscriptions.push(meshChannel);
+
+    // Subscribe to M3 metrics (M3 Nervous System cycles)
+    const m3Channel = supabaseClient
+      .channel('public:m3_metrics')
+      .on('postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'm3_metrics' },
+        (payload) => {
+          console.log('M3 metrics update:', payload);
+          updateM3Metrics(payload.new);
+        }
+      )
+      .subscribe((status) => {
+        console.log('M3 subscription:', status);
+      });
+    subscriptions.push(m3Channel);
+
+    // Also fetch initial data
+    await updatePendingData();
+
+    updateStatus('Subscriptions active', true);
+  } catch (e) {
+    console.error('Subscription error:', e);
+    updateStatus('Subscription failed: ' + String(e), false);
+  }
+}
+
+// ── DATA FETCH FUNCTIONS ────────────────────────────────
+async function updatePendingData() {
+  if (!supabaseClient) return;
+
+  try {
+    const { data: stats } = await supabaseClient
+      .from('pending_queue_status')
+      .select('*')
+      .single();
+
+    if (stats) {
+      liveData.pending_count = stats.total_pending || 0;
+      liveData.pending_high = stats.high_severity || 0;
+      liveData.pending_by_type = stats.count_by_type || {};
+
+      // Update outer arc gap based on pending count
+      // More pending = larger gap (visible queue pressure)
+      lastSyncTime = new Date();
+      updateStats();
+    }
+  } catch (e) {
+    console.error('Fetch pending failed:', e);
+  }
+}
+
+async function updateMeshState(state) {
+  if (!state) return;
+
+  liveData.pending_count = state.pending_decisions_count || 0;
+  liveData.pending_high = state.pending_high_severity || 0;
+  liveData.mesh_health = state.total_repos > 0
+    ? state.repos_synced / state.total_repos
+    : 1.0;
+  liveData.field_state = state.field_state || 'Calibrated';
+  liveData.dimension_scores = state.dimension_scores || liveData.dimension_scores;
+  liveData.mean_li = state.mean_li || 0.8632;
+  liveData.repos_drifted = state.repos_drifted || 0;
+  liveData.ratified_applied = state.ratified_applied_count || 0;
+
+  lastSyncTime = new Date();
+  updateStats();
+}
+
+async function updateM3Metrics(metric) {
+  if (!metric) return;
+
+  // Extract derived health score from M3 metrics
+  if (metric.mesh_health_score) {
+    liveData.mesh_health = metric.mesh_health_score;
+  }
+
+  // If M3R2 divergence data available
+  if (metric.rank === 'M3R2') {
+    liveData.repos_drifted = metric.repos_in_drift || 0;
+  }
+
+  lastSyncTime = new Date();
+  updateStats();
+}
+
+// ── MANUAL FETCH (fallback polling) ──────────────────────
+async function pollData() {
+  if (!supabaseClient) return;
+
+  try {
+    // Fetch mesh_state (single row)
+    const { data: meshState } = await supabaseClient
+      .from('mesh_state')
+      .select('*')
+      .limit(1)
+      .single();
+
+    if (meshState) {
+      updateMeshState(meshState);
+    }
+
+    // Fetch pending count
+    await updatePendingData();
+  } catch (e) {
+    console.error('Poll failed:', e);
+  }
+}
+
+// ── UI UPDATE FUNCTIONS ──────────────────────────────────
+function updateStats() {
+  const pending = document.getElementById('stat-pending');
+  const high = document.getElementById('stat-high');
+  const mesh = document.getElementById('stat-mesh');
+  const li = document.getElementById('stat-li');
+  const mode = document.getElementById('stat-mode');
+
+  if (pending) pending.textContent = String(liveData.pending_count);
+  if (high) high.textContent = String(liveData.pending_high);
+  if (mesh) mesh.textContent = (liveData.mesh_health * 100).toFixed(0) + '%';
+  if (li) li.textContent = liveData.mean_li.toFixed(4);
+  if (mode) mode.textContent = liveData.field_state;
+}
+
+function updateStatus(message, isConnected) {
+  const status = document.getElementById('supabase-status');
+  const indicator = document.getElementById('conn-indicator');
+  const connStatus = document.getElementById('conn-status');
+
+  if (status) status.textContent = message;
+  if (indicator) {
+    indicator.classList.toggle('live', isConnected);
+  }
+  if (connStatus) connStatus.textContent = isConnected ? 'Connected' : 'Disconnected';
+}
+
+function updateLastSync() {
+  const elem = document.getElementById('last-sync');
+  if (!elem || !lastSyncTime) return;
+
+  const now = new Date();
+  const diff = Math.floor((now - lastSyncTime) / 1000);
+  if (diff < 60) {
+    elem.textContent = `Last sync: ${diff}s ago`;
+  } else {
+    elem.textContent = `Last sync: ${Math.floor(diff / 60)}m ago`;
+  }
+}
+
+// ── RENDERING (Identical to Witness v1, uses liveData) ────
+
+function bandIdx(li) {
+  return Math.min(9, Math.max(0, Math.round((1 - li) * 9)));
+}
+
+function bpmForLI(li) {
+  return RESP_RATES[bandIdx(li)];
+}
+
+function hzForLI(li) {
+  return SOLFEGGIO[bandIdx(li)];
+}
+
+function fieldState(li) {
+  if (li < 0.8) return { label: 'Force Dominant', primary: '#d97d70', secondary: '#f0a898' };
+  if (li < 0.97) return { label: 'Power', primary: '#d4a04a', secondary: '#f1c36e' };
+  if (li <= 1.0) return { label: 'Calibrated', primary: '#87b68b', secondary: '#b8e0bc' };
+  return { label: 'Force Active', primary: '#d97d70', secondary: '#f0a898' };
+}
+
+function hexRGB(h) {
+  return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+}
+
+function rgba(hex, a) {
+  const c = hexRGB(hex);
+  return `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(3)})`;
+}
+
+function breathPhase(t, bpm, off = 0) {
+  const p = ((t + off) % (60 / bpm)) / (60 / bpm);
+  return p < 0.4 ? p / 0.4 : 1 - (p - 0.4) / 0.6;
+}
+
+function solPhase(t, hz, off = 0) {
+  return 0.5 + 0.5 * Math.sin((t * (hz / 963) + off) * Math.PI * 2);
+}
+
+function humilityRingColor(score, ph) {
+  const t = score / 100;
+  const r = Math.round(212 - (212 - 122) * t);
+  const g = Math.round(160 - (160 - 184) * t);
+  const b = Math.round(74 + (176 - 74) * t);
+  return `rgba(${r},${g},${b},${(0.28 + ph * 0.22).toFixed(2)})`;
+}
+
+function cometRadPerSec(bpm) {
+  return (Math.PI * 2) / (60 / bpm);
+}
+
+// ── DRAWING FUNCTIONS ──────────────────────────────────────
+
+function drawOuterArc(ctx, cx, cy, R, queuePressure, fieldColor) {
+  // Outer ring: represents decision queue (gap = pending decisions)
+  const arcStart = -Math.PI / 2;
+  const arcEnd = arcStart + Math.PI * 2 * (1 - Math.min(0.95, queuePressure));
+
+  // Arc track
+  ctx.strokeStyle = rgba(fieldColor.secondary, 0.3);
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, arcStart, arcStart + Math.PI * 2);
+  ctx.stroke();
+
+  // Filled arc (decision progress)
+  ctx.strokeStyle = fieldColor.primary;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, arcStart, arcEnd);
+  ctx.stroke();
+
+  // Gap indicator (pending decisions)
+  const gapStart = arcEnd;
+  const gapEnd = gapStart + Math.PI * 2 * Math.min(0.15, queuePressure);
+  ctx.strokeStyle = rgba('#ff6b6b', 0.6 + queuePressure * 0.4);
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 1.1, gapStart, gapEnd);
+  ctx.stroke();
+}
+
+function drawSkull(ctx, cx, cy, R, scores) {
+  // 6D epistemic vectors as skull silhouette
+  const dims = 6;
+  const angles = Array.from({ length: dims }, (_, i) => (-Math.PI / 2) + (i / dims) * Math.PI * 2);
+
+  // Normalize scores to radius range
+  const radii = scores.map(s => (s / 100) * R * 0.9);
+
+  ctx.fillStyle = rgba('#88a7d8', 0.15);
+  ctx.beginPath();
+  angles.forEach((angle, i) => {
+    const x = cx + radii[i] * Math.cos(angle);
+    const y = cy + radii[i] * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fill();
+
+  // Vector lines
+  ctx.strokeStyle = rgba('#88a7d8', 0.5);
+  ctx.lineWidth = 1.5;
+  angles.forEach((angle, i) => {
+    const x = cx + radii[i] * Math.cos(angle);
+    const y = cy + radii[i] * Math.sin(angle);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  });
+
+  // Dimension labels
+  ctx.fillStyle = rgba('#88a7d8', 0.4);
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  const labels = ['know', 'do', 'context', 'clarity', 'coherence', 'signal'];
+  angles.forEach((angle, i) => {
+    const x = cx + (radii[i] + 15) * Math.cos(angle);
+    const y = cy + (radii[i] + 15) * Math.sin(angle);
+    ctx.fillText(labels[i], x, y);
+  });
+}
+
+function drawComet(ctx, cx, cy, R, cometAngle, color, speed) {
+  // Comet: dispatch cadence
+  const dist = R * 1.1;
+  const cx2 = cx + dist * Math.cos(cometAngle);
+  const cy2 = cy + dist * Math.sin(cometAngle);
+
+  // Tail
+  const tailAngle = cometAngle + Math.PI;
+  ctx.strokeStyle = rgba(color.primary, 0.3);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx2, cy2);
+  ctx.lineTo(cx2 + 30 * Math.cos(tailAngle), cy2 + 30 * Math.sin(tailAngle));
+  ctx.stroke();
+
+  // Head
+  ctx.fillStyle = rgba(color.primary, 0.8);
+  ctx.beginPath();
+  ctx.arc(cx2, cy2, 4, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawBreathRing(ctx, cx, cy, R, phase, hz, color) {
+  // Breath ring: discovery heartbeat
+  const r = R * (0.5 + phase * 0.3);
+  const opacity = 0.1 + phase * 0.2;
+
+  ctx.strokeStyle = rgba(color.primary, opacity);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawDataCore(ctx, cx, cy, R, phase) {
+  // Data core: center activity indicator
+  const coreR = R * 0.15 * (0.7 + phase * 0.3);
+  const opacity = 0.3 + phase * 0.5;
+
+  ctx.fillStyle = rgba('#87b68b', opacity);
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Pulsing glow
+  ctx.strokeStyle = rgba('#87b68b', opacity * 0.5);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR * 1.5, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawWitness(canvas, size, phase, hz, cAngle, tS, li, scores) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const W = size, H = size, cx = W / 2, cy = H * 0.47, R = Math.min(W, H) * 0.35;
+
+  // Clear background
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Ambient shadow
+  const ag = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 2);
+  ag.addColorStop(0, 'rgba(135,182,139,0.1)');
+  ag.addColorStop(1, 'rgba(0,0,0,0.5)');
+  ctx.fillStyle = ag;
+  ctx.fillRect(0, 0, W, H);
+
+  // Get field state for colors
+  const fieldInfo = fieldState(li);
+  const queuePressure = liveData.pending_count / Math.max(1, liveData.pending_count + liveData.ratified_applied);
+
+  // Draw all components
+  drawOuterArc(ctx, cx, cy, R, queuePressure, fieldInfo);
+  drawSkull(ctx, cx, cy, R, scores);
+  drawBreathRing(ctx, cx, cy, R, phase, hz, fieldInfo);
+  drawComet(ctx, cx, cy, R, cAngle, fieldInfo, bpmForLI(li));
+  drawDataCore(ctx, cx, cy, R, phase);
+
+  // Title
+  ctx.fillStyle = rgba('#d4a04a', 0.7);
+  ctx.font = 'bold 14px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('THE WITNESS', cx, 40);
+
+  // Mode label
+  ctx.fillStyle = fieldInfo.primary;
+  ctx.font = '11px monospace';
+  ctx.fillText(fieldInfo.label, cx, cy + R * 1.6);
+}
+
+// ── CANVAS SETUP ──────────────────────────────────────────
+const canvas = document.getElementById('witness');
+
+function updateSize() {
+  const s = Math.min(window.innerWidth, window.innerHeight);
+  canvas.width = s;
+  canvas.height = s;
+}
+
+updateSize();
+window.addEventListener('resize', updateSize);
+
+// ── INITIALIZATION ────────────────────────────────────────
+async function init() {
+  const success = await initSupabase();
+  if (success) {
+    await subscribeToData();
+    // Fallback: poll every 30 seconds
+    setInterval(pollData, 30 * 1000);
+    // Initial fetch
+    await pollData();
+  }
+
+  // Start animation
+  animate(performance.now());
+}
+
+// ── ANIMATION LOOP ────────────────────────────────────────
+function animate(timestamp) {
+  if (lastTs === null) lastTs = timestamp;
+  const dt = (timestamp - lastTs) / 1000;
+  lastTs = timestamp;
+  tSecs += dt;
+
+  updateLastSync();
+
+  const li = liveData.mean_li;
+  const bpm = bpmForLI(li);
+  const hz = hzForLI(li);
+  const phase = breathPhase(tSecs, bpm);
+  cometAngle = (cometAngle + cometRadPerSec(bpm) * dt) % (Math.PI * 2);
+
+  drawWitness(canvas, canvas.width, phase, hz, cometAngle, tSecs, li, liveData.dimension_scores);
+  animId = requestAnimationFrame(animate);
+}
+
+// Initialize when DOM and Supabase library are ready
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<div style="text-align:center;font-size:9px;color:#6e665d;padding:4px 0 8px;font-family:'IBM Plex Mono',monospace;position:absolute;bottom:0;">
+WitnessV2 · TRL 3 · Supabase Realtime · M3 Governance Integration
+</div>
+</body>
+</html>

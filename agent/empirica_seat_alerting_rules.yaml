@@ -1,0 +1,166 @@
+# Phase 3.5.6 Phase 5: Alerting Rules for Empirica Seat Health
+# Defines alerts for epistemic health issues and investigation stalls
+# These rules will run against Prometheus metrics from Phase 3.5.6 instrumentation
+
+groups:
+  - name: empirica_seat_health
+    interval: 30s
+    rules:
+      # Investigation Stall - no noetic phase activity for 60+ minutes
+      - alert: EmpiricalInvestigationStall
+        expr: increase(empirica_investigation_latency_seconds_count[60m]) == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Empirica seat investigation stalled (60+ min)"
+          description: "No investigation activity in the last 60 minutes. Claude may be in planning/execution paralysis."
+          runbook_url: "https://docs.empirica.local/runbooks/investigation-stall"
+
+      # Unknown Accumulation - too many unresolved unknowns
+      - alert: EmpiricalUnknownAccumulation
+        expr: empirica_unknowns_total > 5
+        for: 10m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Empirica seat has {{ $value }} unresolved unknowns"
+          description: "Unknown count exceeds threshold. Investigation may be converging slowly."
+          runbook_url: "https://docs.empirica.local/runbooks/unknown-accumulation"
+
+      # Critical Unknown Accumulation - knowledge gaps are deep
+      - alert: EmpiricalCriticalUnknowns
+        expr: empirica_unknowns_total > 10
+        for: 5m
+        labels:
+          severity: critical
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Critical unknown accumulation ({{ $value }} unknowns)"
+          description: "Too many open questions. May need to escalate or pivot approach."
+          runbook_url: "https://docs.empirica.local/runbooks/critical-unknowns"
+
+      # Artifact Type Collapse - findings-only discipline violation
+      - alert: EmpiricalArtifactTypeDisciplineViolation
+        expr: increase(empirica_artifact_type_violations_total[1h]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Artifact type discipline violation detected"
+          description: "Session logged unbalanced artifact types (e.g., findings only, missing decisions/assumptions)."
+          runbook_url: "https://docs.empirica.local/runbooks/type-discipline"
+
+      # Calibration Drift - vectors diverging from evidence
+      - alert: EmpiricalCalibrationDrift
+        expr: empirica_calibration_drift > 0.3
+        for: 10m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Calibration drift: {{ $value | humanizePercentage }} divergence"
+          description: "Vectors are diverging from evidence. Self-assessment may be overconfident."
+          runbook_url: "https://docs.empirica.local/runbooks/calibration-drift"
+
+      # Critical Calibration Drift - strongly overconfident
+      - alert: EmpiricalCriticalCalibrationDrift
+        expr: empirica_calibration_drift > 0.5
+        for: 5m
+        labels:
+          severity: critical
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "CRITICAL calibration drift: {{ $value | humanizePercentage }}"
+          description: "Major gap between self-assessment and evidence. Requires immediate CHECK gate."
+          runbook_url: "https://docs.empirica.local/runbooks/critical-calibration"
+
+      # Goal Completion Stall - no progress on in-scope goals
+      - alert: EmpiricalGoalCompletionStall
+        expr: |
+          increase(empirica_goals_completion_ratio[30m]) == 0
+          and on() count(empirica_goals_completion_ratio > 0) > 0
+        for: 15m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "No goal progress in 30 minutes"
+          description: "Goals exist but completion ratio hasn't changed. Possible blocker or distraction."
+          runbook_url: "https://docs.empirica.local/runbooks/goal-stall"
+
+      # CHECK Gate Imbalance - lots of blocks, few proceeds
+      - alert: EmpiricalCheckGateImbalance
+        expr: |
+          rate(empirica_CHECK_decisions_total{decision="block"}[1h])
+          /
+          rate(empirica_CHECK_decisions_total[1h]) > 0.5
+        for: 10m
+        labels:
+          severity: info
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "CHECK gate blocking > 50% of decisions"
+          description: "More investigations are being blocked than proceeding. May indicate high uncertainty."
+          runbook_url: "https://docs.empirica.local/runbooks/check-gate-block-rate"
+
+      # Long Noetic Phase - investigation not converging
+      - alert: EmpiricalLongNoeticPhase
+        expr: empirica_phase_duration_seconds_bucket{phase="noetic", le="+Inf"} > 3600
+        for: 5m
+        labels:
+          severity: warning
+          service: empirica-seat
+          component: epistemic
+        annotations:
+          summary: "Noetic phase running for > 1 hour"
+          description: "Investigation has been running a long time. May need to CHECK and proceed."
+          runbook_url: "https://docs.empirica.local/runbooks/long-investigation"
+
+  - name: empirica_seat_correlation
+    interval: 60s
+    rules:
+      # High Investigation Latency When Task Queue is Deep
+      - alert: EmpiricalHighLatencyHighQueueCorrelation
+        expr: |
+          (empirica_investigation_latency_seconds > 600)
+          and on() (task_service_queue_depth > 50)
+        for: 10m
+        labels:
+          severity: info
+          service: empirica-seat
+          component: system-correlation
+        annotations:
+          summary: "Long investigation during high task backlog"
+          description: |
+            Claude is in extended investigation ({{ $value }}s) while task queue is deep ({{ $queue_value }} tasks).
+            May indicate cognitive load from infrastructure issues or task routing problems.
+          runbook_url: "https://docs.empirica.local/runbooks/investigation-queue-correlation"
+
+      # Task Service Latency When Noetic Phase Active
+      - alert: EmpiricalTaskLatencyDuringInvestigation
+        expr: |
+          on() (task_service_request_latency_p99 > 5000)
+          and on() (increase(empirica_phase_duration_seconds_count{phase="noetic"}[5m]) > 0)
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+          component: system-correlation
+        annotations:
+          summary: "High task latency while seat is investigating"
+          description: |
+            Task service latency is high during Claude's noetic phase.
+            May indicate that investigation is blocking task execution or infrastructure contention.
+          runbook_url: "https://docs.empirica.local/runbooks/investigation-latency-correlation"

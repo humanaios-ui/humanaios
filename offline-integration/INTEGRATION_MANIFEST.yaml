@@ -1,0 +1,102 @@
+# Offline-Produced System Integration Manifest
+# Generated: 2026-08-22
+# Source: /Users/andersonfamily/Downloads/ (34-file audit)
+# Status: P-ANON cleared, classified, ready for operational integration
+
+version: "1.0"
+audit_date: "2026-08-22"
+audit_findings:
+  p_anon_status: "PASSED"
+  violations: 0
+  credentials_exposed: false
+  pii_exposed: false
+  unauthorized_attributions: false
+
+file_categories:
+  governance:
+    count: 6
+    visibility: "shared"
+    description: "Z-classification landing discipline, ratification records, governance rulings"
+    files:
+      - IC_LANDING_parse_not_runtime_S082226.md
+      - Z2_RATIFICATION_MCP_GROUNDING_S082226.md
+      - RATIFIED_LANDING_3_S082226.md
+      - IC_RATIFIED_LANDING_S082226.md
+      - CANDIDATES_governed_divergence_S082226.md
+      - EARNED_AUTONOMY_MECHANICAL_GATE_GUIDE.md
+
+  reports:
+    count: 8
+    visibility: "local"
+    description: "Pilot reports, strategy docs, session close, audits"
+    files:
+      - CIO_PILOT_REPORT_S082226.md
+      - CIO_PILOT_REPORT_2_S082226.md
+      - CIO_STRATEGY_S082226.md
+      - CIO_STRATEGY_S082226_r1.1.md
+      - CIO_SESSION_CLOSE_S082226.md
+      - CIO_SESSION_CLOSE_S082226_r1.1.md
+      - CIO_REDTEAM_AUDIT_S082226.md
+      - CIO_AUDIT_ADDENDUM_HF_S082226.md
+
+  runbooks:
+    count: 2
+    visibility: "local"
+    description: "Operational remediation runbooks"
+    files:
+      - CIO_REMEDIATION_RUNBOOK_S082226.md
+      - CIO_REMEDIATION_RUNBOOK_S082226_r1.1.md
+
+  specs:
+    count: 4
+    visibility: "local"
+    description: "Intake/registration specs, convergence results"
+    files:
+      - PREREGISTER_intake_pilot_v1.md
+      - PREREGISTER_intake_pilot_v2.md
+      - PREREG_convergence_v1.md
+      - CONV_RESULTS_v1.md
+
+  ui_dashboards:
+    count: 6
+    visibility: "local"
+    description: "User-facing HTML dashboards (intent-os, haios-ops, console)"
+    deployment: "immediate"
+    files:
+      - intent-os-universal.html
+      - intent-os-universal-v2.html
+      - haios-ops-strongest.html
+      - haios-ops-strongest-v2.html
+      - haios-ops-cockpit.html
+      - humanaios-console.html
+
+  automation:
+    count: 2
+    visibility: "local"
+    description: "Core Python gate logic (3-outcome registry, scoring)"
+    deployment: "wired to dashboards"
+    files:
+      - cycle2_registry_gate.py
+      - boundary_and_scorer.py
+
+  data:
+    count: 5
+    visibility: "local"
+    description: "Ranking methodology, rubric, stratification, results"
+    files:
+      - ranking_formula_v1.md
+      - UNIFIED_UNIT_RUBRIC_v1.md
+      - ic_stratigraph.json
+      - ranking.json
+      - skill_scan_remote.json
+
+next_steps:
+  - Copy files to respective category directories
+  - Wire HTML dashboards to Python automation backends
+  - Activate Admiral ratification on resource-keyed model
+  - Issue collabs to empirica-mesh-support and empirica-outreach
+  - Prepare delegation briefs for each practice
+  - Run integration smoke tests
+
+document_control: "Yes"
+artifact_logging: "Enabled"

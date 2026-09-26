@@ -1,0 +1,88 @@
+{
+  "dashboard": {
+    "title": "Foundation Resource Consumption",
+    "description": "Track labor hours, token spend, practice bandwidth allocation",
+    "timezone": "UTC",
+    "refresh": "1m",
+    "time": {
+      "from": "now-30d",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Cumulative Human Labor Hours",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "increase(human_labor_hours_total[1h])",
+            "legendFormat": "{{practice}}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "AI Token Consumption",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "ai_tokens_consumed_cumulative",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "gradient", "scheme": "YlOrRd"}
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Token Burn Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(ai_tokens_consumed[1h])",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "tokens/hour",
+            "thresholds": {
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 150000, "color": "yellow"},
+                {"value": 200000, "color": "red"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Practice Bandwidth Allocation",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "sum by (practice) (labor_hours_total)",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Resource Efficiency Ratio",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "goals_completed / labor_hours_total",
+            "legendFormat": "Goals per Labor Hour",
+            "refId": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,242 @@
+# Resource-Miner Handoff Pipeline Monitoring & Alerting
+# Monitors the 5-part handoff protocol for delays and failures
+
+monitoring:
+  enabled: true
+  check_interval_seconds: 300  # Check every 5 minutes
+  storage: ~/.empirica/handoff_metrics.db
+
+# Handoff monitoring configuration
+handoffs:
+  miner_to_aggregator:
+    name: "Miner → Aggregator (Resource Batch)"
+    source: empirica-foundation.carly.empirica-resource-miner
+    target: empirica-foundation.carly.opportunity-aggregator
+    trigger: miner_postflight_complete
+    expected_latency_seconds: 300  # Should arrive within 5 min
+    alert_threshold_seconds: 3600  # Alert if > 1 hour
+    criticality: high
+    sla: "99% on-time delivery"
+
+  aggregator_to_miner:
+    name: "Aggregator → Miner (Ranking Feedback)"
+    source: empirica-foundation.carly.opportunity-aggregator
+    target: empirica-foundation.carly.empirica-resource-miner
+    trigger: aggregator_postflight_complete
+    expected_latency_seconds: 300
+    alert_threshold_seconds: 3600
+    criticality: high
+    sla: "99% on-time delivery"
+
+  optimizer_to_miner:
+    name: "Optimizer → Miner (Deployment Results)"
+    source: empirica-foundation.carly.local-machine-optimizer
+    target: empirica-foundation.carly.empirica-resource-miner
+    trigger: optimizer_deployment_complete
+    expected_latency_seconds: 86400  # 24 hours for deployment phase
+    alert_threshold_seconds: 604800  # Alert if > 1 week
+    criticality: medium
+    sla: "95% on-time delivery"
+
+  miner_to_evaluator:
+    name: "Miner → Evaluator (System Metrics)"
+    source: empirica-foundation.carly.empirica-resource-miner
+    target: empirica-foundation.carly.empirica-foundation-evaluator
+    trigger: miner_metrics_ready
+    expected_latency_seconds: 300
+    alert_threshold_seconds: 3600
+    criticality: medium
+    sla: "90% on-time delivery"
+
+  evaluator_to_miner:
+    name: "Evaluator → Miner (Orchestration Guidance)"
+    source: empirica-foundation.carly.empirica-foundation-evaluator
+    target: empirica-foundation.carly.empirica-resource-miner
+    trigger: evaluator_review_complete
+    expected_latency_seconds: 3600  # 1 hour for review
+    alert_threshold_seconds: 86400  # Alert if > 24 hours
+    criticality: low
+    sla: "90% on-time delivery"
+
+# Alert conditions
+alerts:
+  delivery_delay:
+    name: "Handoff Delivery Delayed"
+    condition: "latency > alert_threshold_seconds"
+    severity: warning
+    notify:
+      - mesh-support@empirica.foundation
+    action: "Escalate to mesh-support for investigation"
+
+  delivery_failure:
+    name: "Handoff Delivery Failed"
+    condition: "delivery_status = failed"
+    severity: critical
+    notify:
+      - mesh-support@empirica.foundation
+      - evaluator@empirica.foundation
+    action: "Immediate investigation + failover"
+
+  pipeline_stall:
+    name: "Pipeline Stalled (No Progress 24h)"
+    condition: "handoff_complete_time is null for > 86400 seconds"
+    severity: critical
+    notify:
+      - mesh-support@empirica.foundation
+      - evaluator@empirica.foundation
+    action: "Break blockage + resume pipeline"
+
+  quality_degradation:
+    name: "Message Quality Below Threshold"
+    condition: "validation_errors > 0"
+    severity: warning
+    notify:
+      - source_practice_ai@empirica.foundation
+    action: "Re-validate and resend message"
+
+# Metrics to track per handoff
+metrics:
+  - delivery_latency_seconds
+  - delivery_success_rate
+  - message_validation_errors
+  - message_content_size_bytes
+  - retry_count
+  - source_practice_ready_time
+  - target_practice_processing_time
+
+# Dashboard configuration
+dashboard:
+  title: "Resource-Miner Handoff Pipeline"
+  refresh_interval_seconds: 60
+  widgets:
+    - type: "pipeline_diagram"
+      title: "5-Part Pipeline Flow"
+      show_latencies: true
+
+    - type: "handoff_status_table"
+      title: "Handoff Status"
+      columns:
+        - handoff_id
+        - last_completion_time
+        - latency_seconds
+        - status
+        - next_expected_time
+
+    - type: "sla_compliance"
+      title: "SLA Compliance"
+      timeframe: monthly
+
+    - type: "alert_history"
+      title: "Recent Alerts"
+      limit: 10
+
+# Failover configuration
+failover:
+  enabled: true
+  strategy: "manual_escalation"
+  manual_escalation_contacts:
+    - mesh-support@empirica.foundation
+    - evaluator@empirica.foundation
+
+  auto_retry:
+    enabled: false  # Manual only for now
+    max_attempts: 0
+
+  retry_delay_seconds: 300  # If auto-retry enabled
+
+# Success criteria for pipeline health
+health:
+  status_green:
+    delivery_success_rate: ">= 99%"
+    median_latency: "<= expected_latency * 2"
+    no_validation_errors: true
+    sla_compliance: ">= defined SLA threshold"
+
+  status_yellow:
+    delivery_success_rate: ">= 95%"
+    median_latency: "<= expected_latency * 3"
+    validation_errors: "< 5%"
+    sla_compliance: ">= 85%"
+
+  status_red:
+    delivery_success_rate: "< 95%"
+    median_latency: "> expected_latency * 3"
+    validation_errors: ">= 5%"
+    sla_compliance: "< 85%"
+
+# Integration with empirica CLAUDE.md
+integration:
+  mesh_protocol:
+    - Load: /cortex-mailbox-poll (receive handoffs)
+    - Load: /cortex-mailbox-send (send handoffs)
+    - Discipline: Per /empirica-constitution §V (mesh discipline)
+
+  logging:
+    - Type: finding-log (successful handoffs)
+    - Type: unknown-log (if delivery fails)
+    - Type: decision-log (escalation decisions)
+    - Type: mistake-log (if handoff format wrong)
+
+  calibration:
+    - Vector: state (awareness of pipeline health)
+    - Vector: signal (quality of message content)
+    - Vector: coherence (all handoffs consistent)
+
+# Runbook: Troubleshooting Stalled Handoffs
+runbook:
+  stalled_handoff:
+    title: "Pipeline Stalled - Handoff Not Received"
+    steps:
+      - step: 1
+        action: "Check cortex mailbox status"
+        command: "empirica mailbox poll --status accepted,changed"
+
+      - step: 2
+        action: "Verify source practice sent the handoff"
+        command: "Collab source practice: 'Did you send [handoff_id]?'"
+
+      - step: 3
+        action: "If not sent: Check source practice status"
+        command: "Load SESSION_HANDOFF.md from source practice"
+
+      - step: 4
+        action: "If sent but not received: Check cortex routing"
+        command: "Verify canonical 3-forms are correct"
+
+      - step: 5
+        action: "If routing OK: Resend with fresh timestamp"
+        command: "Source practice: Run handoff_automation.send_*_to_*()"
+
+      - step: 6
+        action: "If still fails: Escalate to mesh-support"
+        command: "cortex_propose to mesh-support with diagnostics"
+
+# Example: Monthly SLA Report
+monthly_report:
+  template: |
+    # Resource-Miner Handoff Pipeline — Monthly SLA Report
+
+    **Reporting Period:** [MONTH]
+    **Date Generated:** [DATE]
+
+    ## SLA Compliance Summary
+
+    | Handoff | SLA Target | Actual | Status |
+    |---------|-----------|--------|--------|
+    | Miner→Aggregator | 99% | XX% | [GREEN/YELLOW/RED] |
+    | Aggregator→Miner | 99% | XX% | [GREEN/YELLOW/RED] |
+    | Optimizer→Miner | 95% | XX% | [GREEN/YELLOW/RED] |
+    | Miner→Evaluator | 90% | XX% | [GREEN/YELLOW/RED] |
+    | Evaluator→Miner | 90% | XX% | [GREEN/YELLOW/RED] |
+
+    ## Metrics
+    - Total handoffs: N
+    - Successful: M (X%)
+    - Failed: K (Y%)
+    - Average latency: Z seconds
+
+    ## Incidents
+    - [List of alerts + resolutions]
+
+    ## Recommendations
+    - [Any improvements]

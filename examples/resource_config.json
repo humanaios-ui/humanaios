@@ -1,0 +1,17 @@
+{
+  "description": "Example resource-check configuration: Sufficient budget for work",
+  "budget": {
+    "human_labor_hours_remaining": 100.0,
+    "ai_tokens_remaining": 500000,
+    "practices_active": 5,
+    "practices_capacity": 15,
+    "escalations_pending": 2,
+    "escalation_sla_hours": 4.0
+  },
+  "estimate": {
+    "human_labor_hours": 10.0,
+    "ai_tokens": 50000,
+    "practices_affected": 1,
+    "escalations_required": 0
+  }
+}

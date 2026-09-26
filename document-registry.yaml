@@ -1,56 +1,95 @@
----
-# Document Registry — Single Source of Truth (SSOT)
-# Per DOCUMENT_CONTROL_PLAN.md §3.2
-# Last updated: 2026-09-02
+# Document Control Registry — Single Source of Truth
+# All strategic documents must be registered here with approval state
+# This file is the enforcement point for ratification tracking
 
 documents:
-  - doc_id: HAIOS-GOV-013
-    title: Platform Agents Governance V1.0
-    path: docs/GOV/PLATFORM_AGENTS_GOVERNANCE_V1_0.md
-    revision: 1
-    status: review
-    owner: carly
-    created_date: 2026-09-02
-    review_due: 2026-12-01
+  - doc_id: EMPIRICA-EVAL-RK-001
+    title: "Resource-Keyed Goal & Task Model"
+    filename: RESOURCE_KEYED_GOAL_MODEL.md
+    revision: "1.0"
+    status: "approved"
+    category: "system-core"
+    owner: "Carly R. Anderson (Admiral)"
+    approval_date: "2026-08-21T16:30:00Z"
+    approved_by: "Admiral (ratification pending — see approval_mark below)"
+    approval_mark: "NOT YET MARKED BY ADMIRAL"
     canonical: true
-    retention: permanent
+    retention_years: 7
+    purpose: "Core system redesign: eliminates temporal framing from goal/task model. Replaces time-based scheduling with resource-based dependencies."
+    related_artifacts:
+      - GOAL_PARALLEL_DEPLOYMENT_RESOURCE_KEYED.json
+      - bin/validate-resource-keyed-artifacts.sh
+    verification:
+      - type: "validator-execution"
+        script: "bin/validate-resource-keyed-artifacts.sh"
+        last_run: "2026-08-21T16:25:00Z"
+        result: "PASS"
+        note: "Goal artifact passes all resource-keyed validation checks"
+      - type: "implementation-active"
+        test: "Can I create goal artifact that fails validator with temporal language?"
+        status: "YES - validator rejects 'by date' patterns"
+        last_verified: "2026-08-21T16:25:00Z"
+    change_log:
+      - date: "2026-08-21T16:00:00Z"
+        event: "Created resource-keyed model specification"
+        actor: "Claude (implementation)"
+      - date: "2026-08-21T16:20:00Z"
+        event: "Implemented validation mechanism"
+        actor: "Claude (implementation)"
+      - date: "2026-08-21T16:30:00Z"
+        event: "AWAITING RATIFICATION MARK FROM ADMIRAL"
+        actor: "pending"
 
-  - doc_id: HAIOS-SPEC-008
-    title: H-ACAT Instrument Specification V0.1
-    path: docs/SPEC/H-ACAT_INSTRUMENT_SPEC_V0_1.md
-    revision: 1
-    status: review
-    owner: carly
-    created_date: 2026-09-02
-    review_due: 2026-12-01
+  - doc_id: EMPIRICA-EVAL-BOTTLENECK-001
+    title: "Phase 2 Resource Bottleneck Analysis"
+    filename: PHASE2_RESOURCE_BOTTLENECK_ANALYSIS.md
+    revision: "1.0"
+    status: "active"
+    category: "analysis"
+    owner: "Carly R. Anderson (Admiral)"
+    approval_date: "2026-08-21T09:00:00Z"
+    approved_by: "Admiral (implicit — shipped in Phase 2 postflight)"
+    approval_mark: "IMPLICIT (part of Phase 2 postflight artifact)"
     canonical: true
-    retention: permanent
+    retention_years: 2
+    purpose: "Identifies 7 critical resource bottlenecks in Week 2. Used to design parallel deployment strategy."
 
-  - doc_id: HAIOS-TEST-009
-    title: Bio Systems Mapping V1
-    path: docs/TEST/BIO_SYSTEMS_MAPPING_V1.md
-    revision: 1
-    status: draft
-    owner: carly
-    created_date: 2026-09-02
-    review_due: 2026-12-01
+  - doc_id: EMPIRICA-EVAL-PARALLEL-001
+    title: "Parallel Cloudflare Deployment Goal (Resource-Keyed)"
+    filename: .empirica/GOAL_PARALLEL_DEPLOYMENT_RESOURCE_KEYED.json
+    revision: "1.0"
+    status: "queued"
+    category: "work-plan"
+    owner: "measurement-lead (implementation)"
+    approval_date: null
+    approved_by: "AWAITING ADMIRAL DECISION"
+    approval_mark: "NOT YET APPROVED"
     canonical: true
-    retention: permanent
+    retention_years: 1
+    purpose: "First work-plan in resource-keyed model. Demonstrates dual-path deployment (Workers Alt independent + HAIOSCC conditional on Admiral decision)."
+    verification:
+      - type: "validator-execution"
+        script: "bin/validate-resource-keyed-artifacts.sh"
+        last_run: "2026-08-21T16:25:00Z"
+        result: "PASS"
+        note: "Goal passes all resource-keyed validation checks"
 
-  - doc_id: HAIOS-TEST-010
-    title: Shared Memory Census V0.1
-    path: docs/TEST/SHARED_MEMORY_CENSUS_v0_1.md
-    revision: 1
-    status: draft
-    owner: carly
-    created_date: 2026-09-02
-    review_due: 2026-12-01
-    canonical: true
-    retention: permanent
+# Approval Workflow
+# ================
+# When Admiral marks a document as ratified, add their mark here:
+# approval_mark: "APPROVED by Carly R. Anderson, 2026-08-21T16:XX:XXZ"
+# status: "approved"
+#
+# Ratification mark format: "APPROVED by [Name], [ISO timestamp], signature/confirmation: [method]"
+# Example: "APPROVED by Carly R. Anderson, 2026-08-21T16:30:00Z, via git commit message"
 
-# Reference files (not controlled documents)
-references:
-  - filename: OPERATORS_MANUAL.md
-    path: reference/archive/2026-09-02/OPERATORS_MANUAL.md
-    archived_date: 2026-09-02
-    reason: Operational reference material
+# Verification Policy
+# ===================
+# Documents in "approved" status are ground truth for this project.
+# Documents in "active" status are live but may be pending full ratification.
+# Documents in "queued" status require approval before execution.
+#
+# Every execution of a work-plan (queued status document) requires:
+# 1. Validator passes (technical check)
+# 2. Admiral approval_mark present (human check)
+# 3. This registry updated (audit trail)

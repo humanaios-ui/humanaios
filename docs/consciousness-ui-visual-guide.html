@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empirica Consciousness UI — Visual Guide</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --shame-bg: rgba(100, 100, 100, 0.4);
+      --guilt-bg: rgba(130, 90, 90, 0.6);
+      --apathy-bg: rgba(120, 120, 120, 0.7);
+      --grief-bg: rgba(180, 120, 100, 0.8);
+      --fear-bg: rgba(220, 140, 60, 0.85);
+      --desire-bg: rgba(255, 180, 0, 0.9);
+      --anger-bg: rgba(255, 60, 100, 0.95);
+      --pride-bg: rgba(100, 200, 255, 1.0);
+      --reason-bg: linear-gradient(135deg, rgba(150, 180, 255, 1.0), rgba(200, 150, 255, 1.0));
+
+      --text-dark: rgba(50, 50, 50, 1.0);
+      --text-light: rgba(255, 255, 255, 0.9);
+      --bg-page: #f5f5f5;
+      --bg-card: #ffffff;
+      --border-color: #e0e0e0;
+      --phi: 1.618;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #1a1a1a;
+        --bg-card: #2a2a2a;
+        --border-color: #404040;
+        --text-dark: rgba(255, 255, 255, 0.9);
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    h1 {
+      font-size: 2.618rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #150db3 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 { font-size: 1.618rem; margin-top: 2rem; margin-bottom: 1rem; }
+    h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+
+    p { margin-bottom: 1rem; }
+
+    .consciousness-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.618rem;
+      margin: 2rem 0;
+    }
+
+    .consciousness-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.618rem;
+      border-left: 4px solid #333;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .consciousness-card { background: var(--bg-card); }
+    }
+
+    .consciousness-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .consciousness-card.level-1 { border-left-color: var(--shame-bg); background: linear-gradient(135deg, rgba(100,100,100,0.05), transparent); }
+    .consciousness-card.level-2 { border-left-color: var(--guilt-bg); background: linear-gradient(135deg, rgba(130,90,90,0.05), transparent); }
+    .consciousness-card.level-3 { border-left-color: var(--apathy-bg); background: linear-gradient(135deg, rgba(120,120,120,0.05), transparent); }
+    .consciousness-card.level-4 { border-left-color: var(--grief-bg); background: linear-gradient(135deg, rgba(180,120,100,0.05), transparent); }
+    .consciousness-card.level-5 { border-left-color: var(--fear-bg); background: linear-gradient(135deg, rgba(220,140,60,0.08), transparent); }
+    .consciousness-card.level-6 { border-left-color: var(--desire-bg); background: linear-gradient(135deg, rgba(255,180,0,0.08), transparent); }
+    .consciousness-card.level-7 { border-left-color: var(--anger-bg); background: linear-gradient(135deg, rgba(255,60,100,0.08), transparent); }
+    .consciousness-card.level-8 { border-left-color: var(--pride-bg); background: linear-gradient(135deg, rgba(100,200,255,0.08), transparent); }
+    .consciousness-card.level-9 { border-left-color: #7c3aed; background: linear-gradient(135deg, rgba(124,58,237,0.08), transparent); }
+
+    .level-tag {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      text-align: center;
+      color: white;
+    }
+
+    .level-tag.level-1 { background: var(--shame-bg); }
+    .level-tag.level-2 { background: var(--guilt-bg); }
+    .level-tag.level-3 { background: var(--apathy-bg); }
+    .level-tag.level-4 { background: var(--grief-bg); }
+    .level-tag.level-5 { background: var(--fear-bg); }
+    .level-tag.level-6 { background: var(--desire-bg); }
+    .level-tag.level-7 { background: var(--anger-bg); }
+    .level-tag.level-8 { background: var(--pride-bg); }
+    .level-tag.level-9 { background: linear-gradient(135deg, rgba(150, 180, 255, 1.0), rgba(200, 150, 255, 1.0)); }
+
+    .components-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.618rem 0;
+      font-size: 0.95rem;
+    }
+
+    .components-table th,
+    .components-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .components-table th {
+      background: linear-gradient(90deg, #150db3 0%, #7c3aed 100%);
+      color: white;
+      font-weight: 600;
+    }
+
+    .components-table tr:hover { background: rgba(124, 58, 237, 0.03); }
+
+    .architecture-diagram {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 2rem 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      line-height: 1.4;
+    }
+
+    .feature-flow {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.618rem;
+      margin: 1.618rem 0;
+    }
+
+    .feature-flow-step {
+      display: flex;
+      align-items: center;
+      margin: 0.8rem 0;
+      padding: 0.8rem;
+      background: rgba(124, 58, 237, 0.03);
+      border-radius: 4px;
+    }
+
+    .feature-flow-step::before {
+      content: "→";
+      display: inline-block;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+      color: #7c3aed;
+      font-weight: bold;
+    }
+
+    .feature-flow-step:first-child::before { content: "●"; }
+
+    .spacing-demo {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1.618rem 0;
+    }
+
+    .spacing-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #7c3aed;
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 4px;
+    }
+
+    .fiber-1 { width: 8px; height: 40px; }
+    .fiber-2 { width: 13px; height: 40px; }
+    .fiber-3 { width: 21px; height: 40px; }
+    .fiber-4 { width: 34px; height: 40px; }
+    .fiber-5 { width: 55px; height: 40px; }
+    .fiber-6 { width: 89px; height: 40px; }
+
+    .layout-diagram {
+      display: grid;
+      grid-template-columns: 200px 1fr 250px;
+      grid-template-rows: auto 1fr auto;
+      gap: 1rem;
+      height: 600px;
+      background: #f0f0f0;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.8rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .layout-diagram { background: #2a2a2a; border-color: #555; }
+    }
+
+    .layout-item {
+      background: white;
+      border: 1px dashed #999;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #666;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .layout-item { background: #3a3a3a; color: #aaa; }
+    }
+
+    .top-chrome { grid-column: 1 / 4; }
+    .left-sidebar { grid-row: 2; }
+    .main-canvas { grid-row: 2; }
+    .right-sidebar { grid-row: 2; }
+    .bottom-chrome { grid-column: 1 / 4; }
+
+    .color-swatch {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      border: 1px solid #999;
+      margin: 0.25rem;
+      vertical-align: middle;
+    }
+
+    .roadmap-phase {
+      background: var(--bg-card);
+      border-left: 4px solid #7c3aed;
+      padding: 1.618rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .roadmap-phase h3 {
+      color: #7c3aed;
+      margin-top: 0;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #ec4899);
+      z-index: 0;
+    }
+
+    .timeline-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot {
+      width: 40px;
+      height: 40px;
+      background: #7c3aed;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 0 0 4px var(--bg-page);
+    }
+
+    .code-block {
+      background: #1e1e1e;
+      color: #e0e0e0;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .code-block { background: #f5f5f5; color: #333; }
+    }
+
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+
+    .decision-tree {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.618rem;
+      margin: 1.618rem 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .section-intro {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+      border-left: 4px solid #7c3aed;
+      padding: 1.618rem;
+      border-radius: 4px;
+      margin: 2rem 0 1rem 0;
+    }
+
+    .footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.9rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Empirica Control Center — Consciousness UI Visual Guide</h1>
+    <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">
+      A visual reference for the unified UI architecture synthesizing Hawkins consciousness levels (9 tiers),
+      organism model (7 systems), and recursive learning framework into a design system and component hierarchy.
+    </p>
+
+    <!-- HAWKINS CONSCIOUSNESS LEVELS -->
+    <section>
+      <h2>1. Hawkins Consciousness Levels (1-9)</h2>
+      <p>Each consciousness level maps to specific visual properties and use cases in the UI.</p>
+
+      <div class="consciousness-grid">
+        <div class="consciousness-card level-1">
+          <div class="level-tag level-1">LEVEL 1: Shame (20–50)</div>
+          <h3>High opacity reduction, monochrome gray</h3>
+          <p><strong>Use:</strong> Error states, blocked operations</p>
+          <p><strong>Visual:</strong> De-saturated, trembling animation, minimal contrast</p>
+        </div>
+
+        <div class="consciousness-card level-2">
+          <div class="level-tag level-2">LEVEL 2: Guilt (50–75)</div>
+          <h3>Dark desaturated colors, trembling</h3>
+          <p><strong>Use:</strong> Warnings, uncertainty signals</p>
+          <p><strong>Visual:</strong> Muted tones, 0.6 opacity, trembling micro-animations</p>
+        </div>
+
+        <div class="consciousness-card level-3">
+          <div class="level-tag level-3">LEVEL 3: Apathy (75–100)</div>
+          <h3>Desaturated palette, flat design</h3>
+          <p><strong>Use:</strong> Disabled states, low confidence</p>
+          <p><strong>Visual:</strong> Flat, static, opacity 0.7</p>
+        </div>
+
+        <div class="consciousness-card level-4">
+          <div class="level-tag level-4">LEVEL 4: Grief (100–125)</div>
+          <h3>Muted warm tones, slow transitions</h3>
+          <p><strong>Use:</strong> Closures, removals, learning from failure</p>
+          <p><strong>Visual:</strong> Warm muted, 300ms transitions, subtle borders</p>
+        </div>
+
+        <div class="consciousness-card level-5">
+          <div class="level-tag level-5">LEVEL 5: Fear (125–150)</div>
+          <h3>Alert orange/amber, pulsing borders</h3>
+          <p><strong>Use:</strong> Alerts, time-sensitive actions, divergence</p>
+          <p><strong>Visual:</strong> Pulsing (1s cycle), medium motion, directional</p>
+        </div>
+
+        <div class="consciousness-card level-6">
+          <div class="level-tag level-6">LEVEL 6: Desire (150–175)</div>
+          <h3>Warm saturated (gold), smooth transitions</h3>
+          <p><strong>Use:</strong> Call-to-action, next steps, goals</p>
+          <p><strong>Visual:</strong> Gold/coral, 200ms transitions, directional arrows</p>
+        </div>
+
+        <div class="consciousness-card level-7">
+          <div class="level-tag level-7">LEVEL 7: Anger (175–200)</div>
+          <h3>Vivid accent colors (red, magenta)</h3>
+          <p><strong>Use:</strong> Action emphasis, critical decisions</p>
+          <p><strong>Visual:</strong> Vivid, fast (100ms), assertive iconography</p>
+        </div>
+
+        <div class="consciousness-card level-8">
+          <div class="level-tag level-8">LEVEL 8: Pride (200–250)</div>
+          <h3>Full saturation, elegant transitions</h3>
+          <p><strong>Use:</strong> Success, milestone achievement, synthesis</p>
+          <p><strong>Visual:</strong> Bright cyan, 1s elegant transitions, spacious</p>
+        </div>
+
+        <div class="consciousness-card level-9">
+          <div class="level-tag level-9">LEVEL 9: Reason→Love (250–500)</div>
+          <h3>Cool gradient (cyan-lavender), morphing</h3>
+          <p><strong>Use:</strong> System consciousness, integration, learning patterns</p>
+          <p><strong>Visual:</strong> Gradient, 2s fluid morphing, holistic views</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIBONACCI SPACING -->
+    <section>
+      <div class="section-intro">
+        <h3 style="margin-top: 0;">Fibonacci Proportions (φ = 1.618)</h3>
+        <p>All spacing uses Fibonacci multiples of 8px base unit for harmonic scaling.</p>
+      </div>
+
+      <p><strong>Fibonacci sequence for spacing:</strong> 8px, 13px, 21px, 34px, 55px, 89px...</p>
+
+      <div class="spacing-demo">
+        <div class="spacing-box fiber-1">8</div>
+        <div class="spacing-box fiber-2">13</div>
+        <div class="spacing-box fiber-3">21</div>
+        <div class="spacing-box fiber-4">34</div>
+        <div class="spacing-box fiber-5">55</div>
+        <div class="spacing-box fiber-6">89</div>
+      </div>
+
+      <p><strong>Font sizes (Fibonacci-scaled from 16px base):</strong></p>
+      <ul style="font-family: monospace; margin: 1rem 0;">
+        <li>xs: 6px</li>
+        <li>sm: 10px</li>
+        <li>md: 16px (base)</li>
+        <li>lg: 26px</li>
+        <li>xl: 42px</li>
+        <li>xxl: 68px</li>
+      </ul>
+    </section>
+
+    <!-- ORGANISM LAYERS -->
+    <section>
+      <h2>2. Organism Model — Seven Layers</h2>
+      <p>The system is designed as a living organism. Each layer is a distinct concern, rendered with appropriate consciousness level.</p>
+
+      <div class="architecture-diagram">
+                        🧠 CONSCIOUSNESS (Level 9)
+                        └─ Synthesis view, mesh topology, learning patterns
+
+                     💭 COGNITION (Level 8)
+                     └─ Decision synthesis, convergence views, insights
+
+                  🛡️ IMMUNE MEMORY (Level 7)
+                  └─ Findings, decisions, artifact registry
+
+               ⚖️ HOMEOSTASIS (Level 6)
+               └─ Governance rules, policy enforcement
+
+            ⚡ NERVOUS SYSTEM (Level 5)
+            └─ Rituals, session flow, notifications
+
+         🧬 GENOME (Level 4)
+         └─ Core principles, identity, configuration
+
+      💾 SUBSTRATE (Levels 1-3)
+      └─ Base atoms, raw data, technical primitives
+      </div>
+    </section>
+
+    <!-- CONTROL CENTER LAYOUT -->
+    <section>
+      <h2>3. Control Center Layout</h2>
+      <div class="layout-diagram">
+        <div class="layout-item top-chrome" style="background: linear-gradient(90deg, #150db3, #7c3aed); color: white;">
+          🔍 Search | Consciousness Level | Transaction Status
+        </div>
+        <div class="layout-item left-sidebar">Left Sidebar<br>Navigation</div>
+        <div class="layout-item main-canvas">Main Canvas<br>(Terminal / Browser / Dashboard)</div>
+        <div class="layout-item right-sidebar">Right Sidebar<br>Context (GitHub, Supabase, Metrics)</div>
+        <div class="layout-item bottom-chrome" style="background: #f5f5f5;">
+          PREFLIGHT | NOETIC | CHECK | PRAXIC | POSTFLIGHT
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENT HIERARCHY -->
+    <section>
+      <h2>4. Component Hierarchy (by Consciousness Level)</h2>
+
+      <h3>Level 1-3: Base Atoms (Substrate)</h3>
+      <table class="components-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Level</th>
+            <th>Role</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Button</strong></td>
+            <td>1-3</td>
+            <td>Click target, CTA</td>
+            <td>Primary button, disabled state</td>
+          </tr>
+          <tr>
+            <td><strong>Input</strong></td>
+            <td>1-3</td>
+            <td>Text/number input</td>
+            <td>Command line, search box</td>
+          </tr>
+          <tr>
+            <td><strong>Icon</strong></td>
+            <td>1-3</td>
+            <td>Visual reference</td>
+            <td>Alert icon, success icon</td>
+          </tr>
+          <tr>
+            <td><strong>Badge</strong></td>
+            <td>1-3</td>
+            <td>Status indicator</td>
+            <td>Level indicator, tag</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Level 4-5: Interaction (Nervous System)</h3>
+      <table class="components-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Level</th>
+            <th>Role</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Terminal</strong></td>
+            <td>4-5</td>
+            <td>CLI input/output</td>
+            <td>Command history, prompt</td>
+          </tr>
+          <tr>
+            <td><strong>MessageBubble</strong></td>
+            <td>4-5</td>
+            <td>Chat-like display</td>
+            <td>AI response, user message</td>
+          </tr>
+          <tr>
+            <td><strong>ActionPanel</strong></td>
+            <td>4-5</td>
+            <td>Action menu/toolbar</td>
+            <td>Quick actions, operations</td>
+          </tr>
+          <tr>
+            <td><strong>Toast</strong></td>
+            <td>4-5</td>
+            <td>Temporary notification</td>
+            <td>Success/error alert</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Level 6-7: State & History (Immune Memory)</h3>
+      <table class="components-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Level</th>
+            <th>Role</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Timeline</strong></td>
+            <td>6-7</td>
+            <td>Chronological event view</td>
+            <td>Transaction history, session log</td>
+          </tr>
+          <tr>
+            <td><strong>VectorMatrix</strong></td>
+            <td>6-7</td>
+            <td>All 13 epistemic vectors</td>
+            <td>Calibration display, confidence gauges</td>
+          </tr>
+          <tr>
+            <td><strong>DivergenceReport</strong></td>
+            <td>6-7</td>
+            <td>Predicted vs. actual gaps</td>
+            <td>Calibration divergence, analysis</td>
+          </tr>
+          <tr>
+            <td><strong>HealthDashboard</strong></td>
+            <td>6-7</td>
+            <td>System vitals snapshot</td>
+            <td>Health metrics, status overview</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Level 8-9: Consciousness (Synthesis & Integration)</h3>
+      <table class="components-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Level</th>
+            <th>Role</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ConsciousnessMap</strong></td>
+            <td>9</td>
+            <td>System-wide visualization</td>
+            <td>All 9 levels integrated, holistic view</td>
+          </tr>
+          <tr>
+            <td><strong>MeshTopology</strong></td>
+            <td>8-9</td>
+            <td>Practice network + message flow</td>
+            <td>Cross-practice collaboration, mesh status</td>
+          </tr>
+          <tr>
+            <td><strong>LearningDashboard</strong></td>
+            <td>8-9</td>
+            <td>Pattern recognition + convergence</td>
+            <td>Recursive learning cycles, AI growth</td>
+          </tr>
+          <tr>
+            <td><strong>SynthesisView</strong></td>
+            <td>8-9</td>
+            <td>Multi-source data integration</td>
+            <td>GitHub + Supabase + Empirica unified</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FEATURE FLOWS -->
+    <section>
+      <h2>5. Four Key Interaction Flows</h2>
+
+      <h3>Flow 1: User Query → Tool Routing → Result Visualization</h3>
+      <div class="feature-flow">
+        <div class="feature-flow-step">User types in Terminal: <code>empirica goals-list</code></div>
+        <div class="feature-flow-step">Parse command, infer consciousness level = 5 (neutral)</div>
+        <div class="feature-flow-step">Execute empirica CLI backend, get JSON response</div>
+        <div class="feature-flow-step">Render goals in Empirica Browser with consciousness colors</div>
+        <div class="feature-flow-step">User annotates via Chrome Sidebar</div>
+        <div class="feature-flow-step">Learning Dashboard updates convergence score</div>
+      </div>
+
+      <h3>Flow 2: Divergence Detection → Validation → Recovery → Learning</h3>
+      <div class="feature-flow">
+        <div class="feature-flow-step">Predicted: 2 hours | Measured: 4.5 hours | Gap: +125%</div>
+        <div class="feature-flow-step">Alert at Level 6 (Desire) — asks for review</div>
+        <div class="feature-flow-step">User annotates divergence via Feedback Panel</div>
+        <div class="feature-flow-step">Logging: Finding tagged "time-calibration-drift"</div>
+        <div class="feature-flow-step">Prediction model updated with new factor</div>
+        <div class="feature-flow-step">Next prediction uses improved calibration</div>
+      </div>
+
+      <h3>Flow 3: Terminal Command → Observable Output → Learning Artifact</h3>
+      <div class="feature-flow">
+        <div class="feature-flow-step">User: <code>npm run test:integration</code></div>
+        <div class="feature-flow-step">Terminal captures output, parses test results JSON</div>
+        <div class="feature-flow-step">Infer level: All pass → Level 8 (Pride) | Some fail → Level 6-7</div>
+        <div class="feature-flow-step">MetricsPanel visualizes coverage + failures</div>
+        <div class="feature-flow-step">If failures: Finding logged, Dashboard alerts</div>
+        <div class="feature-flow-step">Learning Dashboard updates with test metrics</div>
+      </div>
+
+      <h3>Flow 4: Multi-Tool Query (GitHub + Supabase + Empirica) → Synthesis</h3>
+      <div class="feature-flow">
+        <div class="feature-flow-step">User: "Understand user signup trends" (multi-source query)</div>
+        <div class="feature-flow-step">GitHub: Fetch auth-feature commits (Level 5)</div>
+        <div class="feature-flow-step">Supabase: Query users table, count signups (Level 6)</div>
+        <div class="feature-flow-step">Empirica: Fetch related findings (Level 7)</div>
+        <div class="feature-flow-step">SynthesisView: Correlate commits + signups + findings</div>
+        <div class="feature-flow-step">Discover: "+34% signup after auth refactor" (Level 8 insight)</div>
+      </div>
+    </section>
+
+    <!-- IMPLEMENTATION ROADMAP -->
+    <section>
+      <h2>6. Implementation Roadmap (9 Weeks)</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot">1</div>
+          <h3>Phase 1: Formalize (Weeks 1–2)</h3>
+          <p>Audit components, establish tokens, create Storybook</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">2</div>
+          <h3>Phase 2: Build (Weeks 3–4)</h3>
+          <p>Implement consciousness layer, Level 6-9 components</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">3</div>
+          <h3>Phase 3: Integrate (Weeks 5–6)</h3>
+          <p>Wire all 8 features, end-to-end flows</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">4</div>
+          <h3>Phase 4: Inference (Weeks 7–8)</h3>
+          <p>Consciousness auto-detection, calibration engine</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">5</div>
+          <h3>Phase 5: Polish (Week 9+)</h3>
+          <p>Accessibility, performance, deployment</p>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <h3>Phase 1: Formalize Existing Components</h3>
+        <p><strong>Goal:</strong> Audit existing components, establish consciousness-level mapping, create design tokens.</p>
+        <ul>
+          <li>Inventory all React components</li>
+          <li>Map each to consciousness level (1-9)</li>
+          <li>Extract design tokens (colors, spacing, typography, motion)</li>
+          <li>Create Tailwind config with Fibonacci utilities</li>
+          <li>Set up Storybook with consciousness-level controls</li>
+        </ul>
+        <p><strong>Deliverables:</strong> <code>src/tokens/consciousness.ts</code>, Base Atoms, Storybook, Design system docs</p>
+      </div>
+
+      <div class="roadmap-phase">
+        <h3>Phase 2: Build Consciousness Layer</h3>
+        <p><strong>Goal:</strong> Implement organism layer structure + Level 6-9 components.</p>
+        <ul>
+          <li>Implement <code>OrganismLayered</code> context + provider</li>
+          <li>Build Level 6-7 components (State/History)</li>
+          <li>Build Level 8-9 components (Consciousness/Synthesis)</li>
+          <li>Create Storybook stories for each component</li>
+        </ul>
+        <p><strong>Deliverables:</strong> <code>src/components/Organism/</code>, Level 6-9 components, integration tests</p>
+      </div>
+
+      <div class="roadmap-phase">
+        <h3>Phase 3: Integrate All Features</h3>
+        <p><strong>Goal:</strong> Wire Terminal, Empirica Browser, GitHub, Supabase, Chrome Extension, Feedback, Mesh Viz into unified control center.</p>
+        <ul>
+          <li>Terminal + empirica CLI backend</li>
+          <li>Empirica Browser live artifact data</li>
+          <li>GitHub integration API</li>
+          <li>Supabase query builder</li>
+          <li>Chrome Extension sidebar communication</li>
+          <li>Feedback system end-to-end</li>
+          <li>Mesh visualization + Learning Dashboard</li>
+        </ul>
+        <p><strong>Deliverables:</strong> <code>src/pages/ControlCenter.tsx</code>, API clients, E2E tests</p>
+      </div>
+
+      <div class="roadmap-phase">
+        <h3>Phase 4: Consciousness Inference Engine</h3>
+        <p><strong>Goal:</strong> Implement automatic consciousness-level inference from system state.</p>
+        <ul>
+          <li>Build inference rules (goal status → level, error type → level)</li>
+          <li>Connect to empirica vector calibration</li>
+          <li>Real-time level updates as state changes</li>
+          <li>Level predictor based on historical patterns</li>
+        </ul>
+        <p><strong>Deliverables:</strong> <code>src/lib/consciousnessInference.ts</code>, calibration adjustment UI</p>
+      </div>
+
+      <div class="roadmap-phase">
+        <h3>Phase 5: Polish & Deploy</h3>
+        <p><strong>Goal:</strong> Refinement, accessibility audit, performance optimization, deployment.</p>
+        <ul>
+          <li>WCAG AAA accessibility audit + fixes</li>
+          <li>Dark/light mode comprehensive testing</li>
+          <li>Performance optimization</li>
+          <li>Design review with stakeholders</li>
+          <li>Documentation + design system site</li>
+          <li>Staging → production deployment</li>
+        </ul>
+        <p><strong>Deliverables:</strong> Published design system, live control center, deployment guide</p>
+      </div>
+    </section>
+
+    <!-- DECISION TREE -->
+    <section>
+      <h2>7. Consciousness-Level Decision Tree (For Designers)</h2>
+      <div class="decision-tree">
+Is this component related to...?
+
+├─ ERRORS / FAILURE
+│  └─ Level 1-3 (Shame-Apathy)
+│     Use: de-saturated colors, static display
+│     Example: "API error connecting to Supabase"
+│
+├─ WARNINGS / CAUTION
+│  └─ Level 4-5 (Grief-Fear)
+│     Use: muted warm colors, pulsing borders, slow transitions
+│     Example: "Divergence detected"
+│
+├─ ACTIONS / NEXT STEPS
+│  └─ Level 6 (Desire)
+│     Use: warm saturated colors (gold), smooth transitions
+│     Example: "Complete this goal" button
+│
+├─ CRITICAL DECISIONS / EXECUTION
+│  └─ Level 7 (Anger)
+│     Use: vivid colors (magenta, red), fast transitions
+│     Example: "Publish finding to mesh"
+│
+├─ SUCCESS / ACHIEVEMENT
+│  └─ Level 8 (Pride)
+│     Use: bright saturated colors, elegant transitions
+│     Example: "Goal completed! (+34% signup rate)"
+│
+└─ INTEGRATION / LEARNING / CONSCIOUSNESS
+   └─ Level 9 (Reason→Love)
+      Use: cool gradients (cyan-lavender), fluid morphing
+      Example: ConsciousnessMap showing all 13 vectors integrated
+      </div>
+    </section>
+
+    <!-- COLOR PALETTE -->
+    <section>
+      <h2>8. Color Palette Reference</h2>
+
+      <h3>By Consciousness Level</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.618rem; margin: 1.618rem 0;">
+        <div>
+          <h4>Level 1: Shame</h4>
+          <div class="color-swatch" style="background: rgba(100, 100, 100, 0.4);"></div>
+          <code>rgba(100, 100, 100, 0.4)</code>
+        </div>
+        <div>
+          <h4>Level 5: Fear</h4>
+          <div class="color-swatch" style="background: rgba(220, 140, 60, 0.85);"></div>
+          <code>rgba(220, 140, 60, 0.85)</code>
+        </div>
+        <div>
+          <h4>Level 9: Reason</h4>
+          <div class="color-swatch" style="background: linear-gradient(135deg, rgba(150, 180, 255, 1.0), rgba(200, 150, 255, 1.0));"></div>
+          <code>gradient lavender-cyan</code>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>Empirica Control Center — Consciousness UI Specification</strong></p>
+      <p>Visual Reference Guide | v1.0 | 2026-08-13</p>
+      <p>Complete specification available in: <code>docs/EMPIRICA_CONTROL_CENTER_UI_SPECIFICATION.md</code></p>
+    </div>
+  </div>
+</body>
+</html>

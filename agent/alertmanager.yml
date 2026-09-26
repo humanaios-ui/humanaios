@@ -1,0 +1,63 @@
+# AlertManager Configuration for Phase 3.4
+# Routes alerts from Prometheus to notification channels (Slack, email, webhooks)
+
+global:
+  resolve_timeout: 5m
+
+# The root route with all parameters, which are inherited by the child
+# routes if they are not overwritten.
+route:
+  # The labels by which incoming alerts are grouped together
+  group_by: ['alertname', 'cluster', 'service']
+
+  # How long to initially wait to send a notification for a group
+  # of alerts. Allows to wait for an inhibiting alert to arrive or collect
+  # more initial alerts for the same group. (default: 10s)
+  group_wait: 10s
+
+  # How long to wait before sending a notification about new alerts added
+  # to a group of alerts for which an initial notification has already
+  # been sent. (default: 10s)
+  group_interval: 10s
+
+  # How long to wait before repeating a notification for a particular alert
+  repeat_interval: 12h
+
+  # The default receiver name is used for an alert when a matching route does
+  # not have a receiver. It must be configured in the receivers section.
+  receiver: 'default'
+
+  # The child routes. Optional.
+  routes:
+    # Critical alerts - immediate notification (manual monitoring only)
+    - match:
+        severity: critical
+      receiver: 'default'
+      group_wait: 0s
+      group_interval: 5m
+      repeat_interval: 1h
+
+    # Warning alerts - grouped (manual monitoring only)
+    - match:
+        severity: warning
+      receiver: 'default'
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+
+# Inhibition rules to suppress certain alerts
+inhibit_rules:
+  # Suppress warning/info alerts if critical alert exists
+  - source_match:
+      severity: 'critical'
+    target_match_re:
+      severity: 'warning|info'
+    equal: ['alertname', 'cluster', 'service']
+
+# Receivers - define notification channels
+# For manual monitoring (Option 2), alerts are checked in the AlertManager UI.
+# No external notifications are sent.
+receivers:
+  - name: 'default'
+    # Default: no notifications (manual monitoring via UI only)
+    # Alerts are stored in AlertManager and visible at localhost:9093

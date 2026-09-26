@@ -1,7 +1,7 @@
 {
   "name": "humanaios-auth",
   "version": "1.0.0",
-  "description": "Deprecated legacy authentication scaffold retained for reference; apps/api is the canonical runtime",
+  "description": "Authentication system for HumanAIOS - Physical execution layer for AI agents",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -21,17 +21,17 @@
     "pg": "^8.11.3",
     "bcrypt": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
-    "dotenv": "^17.4.2",
-    "express-rate-limit": "^8.6.1",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
-    "nodemailer": "^9.0.3",
+    "nodemailer": "^6.9.7",
     "uuid": "^14.0.1",
-    "helmet": "^8.3.0",
+    "helmet": "^7.1.0",
     "cors": "^2.8.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
-    "jest": "^30.4.2"
+    "jest": "^29.7.0"
   },
   "engines": {
     "node": ">=18.0.0"

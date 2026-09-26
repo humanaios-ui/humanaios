@@ -1,0 +1,85 @@
+---
+# Phase 3.9: Alert Rules for Tier 1 Practices
+# Core Foundation - Strictest SLAs (4 practices)
+# Generated: 2026-09-17
+
+apiVersion: monitoring.empirica.io/v1
+kind: AlertRuleSet
+metadata:
+  name: sla-tier1-alerts
+  namespace: empirica-monitoring
+  labels:
+    phase: "3.9"
+    tier: "1"
+    sla_enforcement: "true"
+
+spec:
+  alert_rules:
+    - name: Tier1_QueryLatency_P95_Warning
+      severity: warning
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS * 0.8"
+      duration: "5m"
+      escalation_response_minutes: 5
+      thresholds:
+        empirica-autonomy: 800
+        empirica-mesh-support: 1200
+        empirica-foundation-evaluator: 960
+        empirica-outreach: 1600
+      actions: [NOTIFY:mesh-support, NOTIFY:evaluator]
+
+    - name: Tier1_QueryLatency_P95_Critical
+      severity: critical
+      condition: "query_latency_p95_ms > PRACTICE_P95_MS"
+      duration: "2m"
+      escalation_response_minutes: 2
+      thresholds:
+        empirica-autonomy: 1000
+        empirica-mesh-support: 1500
+        empirica-foundation-evaluator: 1200
+        empirica-outreach: 2000
+      actions: [ESCALATE:L2, PAGE:evaluator, LOG:critical]
+
+    - name: Tier1_HealthScore_Warning
+      severity: warning
+      condition: "health_score < 0.80"
+      duration: "10m"
+      escalation_response_minutes: 5
+      actions: [NOTIFY:mesh-support, RECORD:finding]
+
+    - name: Tier1_HealthScore_Critical
+      severity: critical
+      condition: "health_score < 0.75"
+      duration: "5m"
+      escalation_response_minutes: 2
+      actions: [ESCALATE:L2, PAGE:evaluator, PAGE:admiral]
+
+    - name: Tier1_IngestionRate_Low
+      severity: warning
+      condition: "ingestion_rate_cps < PRACTICE_MIN_CPS"
+      duration: "15m"
+      escalation_response_minutes: 5
+      thresholds:
+        empirica-autonomy: 10
+        empirica-mesh-support: 20
+        empirica-foundation-evaluator: 15
+        empirica-outreach: 5
+      actions: [NOTIFY:mesh-support, DIAGNOSE:instrumentation]
+
+    - name: Tier1_TraceCorrelation_Low
+      severity: warning
+      condition: "trace_correlation < 0.95"
+      duration: "10m"
+      escalation_response_minutes: 5
+      actions: [NOTIFY:mesh-support, DIAGNOSE:traces]
+
+    - name: Tier1_CoordinationLatency_High
+      severity: warning
+      condition: "coordination_latency_p95_s > PRACTICE_COORD_P95_S"
+      duration: "3m"
+      escalation_response_minutes: 5
+      thresholds:
+        empirica-autonomy: 5
+        empirica-mesh-support: 10
+        empirica-foundation-evaluator: 8
+        empirica-outreach: 15
+      actions: [NOTIFY:mesh-support, INSPECT:network]

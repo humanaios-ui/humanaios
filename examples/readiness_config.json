@@ -1,0 +1,33 @@
+{
+  "description": "Example readiness-check configuration: Ready to implement",
+  "evidence": [
+    {
+      "kind": "read",
+      "source": "system-prompt.md",
+      "confidence": 0.95,
+      "notes": "Read TRANSACTION DISCIPLINE and NOETIC FIREWALL sections"
+    },
+    {
+      "kind": "read",
+      "source": "empirica-constitution.md",
+      "confidence": 0.92,
+      "notes": "Understood phase-aware completion model and CHECK certification"
+    },
+    {
+      "kind": "grep",
+      "source": "codebase search for gate patterns",
+      "confidence": 0.85,
+      "notes": "Found no existing Sentinel gates, confirmed clean implementation surface"
+    }
+  ],
+  "assumptions": [
+    {
+      "text": "Sentinel state schema matches the 6-vector model (know, uncertainty, context, engagement, clarity, coherence)",
+      "confidence": 0.80
+    }
+  ],
+  "unknowns": [],
+  "min_evidence": 3,
+  "max_assumptions": 2,
+  "max_uncertainty": 0.25
+}

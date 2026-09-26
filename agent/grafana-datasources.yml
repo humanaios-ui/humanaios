@@ -1,0 +1,35 @@
+# Grafana Data Sources Configuration for Phase 3.4
+# Auto-provisioned datasources for Prometheus
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: 15s
+      queryTimeout: 60s
+    version: 1
+    orgId: 1
+
+  # Jaeger datasource for trace visualization
+  - name: Jaeger
+    type: jaeger
+    access: proxy
+    url: http://jaeger:16686
+    isDefault: false
+    version: 1
+    orgId: 1
+
+  # Loki datasource for log aggregation
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    isDefault: false
+    version: 1
+    orgId: 1

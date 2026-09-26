@@ -1,0 +1,89 @@
+# OpenTelemetry Collector Configuration
+# Phase 3.4: Distributed Tracing for Foundation Orchestration
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+    auth:
+      authenticator: bearer_token
+  
+  # Prometheus scrape for metrics
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'otel-collector'
+          static_configs:
+            - targets: ['localhost:8888']
+
+processors:
+  batch:
+    send_batch_size: 100
+    timeout: 10s
+  
+  attributes:
+    actions:
+      - key: cluster
+        value: foundation
+        action: upsert
+      - key: environment
+        value: production
+        action: upsert
+  
+  span:
+    name:
+      from_attributes:
+        - transaction_id
+        - goal_id
+        - practice_id
+    status:
+      code: Ok
+  
+  # Sampling: sample 100% in Phase 3.4 (baseline), later reduce to 10%
+  sampling:
+    sampling_percentage: 100
+
+exporters:
+  jaeger:
+    endpoint: http://localhost:14250
+    headers:
+      Authorization: "Bearer otel-collector-token"
+  
+  loki:
+    endpoint: http://localhost:3100/loki/api/v1/push
+    headers:
+      Authorization: "Bearer otel-loki-token"
+  
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    const_labels:
+      exporter: otel-collector
+  
+  logging:
+    loglevel: debug
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [attributes, span, sampling, batch]
+      exporters: [jaeger, loki, logging]
+    
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [attributes, batch]
+      exporters: [prometheus]
+    
+    logs:
+      receivers: [otlp]
+      processors: [attributes, batch]
+      exporters: [loki, logging]
+
+extensions:
+  health_check:
+    endpoint: :13133
+  pprof:
+    endpoint: :1777

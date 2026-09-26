@@ -1,0 +1,57 @@
+# Orchestration metadata for empirica-foundation-evaluator
+# Created: 2026-09-11 14:35 UTC
+# Schema: PRACTICE_MESH_ORCHESTRATION_SCHEMA.yaml
+
+contact:
+  owner_contact_id: "carly.r.anderson@gmail.com"
+  stakeholder_contact_ids:
+    - "noreply@anthropic.com"
+  escalation_contact_id: "carly.r.anderson@gmail.com"
+  escalation_timeout_minutes: 60
+
+authority:
+  authority_tier_id: "zone-2"
+  delegation_source_id: "Admiral"
+  delegation_chain:
+    - "Admiral (Carly R. Anderson)"
+
+mesh:
+  mesh_role_id: "evaluator"
+  temporal_sync_interval:
+    base_interval_seconds: 30
+    max_interval_seconds: 300
+    reason: "Hub: critical path measurement authority"
+  health_check_endpoint_id: "orchestration_events table (Phase 3 Analytics)"
+
+dependencies:
+  dependency_ids:
+    - "empirica-temporal-oracle"
+    - "empirica-mesh-support"
+  dependent_ids:
+    - "empirica-autonomy"
+    - "empirica-outreach"
+  critical_path: true
+
+hierarchy:
+  org_unit_id: "empirica-foundation"
+  team_size: 1
+
+governance:
+  sla_response_time_hours: 1
+  sla_decision_time_hours: 4
+  escalation_sla_minutes: 60
+  audit_frequency_days: 7
+  compliance_frameworks:
+    - "prEN-18229-1"
+    - "ISO-42001"
+
+resources:
+  labor_budget_hours: 160
+  ai_token_budget: 5000000
+  decision_quota_per_month: 50
+  priority_level: "critical"
+
+metadata:
+  created_at: "2026-09-11T14:35:00Z"
+  last_updated_at: "2026-09-11T14:35:00Z"
+  validated_by: "empirica-foundation-evaluator (sync_validator.py)"

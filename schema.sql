@@ -99,32 +99,30 @@ CREATE TABLE agent_activities (
     id UUID DEFAULT uuid_generate_v4(),
     agent_id UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
     org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    activity_type VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    input_data JSONB,
-    output_data JSONB,
+    timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    type VARCHAR(50) NOT NULL,
+    action VARCHAR(255) NOT NULL,
+    payload JSONB DEFAULT '{}',
     status VARCHAR(50) DEFAULT 'success',
     error_message TEXT,
     cost_usd DECIMAL(10, 6) DEFAULT 0,
     duration_ms INTEGER,
-    tokens_used INTEGER,
     metadata JSONB DEFAULT '{}',
     
-    CONSTRAINT valid_activity_type CHECK (activity_type IN ('tool_call', 'completion', 'error', 'custom', 'llm_request', 'task_complete')),
-    CONSTRAINT valid_status CHECK (status IN ('success', 'error', 'pending', 'failed'))
+    CONSTRAINT valid_activity_type CHECK (type IN ('tool_call', 'decision', 'error', 'human_request', 'message', 'other')),
+    CONSTRAINT valid_status CHECK (status IN ('success', 'error', 'pending'))
 );
 
 -- Convert to TimescaleDB hypertable
-SELECT create_hypertable('agent_activities', 'created_at', 
+SELECT create_hypertable('agent_activities', 'timestamp', 
     chunk_time_interval => INTERVAL '1 day',
     if_not_exists => TRUE
 );
 
 -- Indexes for common queries
-CREATE INDEX idx_agent_activities_agent_id ON agent_activities(agent_id, created_at DESC);
-CREATE INDEX idx_agent_activities_org_id ON agent_activities(org_id, created_at DESC);
-CREATE INDEX idx_agent_activities_type ON agent_activities(activity_type, created_at DESC);
+CREATE INDEX idx_agent_activities_agent_id ON agent_activities(agent_id, timestamp DESC);
+CREATE INDEX idx_agent_activities_org_id ON agent_activities(org_id, timestamp DESC);
+CREATE INDEX idx_agent_activities_type ON agent_activities(type, timestamp DESC);
 
 -- ============================================
 -- HUMAN TASK TABLES
@@ -198,6 +196,45 @@ CREATE TABLE task_status_history (
 CREATE INDEX idx_task_status_history_task_id ON task_status_history(task_id);
 
 -- ============================================
+-- REGISTRY & OBSERVABILITY TABLES
+-- ============================================
+
+-- Registry Submissions (API bridge persistence layer)
+CREATE TABLE registry_submissions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    submission_data JSONB NOT NULL,
+    validation_status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    validated_at TIMESTAMP WITH TIME ZONE,
+    error_details JSONB,
+    timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+    CONSTRAINT valid_validation_status CHECK (validation_status IN ('pending', 'valid', 'invalid', 'processed'))
+);
+
+-- Indexes for common queries
+CREATE INDEX idx_registry_submissions_org_id ON registry_submissions(org_id);
+CREATE INDEX idx_registry_submissions_timestamp ON registry_submissions(timestamp DESC);
+CREATE INDEX idx_registry_submissions_validation_status ON registry_submissions(validation_status);
+
+-- Enable RLS on registry_submissions
+ALTER TABLE registry_submissions ENABLE ROW LEVEL SECURITY;
+
+-- Users can only see submissions from their organization
+CREATE POLICY org_isolation_registry_submissions ON registry_submissions
+    FOR ALL
+    USING (org_id IN (
+        SELECT org_id FROM users WHERE id = current_setting('app.current_user_id')::uuid
+    ));
+
+-- Update trigger for registry_submissions
+CREATE TRIGGER update_registry_submissions_updated_at BEFORE UPDATE ON registry_submissions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
 -- ANALYTICS TABLES
 -- ============================================
 
@@ -206,13 +243,13 @@ CREATE MATERIALIZED VIEW daily_costs AS
 SELECT 
     org_id,
     agent_id,
-    DATE(created_at) as date,
+    DATE(timestamp) as date,
     SUM(cost_usd) as total_cost,
     COUNT(*) as activity_count,
     AVG(duration_ms) as avg_duration_ms
 FROM agent_activities
 WHERE status = 'success'
-GROUP BY org_id, agent_id, DATE(created_at);
+GROUP BY org_id, agent_id, DATE(timestamp);
 
 CREATE UNIQUE INDEX idx_daily_costs_unique ON daily_costs(org_id, agent_id, date);
 
@@ -335,7 +372,7 @@ SELECT
     (SELECT COUNT(*) FROM organizations) as total_orgs,
     (SELECT COUNT(*) FROM users WHERE is_active = true) as active_users,
     (SELECT COUNT(*) FROM agents WHERE status = 'active') as active_agents,
-    (SELECT COUNT(*) FROM agent_activities WHERE created_at > NOW() - INTERVAL '1 hour') as activities_last_hour,
+    (SELECT COUNT(*) FROM agent_activities WHERE timestamp > NOW() - INTERVAL '1 hour') as activities_last_hour,
     (SELECT COUNT(*) FROM human_tasks WHERE status IN ('pending', 'approved', 'assigned', 'in_progress')) as active_tasks;
 
 -- ============================================

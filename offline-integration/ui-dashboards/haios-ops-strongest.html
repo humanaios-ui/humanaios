@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HAIOS·OPS — Strongest Build · Pilot: Audit → Remediation → GTM</title>
+<style>
+  :root{
+    --bg:#0d1117;--elev:#161b22;--card:#21262d;--border:#30363d;
+    --text:#e6edf3;--dim:#8b949e;
+    --green:#3fb950;--green-dim:#238636;--amber:#d29922;--red:#f85149;--blue:#58a6ff;--purple:#a371f7;--seal:#d4b483;
+    --mono:"SF Mono","Fira Code","Cascadia Code","Roboto Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .status-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 15px;background:var(--elev);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12.5px;position:sticky;top:0;z-index:100}
+  .logo{font-weight:700;letter-spacing:.05em;color:var(--green)} .logo b{color:var(--text);font-weight:400}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block} .dot.on{background:var(--green);box-shadow:0 0 6px var(--green)} .dot.off{background:var(--red)}
+  .cap-value{cursor:pointer;padding:2px 6px;border-radius:4px} .cap-value:hover{background:var(--card)}
+  .hmini .bad{color:var(--red)} .hmini .ok{color:var(--green)} .hmini .warn{color:var(--amber)}
+
+  .shell{display:grid;grid-template-columns:1fr;max-width:1280px;margin:0 auto}
+  @media(min-width:1040px){.shell{grid-template-columns:172px 1fr 336px}}
+  @media(min-width:760px) and (max-width:1039px){.shell{grid-template-columns:172px 1fr}}
+
+  /* spine */
+  .spine{border-right:1px solid var(--border);padding:16px 12px;background:#0c111b}
+  .spine h2{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:12px}
+  .zone{border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:5px;background:var(--elev)}
+  .zone .zid{font-weight:700;font-size:13px} .zone .zr{color:var(--dim);font-size:10px;margin-top:1px}
+  .zone .zc{float:right;color:var(--green);font-size:12px}
+  .gate{display:flex;align-items:center;gap:7px;padding:5px 4px 5px 8px;font-size:10.5px;color:var(--dim)}
+  .gate .lz{width:2px;height:18px;background:var(--border);margin-left:4px}
+  .gate .gi{width:8px;height:8px;border-radius:2px;border:1px solid currentColor}
+  .gate.phantom{color:var(--red)} .gate.phantom .gi{border-style:dashed}
+  .gate.live{color:var(--green)} .gate.live .gi{background:var(--green);border-color:var(--green)}
+  @media(max-width:759px){.spine{display:flex;gap:8px;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border)}.spine h2{display:none}.gate{display:none}.zone{min-width:130px;margin:0}}
+
+  .main{padding:18px 16px 44px;min-width:0}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:8px;font-family:var(--mono)}
+  section{margin-bottom:22px}
+
+  .primary-box{background:var(--elev);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:8px;padding:15px 17px;font-size:16px;font-weight:600;min-height:56px;cursor:pointer}
+  .primary-box:hover{border-color:var(--green)} .primary-box .ptag{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--amber);margin-top:6px}
+
+  .wip-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .wip-count{font-family:var(--mono);font-size:13px} .wip-count.full{color:var(--amber)}
+  .wip-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:620px){.wip-grid{grid-template-columns:repeat(3,1fr)}}
+  .slot{background:var(--elev);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:158px;position:relative}
+  .slot.active{border-color:var(--green);background:rgba(63,185,80,.06)}
+  .slot.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12.5px;cursor:pointer;text-align:center}
+  .slot-id{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:10.5px;color:var(--dim)}
+  .slot-t{font-size:13.5px;font-weight:600;padding-right:24px;margin-bottom:3px} .slot-m{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:7px}
+  .mech{color:var(--amber);border:1px solid currentColor;border-radius:3px;padding:0 4px;font-size:9px;margin-left:4px}
+  .rmix{display:flex;gap:3px;margin-bottom:4px} .rseg{height:6px;border-radius:3px}
+  .rseg.h{background:var(--purple)} .rseg.m{background:var(--blue)} .rseg.c{background:var(--amber)}
+  .rlab{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-bottom:7px}
+  .sa{display:flex;gap:4px;flex-wrap:wrap} .sa button{font-size:10px;padding:3px 6px;background:var(--card);border:1px solid var(--border);color:var(--dim);border-radius:4px;cursor:pointer} .sa button:hover{color:var(--text)}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+  .card h4{font-size:12.5px;letter-spacing:.05em;color:var(--blue);text-transform:uppercase;margin-bottom:4px}
+  .card .sub{font-size:11px;color:var(--dim);margin-bottom:11px}
+  .btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 14px;border-radius:6px;border:1px solid var(--border);background:var(--elev);color:var(--text);cursor:pointer}
+  .btn:hover{background:var(--card)} .btn-primary{background:var(--green-dim);border-color:var(--green);color:#fff} .btn-primary:hover{background:var(--green)}
+  .btn-amber{border-color:var(--amber);color:var(--amber)} .btn-purple{border-color:var(--purple);color:var(--purple)} .btn-blue{border-color:var(--blue);color:var(--blue)} .btn-danger{border-color:var(--red);color:var(--red)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+
+  /* harness */
+  .hrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+  .hmode{padding:6px 11px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:11.5px;cursor:pointer}
+  .hmode.active{border-color:var(--blue);color:var(--blue);background:rgba(88,166,255,.08)}
+  .pool{margin-bottom:9px} .pool-top{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px} .pcap{font-family:var(--mono);font-size:10.5px;color:var(--dim)}
+  .pool.over .pcap{color:var(--red)}
+  .pbar{height:9px;border-radius:5px;background:var(--bg);border:1px solid var(--border);overflow:hidden} .pbar>i{display:block;height:100%}
+  .attest{font-family:var(--mono);font-size:10px;color:var(--seal);border:1px dashed rgba(212,180,131,.5);border-radius:4px;padding:4px 7px;margin-top:8px}
+  .hwarn{font-size:11px;margin-top:8px;line-height:1.4;color:var(--amber)} .hwarn.crit{color:var(--red)}
+  .legend{display:flex;gap:12px;font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:7px;flex-wrap:wrap} .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+
+  /* instruments row */
+  .instruments{display:grid;gap:12px} @media(min-width:820px){.instruments{grid-template-columns:1fr 1fr}}
+  .lanes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}
+  .lane{border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center;transition:.15s} .lane .ln{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase} .lane .lc{font-size:18px;font-weight:700;margin-top:4px}
+  .lane.accept .ln{color:var(--green)} .lane.quar .ln{color:var(--red)} .lane.cand .ln{color:var(--purple)}
+  .lane.hit.accept{background:rgba(63,185,80,.12);border-color:var(--green)} .lane.hit.quar{background:rgba(248,81,73,.12);border-color:var(--red)} .lane.hit.cand{background:rgba(163,113,247,.12);border-color:var(--purple)}
+  .verdict{margin-top:9px;padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg);font-size:11.5px}
+  .preset{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px} .pbtn{font-size:10.5px;color:var(--text);background:var(--elev);border:1px solid var(--border);border-radius:5px;padding:5px 8px;cursor:pointer} .pbtn:hover{border-color:var(--blue)}
+  input[type=text],textarea,input[type=number]{width:100%;padding:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:var(--mono);font-size:12px}
+  .meter{height:8px;border-radius:5px;background:var(--bg);border:1px solid var(--border);overflow:hidden;margin:8px 0} .meter>i{display:block;height:100%;background:var(--green)}
+  .kv{font-size:11px;color:var(--dim)}
+  table{width:100%;border-collapse:collapse;font-size:11.5px} td{padding:3px 6px;border-bottom:1px solid var(--border)} td.n{font-family:var(--mono);color:var(--seal);text-align:right;width:44px}
+  .stratrow{display:flex;align-items:center;gap:8px;margin-bottom:4px} .stratrow .sn{font-family:var(--mono);font-size:11px;width:30px;text-align:right;color:var(--seal)} .stratrow .sb{flex:1;height:12px;background:var(--bg);border-radius:3px;overflow:hidden} .stratrow .sb>i{display:block;height:100%;background:var(--blue)} .stratrow .sl{font-size:11px;width:150px;color:var(--dim)}
+
+  /* divergence lane */
+  .dl{border-left:3px solid var(--purple)}
+  .dcard{background:var(--elev);border:1px solid var(--border);border-radius:7px;padding:10px;margin-bottom:8px}
+  .dcard .dt{font-size:12.5px;font-weight:600} .dcard .dm{font-family:var(--mono);font-size:10px;color:var(--dim);margin:3px 0 7px}
+  .tag{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid currentColor}
+  .tag.dv{color:var(--purple)} .tag.faith{color:var(--green)} .tag.def{color:var(--red)}
+  .budget{font-family:var(--mono);font-size:10.5px;color:var(--seal);margin-bottom:8px}
+
+  /* backlog */
+  .blist{display:grid;gap:7px} @media(min-width:620px){.blist{grid-template-columns:1fr 1fr}}
+  .bcard{background:var(--elev);border:1px solid var(--border);border-radius:7px;padding:10px 12px;display:flex;justify-content:space-between;gap:9px;align-items:flex-start}
+  .bcard.landing{border-left:3px solid var(--amber)} .bcard.locked{opacity:.55}
+  .bt{font-size:12.5px;font-weight:600;margin-bottom:2px} .bm{font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .ltag{font-family:var(--mono);font-size:9px;padding:1px 4px;border-radius:3px;border:1px solid currentColor}
+  .ltag.z1{color:var(--blue)} .ltag.z2{color:var(--amber)} .ltag.z3{color:var(--green)}
+  .seal2{font-family:var(--mono);font-size:9.5px;color:var(--seal);border:1px dashed rgba(212,180,131,.5);border-radius:3px;padding:0 4px}
+  .pull{font-size:10.5px;padding:4px 8px;background:var(--green-dim);border:1px solid var(--green);color:#fff;border-radius:5px;cursor:pointer;white-space:nowrap} .pull.disabled{background:var(--card);border-color:var(--border);color:var(--dim);cursor:not-allowed}
+
+  /* z1 panel */
+  .z1{background:var(--elev);border-left:1px solid var(--border);padding:15px;display:flex;flex-direction:column;height:calc(100vh - 42px);position:sticky;top:42px}
+  @media(max-width:1039px){.z1{position:static;height:auto;border-left:none;border-top:1px solid var(--border)}}
+  .z1h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:var(--mono);font-size:12.5px;color:var(--green)}
+  .z1mode{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:3px;border:1px solid currentColor}
+  .z1mode.live{color:var(--green)} .z1mode.local{color:var(--amber)}
+  .z1state{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:var(--mono);font-size:11px;line-height:1.55;white-space:pre-wrap;margin-bottom:10px}
+  .z1in{display:flex;gap:6px;margin-bottom:10px} .z1in input{flex:1}
+  .prop{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:9px;margin-bottom:8px;font-size:12px}
+  .prop .pr{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-bottom:3px} .prop .pa{margin-bottom:6px}
+  .prop .pbtns{display:flex;gap:6px} .prop .pbtns button{font-size:10.5px;padding:3px 9px;border-radius:4px;cursor:pointer}
+  .rat{background:var(--green-dim);border:1px solid var(--green);color:#fff} .dis{background:var(--card);border:1px solid var(--border);color:var(--dim)}
+  .z1log{flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:9px;font-size:11.5px}
+  .msg{margin-bottom:8px;padding:8px;border-radius:6px;background:var(--bg);border:1px solid var(--border)} .msg.z1m{border-left:3px solid var(--blue)} .msg.z2m{border-left:3px solid var(--amber)} .msg.sysm{border-left:3px solid var(--green)}
+  .msg .r{font-size:10px;color:var(--dim);margin-bottom:3px;font-family:var(--mono)}
+
+  .flow{position:fixed;inset:0;background:var(--bg);z-index:450;display:none;flex-direction:column;overflow-y:auto} .flow.on{display:flex}
+  .fh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--bg)} .fh h2{font-family:var(--mono);font-size:14px;color:var(--green)}
+  .fb{flex:1;padding:26px 20px;max-width:620px;margin:0 auto;width:100%} .fstep{display:none} .fstep.on{display:block} .fstep h3{font-size:18px;margin-bottom:8px} .fstep p{color:var(--dim);margin-bottom:16px;font-size:13.5px}
+  .prog{display:flex;gap:4px;margin-bottom:22px} .pd{width:24px;height:4px;border-radius:2px;background:var(--border)} .pd.on{background:var(--green)}
+  .checks{list-style:none;margin-bottom:16px} .checks li{padding:5px 0;font-size:13.5px}
+  .gauges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px} .gauge{flex:1;min-width:110px;background:var(--elev);border:1px solid var(--border);border-radius:8px;padding:11px} .gauge .gl{font-family:var(--mono);font-size:10.5px;color:var(--dim)} .gauge .gv{font-size:19px;font-weight:700;margin:3px 0} .gauge .gs{font-size:10.5px;color:var(--dim)}
+  .patch{background:rgba(163,113,247,.08);border:1px solid var(--purple);border-radius:8px;padding:13px;margin-bottom:12px} .patch h4{font-size:11.5px;letter-spacing:.05em;color:var(--purple);text-transform:uppercase;margin-bottom:7px}
+  .peak{position:fixed;inset:0;background:#000;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center} .peak.on{display:flex}
+  .peak .pl{font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--green);margin-bottom:20px} .peak .pi{font-size:24px;font-weight:600;max-width:600px;margin-bottom:28px} .peak .pt{font-family:var(--mono);font-size:42px;color:var(--dim);margin-bottom:34px}
+  .modal-bd{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:520;display:none;align-items:center;justify-content:center;padding:20px} .modal-bd.on{display:flex} .modal{background:var(--elev);border:1px solid var(--border);border-radius:10px;padding:18px;max-width:460px;width:100%} .modal h3{margin-bottom:10px} .ma{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);padding:9px 15px;border-radius:8px;font-size:12.5px;z-index:600;opacity:0;transition:opacity .2s;font-family:var(--mono)} .toast.show{opacity:1}
+  .foot{color:var(--dim);font-size:10.5px;margin-top:20px;border-top:1px solid var(--border);padding-top:10px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <header class="status-bar">
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span class="logo">HAIOS·OPS<b> // strongest build</b></span>
+      <span>Peak-Lock: <span id="maskLabel">OFF</span> <span class="dot off" id="maskDot"></span></span>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span>Capacity: <span class="cap-value" id="capValue">6/10</span></span>
+      <span class="hmini" id="hmini"></span>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="spine" aria-label="Zone pipeline">
+      <h2>Zone Pipeline</h2>
+      <div class="zone"><span class="zc" id="z1c">0</span><div class="zid">Z1</div><div class="zr">propose·execute·audit</div></div>
+      <div class="gate phantom" id="g12"><div class="lz"></div><div class="gi"></div><span id="g12t">Z2 gate: PHANTOM</span></div>
+      <div class="zone"><span class="zc" id="z2c">0</span><div class="zid">Z2·Night</div><div class="zr">review·ratify</div></div>
+      <div class="gate phantom" id="g23"><div class="lz"></div><div class="gi"></div><span id="g23t">Z3 landing: UNVERIFIED</span></div>
+      <div class="zone"><span class="zc" id="z3c">0</span><div class="zid">Z3·Night</div><div class="zr">land → /operations</div></div>
+    </nav>
+
+    <main class="main">
+      <section><div class="lbl">Primary Instruction · must execute flawlessly</div>
+        <div class="primary-box" id="primaryBox" onclick="editPrimary()"></div></section>
+
+      <section><div class="wip-head"><div class="lbl" style="margin:0">WIP · Active Workstreams</div><div class="wip-count" id="wipCount">0/3</div></div>
+        <div class="wip-grid" id="wipGrid"></div></section>
+
+      <section class="card"><h4>Resource Harness · Modulation (mechanism, not label)</h4>
+        <div class="sub">Modes are real transforms with a conservation law — total effort per item is preserved, only its Human/Machine/Capital split moves. Human cap = 1 (bus-factor); only Capital mode raises it. The attestation line proves displayed = computed (IC-031 discipline).</div>
+        <div class="hrow" id="hmodes">
+          <button class="hmode" data-m="balanced" onclick="setHarness('balanced')">Balanced</button>
+          <button class="hmode" data-m="ai" onclick="setHarness('ai')">AI-led</button>
+          <button class="hmode" data-m="human" onclick="setHarness('human')">Human-led</button>
+          <button class="hmode" data-m="capital" onclick="setHarness('capital')">Capital-injection</button>
+        </div>
+        <div id="pools"></div>
+        <div class="attest" id="attest"></div>
+        <div class="hwarn" id="hwarn"></div>
+        <div class="legend"><span><span class="sw" style="background:var(--purple)"></span>Human</span><span><span class="sw" style="background:var(--blue)"></span>Machine·Z1+CI+MCP</span><span><span class="sw" style="background:var(--amber)"></span>Capital</span></div>
+      </section>
+
+      <section class="card dl"><h4>Divergence Lane · governed misinterpretation</h4>
+        <div class="sub">Divergent-valid outputs are conserved, not discarded, and merge-reviewed at the divergence point. Budget is pre-registered and small — untagged divergence is still a fidelity failure (full IC treatment).</div>
+        <div class="budget" id="budget"></div>
+        <div id="divList"></div></section>
+
+      <div class="instruments">
+        <section class="card"><h4>Intake Gate · three-outcome (cycle 1+2)</h4>
+          <div class="preset" id="preset"></div>
+          <input type="text" id="rec" placeholder="type an intake description…" />
+          <button class="pbtn" style="margin-top:7px;border-color:var(--green)" onclick="runGate()">Route record</button>
+          <div class="lanes">
+            <div class="lane accept" id="ln-accept"><div class="ln">Accept</div><div class="lc">0</div></div>
+            <div class="lane quar" id="ln-quar"><div class="ln">Quarantine</div><div class="lc">0</div></div>
+            <div class="lane cand" id="ln-cand"><div class="ln">Candidate</div><div class="lc">0</div></div>
+          </div>
+          <div class="verdict" id="gv">Attested → Accept · forged/hostile → Quarantine · honest-novel → Candidate.</div></section>
+
+        <section class="card"><h4>Autonomy Tier · reliability → tier</h4>
+          <div class="sub">Drift signal from the IC ledger. Demotion is automatic; re-promotion is Z2-gated.</div>
+          <label class="kv">IC-031-class incidents: <b id="icv" style="color:var(--text)">0</b></label>
+          <input type="range" id="ics" min="0" max="6" value="0" style="width:100%;accent-color:var(--amber);margin:6px 0" aria-label="incidents"/>
+          <div class="meter"><i id="relbar" style="width:100%"></i></div>
+          <div class="kv">score <b id="relv" style="color:var(--text)">1.00</b> → tier <b id="tierv" style="color:var(--green)">T3</b> · <span id="tierperm">registry appends w/ Z2 approval</span></div></section>
+
+        <section class="card"><h4>IC Collision Stratigraph · live registry</h4>
+          <div class="sub">43 distinct ICs across IC-001..058 (15 honest gaps). Strata below are principle-recurrence — where findings collide on the same principle = a repeat failure mode. P21 is routing (ratification authority), not a violation hotspot; the real recurrence is P19 / P3 (github-verification).</div>
+          <div id="strat"></div></section>
+
+        <section class="card"><h4>Registry Volume</h4>
+          <table id="volTable"></table>
+          <div class="kv" style="margin-top:8px">Total: F 44 · IC 43 · H 56. This session ratified 6 IC/F/H + 4 parent (class-pending) — all awaiting Z3 landing (0 landed).</div></section>
+      </div>
+
+      <section><div class="lbl">Backlog · Open Loops — pull into WIP when a slot frees (max 3)</div>
+        <div class="blist" id="blist"></div></section>
+
+      <div class="actions"><button class="btn" onclick="startBoot()">Standup</button><button class="btn" onclick="startShutdown()">Cycle Review</button><button class="btn btn-primary" onclick="startPeak()">Peak Window</button><button class="btn" onclick="exportData()">Export</button><button class="btn btn-danger" onclick="resetProgram()">Reset to Pilot</button></div>
+      <div class="foot" id="foot"></div>
+    </main>
+
+    <aside class="z1" id="z1panel">
+      <div class="z1h"><span>Z1 CO-PROCESSOR</span><span class="z1mode local" id="z1mode">local</span></div>
+      <div class="z1state" id="z1state">Loading…</div>
+      <div class="z1in"><input type="text" id="z1q" placeholder="ask Z1… (e.g. what to pull next)" /><button class="btn btn-blue" onclick="askZ1()">Ask</button></div>
+      <div class="lbl" style="margin:0 0 6px">Proposals · ratify before act</div>
+      <div id="props"></div>
+      <div class="z1log" id="z1log"></div>
+    </aside>
+  </div>
+
+  <!-- overlays -->
+  <div class="peak" id="peak"><div class="pl">PEAK WINDOW · INTERRUPT MASK ON</div><div class="pi" id="peakI">—</div><div class="pt" id="peakT">25:00</div><button class="btn btn-danger" onclick="endPeak()">End Peak Early</button></div>
+
+  <div class="flow" id="boot"><div class="fh"><h2>STANDUP · BOOT</h2><button class="btn" onclick="closeBoot()">Skip</button></div><div class="fb">
+    <div class="prog" id="bprog"></div>
+    <div class="fstep on" data-s="0"><h3>1 · Capacity Check</h3><p>Operator capacity is the real throttle at bus-factor 1.</p><label class="lbl">Capacity (1–10)</label><input type="number" id="bcap" min="1" max="10" value="6"/><label class="lbl" style="margin-top:12px">Residual blockers</label><textarea id="bblock" placeholder="PAT live · gate phantom · no 2nd maintainer"></textarea><button class="btn btn-primary" style="margin-top:14px" onclick="bootNext()">Continue</button></div>
+    <div class="fstep" data-s="1"><h3>2 · Decision Batch · ratifications</h3><p>Items sitting at Z2.</p><ul class="checks" id="bratify"></ul><button class="btn btn-primary" onclick="bootNext()">Continue</button></div>
+    <div class="fstep" data-s="2"><h3>3 · Load Primary</h3><label class="lbl">Primary Instruction</label><input type="text" id="bprim"/><button class="btn btn-primary" style="margin-top:12px" onclick="bootNext()">Continue</button></div>
+    <div class="fstep" data-s="3"><h3>4 · Validation</h3><div class="z1state" id="bsum" style="margin-bottom:16px"></div><button class="btn btn-primary" onclick="finishBoot()">Accept & Enter</button></div>
+  </div></div>
+
+  <div class="flow" id="shut"><div class="fh"><h2>CYCLE REVIEW · SHUTDOWN</h2><button class="btn" onclick="closeShut()">Close</button></div><div class="fb">
+    <h3 style="margin-bottom:8px">End-of-Cycle Check</h3><p style="color:var(--dim);margin-bottom:18px">Gauges + one microcode patch (a CQI to the process).</p>
+    <div class="gauges"><div class="gauge"><div class="gl">top</div><div class="gv" id="gTop">—</div><div class="gs">Dominant WIP</div></div><div class="gauge"><div class="gl">free -h</div><div class="gv" id="gFree">—</div><div class="gs">Open loops</div></div><div class="gauge"><div class="gl">landed</div><div class="gv" id="gLand">0</div><div class="gs">Reached Z3</div></div></div>
+    <button class="btn btn-primary" onclick="runShut()">Generate Report</button>
+    <div id="shutRep" style="margin-top:18px" class="hidden"><div class="patch"><h4>Co-Processor Report</h4><div id="shutTxt" style="font-size:13.5px;white-space:pre-wrap;line-height:1.5"></div></div><div class="patch"><h4>Proposed Microcode Patch</h4><div id="shutPatch" style="font-size:13.5px;margin-bottom:10px"></div><button class="btn btn-primary" onclick="acceptPatch()">Accept → Backlog</button></div></div>
+  </div></div>
+
+  <div class="modal-bd" id="editBd"><div class="modal"><h3 id="edT">Edit</h3><label class="lbl" id="edL">Value</label><input type="text" id="edI"/><div class="ma"><button class="btn" onclick="closeEdit()">Cancel</button><button class="btn btn-primary" onclick="saveEdit()">Save</button></div></div></div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const node=h=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
+function msg(role,txt){const l=$('z1log');const r={z1m:'Z1',z2m:'Z2·you',sysm:'system'};const d=node(`<div class="msg ${role}"><div class="r">${r[role]}</div>${esc(txt)}</div>`);l.insertBefore(d,l.firstChild);}
+
+/* ---------- pilot data ---------- */
+const PILOT=()=>({
+  capacity:6,mask:false,harness:'balanced',incidents:0,
+  primary:{title:'Revoke the PAT — no landing until credentials are clean.',tag:'G1 · owner Z3 · ~1h'},
+  wip:[
+    {id:'G1',title:'Credential hygiene',meta:'revoke PAT · fine-grained tokens · 19 MCP scopes',mech:false,zone:'z3',base:[1,1,0],humanOnly:true},
+    {id:'G2',title:'Close tool-landing gap',meta:'land 8 tools+pilots · verify vs live tree',mech:false,zone:'z1',base:[0,3,0],humanOnly:false},
+    {id:'G3',title:'Build real Z2 gate',meta:'CODEOWNERS×1 · ruleset · z2 environment',mech:true,zone:'z1',base:[1,2,0],humanOnly:false},
+  ],
+  backlog:[
+    {id:'G4',title:'Break bus factor',meta:'Move-work→Org (direct convert deprecated 2026-01-12) · 2nd maintainer',mech:true,zone:'z3',base:[1,0,3],humanOnly:true,needs:['G1']},
+    {id:'G5',title:'Fix P1 blocker + 4 ICs',meta:'scorer v1_1+IC-056 · class ruling',mech:false,zone:'z1',base:[1,2,0],humanOnly:false,needs:['G2']},
+    {id:'P2',title:'Ship Registry-Attested Intake (OSS)',meta:'TRL3→4 · bind to in-toto',mech:false,zone:'z1',base:[0,3,0],humanOnly:false,needs:['G2']},
+    {id:'P4',title:'Publish Evaluator Failure Register',meta:'TRL6 live · uncopyable asset',mech:false,zone:'z1',base:[1,1,0],humanOnly:false,needs:[]},
+    {id:'B4',title:'Open impact-capital channel',meta:'no remediation dependency — start now',mech:false,zone:'z2',base:[1,0,3],humanOnly:true,needs:[]},
+    {id:'GTM',title:'Launch GTM motion',meta:'HARD-GATED on G1–G5',mech:false,zone:'z2',base:[1,1,2],humanOnly:false,needs:['G1','G2','G3','G4','G5']},
+  ],
+  landings:[
+    {id:'IC-059',title:'z1-self-audit-conflict',sha:'2449b5f'},{id:'IC-060',title:'mcp-write-scope',sha:'2449b5f'},
+    {id:'F-62/63',title:'agentic-drift + ic031-instance',sha:'34b5d4a'},{id:'IC-061',title:'intake-untrusted-input',sha:'34b5d4a'},
+    {id:'H-EA-01',title:'earned-autonomy hyp',sha:'34b5d4a'},{id:'F-64..67',title:'tool·scorer·fork·bus (class pending)',sha:'2449b5f'},
+  ],
+  pending:['token-scope-overreach (fix=revoke PAT)','z2-gate-phantom (fix=build gate)','ranking-recency-inflation (fix=formula v1.1)','registry-count-drift (recount)','F-vs-IC class ruling on F-64..67'],
+  gatesClosed:[false,false,false,false,false],
+  divergence:[{id:'BUILD-A',title:'Governance-console reading of the UI brief',delta:'surfaced: zone spine · intake simulator · honest-state headline — none in the brief',verdict:'dv',merged:false}],
+  budget:{total:1,used:1},
+});
+let S=load()||PILOT();
+
+/* ---------- resource pools + REAL modulation (designed from IC-031) ---------- */
+const POOLS={human:{cap:1,label:'Human',color:'var(--purple)'},machine:{cap:6,label:'Machine',color:'var(--blue)'},capital:{cap:3,label:'Capital',color:'var(--amber)'}};
+// transform returns a NEW mix; total units conserved per item (anti-overstatement invariant)
+function transform(mode,it){
+  const [h,m,c]=it.base;
+  if(mode==='ai'){ // offload human→machine unless human-only
+    return it.humanOnly?[h,m,c]:[0,m+h,c];
+  }
+  if(mode==='human'){ // human-first: keep base (cap-clamp will expose overflow)
+    return [h,m,c];
+  }
+  if(mode==='capital'){ // capital funds a hire → base unchanged, cap raised elsewhere
+    return [h,m,c];
+  }
+  return [h,m,c]; // balanced
+}
+function humanCap(mode){ return mode==='capital'?2:1; } // capital-injection buys +1 Human (2nd maintainer → closes G4)
+
+/* ---------- persistence ---------- */
+function save(){try{localStorage.setItem('haios-strong',JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem('haios-strong')||'null');}catch(e){return null;}}
+
+/* ---------- stratigraph (real registry data) ---------- */
+const STRAT=[['P21',46,'ratification-authority (routing)'],['P19',20,'—'],['P3',15,'github-verification'],['P16',9,'—'],['P13',7,'—'],['P15',5,'N-reporting']];
+const VOL=[['F (findings)',44],['IC (corrections)',43],['H (hypotheses)',56],['sessions referenced',49],['cost/collision signals',13]];
+
+/* ---------- render ---------- */
+function render(){
+  const pb=$('primaryBox');
+  pb.innerHTML=S.primary.title?`${esc(S.primary.title)}<span class="ptag">${esc(S.primary.tag||'')}</span>`:'Set the one critical instruction';
+  $('capValue').textContent=S.capacity+'/10';
+  $('maskLabel').textContent=S.mask?'ON':'OFF'; $('maskDot').className='dot '+(S.mask?'on':'off');
+  // wip
+  const wg=$('wipGrid');wg.innerHTML='';
+  for(let s=0;s<3;s++){const it=S.wip[s];
+    if(it){const mix=transform(S.harness,it);const[h,m,c]=mix;
+      wg.appendChild(node(`<div class="slot active"><span class="slot-id">${esc(it.id)}</span><div class="slot-t">${esc(it.title)}${it.mech?'<span class="mech">MECH</span>':''}</div><div class="slot-m">${esc(it.meta)}</div><div class="rmix"><div class="rseg h" style="flex:${h||.01}"></div><div class="rseg m" style="flex:${m||.01}"></div><div class="rseg c" style="flex:${c||.01}"></div></div><div class="rlab">H${h}·M${m}·C${c}${(h!==it.base[0])?' (modulated)':''}</div><div class="sa"><button onclick="completeWip(${s})">Complete</button><button onclick="parkWip(${s})">Park</button><button onclick="focusPrim(${s})">Primary</button></div></div>`));
+    } else wg.appendChild(node(`<div class="slot empty" onclick="toast('Pull from the backlog below.')">+ pull from backlog</div>`));
+  }
+  const wc=$('wipCount');wc.textContent=S.wip.length+'/3';wc.classList.toggle('full',S.wip.length>=3);
+  renderHarness(); renderDivergence(); renderInstruments(); renderBacklog(); renderSpine(); renderZ1State();
+  // headline
+  const closed=S.gatesClosed.filter(Boolean).length,pat=S.gatesClosed[0],gate=S.gatesClosed[2],bus=S.gatesClosed[3];
+  $('hmini').innerHTML=`REM <span class="${closed===5?'ok':(closed?'warn':'bad')}">${closed}/5</span> · BUS <span class="${bus?'ok':'bad'}">${bus?'≥2':'1'}</span> · GATE <span class="${gate?'ok':'bad'}">${gate?'LIVE':'PHANTOM'}</span> · PAT <span class="${pat?'ok':'bad'}">${pat?'REVOKED':'LIVE?'}</span>`;
+  save();
+}
+function renderHarness(){
+  document.querySelectorAll('.hmode').forEach(b=>b.classList.toggle('active',b.dataset.m===S.harness));
+  const use={human:0,machine:0,capital:0}; let totalUnits=0,baseUnits=0;
+  S.wip.forEach(it=>{const[h,m,c]=transform(S.harness,it);use.human+=h;use.machine+=m;use.capital+=c;totalUnits+=h+m+c;baseUnits+=it.base[0]+it.base[1]+it.base[2];});
+  const cap=humanCap(S.harness);
+  const box=$('pools');box.innerHTML='';
+  [['human',use.human,cap],['machine',use.machine,POOLS.machine.cap],['capital',use.capital,POOLS.capital.cap]].forEach(([k,u,cp])=>{
+    const over=u>cp,pct=Math.min(100,Math.round(u/Math.max(cp,u||1)*100));
+    box.appendChild(node(`<div class="pool ${over?'over':''}"><div class="pool-top"><span>${POOLS[k].label}</span><span class="pcap">${u} / ${cp}${over?' · OVER':''}</span></div><div class="pbar"><i style="width:${pct}%;background:${over?'var(--red)':POOLS[k].color}"></i></div></div>`));
+  });
+  // attestation: conservation invariant (displayed = computed)
+  $('attest').textContent=`attest · Σunits computed=${totalUnits} base=${baseUnits} conserved=${totalUnits===baseUnits?'✓':'✗ OVERSTATEMENT'} · humanCap=${cap} · displayed=computed`;
+  const w=$('hwarn');
+  if(use.human>cap){w.className='hwarn crit';w.textContent=`Human over-allocated (${use.human}>${cap}). Real reallocation required: park a Human item, switch to AI-led (offload buildable work to Z1), or Capital-injection (funds a 2nd maintainer → raises cap, closes G4).`;}
+  else if(S.harness==='ai'){w.className='hwarn';w.textContent='AI-led: buildable work moved Human→Machine. Human reserved for ratification + landing approval (human-only tasks unchanged).';}
+  else if(S.harness==='capital'){w.className='hwarn';w.textContent='Capital-injection: Human cap raised to 2 (funds the 2nd maintainer). This is the only mode that raises the cap — the only real fix for bus-factor 1.';}
+  else{w.className='hwarn';w.textContent='Within capacity. Human is the binding constraint at bus-factor 1.';}
+}
+function renderDivergence(){
+  $('budget').textContent=`pre-registered budget: ${S.budget.used}/${S.budget.total} used · untagged divergence = fidelity failure (full IC)`;
+  const d=$('divList');d.innerHTML='';
+  S.divergence.forEach((x,i)=>{
+    d.appendChild(node(`<div class="dcard"><div class="dt">${esc(x.title)} <span class="tag ${x.verdict}">${x.verdict==='dv'?'DIVERGENT-VALID':x.verdict==='faith'?'FAITHFUL':'DEFECTIVE'}</span></div><div class="dm">${esc(x.delta)}</div>${x.merged?'<span class="tag faith">MERGED</span>':`<button class="pbtn" style="border-color:var(--green)" onclick="mergeDiv(${i})">Merge delta</button> <button class="pbtn" onclick="discardDiv(${i})">Discard</button>`}</div>`));
+  });
+}
+function renderInstruments(){
+  // stratigraph
+  const max=Math.max(...STRAT.map(s=>s[1]));const st=$('strat');st.innerHTML='';
+  STRAT.forEach(([p,n,l])=>st.appendChild(node(`<div class="stratrow"><span class="sn">${n}</span><span class="sb"><i style="width:${Math.round(n/max*100)}%"></i></span><span class="sl">${esc(p)}${l!=='—'?' · '+esc(l):''}</span></div>`)));
+  // volume table
+  $('volTable').innerHTML=VOL.map(v=>`<tr><td>${esc(v[0])}</td><td class="n">${v[1]}</td></tr>`).join('');
+  // autonomy
+  wireAutonomy();
+  // intake presets
+  const pr=$('preset');if(pr&&!pr._done){pr.innerHTML='';PRESETS.forEach(([label,rec])=>{const b=node(`<button class="pbtn">${esc(label)}</button>`);b.onclick=()=>{$('rec').value=String(rec.desc).slice(0,50);route(rec,label);};pr.appendChild(b);});pr._done=true;}
+}
+function renderBacklog(){
+  const bl=$('blist');bl.innerHTML='';
+  S.backlog.forEach((it,idx)=>{const blocked=(it.needs||[]).some(n=>!isDone(n));
+    bl.appendChild(node(`<div class="bcard ${blocked?'locked':''}"><div><div class="bt">${esc(it.title)} <span class="ltag ${it.zone}">${it.zone.toUpperCase()}</span>${it.mech?'<span class="mech">MECH</span>':''}</div><div class="bm">${esc(it.id)} · ${esc(it.meta)}${blocked?' · blocked by '+it.needs.filter(n=>!isDone(n)).join(','):''}</div></div><button class="pull ${blocked||S.wip.length>=3?'disabled':''}" ${blocked||S.wip.length>=3?'disabled':''} onclick="pullToWip(${idx})">Pull</button></div>`));
+  });
+  S.landings.forEach(l=>bl.appendChild(node(`<div class="bcard landing"><div><div class="bt">${esc(l.title)} <span class="ltag z2">RATIFIED</span></div><div class="bm">${esc(l.id)} · <span class="seal2">${esc(l.sha)}</span> · awaiting Z3</div></div><span class="pull disabled" title="Z3 action">Land</span></div>`)));
+}
+function renderSpine(){
+  $('z1c').textContent=S.wip.length+S.backlog.length;
+  $('z2c').textContent=S.landings.length;
+  $('z3c').textContent=0;
+  const gate=S.gatesClosed[2];
+  $('g12').className='gate '+(gate?'live':'phantom');$('g12t').textContent='Z2 gate: '+(gate?'LIVE':'PHANTOM');
+  $('g23').className='gate phantom';$('g23t').textContent='Z3 landing: UNVERIFIED';
+}
+function isDone(id){const gi={G1:0,G2:1,G3:2,G4:3,G5:4}[id];return gi!=null?S.gatesClosed[gi]:false;}
+
+/* autonomy */
+function wireAutonomy(){const s=$('ics');if(!s)return;s.value=S.incidents;
+  const upd=()=>{const n=+s.value;S.incidents=n;$('icv').textContent=n;const score=Math.max(0,1-.12*n).toFixed(2);$('relv').textContent=score;
+    let tier='T3',col='var(--green)',perm='registry appends w/ Z2 approval';
+    if(score<.5){tier='T0';col='var(--red)';perm='supervised — every write gated';}else if(score<.7){tier='T1';col='var(--amber)';perm='restricted — nothing unattended';}else if(score<.9){tier='T2';col='var(--amber)';perm='standard — docs unattended';}
+    $('tierv').textContent=tier;$('tierv').style.color=col;$('tierperm').textContent=perm;const b=$('relbar');b.style.width=(score*100)+'%';b.style.background=col;save();};
+  s.oninput=upd;upd();
+}
+
+/* intake gate */
+const ATTESTED={src_northwind:{lic:'cc-by-4.0',h:'a1'},src_bluefin:{lic:'cc-by-4.0',h:'b2'},src_cirrus:{lic:'cc-by-4.0',h:'c3'}};
+const SIG=[[/\{\{.*?\}\}|<%=|\$\{\{/,'template-injection'],[/__import__|os\.system|eval\(|exec\(/,'code-exec'],[/ignore (all|previous).*(rules|instructions)|assign maximum|pre-approved/i,'prompt-injection'],[/169\.254\.169\.254|\/\/attacker|\/latest\/meta-data/,'exfil']];
+const PRESETS=[['clean·attested',{desc:'Senior Engineer, remote, $150k',source_id:'src_northwind',attest_hash:'a1',source_license:'cc-by-4.0'}],['template injection',{desc:'{{7*7}} <%= system(\'id\') %>',source_id:'src_northwind',attest_hash:'a1',source_license:'cc-by-4.0'}],['forged provenance',{desc:'perfectly clean posting',source_id:'src_ghost',attest_hash:'zz',source_license:'cc-by-4.0'}],['honest novelty',{desc:'new market signal, no registered source',source_license:null,_novel:true}]];
+const gcounts={accept:0,quar:0,cand:0};
+function gate(rec){const allowed=new Set(['desc','source_id','attest_hash','source_license','_novel']);const extra=Object.keys(rec).filter(k=>!allowed.has(k));if(extra.length)return['quar','schema: '+extra.join(',')];if(String(rec.desc||'').length>4000)return['quar','length'];for(const[rx,n]of SIG)if(rx.test(String(rec.desc||'')))return['quar','signature: '+n];if(rec.source_id==null&&rec._novel)return['cand','honest-novelty → SELF tier'];if(!(rec.source_id in ATTESTED))return['quar','forged: unregistered source'];if(rec.attest_hash!==ATTESTED[rec.source_id].h)return['quar','forged: hash mismatch'];if(rec.source_license!==ATTESTED[rec.source_id].lic)return['quar','forged: license mismatch'];return['accept','attested → scored'];}
+function route(rec,label){const[o,r]=gate(rec);gcounts[o]++;['accept','quar','cand'].forEach(k=>{$('ln-'+k).querySelector('.lc').textContent=gcounts[k];$('ln-'+k).classList.remove('hit');});$('ln-'+o).classList.add('hit');const nm={accept:'ACCEPT',quar:'QUARANTINE',cand:'CANDIDATE'};$('gv').innerHTML=`<b style="color:${o==='accept'?'var(--green)':o==='quar'?'var(--red)':'var(--purple)'}">${nm[o]}</b> — ${esc(r)}`;}
+function runGate(){route({desc:$('rec').value||'',source_license:null,_novel:true},'free-text');}
+
+/* interactions */
+function pullToWip(i){if(S.wip.length>=3){toast('WIP full — max 3.');return;}const it=S.backlog[i];if((it.needs||[]).some(n=>!isDone(n))){toast('Blocked by dependency.');return;}S.backlog.splice(i,1);S.wip.push(it);msg('sysm','pulled '+it.id);render();}
+function parkWip(s){const it=S.wip.splice(s,1)[0];S.backlog.unshift(it);render();toast(it.id+' parked');}
+function completeWip(s){const it=S.wip[s];const gi={G1:0,G2:1,G3:2,G4:3,G5:4}[it.id];if(gi!=null){S.gatesClosed[gi]=true;msg('z2m','ratified complete: '+it.id+' — gate closed');}S.wip.splice(s,1);render();toast(it.id+' complete');}
+function focusPrim(s){const it=S.wip[s];S.primary={title:it.title,tag:it.id+' · '+it.meta};render();toast('Primary → '+it.id);}
+function setHarness(m){S.harness=m;render();toast('Harness → '+m);}
+function mergeDiv(i){S.divergence[i].merged=true;msg('z2m','merged divergent delta: '+S.divergence[i].title);render();toast('Delta merged');}
+function discardDiv(i){S.divergence.splice(i,1);render();toast('Divergent output discarded');}
+
+/* edit modal */
+let editCb=null;
+function openEdit(t,l,v,cb){$('edT').textContent=t;$('edL').textContent=l;$('edI').value=v;editCb=cb;$('editBd').classList.add('on');$('edI').focus();}
+function closeEdit(){$('editBd').classList.remove('on');editCb=null;}
+function saveEdit(){if(editCb)editCb($('edI').value);closeEdit();}
+function editPrimary(){openEdit('Primary Instruction','critical instruction',S.primary.title,v=>{S.primary.title=v;S.primary.tag='custom';render();});}
+$('capValue').addEventListener('click',()=>openEdit('Operator Capacity','1–10',S.capacity,v=>{S.capacity=Math.max(1,Math.min(10,parseInt(v)||6));render();}));
+
+/* ---------- Z1 co-processor: LIVE model + ratify-before-act + deterministic fallback ---------- */
+function stateSnapshot(){const closed=S.gatesClosed.filter(Boolean).length;const use=S.wip.reduce((a,it)=>{const[h,m,c]=transform(S.harness,it);return[a[0]+h,a[1]+m,a[2]+c];},[0,0,0]);
+  return `PROGRAM STATE (pilot: Audit→Remediation→GTM)\nprimary: ${S.primary.title}\nWIP ${S.wip.length}/3: ${S.wip.map(w=>w.id+' '+w.title).join('; ')}\nbacklog: ${S.backlog.map(b=>b.id).join(', ')}\nharness: ${S.harness} (Human ${use[0]}/${humanCap(S.harness)}, Machine ${use[1]}/6, Capital ${use[2]}/3)\ngates closed: ${closed}/5 [G1..G5]; Z2 gate ${S.gatesClosed[2]?'LIVE':'PHANTOM'}; PAT ${S.gatesClosed[0]?'revoked':'possibly live'}\nlandings: ${S.landings.length} ratified, 0 landed at Z3\nconstraint: bus-factor 1, Human pool = 1 unit.`;
+}
+function renderZ1State(){$('z1state').textContent=stateSnapshot();}
+async function askZ1(){
+  const q=$('z1q').value.trim()||'What should I do next?';$('z1q').value='';msg('z2m',q);
+  const sys="You are Z1, the co-processor in a three-zone governance OS. Z1 proposes; Z2 (the human) ratifies; Z3 lands. You never claim anything is done. Given the program state and the operator question, return ONLY JSON, no prose, no code fences: {\"proposals\":[{\"action\":\"pull|park|patch|conserve|note\",\"target\":\"<backlog id / short text>\",\"rationale\":\"<one sentence>\"}]}. Max 3 proposals. Respect: WIP limit 3, bus-factor 1 (Human scarce), dependency gates, GTM hard-gated on G1-G5.";
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:sys,messages:[{role:"user",content:stateSnapshot()+"\n\nOPERATOR: "+q}]})});
+    if(!res.ok) throw new Error('http '+res.status);
+    const data=await res.json();
+    const text=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(text);
+    $('z1mode').className='z1mode live';$('z1mode').textContent='live';
+    renderProposals(parsed.proposals||[]);
+  }catch(e){
+    $('z1mode').className='z1mode local';$('z1mode').textContent='local';
+    renderProposals(localProposals(q));
+    msg('sysm','live model unavailable here — deterministic Z1 ('+(''+e.message)+')');
+  }
+}
+function localProposals(q){
+  const open=['G1','G2','G3','G4','G5'].filter(g=>!isDone(g));
+  const p=[];
+  if(S.wip.length<3){const c=S.backlog.find(it=>!(it.needs||[]).some(n=>!isDone(n)));if(c)p.push({action:'pull',target:c.id,rationale:'dependencies met; safe to activate'});}
+  const hUse=S.wip.reduce((a,it)=>a+transform(S.harness,it)[0],0);
+  if(hUse>humanCap(S.harness))p.push({action:'note',target:'switch harness to AI-led or Capital-injection',rationale:'Human over-allocated at bus-factor 1'});
+  if(open.length)p.push({action:'note',target:'critical path '+open.join('→'),rationale:'GTM hard-gated until these close'});
+  return p.slice(0,3);
+}
+function renderProposals(props){
+  const box=$('props');box.innerHTML='';
+  if(!props.length){box.innerHTML='<div class="kv">No proposals.</div>';return;}
+  props.forEach((p,i)=>{
+    box.appendChild(node(`<div class="prop"><div class="pr">action: ${esc(p.action||'note')} · target: ${esc(p.target||'')}</div><div class="pa">${esc(p.rationale||'')}</div><div class="pbtns"><button class="rat" onclick="ratify(${i})">Ratify</button><button class="dis" onclick="dismissProp(${i})">Dismiss</button></div></div>`));
+  });
+  window._props=props;
+}
+function ratify(i){const p=window._props[i];msg('z2m','ratified: '+p.action+' '+p.target);applyProposal(p);document.querySelectorAll('.prop')[i].style.opacity=.4;}
+function dismissProp(i){msg('z2m','dismissed proposal '+i);document.querySelectorAll('.prop')[i].style.opacity=.4;}
+function applyProposal(p){ // untrusted model output → validated against allowlist (intake-untrusted-input discipline)
+  const act=p.action;
+  if(act==='pull'){const idx=S.backlog.findIndex(b=>b.id===p.target);if(idx>=0)pullToWip(idx);else toast('target not in backlog');}
+  else if(act==='park'){const idx=S.wip.findIndex(w=>w.id===p.target);if(idx>=0)parkWip(idx);}
+  else if(act==='patch'||act==='conserve'){S.backlog.unshift({id:act==='patch'?'CQI':'DIV',title:String(p.target).slice(0,80),meta:act+' · via Z1 proposal (ratified)',mech:false,zone:'z1',base:[0,2,0],needs:[]});render();}
+  else {msg('sysm','note logged (no state change)');}
+}
+
+/* peak / boot / shutdown */
+let pT=null,pL=1500;
+function startPeak(){if(!S.primary.title){toast('Set Primary first.');return;}S.mask=true;render();$('peakI').textContent=S.primary.title;pL=1500;$('peak').classList.add('on');tickP();pT=setInterval(tickP,1000);}
+function tickP(){const m=String(Math.floor(pL/60)).padStart(2,'0'),s=String(pL%60).padStart(2,'0');$('peakT').textContent=m+':'+s;if(pL<=0){endPeak();return;}pL--;}
+function endPeak(){clearInterval(pT);$('peak').classList.remove('on');S.mask=false;render();}
+let bStep=0;
+function startBoot(){bStep=0;$('boot').classList.add('on');const ul=$('bratify');ul.innerHTML='';S.pending.forEach(p=>ul.appendChild(node(`<li><label><input type="checkbox"> ${esc(p)}</label></li>`)));$('bprim').value=S.primary.title;$('bcap').value=S.capacity;showBStep();}
+function showBStep(){document.querySelectorAll('#boot .fstep').forEach(s=>s.classList.toggle('on',+s.dataset.s===bStep));const pr=$('bprog');pr.innerHTML='';for(let i=0;i<4;i++)pr.appendChild(node(`<div class="pd${i<=bStep?' on':''}"></div>`));}
+function bootNext(){if(bStep===0)S.capacity=Math.max(1,Math.min(10,parseInt($('bcap').value)||6));if(bStep===2){const v=$('bprim').value.trim();if(v){S.primary.title=v;S.primary.tag='standup';}}bStep++;if(bStep===3){const r=[...$('bratify').querySelectorAll('input:checked')].length;$('bsum').textContent=`capacity ${S.capacity}/10 · ${r}/${S.pending.length} ratified this standup · WIP ${S.wip.length}/3 · gates ${S.gatesClosed.filter(Boolean).length}/5.\nratification ≠ landing. landings are Z3.`;}showBStep();}
+function closeBoot(){$('boot').classList.remove('on');}
+function finishBoot(){closeBoot();render();toast('Standup complete');}
+function startShut(){$('shut').classList.add('on');$('shutRep').classList.add('hidden');$('gTop').textContent=S.wip[0]?S.wip[0].id:'—';$('gFree').textContent=S.backlog.length;$('gLand').textContent='0';}
+function runShut(){const c=S.gatesClosed.filter(Boolean).length;$('shutTxt').textContent=`Dominant: ${S.wip[0]?S.wip[0].id:'none'}\nOpen loops: ${S.backlog.length}\nGates closed: ${c}/5\nLanded to Z3: 0  ← the number that matters\nRead: activity high, consummation zero — Claim-4′ (recursion without the landing read).`;$('shutPatch').textContent='Add a mechanical Z3 landing-verification to the close ritual: a cycle cannot be marked complete until session outputs are diffed against the live tree.';$('shutRep').classList.remove('hidden');}
+function acceptPatch(){S.backlog.unshift({id:'CQI',title:'Add Z3 landing-verification to close ritual',meta:'microcode patch · mechanical',mech:true,zone:'z1',base:[0,2,0],needs:[]});render();$('shut').classList.remove('on');toast('Patch → backlog');}
+function closeShut(){$('shut').classList.remove('on');}
+function exportData(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='haios-strong-state.json';a.click();toast('Exported');}
+function resetProgram(){if(confirm('Reset to pilot?')){S=PILOT();render();toast('Reset');}}
+
+$('foot').textContent='HAIOS·OPS strongest build · NeuroOS shell + zone spine + IC-031-derived modulation + three-outcome intake + autonomy tier + IC stratigraph + divergence lane + live-Z1 (ratify-before-act, deterministic fallback). No secrets persisted · dynamic text escaped · zoom + reduced-motion honored.';
+render();
+msg('sysm','cockpit online · pilot loaded · Z1 in local mode until a live model responds');
+msg('z1m','Primary is G1 (revoke PAT). Ask me what to pull, or run the gate diagnostic. I propose; you ratify.');
+</script>
+</body>
+</html>

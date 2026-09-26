@@ -1,0 +1,93 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Empirica session logs
+  - job_name: empirica-sessions
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: empirica-sessions
+          __path__: /var/log/empirica-sessions/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            session_id: session_id
+            practice: practice
+            phase: phase
+            message: message
+      - timestamp:
+          source: timestamp
+          format: "2006-01-02T15:04:05.000000Z07:00"
+      - labels:
+          session_id: session_id
+          practice: practice
+          phase: phase
+          level: level
+
+  # ACAT grounding logs
+  - job_name: acat-grounding
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: acat-grounding
+          __path__: /var/log/acat-grounding/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            ai_id: ai_id
+            vector_name: vector_name
+            predicted: predicted
+            actual: actual
+            brier_error: brier_error
+      - timestamp:
+          source: timestamp
+          format: "2006-01-02T15:04:05.000000Z07:00"
+      - labels:
+          ai_id: ai_id
+          vector_name: vector_name
+
+  # Docker container logs
+  - job_name: docker
+    docker:
+      {}
+    relabel_configs:
+      - source_labels:
+          - __meta_docker_container_name
+        target_label: container_name
+      - source_labels:
+          - __meta_docker_container_label_job
+        target_label: job
+      - source_labels:
+          - __meta_docker_port_private
+        target_label: port
+
+  # Practice stdout logs
+  - job_name: practice-stdout
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: practice-stdout
+          __path__: /var/log/practice-*.log
+    pipeline_stages:
+      - regex:
+          expression: '(?P<timestamp>\S+)\s+(?P<level>\w+)\s+(?P<practice>\w+)\s+(?P<message>.*)'
+      - timestamp:
+          source: timestamp
+          format: "2006-01-02T15:04:05.000000Z07:00"
+      - labels:
+          practice: practice
+          level: level

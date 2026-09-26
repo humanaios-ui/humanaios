@@ -1,0 +1,416 @@
+---
+title: Resource-Accounting-Guard Enforcement Roadmap
+version: 1.0
+date_created: 2026-09-15
+status: DRAFT
+owner: empirica-foundation-evaluator (Admiral seat)
+criticality: HIGH
+next_review: 2026-09-20
+
+# ============================================================================
+# EXECUTIVE SUMMARY
+# ============================================================================
+
+executive_summary: |
+  Deployment of resource-accounting-guard enforcement to 9 non-compliant
+  practices requires resolving infrastructure blockers FIRST, then executing
+  phased rollout. Root cause: Entity sync pipeline failure (Aug 13-28) +
+  blocker specs transmission failure, NOT capability gaps.
+
+  Timeline: 3-4 weeks for full rollout (Sep 20 - Oct 15)
+  Blocker dependency: Entity sync restoration + specs transmission success
+
+# ============================================================================
+# BLOCKER RESOLUTION (PREREQUISITE - MUST COMPLETE FIRST)
+# ============================================================================
+
+prerequisites:
+  blocker_1:
+    name: "Entity Sync Pipeline Restoration"
+    status: BLOCKED
+    description: "Entity sync pipeline halted Aug 13-28. Must be restored before specs can sync to non-compliant practices."
+    current_state: "Entity registry may be partially synced post-Aug-28, but needs verification."
+    action_items:
+      - "Verify entity sync pipeline operational (mesh-support owner)"
+      - "Run sync verification across all 15 practices"
+      - "Confirm registry state consistency"
+    owner: empirica-mesh-support
+    escalation_contact: "empirica-foundation.carly.empirica-mesh-support"
+    target_resolution: "2026-09-18"
+    blocking_phase: "All enforcement phases"
+    priority: CRITICAL
+
+  blocker_2:
+    name: "Blocker Specs Transmission Protocol"
+    status: BLOCKED
+    description: "Blocker specs transmission failed to outreach (Sep 3). Protocol failure prevents distribution of enforcement specifications."
+    current_state: "Transmission protocol incomplete or broken; multiple practices affected."
+    action_items:
+      - "Debug blocker specs transmission failure (Sep 3 incident)"
+      - "Test transmission to 1 practice (empirica-analytics as pilot)"
+      - "Verify payload reaches practice inbox + is processable"
+    owner: empirica-mesh-support
+    escalation_contact: "empirica-foundation.carly.empirica-mesh-support"
+    target_resolution: "2026-09-18"
+    blocking_phase: "All enforcement phases"
+    priority: CRITICAL
+
+  blocker_3:
+    name: "Resource-Accounting-Guard Module Availability"
+    status: READY
+    description: "postflight-drift-measure.py module is available and verified working in 5 compliant practices."
+    current_state: "Module deployed successfully; can be copied/distributed to non-compliant practices."
+    action_items:
+      - "Bundle postflight-drift-measure.py as distribution package"
+      - "Create installation instructions + verification script"
+    owner: empirica-foundation-evaluator
+    target_resolution: "2026-09-17"
+    blocking_phase: None
+    priority: HIGH
+
+# ============================================================================
+# ENFORCEMENT PHASES
+# ============================================================================
+
+phases:
+  phase_0:
+    name: "Blocker Resolution + Infrastructure Hardening"
+    window: "Sep 15-18, 2026"
+    owner: "empirica-mesh-support"
+    status: "CRITICAL PATH"
+    description: |
+      Resolve entity sync + blocker specs transmission failures BEFORE
+      proceeding with enforcement. Test transmission on 1 practice first.
+    tasks:
+      - "Restore entity sync pipeline (mesh-support)"
+      - "Debug + fix blocker specs transmission (mesh-support)"
+      - "Pilot transmission test with empirica-analytics (evaluator + analytics)"
+      - "Verify specs received + processable (evaluator)"
+    completion_gate:
+      - "Entity sync operational + verified"
+      - "Blocker specs transmission successful (pilot test)"
+      - "postflight-drift-measure.py package ready"
+    go_no_go_decision: "2026-09-19 (Admiral)"
+
+  phase_1:
+    name: "Pilot Enforcement Deployment"
+    window: "Sep 20-23, 2026"
+    owner: "empirica-analytics"
+    status: "PENDING BLOCKER RESOLUTION"
+    description: |
+      Single-practice pilot deployment to empirica-analytics (local,
+      non-compliant, lowest risk). Validates full deployment workflow
+      before expanding to other practices.
+    practices_in_phase: ["empirica-analytics"]
+    deployment_steps:
+      - step_1: "Deliver postflight-drift-measure.py to empirica-analytics"
+      - step_2: "Practice installs + verifies (.empirica/postflight-drift-measure.py)"
+      - step_3: "Run first POSTFLIGHT with drift measurement active"
+      - step_4: "Evaluator verifies: drift measurement logging + escalation working"
+    validation_gates:
+      gate_1: "File deployed + checksummed correctly"
+      gate_2: "POSTFLIGHT execution produces temporal drift metrics"
+      gate_3: "Escalation triggered if drift exceeds 5% threshold"
+    escalation_contact: "empirica-analytics owner + empirica-mesh-support"
+    go_no_go_decision: "2026-09-23 (Admiral)"
+    success_criteria: "Drift measurement + escalation working end-to-end"
+
+  phase_2:
+    name: "Foundation Enforcement Rollout"
+    window: "Sep 24-30, 2026"
+    owner: "empirica-foundation-evaluator"
+    status: "PENDING PHASE 1 SUCCESS"
+    description: |
+      Deploy to remaining foundation practices sequentially. Based on
+      pilot success, scale to: humanaios, website, + 3 others.
+    practices_in_phase:
+      - humanaios (GitHub: humanaios-ui/humanaios)
+      - website (clarify location, then deploy)
+      - empirica-temporal-oracle (verify status, likely compliant)
+      - "[Practice 4 - TBD]"
+      - "[Practice 5 - TBD]"
+    deployment_schedule:
+      week_1: "humanaios + website (2 practices, Sep 24-26)"
+      week_2: "empirica-temporal-oracle + 2 others (Sep 27-30)"
+    deployment_per_practice:
+      - "Deliver postflight-drift-measure.py"
+      - "Coordinate installation (practice-specific - GitHub vs local vs other)"
+      - "Verify first POSTFLIGHT execution"
+      - "Evaluator spot-checks drift logging"
+    validation_gates:
+      gate_per_practice: "POSTFLIGHT execution with drift measurement confirmed"
+    escalation_contact: "Each practice lead + empirica-mesh-support"
+    go_no_go_decision: "2026-09-30 (Admiral)"
+    success_criteria: "5/5 foundation practices reporting drift measurements"
+
+  phase_3:
+    name: "Cross-Org Enforcement Rollout"
+    window: "Oct 1-15, 2026"
+    owner: "empirica-foundation-evaluator"
+    status: "PENDING PHASE 2 SUCCESS"
+    description: |
+      Deploy to 6 cross-org practices: acat-x, grok-crossref, collaborator-ops,
+      opportunity-aggregator (archive check), + 2 unknown practices.
+    practices_in_phase:
+      - acat-x
+      - grok-crossref
+      - collaborator-ops
+      - opportunity-aggregator (verify if active)
+      - "[Cross-org practice 5 - TBD]"
+      - "[Cross-org practice 6 - TBD]"
+    deployment_schedule:
+      week_1: "acat-x + grok-crossref (Oct 1-3)"
+      week_2: "collaborator-ops + opportunity-aggregator (Oct 4-7)"
+      week_3: "Unknown practices 5-6 (Oct 8-15)"
+    deployment_per_practice:
+      - "Identify practice location + contact person"
+      - "Deliver postflight-drift-measure.py (method TBD per practice type)"
+      - "Coordinate installation + verification"
+      - "Evaluator confirms drift measurement live"
+    validation_gates:
+      gate_per_practice: "Drift measurement reporting to evaluator"
+    escalation_contact: "Each practice lead + mesh-support"
+    go_no_go_decision: "2026-10-15 (Admiral)"
+    success_criteria: "All 15 practices reporting drift measurements"
+
+# ============================================================================
+# DEPLOYMENT SPECIFICATION (Per-Practice Template)
+# ============================================================================
+
+per_practice_template:
+  practice_name: "[Practice Name]"
+  canonical_seat: "[empirica-foundation.carly.PRACTICE]"
+  status: "NON-COMPLIANT"
+  type: "[foundation|cross-org]"
+  location: "[local|github|external]"
+
+  deployment_checklist:
+    step_1: "Identify practice contact + schedule delivery window"
+    step_2: "Copy postflight-drift-measure.py to practice .empirica/ directory"
+    step_3: "Verify file permissions + checksums"
+    step_4: "Practice runs POSTFLIGHT (triggers drift measurement)"
+    step_5: "Evaluator verifies: drift metrics arrive + escalation works"
+    step_6: "Log completion + mark compliant"
+
+  validation_steps:
+    check_1: "File present + executable: ls -la .empirica/postflight-drift-measure.py"
+    check_2: "POSTFLIGHT execution includes drift measurement output"
+    check_3: "Escalation alert triggered if drift > 5% threshold"
+    check_4: "Metrics logged to empirica + visible in audits"
+
+  escalation_triggers:
+    - "Deployment fails (file not received/installed)"
+    - "POSTFLIGHT doesn't execute drift measurement"
+    - "Drift threshold exceeded (>5% temporal language)"
+    - "Practice unreachable (archived or unknown location)"
+
+  escalation_contacts:
+    primary: "[Practice owner/lead]"
+    secondary: "empirica-mesh-support"
+    tertiary: "empirica-foundation-evaluator (Admiral)"
+
+  timeline:
+    delivery_window: "[Date range - phase-dependent]"
+    installation_sla: "24-48 hours post-delivery"
+    verification_sla: "5 business days post-installation"
+    completion_target: "[Phase end date]"
+
+# ============================================================================
+# VALIDATION GATES (PHASE-LEVEL)
+# ============================================================================
+
+validation_gates:
+  phase_0_gate:
+    name: "Infrastructure Readiness"
+    criteria:
+      - "Entity sync pipeline operational"
+      - "Blocker specs transmission successful (pilot test)"
+      - "postflight-drift-measure.py package ready"
+    measurement: "mesh-support verification + empirica-analytics pilot test"
+    decision_maker: "Admiral (Carly Anderson)"
+    decision_date: "2026-09-19"
+    failure_action: "Delay Phase 1 + escalate blockers to Admiral"
+
+  phase_1_gate:
+    name: "Pilot Deployment Success"
+    criteria:
+      - "empirica-analytics postflight-drift-measure.py installed + verified"
+      - "Drift measurement metrics produced in POSTFLIGHT"
+      - "Escalation alert triggered (drift > 5%)"
+    measurement: "Evaluator audit of analytics POSTFLIGHT logs"
+    decision_maker: "Admiral (Carly Anderson)"
+    decision_date: "2026-09-23"
+    success_action: "Proceed to Phase 2 (foundation rollout)"
+    failure_action: "Debug + retry pilot; do not scale to Phase 2"
+
+  phase_2_gate:
+    name: "Foundation Rollout Completion"
+    criteria:
+      - "5/5 foundation practices report drift measurements"
+      - "No unresolved escalations from Phase 2 deployments"
+      - "All practices passing validation checks"
+    measurement: "Evaluator audit across all 5 foundation practices"
+    decision_maker: "Admiral (Carly Anderson)"
+    decision_date: "2026-09-30"
+    success_action: "Proceed to Phase 3 (cross-org rollout)"
+    failure_action: "Remediate failed practices; extend Phase 2 SLA"
+
+  phase_3_gate:
+    name: "Full Enforcement Deployment"
+    criteria:
+      - "All 15 practices (6 compliant + 9 remediated) reporting drift measurements"
+      - "Zero unresolved deployment blockers"
+      - "Guard framework internalized across foundation + cross-org"
+    measurement: "Evaluator monthly audit + cross-org verification"
+    decision_maker: "Admiral (Carly Anderson)"
+    decision_date: "2026-10-15"
+    success_action: "Resource-accounting-guard ENFORCED across all 15 practices (100% coverage)"
+    failure_action: "Extend Phase 3; escalate persistent blockers"
+
+# ============================================================================
+# ESCALATION CONTACTS & AUTHORITIES
+# ============================================================================
+
+escalation_contacts:
+  level_1_mesh_support:
+    role: "Coordination + delivery logistics"
+    contact: "empirica-foundation.carly.empirica-mesh-support"
+    sla: "24 hours"
+    authority: "Route specs, coordinate practice deliveries, manage blockers"
+
+  level_2_evaluator:
+    role: "Verification + gate decisions"
+    contact: "empirica-foundation.carly.empirica-foundation-evaluator"
+    sla: "48 hours"
+    authority: "Validate deployments, verify drift measurement, recommend go/no-go"
+
+  level_3_admiral:
+    role: "Final authority + phase decisions"
+    contact: "Carly R. Anderson (Admiral)"
+    sla: "1 hour for critical blockers"
+    authority: "Go/no-go decisions at each phase gate, unblock critical path items"
+
+# ============================================================================
+# RESOURCE ACCOUNTING
+# ============================================================================
+
+resource_allocation:
+  human_labor:
+    mesh_support: "~30 hours (blocker resolution + delivery coordination)"
+    evaluator: "~20 hours (verification + validation gates)"
+    practices: "~2-3 hours each × 9 practices = 18-27 hours"
+    admiral: "~5 hours (phase gate decisions)"
+    total_estimate: "73-82 human labor hours"
+
+  ai_tokens:
+    empirica_operations: "~50k tokens (diagnostics, deployment, monitoring)"
+    validation_audits: "~20k tokens (verification gates)"
+    total_estimate: "~70k tokens"
+
+  timeline_resource_distribution:
+    phase_0: "Sep 15-18: 15 hours human, 10k tokens (blocker resolution)"
+    phase_1: "Sep 20-23: 12 hours human, 15k tokens (pilot)"
+    phase_2: "Sep 24-30: 25 hours human, 25k tokens (foundation rollout)"
+    phase_3: "Oct 1-15: 28 hours human, 30k tokens (cross-org rollout)"
+
+# ============================================================================
+# SUCCESS METRICS
+# ============================================================================
+
+success_metrics:
+  coverage:
+    target: "15/15 practices (100%) reporting drift measurements"
+    checkpoint_phase_1: "1/1 (pilot)"
+    checkpoint_phase_2: "6/6 (pilot + foundation)"
+    checkpoint_phase_3: "15/15 (all)"
+
+  enforcement_effectiveness:
+    - "Zero practices with >5% temporal language drift"
+    - "Escalation alerts triggered when thresholds exceeded"
+    - "Guard framework used in all CHECK gates (post-deployment)"
+
+  timeline_adherence:
+    - "Blocker resolution by 2026-09-18"
+    - "Phase 1 complete by 2026-09-23"
+    - "Phase 2 complete by 2026-09-30"
+    - "Phase 3 complete by 2026-10-15"
+
+  adoption:
+    - "100% of practices using postflight-drift-measure.py"
+    - "Resource-accounting-guard referenced in all practice guidelines"
+    - "Monthly governance audit includes guard compliance check"
+
+# ============================================================================
+# RISK REGISTER
+# ============================================================================
+
+risks:
+  risk_1:
+    description: "Entity sync pipeline still not restored by Phase 0 deadline"
+    probability: "MEDIUM"
+    impact: "HIGH"
+    mitigation: "Escalate to Admiral immediately; consider alternative distribution method (manual, direct contact)"
+    trigger: "Sep 18 blockers not resolved"
+
+  risk_2:
+    description: "Blocker specs transmission protocol remains broken"
+    probability: "MEDIUM"
+    impact: "HIGH"
+    mitigation: "Implement manual delivery for Phase 1 pilot; fix infrastructure in parallel"
+    trigger: "Pilot test fails to deliver specs"
+
+  risk_3:
+    description: "GitHub-hosted practices (humanaios) have deployment challenges"
+    probability: "MEDIUM"
+    impact: "MEDIUM"
+    mitigation: "Pre-coordinate with humanaios team; clarify deployment location/process; test in Phase 1"
+    trigger: "Phase 2 deployment blocked for humanaios"
+
+  risk_4:
+    description: "Cross-org practices unknown or unreachable"
+    probability: "MEDIUM"
+    impact: "MEDIUM"
+    mitigation: "Identify all 15 practices before Phase 0; escalate unknown practices immediately"
+    trigger: "Reaching phase 3 without knowing all practices"
+
+  risk_5:
+    description: "Practice deployment SLA slips (installation takes >48h)"
+    probability: "HIGH"
+    impact: "LOW-MEDIUM"
+    mitigation: "Buffer phase timelines; track each practice progress weekly"
+    trigger: "Multiple practices miss installation SLA"
+
+# ============================================================================
+# GOVERNANCE & APPROVAL
+# ============================================================================
+
+governance:
+  approval_authority: "Carly R. Anderson (Admiral, empirica-foundation-evaluator)"
+  approval_status: "DRAFT - PENDING ADMIRAL REVIEW"
+  approval_date_required: "2026-09-18"
+
+  stakeholders:
+    - "empirica-foundation-evaluator (architect)"
+    - "empirica-mesh-support (delivery)"
+    - "All 9 non-compliant practices (implementers)"
+    - "All 15 foundation practices (users)"
+
+  review_schedule:
+    weekly: "Phase 0-3 progress tracking (Sep 15 - Oct 15)"
+    gate_decisions: "Sep 19, Sep 23, Sep 30, Oct 15 (Admiral)"
+    post_deployment: "Monthly audit integration (Nov 1+)"
+
+# ============================================================================
+# APPENDICES
+# ============================================================================
+
+appendices:
+  appendix_a: "Compliant practices reference (5 confirmed + 1 likely = 6)"
+  appendix_b: "postflight-drift-measure.py module specification"
+  appendix_c: "Blocker specs transmission protocol (to be fixed)"
+  appendix_d: "Drift measurement escalation alert configuration"
+  appendix_e: "Monthly governance audit integration checklist"
+
+---
+
+# END OF ENFORCEMENT ROADMAP

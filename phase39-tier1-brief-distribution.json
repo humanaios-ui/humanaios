@@ -1,0 +1,59 @@
+{
+  "phase": "3.9",
+  "task": "3_brief_distribution_tier1",
+  "distribution_timestamp": "2026-09-17T22:00:00Z",
+  "distribution_status": "ISSUED",
+  "tier": 1,
+  "total_practices": 4,
+  "practices": [
+    {
+      "practice_name": "empirica-autonomy",
+      "tier": 1,
+      "brief_file": "phase39-deployment-briefs-v2/empirica-autonomy_deployment_brief.md",
+      "sla_parameters": {"query_latency_p95_ms": 1000, "health_score_min": 0.75, "critical_response_minutes": 2},
+      "deployment_steps": 5,
+      "alert_rules_count": 5,
+      "status": "ISSUED",
+      "expected_completion": "2026-09-18T04:00:00Z"
+    },
+    {
+      "practice_name": "empirica-mesh-support",
+      "tier": 1,
+      "brief_file": "phase39-deployment-briefs-v2/empirica-mesh-support_deployment_brief.md",
+      "sla_parameters": {"query_latency_p95_ms": 1500, "health_score_min": 0.70, "critical_response_minutes": 5},
+      "deployment_steps": 5,
+      "alert_rules_count": 5,
+      "status": "ISSUED",
+      "expected_completion": "2026-09-18T04:00:00Z"
+    },
+    {
+      "practice_name": "empirica-foundation-evaluator",
+      "tier": 1,
+      "brief_file": "phase39-deployment-briefs-v2/empirica-foundation-evaluator_deployment_brief.md",
+      "sla_parameters": {"query_latency_p95_ms": 1200, "health_score_min": 0.75, "critical_response_minutes": 2},
+      "deployment_steps": 5,
+      "alert_rules_count": 5,
+      "status": "ISSUED",
+      "expected_completion": "2026-09-18T04:00:00Z"
+    },
+    {
+      "practice_name": "empirica-outreach",
+      "tier": 1,
+      "brief_file": "phase39-deployment-briefs-v2/empirica-outreach_deployment_brief.md",
+      "sla_parameters": {"query_latency_p95_ms": 2000, "health_score_min": 0.70, "critical_response_minutes": 10},
+      "deployment_steps": 5,
+      "alert_rules_count": 5,
+      "status": "ISSUED",
+      "expected_completion": "2026-09-18T04:00:00Z"
+    }
+  ],
+  "deployment_plan": {
+    "wave": 1,
+    "distribution_method": "Cortex mesh briefing",
+    "distribution_time": "2026-09-17T22:00:00Z",
+    "deployment_window": "2026-09-17T22:00:00Z to 2026-09-18T08:00:00Z",
+    "execution_model": "Parallel (all 4 practices)",
+    "validation_deadline": "2026-09-18T20:00:00Z"
+  },
+  "next_wave": "Tier 2 (5 practices) - Sep 18 morning"
+}

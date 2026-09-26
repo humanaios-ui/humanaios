@@ -1,0 +1,185 @@
+# Phase 3.3 Alerting Rules for Prometheus
+# Configure these rules in Prometheus to enable alerting on key metrics
+#
+# Usage:
+# 1. Copy this file to your Prometheus config directory
+# 2. Reference it in prometheus.yml: rule_files: ["PHASE_3_ALERTING_RULES.yaml"]
+# 3. Configure alert handlers (Slack, PagerDuty, etc.) in the alertmanager
+#
+# Alert Rules follow Prometheus PromQL syntax and evaluate every evaluation_interval
+
+groups:
+  - name: empirica_task_service_alerts
+    interval: 15s
+    rules:
+
+      # Alert 1: High Error Rate
+      # Triggers when error rate exceeds 5% over 5 minutes
+      - alert: HighErrorRate
+        expr: |
+          (
+            rate(requests_total{status=~"error|bad_request|rate_limited"}[5m]) /
+            rate(requests_total[5m])
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: task-service
+        annotations:
+          summary: "High error rate on task service"
+          description: |
+            Error rate is {{ printf "%.2f" $value }}% (threshold: 5%)
+            This indicates more than 5% of requests are failing.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/high-error-rate"
+
+
+      # Alert 2: Queue Depth High
+      # Triggers when queue depth exceeds 1000 for 1 minute
+      - alert: QueueDepthHigh
+        expr: current_queue_depth > 1000
+        for: 1m
+        labels:
+          severity: warning
+          service: task-service
+        annotations:
+          summary: "Task queue is building up"
+          description: |
+            Queue depth is {{ $value }} tasks (threshold: 1000)
+            Consider scaling up the worker pool.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/queue-depth-high"
+
+
+      # Alert 3: Task Latency High (p99)
+      # Triggers when 99th percentile of task latency exceeds 300 seconds
+      - alert: TaskLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.99,
+            rate(task_latency_seconds_bucket[5m])
+          ) > 300
+        for: 5m
+        labels:
+          severity: warning
+          service: task-service
+        annotations:
+          summary: "Task processing latency is high (p99)"
+          description: |
+            99th percentile task latency is {{ printf "%.1f" $value }}s (threshold: 300s)
+            Tasks are taking longer than expected to complete.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/high-latency"
+
+
+      # Alert 4: Worker Pool Insufficient
+      # Triggers when fewer than 1 worker is available (i.e., pool is unhealthy)
+      - alert: WorkerPoolUnavailable
+        expr: active_workers < 1
+        for: 2m
+        labels:
+          severity: critical
+          service: task-service
+        annotations:
+          summary: "Worker pool is unavailable"
+          description: |
+            Active workers: {{ $value }} (minimum: 1)
+            No workers are available to process tasks.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/worker-pool-down"
+
+
+      # Alert 5: Request Latency High
+      # Triggers when HTTP request latency exceeds 10 seconds
+      - alert: RequestLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.95,
+            rate(requests_latency_seconds_bucket[5m])
+          ) > 10
+        for: 3m
+        labels:
+          severity: warning
+          service: task-service
+        annotations:
+          summary: "HTTP request latency is high"
+          description: |
+            95th percentile request latency is {{ printf "%.2f" $value }}s (threshold: 10s)
+            API response times are slower than normal.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/slow-requests"
+
+
+      # Alert 6: Queue Wait Time Excessive
+      # Triggers when average queue wait time exceeds 120 seconds
+      - alert: QueueWaitTimeHigh
+        expr: |
+          avg(
+            rate(queue_wait_time_seconds_sum[5m]) /
+            rate(queue_wait_time_seconds_count[5m])
+          ) > 120
+        for: 5m
+        labels:
+          severity: warning
+          service: task-service
+        annotations:
+          summary: "Tasks are waiting too long in queue"
+          description: |
+            Average queue wait time is {{ printf "%.1f" $value }}s (threshold: 120s)
+            Consider scaling the worker pool.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/queue-wait-time"
+
+
+      # Alert 7: Task Failure Rate High
+      # Triggers when task failure rate exceeds 10%
+      - alert: TaskFailureRateHigh
+        expr: |
+          (
+            rate(tasks_processed_total{status="failed"}[5m]) /
+            rate(tasks_processed_total[5m])
+          ) > 0.10
+        for: 5m
+        labels:
+          severity: warning
+          service: task-service
+        annotations:
+          summary: "High task failure rate"
+          description: |
+            Task failure rate is {{ printf "%.2f" $value }}% (threshold: 10%)
+            More than 10% of tasks are failing.
+          dashboard: "http://localhost:3000/d/task-service"
+          runbook: "https://docs.empirica-foundation.io/runbooks/task-failures"
+
+
+# Alert Manager Configuration (add to alertmanager.yml for notifications)
+# Note: This is example configuration showing how to route alerts to Slack
+#
+# Example alertmanager.yml routes:
+# route:
+#   receiver: 'default'
+#   group_by: ['alertname', 'service']
+#   group_wait: 10s
+#   group_interval: 10s
+#   repeat_interval: 12h
+#   routes:
+#     - match:
+#         severity: critical
+#       receiver: 'slack-critical'
+#       repeat_interval: 5m
+#     - match:
+#         severity: warning
+#       receiver: 'slack-warnings'
+#
+# receivers:
+#   - name: 'default'
+#   - name: 'slack-critical'
+#     slack_configs:
+#       - api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
+#         channel: '#alerts-critical'
+#         title: 'Critical Alert'
+#   - name: 'slack-warnings'
+#     slack_configs:
+#       - api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
+#         channel: '#alerts-warnings'
+#         title: 'Warning Alert'

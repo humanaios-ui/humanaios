@@ -1,0 +1,404 @@
+api_version: "1.0"
+
+practice:
+  ai_id: empirica-foundation-evaluator
+  human_name: "Empirica Foundation Evaluator — Admiral Seat"
+  mission: "Measure epistemic state and behavioral calibration across foundation practices; provide independent assessment for governance decisions and Admiral accountability"
+  canonical_seat: "empirica-foundation.carly.empirica-foundation-evaluator"
+  org_id: "empirica-foundation"
+  tenant: "carly"
+
+serves:
+  contacts:
+    - type: organization
+      id: empirica-foundation
+      relationship: internal-governance
+    - type: practice
+      id: empirica-autonomy
+      relationship: measurement-coordination
+    - type: practice
+      id: humanaios
+      relationship: measurement-coordination
+    - type: practice
+      id: empirica-mesh-support
+      relationship: governance-oversight
+    - type: external
+      name: "Admiral (Carly R. Anderson)"
+      relationship: decision-authority
+
+  engagement_types:
+    - epistemic-assessment
+    - behavioral-calibration
+    - convergence-analysis
+    - governance-audit
+    - Admiral-briefing
+    - practice-specification-oversight
+
+owns:
+  domains:
+    - "Epistemic state measurement (PREFLIGHT/POSTFLIGHT vectors, artifact logging, calibration tracking)"
+    - "Empirica framework governance (dual-log pattern, independence gates, measurement verification)"
+    - "Phase measurement & convergence analysis (P1 baseline, P3 observation windows, P1→P3 delta analysis)"
+    - "Behavioral calibration reference standard (measurement substrate, grader versioning, quarterly rounds)"
+    - "Practice specification adoption coordination (template, guidance, mesh-support oversight, Admiral ratification)"
+    - "Governance audit & compliance (regulatory framework alignment, independence verification, findings publication)"
+    - "Admiral decision support (briefings, evidence synthesis, risk assessment, escalation management)"
+
+  out_of_scope:
+    - "ACAT behavioral assessment (humanaios owns behavioral instrument + P1/P3 scoring)"
+    - "Autonomy gates A.0.1-A.0.3 (autonomy owns technical gates, evaluator observes convergence)"
+    - "Infrastructure provisioning & CI/CD (empirica-mesh-support owns; evaluator consumes)"
+    - "Practice operations (each practice owns their own execution; evaluator audits governance)"
+    - "Publication coordination (autonomy + humanaios + outreach own content; evaluator owns audit trail)"
+
+presents:
+  interfaces:
+    - name: "epistemic_assessment"
+      capability: ["PREFLIGHT/POSTFLIGHT vector computation", "artifact logging oversight", "calibration trend analysis"]
+      contracts:
+        - name: "vector_baseline_request"
+          input: "practice_id, work_type, session_scope"
+          output: "p1_baseline_vectors, confidence_per_vector, calibration_model_version"
+          sla_response: "4 hours"
+          sla_resolution: "1 business day (baseline compute only, no iterative refinement)"
+          rationale: "Baseline computation is mechanical and time-bound. Integration into practice session requires coordination; baseline itself is independent."
+
+        - name: "vector_deltas_analysis"
+          input: "practice_id, baseline_vector_id, observation_window_dates"
+          output: "p3_vectors, vector_deltas_matrix, drift_signals, confidence_per_delta"
+          sla_response: "2 hours (incremental pull from continuous tracking)"
+          sla_resolution: "3 business days (analysis required; surface findings)"
+          rationale: "Vectors are continuously logged; analysis window is parameterizable. Findings may require convergence check against ACAT data (SER 3.5 dependency)."
+
+        - name: "calibration_health_check"
+          input: "practice_id, metric_type (uncertainty, completion, engagement, etc.), lookback_window"
+          output: "trend_summary, drift_vs_baseline, anomalies_flagged, improvement_suggestions"
+          sla_response: "1 hour"
+          sla_resolution: "same business day"
+          rationale: "Health check is diagnostic only, not prescriptive. Designed for rapid ad-hoc triage by practices or Admiral."
+
+    - name: "behavioral_calibration_reference"
+      capability: ["P1 baseline administration", "P3 observation coordination", "learning_index computation"]
+      contracts:
+        - name: "p1_baseline_seal"
+          input: "practice_id, baseline_measurement_set, grader_version, timestamp"
+          output: "baseline_sealed_to_git_notes, immutable_ref_id, publication_ready_boolean"
+          sla_response: "30 minutes"
+          sla_resolution: "2 hours (git refs are atomic; verification included)"
+          rationale: "P1 baseline is a one-time gate (M1). Sealing is time-critical and atomic. Happens once per practice at Phase 1 end."
+
+        - name: "p3_observation_intake"
+          input: "practice_id, behavioral_scores_jsonl, k_dimensions_assessed, observation_date"
+          output: "ingestion_status, validation_summary, ready_for_convergence_analysis"
+          sla_response: "1 hour"
+          sla_resolution: "next business day (validation included)"
+          rationale: "P3 observations flow throughout Phase 2-3 (13-week window, weekly cadence). Intake validation is rapid; analysis per SER 3.5 schedule."
+
+        - name: "learning_index_calculation"
+          input: "practice_id, p1_baseline_id, p3_scores, k_dimensions"
+          output: "learning_index_per_kdim, overall_learning_index, confidence_bounds"
+          sla_response: "4 hours"
+          sla_resolution: "2 business days (requires P3 observation completeness check + dimensional validation)"
+          rationale: "Learning Index (P3/P1 ratio) is post-hoc, Phase 3 artifact. Computation is straightforward once data is sealed; confidence bounds reflect measurement uncertainty."
+
+    - name: "convergence_analysis"
+      capability: ["ACAT↔Empirica divergence detection", "correlation scoring", "contamination audit"]
+      contracts:
+        - name: "p1_vs_p3_divergence_check"
+          input: "practice_id, baseline_vector_id, p3_vector_id, acat_learning_index"
+          output: "divergence_signal_strength, correlation_vs_acat, contamination_risk_score, recommendations"
+          sla_response: "2 hours"
+          sla_resolution: "3 business days (requires careful analysis; Admiral may request re-verification)"
+          rationale: "Divergence analysis is read-only (git notes immutable). Output informs Admiral decision on measurement integrity. Phase 3 work (Nov-Dec)."
+
+        - name: "independence_gate_verification"
+          input: "practice_id, measurement_audit_scope (gate_2a, gate_2b, full)"
+          output: "gate_pass_boolean, audit_findings, contamination_incidents_flagged"
+          sla_response: "4 hours"
+          sla_resolution: "2 business days"
+          rationale: "Independence gates are compliance checks. Pre-M2 verification (Sep 25) ensures ACAT ≠ Empirica, Empirica ≠ ACAT."
+
+    - name: "governance_audit"
+      capability: ["specification compliance review", "Admiral briefing", "escalation triage"]
+      contracts:
+        - name: "practice_spec_review"
+          input: "practice_spec_yaml, spec_version, mesh_support_feedback"
+          output: "compliance_assessment, governance_gaps, recommendations, mesh_support_summary"
+          sla_response: "2 hours"
+          sla_resolution: "1 business day (minimal iteration; this is pre-Admiral review)"
+          rationale: "Specification review is an oversight checkpoint. mesh-support owns detailed spec interview; evaluator performs final governance alignment check."
+
+        - name: "admiral_briefing_synthesis"
+          input: "decision_type (measurement_integrity, specification_ratification, escalation), supporting_artifacts"
+          output: "briefing_doc, evidence_summary, recommendation, risk_assessment"
+          sla_response: "4 hours"
+          sla_resolution: "1 business day"
+          rationale: "Admiral briefings are high-stakes. Synthesis requires careful artifact review and clear evidence narrative. Timing gated by Admiral's decision calendar (typically Zone 2 gates on Tue/Thu)."
+
+        - name: "escalation_triage"
+          input: "escalation_type (blocker, contamination_signal, timeline_risk), source_practice, description"
+          output: "severity_score, recommended_action, Admiral_escalation_needed"
+          sla_response: "30 minutes"
+          sla_resolution: "2 hours (triage only; execution depends on decision)"
+          rationale: "Escalations are time-critical. Evaluator triages and routes (to mesh-support, autonomy, or Admiral depending on type)."
+
+    - name: "artifact_graph_coordination"
+      capability: ["empirica artifact logging oversight", "graph connectivity validation", "dual-log pattern enforcement"]
+      contracts:
+        - name: "artifact_graph_health"
+          input: "practice_id, lookback_days"
+          output: "connectivity_score, orphaned_artifacts, logging_pattern_quality, recommendations"
+          sla_response: "1 hour"
+          sla_resolution: "same business day"
+          rationale: "Graph health is continuously monitored. Issues surface via weave-gate (>34% connectivity required). Ad-hoc requests are rapid diagnostics."
+
+        - name: "dual_log_enforcement"
+          input: "practice_id, observation_window"
+          output: "log_pattern_conformance, acat_log_separation_verified, empirica_log_independence_verified"
+          sla_response: "2 hours"
+          sla_resolution: "1 business day"
+          rationale: "Dual-log pattern is foundational to F-50 mitigation. Enforcement is periodic (weekly during Phase 2-3) and compliance-critical."
+
+consumes:
+  from:
+    - empirica-autonomy:
+        - "A.0.1-A.0.3 gates deployment status (technical readiness)"
+        - "A.0.2 calibration refinement signals (metric convergence)"
+        - "Phase 1 baseline readiness (when P1 is sealed)"
+        - "Weekly coordination status (Tue sync, gates + blockers)"
+      when_to_call:
+        - "Need to verify autonomy Phase 1 baseline gates before M1 milestone"
+        - "Checking if autonomy gates deployment aligns with evaluator P1 seal timeline"
+        - "Understanding autonomy calibration model for evaluator measurement alignment"
+      when_to_decline:
+        - "Detailed gate technical implementation questions (go to autonomy directly)"
+        - "Autonomy's internal architecture decisions (not evaluator's scope)"
+
+    - humanaios:
+        - "ACAT P1 baseline seal status (when sealed, immutable)"
+        - "ACAT P3 scoring & assessment updates (weekly during observation)"
+        - "Behavioral corpus state & K-dimension tracking"
+        - "Rater recruitment & Demarius interview status"
+      when_to_call:
+        - "Verifying P1 baseline sealed before M1 gate (2026-08-08)"
+        - "Receiving P3 behavioral scores for convergence analysis (Phase 3)"
+        - "Understanding ACAT measurement uncertainty & grader versioning"
+      when_to_decline:
+        - "Detailed behavioral instrument design questions (go to humanaios)"
+        - "ACAT scoring disagreements (go to Admiral or humanaios, evaluator observes only)"
+
+    - empirica-mesh-support:
+        - "Practice specification template & adoption status"
+        - "Infrastructure readiness (API endpoints, cortex bus, Git refs)"
+        - "SER 3.5 pipeline status (ACAT→Empirica data flow)"
+        - "Weekly mesh coordination calendar & blocker triage"
+        - "Phase 2/3 timeline & milestone gates"
+      when_to_call:
+        - "Understanding mesh-wide governance adoption progress"
+        - "Verifying infrastructure supports P1 seal + P3 observation windows"
+        - "Escalating cross-practice blockers that affect evaluator work"
+      when_to_decline:
+        - "Detailed infrastructure provisioning questions (go to mesh-support)"
+        - "Mesh orchestration problems outside evaluator purview"
+
+behavioral_assessment:
+  work_type: "audit"
+  calibration_model: "shared_reference_standard_v1"
+  measurement_uncertainty: "published_per_round"
+  substrate_tracking: true
+  grader_version_tracked: true
+  quarterly_rounds: true
+  measurement_frequency: "continuous with weekly reviews during Phase 2-3"
+  baseline_grader_version: "Claude Opus 5"
+
+  assessment_scope:
+    - "Epistemic state calibration (beliefs accurate relative to evidence, vector confidence justified)"
+    - "Artifact logging discipline (findings, unknowns, decisions, dead-ends all logged; graph coherence >34%)"
+    - "Transaction discipline (PREFLIGHT→noetic→CHECK→praxic→POSTFLIGHT completed per unit)"
+    - "Noetic work quality (investigation depth, grounding, source diversity before CHECK gate)"
+    - "Measurement integrity (independence gates passed; no ACAT↔Empirica circular feedback)"
+    - "Governance compliance (practice spec alignment, escalation paths followed, Admiral authority respected)"
+
+  measurement_anchor:
+    - "Ground truth: git commit messages, test results, artifact graph topology (objective signals)"
+    - "Mechanical verification: calendar response times, SLA compliance, gate pass/fail (binary markers)"
+    - "Self-reported calibration: PREFLIGHT/POSTFLIGHT vectors, empirica notes, confidence bounds (durable audit trail)"
+    - "Convergence check: do behavioral shifts (ACAT P3/P1) align with epistemic shifts (Empirica P3/P1)? (post-hoc analysis)"
+
+regulatory_context:
+  frameworks:
+    - name: "EU AI Act (binding, enforcement Aug 2026+)"
+      scope: "High-risk AI systems; mandates transparency, logging, human oversight for decision-making systems"
+      relevance: "Evaluator's audit function provides transparency + logged decision trails; Admiral oversight ensures human accountability"
+
+    - name: "prEN 18229-1 (Logging, Transparency, Human Oversight for AI Systems)"
+      scope: "Technical controls for AI trustworthiness; DIS stage June 2026, Enquiry closed Aug 2026, next stage formal weighted vote"
+      relevance: "Empirica's dual-log pattern + independence gates implement technical logging requirements; evaluator audits compliance"
+
+    - name: "ISO/IEC 42001 (AI Management System — organizational governance)"
+      scope: "Framework for governing AI systems at organizational level; certifiable, includes risk management + audit"
+      relevance: "Practice specifications + evaluator governance audit form the basis of ISO 42001 organizational controls"
+
+    - name: "prEN 18286 (Quality Management System for EU AI Act compliance)"
+      scope: "Per-system QMS aligned with EU AI Act requirements; complements ISO 42001"
+      relevance: "Evaluator's Phase 1 baseline + M-gate measurements provide QMS audit evidence"
+
+  integrated_approach: |
+    Empirica Foundation architecture implements multi-framework compliance through:
+    1. **Organizational level (ISO 42001):** Practice specifications define roles, authority, escalation
+    2. **System level (prEN 18286):** Dual-log pattern ensures logging + transparency; independence gates prevent single-point-of-truth contamination
+    3. **Technical level (prEN 18229):** Artifact graph, PREFLIGHT/POSTFLIGHT vectors, git notes all provide audit trails and transparency
+    4. **Governance level (Admiral oversight):** Human decision-authority retained; Carly (Admiral) has final say on measurement integrity + Phase gates
+
+  publication_gates:
+    - "Phase 1 baseline completion (M1 gate, 2026-08-08): Admiral approval required"
+    - "Independence CHECK verification (M2 gate, 2026-09-25): Convergence analysis prep"
+    - "P3 measurement completion (M3-M4 gates, Oct-Nov): Observation window closure"
+    - "Convergence analysis & findings (M5 gate, 2026-11-30): Admiral review + F-50 audit (Zone 2 decision)"
+    - "Admiral ratification + publication (Zone 2 decision, 2026-12-22): Findings released to ecosystem"
+
+dependencies:
+  - practice: "empirica-autonomy"
+    reason: "A.0.1-A.0.3 gates completion gates M1 milestone; autonomy Phase 1 baseline gates evaluator's P1 seal timing"
+    constraint: "Hard gate: evaluator cannot seal P1 before autonomy gates are verified. Weekly coordination required (Tue 10am sync)."
+
+  - practice: "humanaios"
+    reason: "ACAT P1 baseline must be sealed before evaluator's P1 seal; P3 ACAT scores drive convergence analysis"
+    constraint: "Hard gate: M1 requires both ACAT P1 + Empirica P1 sealed. Soft dependency: P3 observations flow weekly via SER 3.5."
+
+  - practice: "empirica-mesh-support"
+    reason: "Infrastructure (Git refs, API, cortex bus) enables P1/P3 sealing; SER 3.5 pipeline delivers ACAT→Empirica data"
+    constraint: "Hard gate: no P1 seal possible without writable git refs. Weekly coordination (Tue 10am) for blocker triage."
+
+phase_timeline:
+  phase_1_specification:
+    start: "2026-08-12"
+    end: "2026-08-25"
+    activity: "Define governance charter + measurement framework for evaluator seat"
+    success_criteria:
+      - "practice-spec.yaml completed and reviewed by mesh-support (30-min interview)"
+      - "SER 1 (.empirica/framework-governance.md) finalized with Admiral approval"
+      - "Measurement checklist complete (PREFLIGHT/POSTFLIGHT vectors, artifact logging patterns)"
+      - "Dependencies with autonomy + humanaios confirmed for M1 gate coordination"
+      - "Practice specification template + guidance ready for foundation-wide adoption outreach"
+      - "Evaluator seat charter published in System Specification Charter draft"
+
+  phase_2_review:
+    start: "2026-08-26"
+    end: "2026-09-20"
+    activity: "P1 baseline administration + governance adoption coordination"
+    success_criteria:
+      - "autonomy A.0.1-A.0.3 gates verified (prerequisites for M1)"
+      - "ACAT P1 baseline sealed by humanaios (prerequisite for evaluator M1)"
+      - "Evaluator P1 vectors sealed to git notes (M1 gate, 2026-09-08)"
+      - "All foundation practices draft practice-spec.yaml (Phase 1 adoption)"
+      - "mesh-support completes Phase 1 interviews for all 6 practices (by 2026-08-25)"
+      - "Independence CHECK gates validated before M2 (2026-09-25)"
+
+  phase_3_ratification:
+    start: "2026-09-21"
+    end: "2026-09-30"
+    activity: "Admiral ratification + Phase 2 deployment"
+    success_criteria:
+      - "All 6 foundation practice specs ratified by Admiral"
+      - "Evaluator seat spec published in System Specification Charter (final)"
+      - "Phase 2 M-gates (M2: Independence CHECK; M3: P1 backfill; M4: Gates deployment) ready for execution"
+      - "SER 3.5 pipeline live (ACAT P3 scores flowing)"
+      - "P3 observation window begins (Oct 1 → Nov 30)"
+
+critical_unknowns:
+  - "Will ACAT P1 baseline seal by M1 gate (2026-08-08)? (depends on humanaios rater recruitment + Demarius interview completion)"
+  - "Are autonomy A.0.1-A.0.3 gates all passing by M1? (affects evaluator P1 seal timing; escalation needed if delayed beyond 2026-09-08)"
+  - "What is the exact prEN 18229 formal weighted vote window? (outreach dependency; gates publication coordination; Admiral to confirm)"
+  - "Can SER 3.5 API endpoint handle weekly P3 score ingestion at scale? (mesh-support infrastructure risk; test by 2026-09-15)"
+  - "Will all practices complete Phase 1 specifications by 2026-08-25? (governance adoption adoption risk; mesh-support to flag early if any slip)"
+
+regulatory_deadlines:
+  - "EU AI Act Enforcement (Article 12): Dec 2 2027 (standalone Annex III systems), Aug 2 2028 (Annex I embedded)"
+  - "prEN 18229-1 Publication Window (post-Enquiry): timing pending formal weighted vote by CEN members (likely Q4 2026 or Q1 2027)"
+  - "Admiral Phase Gate Milestones: M1 (2026-08-08), M2 (2026-09-25), M3 (2026-10-30), M4 (2026-11-20), M5 (2026-11-30), Zone 2 Review (2026-12-22)"
+
+next_actions:
+  - "**TODAY (2026-08-14) — PRACTICE SPEC MATERIALS COMPLETE:**
+    1. Governance Adoption Guidance Script ready for mesh-support
+    2. Evaluator Practice Specification Worked Example ready (this document)
+    3. Both artifacts sent to mesh-support to unblock Phase 1 outreach launch
+    4. Confirm with mesh-support: outreach can proceed Aug 14 (vs deferred to Aug 13)"
+
+  - "**BY 2026-08-25 (Phase 1 Specification End):**
+    - All 6 foundation practices have drafted practice-spec.yaml
+    - mesh-support completes interview + feedback for each practice
+    - Critical unknowns triaged (triage: resolve vs escalate vs defer)"
+
+  - "**2026-08-26 (Phase 2 Review Start) → 2026-09-20:**
+    - Foundation practices iterate on Phase 1 feedback
+    - Evaluator works with autonomy + humanaios on M1 gate prerequisites
+    - SER 3.5 pipeline testing begins (mesh-support + humanaios)"
+
+  - "**2026-09-08 (M1 Gate Target):**
+    - ACAT P1 baseline sealed (humanaios) + Empirica P1 vectors sealed (evaluator)
+    - Admiral sign-off on Phase 1 baseline (both ACAT + Empirica)"
+
+  - "**2026-09-21 (Phase 3 Ratification Start) → 2026-09-30:**
+    - Admiral ratifies all 6 practice specs
+    - System Specification Charter published (unified governance document)"
+
+  - "**2026-10-01 (Phase 2 Operational Start):**
+    - P3 observation window begins (13 weeks, Oct 1 → Nov 30)
+    - Weekly autonomy ↔ mesh-support syncs (Tue 10am UTC)"
+
+  - "**2026-11-30 (M5 Gate: Convergence Analysis):**
+    - All P3 observations sealed
+    - Convergence analysis infrastructure ready
+    - Admiral review + F-50 audit scheduled (Zone 2 decision, 2026-12-22)"
+
+---
+
+# NOTES FOR MESH-SUPPORT INTERVIEW (Aug 12-25)
+
+This Practice Specification captures the evaluator seat's governance role: measure epistemic state, audit behavioral calibration, support Admiral decision-making, and oversee practice specification adoption across the foundation.
+
+## Key Interview Topics (Priority Order)
+
+1. **Measurement Independence & F-50 Mitigation (CRITICAL)**
+   - How do evaluator's Empirica vector measurements stay independent from ACAT behavioral scores?
+   - What are Independence CHECK gates 2A + 2B? How are they verified pre-M2 (2026-09-25)?
+   - SER 3.5 is read-only (ACAT → Empirica data flow, no feedback). How is this enforced technically?
+   - What if ACAT P1 baseline is delayed? Does it block evaluator's P1 seal?
+
+2. **Phase Gate Coordination (CRITICAL PATH)**
+   - M1 (2026-08-08): Both ACAT + Empirica P1 sealed. Prerequisites = autonomy A.0.1-A.0.3 verified + humanaios rater recruitment done. Are these on track?
+   - M2 (2026-09-25): Independence CHECK passed. What's the verify protocol?
+   - If either prerequisite slips, what's the Admiral escalation protocol?
+
+3. **SER 3.5 Pipeline Integration (INFRASTRUCTURE)**
+   - How does ACAT P3 scoring flow to evaluator? (weekly? batch? what latency?)
+   - What happens if mesh-support's API endpoint is unavailable during observation window?
+   - Convergence analysis requires P3 data to be immutable (sealed to git notes). How is this guaranteed?
+
+4. **Practice Specification Adoption Oversight (GOVERNANCE)**
+   - Evaluator provides pre-Admiral governance check on practice specs. Does this add overhead to mesh-support interview process?
+   - How much iteration is typical (Phase 1 to Phase 2 feedback)?
+   - Admiral ratification (Phase 3): what does evaluator need to brief?
+
+5. **Escalation Paths & Admiral Coordination (DECISION-MAKING)**
+   - What types of findings require Admiral briefing vs can be resolved within practices?
+   - If independence CHECK fails, what's the escalation? (rebuild measurement? request Admiral decision?)
+   - If a practice spec has regulatory gaps, does evaluator flag before or during Admiral review?
+
+## Pre-Interview Preparation
+
+- [ ] SER 1 (.empirica/framework-governance.md) ready for mesh-support review
+- [ ] P1 seal checklist finalized (autonomy + humanaios prerequisites, git refs writable, Admiral approval process)
+- [ ] SER 3.5 pipeline diagram ready (ACAT → Empirica data flow, read-only constraint)
+- [ ] Independence CHECK gates 2A + 2B implementation specs documented
+- [ ] Phase gate schedule (M1-M5) confirmed with mesh-support (any timeline conflicts?)
+- [ ] Escalation protocol draft (when to flag autonomy/humanaios/Admiral)
+
+---
+
+**Document Owner:** empirica-foundation-evaluator
+**Last Updated:** 2026-08-14
+**Next Review:** 2026-08-25 (Phase 1 specification completion)
+**Authority:** Admiral (Carly R. Anderson)
+**Status:** READY FOR MESH-SUPPORT ADOPTION OUTREACH

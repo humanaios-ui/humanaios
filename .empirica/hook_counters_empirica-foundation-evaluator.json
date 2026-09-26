@@ -1,3 +1,18 @@
 {
-  "unsolicited_prompt_count": 14
+  "unsolicited_prompt_count": 19,
+  "tool_call_count": 10,
+  "noetic_tool_calls": 2,
+  "tool_trace": [
+    [
+      "Bash",
+      "empirica",
+      "n"
+    ],
+    [
+      "Bash",
+      "empirica",
+      "n"
+    ]
+  ],
+  "delegated_tool_calls": 8
 }

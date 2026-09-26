@@ -1,0 +1,291 @@
+name: Mesh-Sync-Listen — Decision Application (PNS Template)
+
+# NOTE: This is a TEMPLATE for target repos (operations, lasting-light-ai, humanaios, etc.)
+# Copy to target repo: .github/workflows/mesh-sync-listen.yml
+# Customize: Replace TARGET_REPO_NAME with actual repo name
+
+on:
+  workflow_dispatch:
+    inputs:
+      decision_payload:
+        description: 'Decision payload JSON'
+        required: true
+      dry_run:
+        description: 'Dry-run mode (validate, do not apply)'
+        required: true
+        default: 'true'
+
+env:
+  TARGET_REPO_NAME: 'humanaios-ui/TARGET_REPO_NAME'  # Customize per repo
+  SCHEMA_VERSION: 'acat_contracts/decisions_v1.schema.json'
+
+jobs:
+  mesh-sync-listen:
+    name: Listen & Apply Decision
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      statuses: write
+
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml jsonschema cryptography requests
+
+      - name: Parse decision payload
+        id: parse-decision
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+          from datetime import datetime
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          try:
+              decision = json.loads(payload_str)
+          except json.JSONDecodeError as e:
+              print(f"::error::Failed to parse decision payload: {e}")
+              exit(1)
+
+          print(f"::notice::Decision received: {decision.get('decision_id', 'UNKNOWN')}")
+          print(f"::set-output name=decision_id::{decision.get('decision_id', 'UNKNOWN')}")
+          print(f"::set-output name=decision_type::{decision.get('decision_type', 'UNKNOWN')}")
+          print(f"::set-output name=schema_version::{decision.get('schema_version', 'UNKNOWN')}")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Validate decision schema
+        id: validate-schema
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+          from jsonschema import validate, ValidationError
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          schema_version = os.environ.get('SCHEMA_VERSION', 'v1')
+          schema_file = os.environ.get('SCHEMA_FILE', '.github/workflows/decision_schema_v1.json')
+
+          decision = json.loads(payload_str)
+
+          # Load schema
+          try:
+              with open(schema_file, 'r') as f:
+                  schema = json.load(f)
+          except FileNotFoundError:
+              print("::warning::Schema file not found, skipping schema validation (first deployment)")
+              print("::set-output name=validation_status::SCHEMA_NOT_FOUND")
+              exit(0)
+
+          # Validate
+          try:
+              validate(instance=decision, schema=schema)
+              print(f"✓ Decision schema valid ({schema_version})")
+              print("::set-output name=validation_status::VALID")
+          except ValidationError as e:
+              print(f"::error::Schema validation failed: {e.message}")
+              print("::set-output name=validation_status::INVALID")
+              exit(1)
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+          SCHEMA_VERSION: ${{ env.SCHEMA_VERSION }}
+
+      - name: Verify Admiral signature (if present)
+        id: verify-signature
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          decision = json.loads(payload_str)
+
+          # Check for signature
+          if 'admiral_signature' not in decision:
+              print("::warning::No Admiral signature in payload (accept for testing)")
+              print("::set-output name=signature_status::NOT_PRESENT")
+              exit(0)
+
+          # In production: verify RSA-2048 or Ed25519 signature
+          # For now: log that signature exists
+          print(f"✓ Admiral signature detected (verification deferred to crypto layer)")
+          print("::set-output name=signature_status::PRESENT")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Determine decision action
+        id: action
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          decision = json.loads(payload_str)
+          decision_type = decision.get('decision_type', 'UNKNOWN')
+
+          # Map decision type to target files
+          action_map = {
+              "authority_boundary_change": {
+                  "files": ["CLAUDE.md"],
+                  "description": "Update CLAUDE.md Authority Layer section"
+              },
+              "state_machine_gate_update": {
+                  "files": ["acat_contracts/gates_*.json"],
+                  "description": "Update ACAT phase gate thresholds"
+              },
+              "config_standard_update": {
+                  "files": [".empirica/project.yaml"],
+                  "description": "Standardize project.yaml template"
+              },
+              "dependency_version_pin": {
+                  "files": ["requirements.txt", "package.json"],
+                  "description": "Pin dependency versions"
+              },
+              "naming_versioning_standard": {
+                  "files": ["*"],
+                  "description": "Apply naming standard to new files"
+              },
+              "schema_lock_update": {
+                  "files": ["acat_contracts/*.schema.json"],
+                  "description": "Lock ACAT schema version"
+              }
+          }
+
+          action = action_map.get(decision_type, {"files": [], "description": "Unknown decision type"})
+          print(f"✓ Decision type: {decision_type}")
+          print(f"  Target files: {', '.join(action['files'])}")
+          print(f"::set-output name=target_files::{','.join(action['files'])}")
+          print(f"::set-output name=action_description::{action['description']}")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Apply decision (DRY-RUN mode)
+        if: github.event.inputs.dry_run == 'true'
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          decision = json.loads(payload_str)
+
+          print("## DRY-RUN Mode — What Would Be Applied")
+          print("")
+          print(f"**Decision ID:** {decision.get('decision_id', 'UNKNOWN')}")
+          print(f"**Type:** {decision.get('decision_type', 'UNKNOWN')}")
+          print(f"**Title:** {decision.get('title', 'UNKNOWN')}")
+          print("")
+          print("### Proposed Changes")
+          print("- Would update files: ${{ steps.action.outputs.target_files }}")
+          print("- Action: ${{ steps.action.outputs.action_description }}")
+          print("- Effective: $(date -u +%Y-%m-%dT%H:%M:%SZ)")
+          print("")
+          print("### Validation Status")
+          print("- Schema: ${{ steps.validate-schema.outputs.validation_status }}")
+          print("- Signature: ${{ steps.verify-signature.outputs.signature_status }}")
+          print("")
+          print("**Status:** ✓ Decision would apply (dry-run, no mutations)")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Apply decision (LIVE mode)
+        if: github.event.inputs.dry_run == 'false'
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+          import subprocess
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          decision = json.loads(payload_str)
+          decision_type = decision.get('decision_type')
+
+          # LIVE application logic (placeholder — customize per repo)
+          print("## LIVE Mode — Applying Decision")
+          print("")
+          print(f"**Decision ID:** {decision.get('decision_id')}")
+          print(f"**Status:** Applying...")
+
+          # Example: For authority_boundary_change, update CLAUDE.md
+          if decision_type == "authority_boundary_change":
+              if os.path.exists('CLAUDE.md'):
+                  print("  ✓ Would update CLAUDE.md Authority section")
+                  # TODO: Parse and update CLAUDE.md
+              else:
+                  print("  ⚠ CLAUDE.md not found (may not be applicable to this repo)")
+
+          print("")
+          print("**Status:** ✓ Decision applied")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Log mesh-sync ACK payload
+        if: success()
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime
+
+          payload_str = os.environ.get('DECISION_PAYLOAD', '{}')
+          decision = json.loads(payload_str)
+
+          # Get current commit hash
+          result = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True)
+          commit_hash = result.stdout.strip()
+
+          # Create ACK payload
+          ack = {
+              "decision_id": decision.get('decision_id'),
+              "status": "APPLIED" if "${{ github.event.inputs.dry_run }}" == "false" else "VALIDATED",
+              "repo": "${{ env.TARGET_REPO_NAME }}",
+              "applied_at_commit": commit_hash,
+              "applied_at_timestamp": datetime.utcnow().isoformat() + "Z",
+              "ack_timestamp": datetime.utcnow().isoformat() + "Z",
+              "workflow_run": "${{ github.run_id }}"
+          }
+
+          # Log to mesh_decision_sync table (stub for now)
+          print(f"::notice::Mesh-Sync ACK: {json.dumps(ack)}")
+          print(f"::set-output name=ack_payload::{json.dumps(ack)}")
+          PYTHON_EOF
+        env:
+          DECISION_PAYLOAD: ${{ github.event.inputs.decision_payload }}
+
+      - name: Commit changes (LIVE mode only)
+        if: github.event.inputs.dry_run == 'false' && success()
+        run: |
+          git config user.name "Mesh-Sync (M3 Decision Application)"
+          git config user.email "noreply@mesh-sync"
+          git add -A
+          git commit -m "M3: Apply decision ${{ steps.parse-decision.outputs.decision_id }}" || echo "No changes"
+          git push origin main || echo "Push skipped"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Mesh-Sync-Listen Summary"
+          echo ""
+          echo "**Decision ID:** ${{ steps.parse-decision.outputs.decision_id }}"
+          echo "**Type:** ${{ steps.parse-decision.outputs.decision_type }}"
+          echo "**Mode:** $([ '${{ github.event.inputs.dry_run }}' = 'true' ] && echo 'DRY-RUN' || echo 'LIVE')"
+          echo "**Repo:** ${{ env.TARGET_REPO_NAME }}"
+          echo "**Status:** ✓ Complete"

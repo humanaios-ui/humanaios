@@ -1,173 +1,483 @@
-name: Divergence Detect
-# Phase 2 Deployment: Detect repository divergence between local and Forgejo
-# Runs every 30 minutes to catch drift early
+name: Divergence-Detect — Daily Consistency Matrix (CNS)
 
+permissions:
+  contents: read
 on:
   schedule:
-    # Every 30 minutes
-    - cron: '*/30 * * * *'
+    # Run daily at 00:00 UTC to check mesh consistency
+    - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Verbose output (detailed divergence report)'
+        required: false
+        default: 'false'
 
-concurrency:
-  group: divergence-detect
-  cancel-in-progress: false
+env:
+  TARGET_REPOS: 'humanaios-ui/operations,humanaios-ui/lasting-light-ai,humanaios-ui/humanaios,LastingLightAI/HAIOSCC'
+  DIVERGENCE_THRESHOLD: 1
+  CONSISTENCY_TOLERANCE_HOURS: 24
 
 jobs:
-  detect-divergence:
-    name: Detect Repository Divergence
+  divergence-detect:
+    name: Daily Consistency Matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    outputs:
-      diverged: ${{ steps.check.outputs.diverged }}
-      local_sha: ${{ steps.check.outputs.local_sha }}
-      remote_sha: ${{ steps.check.outputs.remote_sha }}
-      commit_count: ${{ steps.check.outputs.commit_count }}
+    permissions:
+      contents: read
+      checks: write
+      statuses: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout empirica-foundation-evaluator
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Fetch all remotes
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
         run: |
-          git config --global user.name "Empirica Divergence Detect"
-          git config --global user.email "divergence-detect@empirica-foundation.local"
+          pip install pyyaml requests httpx
 
-          echo "=== Fetching all remotes ==="
-          git fetch --all --quiet || true
-
-          echo "=== Current branch ==="
-          git branch -vv
-
-      - name: Check for divergence
-        id: check
+      - name: Load canonical decision state (CNS source of truth)
+        id: load-canonical
         run: |
-          # Get latest commits from both local and forgejo
-          FORGEJO_REF="refs/remotes/forgejo/main"
-          LOCAL_SHA=$(git rev-parse HEAD)
-          FORGEJO_SHA=""
+          python3 << 'PYTHON_EOF'
+          import json
+          import yaml
+          from datetime import datetime
 
-          echo "local_sha=${LOCAL_SHA}" >> $GITHUB_OUTPUT
+          # Load CNS source of truth: GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'r') as f:
+              registry = yaml.safe_load(f)
 
-          if ! git show-ref --verify --quiet "$FORGEJO_REF"; then
-            echo "ERROR: Could not fetch forgejo/main"
-            echo "diverged=unknown" >> $GITHUB_OUTPUT
-            echo "remote_sha=" >> $GITHUB_OUTPUT
-            echo "commit_count=unavailable" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+          # Extract all ratified decisions (canonical state)
+          canonical_decisions = {}
 
-          FORGEJO_SHA=$(git rev-parse "${FORGEJO_REF}^{commit}")
-          echo "remote_sha=${FORGEJO_SHA}" >> $GITHUB_OUTPUT
+          # M2 Rank 1: Authority System
+          if 'm2_rank_1_authority_system' in registry.get('ratifications', {}):
+              m2r1 = registry['ratifications']['m2_rank_1_authority_system']
+              canonical_decisions['M2-RANK-1'] = {
+                  "decision_id": m2r1.get('decision_id', 'UNKNOWN'),
+                  "title": m2r1.get('title', 'UNKNOWN'),
+                  "status": m2r1.get('status', 'UNKNOWN'),
+                  "ratification_date": m2r1.get('ratification_date'),
+                  "scope": m2r1.get('scope', 'UNKNOWN')
+              }
 
-          # Check if they differ
-          if [ "$LOCAL_SHA" != "$FORGEJO_SHA" ]; then
-            # Calculate commit difference
-            COMMITS_AHEAD=$(git rev-list --count "${FORGEJO_REF}..HEAD")
-            COMMITS_BEHIND=$(git rev-list --count "HEAD..${FORGEJO_REF}")
+          # M3.5: Resilience Layer
+          if 'm3_5_resilience_layer' in registry.get('ratifications', {}):
+              m35 = registry['ratifications']['m3_5_resilience_layer']
+              canonical_decisions['M3.5-RESILIENCE'] = {
+                  "decision_id": m35.get('decision_id', 'UNKNOWN'),
+                  "title": m35.get('title', 'UNKNOWN'),
+                  "status": m35.get('status', 'UNKNOWN'),
+                  "ratification_date": m35.get('ratification_date'),
+                  "scope": m35.get('scope', 'UNKNOWN')
+              }
 
-            echo "diverged=true" >> $GITHUB_OUTPUT
-            echo "commit_count=${COMMITS_AHEAD} ahead, ${COMMITS_BEHIND} behind" >> $GITHUB_OUTPUT
+          # M3 Rank 1: Batch Sync
+          if 'm3_rank_1_batch_sync' in registry.get('ratifications', {}):
+              m3r1 = registry['ratifications']['m3_rank_1_batch_sync']
+              canonical_decisions['M3-RANK-1'] = {
+                  "decision_id": m3r1.get('decision_id', 'UNKNOWN'),
+                  "title": m3r1.get('title', 'UNKNOWN'),
+                  "status": m3r1.get('status', 'UNKNOWN'),
+                  "implementation_start": m3r1.get('implementation_start'),
+                  "scope": m3r1.get('scope', 'UNKNOWN')
+              }
 
-            echo "⚠ DIVERGENCE DETECTED:"
-            echo "  Local:  ${LOCAL_SHA:0:8}"
-            echo "  Forgejo: ${FORGEJO_SHA:0:8}"
-            echo "  Commits ahead: $COMMITS_AHEAD"
-            echo "  Commits behind: $COMMITS_BEHIND"
-          else
-            echo "diverged=false" >> $GITHUB_OUTPUT
-            echo "commit_count=0" >> $GITHUB_OUTPUT
-            echo "✓ No divergence: repositories in sync"
-          fi
+          print(f"::notice::Loaded {len(canonical_decisions)} canonical decisions from CNS")
+          print(f"::set-output name=canonical_json::{json.dumps(canonical_decisions)}")
+          PYTHON_EOF
 
-      - name: Generate divergence report
-        if: steps.check.outputs.diverged == 'true'
+      - name: Query mesh repo state (PNS decision logs)
+        id: query-repos
         run: |
-          mkdir -p reports
+          python3 << 'PYTHON_EOF'
+          import os
+          import json
+          import subprocess
 
-          cat > reports/divergence-report.md <<EOF
-          # Divergence Report
+          target_repos = os.environ.get('TARGET_REPOS', '').split(',')
+          repo_states = {}
 
-          **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
-          **Repository**: humanaios (empirica-foundation.carly.humanaios)
-          **Status**: DIVERGED
+          for repo in target_repos:
+              if not repo or repo.strip() == '':
+                  continue
 
-          ## Summary
-          - Local SHA: ${{ steps.check.outputs.local_sha }}
-          - Forgejo SHA: ${{ steps.check.outputs.remote_sha }}
-          - Divergence: ${{ steps.check.outputs.commit_count }}
+              repo = repo.strip()
+              print(f"::notice::Querying {repo}...")
 
-          ## Commits (Local HEAD..Forgejo)
+              # Try to query repo's mesh_decision_sync state
+              # For now: simulate state (in production: read from repo API or logs)
+              try:
+                  # Attempt to fetch .empirica/mesh_decision_sync.json if it exists
+                  result = subprocess.run(
+                      ['gh', 'api', f'repos/{repo}/contents/.empirica/mesh_decision_sync.json'],
+                      capture_output=True, text=True
+                  )
 
-          \`\`\`
-          $(git log --oneline refs/remotes/forgejo/main..HEAD | head -20)
-          \`\`\`
+                  if result.returncode == 0:
+                      content_data = json.loads(result.stdout)
+                      # Decode base64 content
+                      import base64
+                      decoded = base64.b64decode(content_data['content']).decode('utf-8')
+                      repo_state = json.loads(decoded)
+                      repo_states[repo] = repo_state
+                      print(f"  ✓ Got state from {repo}")
+                  else:
+                      # State file doesn't exist yet (first deployment)
+                      repo_states[repo] = {
+                          "status": "no_state_file",
+                          "message": "mesh_decision_sync.json not found (first deployment)"
+                      }
+                      print(f"  ⚠ No state file in {repo} (first deployment)")
+              except Exception as e:
+                  repo_states[repo] = {
+                      "status": "query_error",
+                      "error": str(e)
+                  }
+                  print(f"  ✗ Error querying {repo}: {e}")
 
-          ## Recommended Action
-          - Run mesh-sync-batch workflow to push local changes to Forgejo
-          - Or merge Forgejo changes into local if behind
+          print(f"::notice::Queried {len(repo_states)} repos")
+          print(f"::set-output name=repo_states_json::{json.dumps(repo_states)}")
+          PYTHON_EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          ---
-          *Generated by divergence-detect workflow*
-          EOF
+      - name: Build consistency matrix
+        id: matrix
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+          from datetime import datetime
 
-          cat reports/divergence-report.md
+          canonical = json.loads(os.environ.get('CANONICAL_JSON', '{}'))
+          repo_states = json.loads(os.environ.get('REPO_STATES_JSON', '{}'))
 
-      - name: Store divergence data
+          # Build consistency matrix
+          matrix = {
+              "generated_at": datetime.utcnow().isoformat() + "Z",
+              "canonical_decision_count": len(canonical),
+              "repos_queried": len(repo_states),
+              "rows": []
+          }
+
+          divergence_count = 0
+
+          # For each repo, check if all canonical decisions are present
+          for repo, state in repo_states.items():
+              if state.get('status') == 'no_state_file':
+                  # First deployment: no divergence yet
+                  matrix['rows'].append({
+                      "repo": repo,
+                      "status": "INIT",
+                      "decisions_applied": 0,
+                      "decisions_expected": len(canonical),
+                      "divergence": 0,
+                      "note": "First deployment (no state file yet)"
+                  })
+                  continue
+              elif state.get('status') == 'query_error':
+                  # Query failed
+                  matrix['rows'].append({
+                      "repo": repo,
+                      "status": "ERROR",
+                      "decisions_applied": 0,
+                      "decisions_expected": len(canonical),
+                      "divergence": 1,
+                      "note": f"Query error: {state.get('error', 'unknown')}"
+                  })
+                  divergence_count += 1
+                  continue
+
+              # Normal state: compare
+              applied_decisions = state.get('decisions', [])
+              divergence = len(canonical) - len(applied_decisions)
+
+              matrix['rows'].append({
+                  "repo": repo,
+                  "status": "SYNC" if divergence == 0 else "DRIFT",
+                  "decisions_applied": len(applied_decisions),
+                  "decisions_expected": len(canonical),
+                  "divergence": abs(divergence),
+                  "note": "In sync" if divergence == 0 else f"{abs(divergence)} decision(s) behind"
+              })
+
+              if divergence != 0:
+                  divergence_count += 1
+
+          matrix['total_divergences'] = divergence_count
+          matrix['alert_threshold'] = int(os.environ.get('DIVERGENCE_THRESHOLD', 1))
+          matrix['should_alert'] = divergence_count >= matrix['alert_threshold']
+
+          print(f"::notice::Matrix built: {divergence_count} divergences found")
+          print(f"::set-output name=matrix_json::{json.dumps(matrix)}")
+          print(f"::set-output name=divergence_count::{divergence_count}")
+          PYTHON_EOF
+        env:
+          CANONICAL_JSON: ${{ steps.load-canonical.outputs.canonical_json }}
+          REPO_STATES_JSON: ${{ steps.query-repos.outputs.repo_states_json }}
+
+      - name: Write divergences to DECISIONS_PENDING
+        if: steps.matrix.outputs.should_alert == 'true'
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import yaml
+          import os
+          from datetime import datetime, timedelta
+
+          matrix = json.loads(os.environ.get('MATRIX_JSON', '{}'))
+
+          # Load or create DECISIONS_PENDING
+          pending_file = 'DECISIONS_PENDING.yaml'
+          try:
+              with open(pending_file, 'r') as f:
+                  pending = yaml.safe_load(f) or {}
+          except FileNotFoundError:
+              pending = {'metadata': {}, 'pending_ratifications': {'entries': []}}
+
+          if 'pending_ratifications' not in pending:
+              pending['pending_ratifications'] = {'entries': []}
+          if 'entries' not in pending['pending_ratifications']:
+              pending['pending_ratifications']['entries'] = []
+
+          # Generate pending entries from divergence findings
+          new_entries = []
+          entry_id = 1
+
+          for row in matrix.get('rows', []):
+              if row['status'] not in ['DRIFT', 'ERROR']:
+                  continue
+
+              repo = row['repo']
+              severity = 'HIGH' if row['status'] == 'DRIFT' else 'HIGH'
+              entry = {
+                  'pending_id': f"PEN-{datetime.utcnow().strftime('%y%m%d')}-{entry_id:03d}",
+                  'decision_type': 'DIVERGENCE',
+                  'title': f"Repo divergence: {repo}",
+                  'severity': severity,
+                  'discovered_by': 'divergence-detect.yml',
+                  'discovered_at': matrix.get('generated_at', datetime.utcnow().isoformat() + 'Z'),
+                  'discovery_run': os.environ.get('GITHUB_SERVER_URL', 'https://github.com') + '/' +
+                                  os.environ.get('GITHUB_REPOSITORY', '') + '/actions/runs/' +
+                                  os.environ.get('GITHUB_RUN_ID', 'unknown'),
+                  'repo_affected': repo,
+                  'details': {
+                      'status': row['status'],
+                      'decisions_applied': row['decisions_applied'],
+                      'decisions_expected': row['decisions_expected'],
+                      'divergence_count': row['divergence'],
+                      'note': row['note']
+                  },
+                  'recommended_action': 'Re-dispatch mesh-sync to repo' if row['status'] == 'DRIFT' else 'Investigate repo access',
+                  'proposed_decision': {
+                      'decision_type': 'state_machine_gate_update',
+                      'title': f"Resync: {repo}",
+                      'scope': 'Trigger re-dispatch of queued decisions',
+                      'target_repos': [repo]
+                  },
+                  'admiral_notes': '',
+                  'status': 'PENDING_REVIEW',
+                  'expires_at': (datetime.utcnow() + timedelta(days=7)).isoformat() + 'Z'
+              }
+              new_entries.append(entry)
+              entry_id += 1
+
+          # Add new entries to pending queue
+          if new_entries:
+              pending['pending_ratifications']['entries'].extend(new_entries)
+              pending['pending_ratifications']['updated_at'] = matrix.get('generated_at', datetime.utcnow().isoformat() + 'Z')
+
+              # Update summary
+              if 'summary' not in pending['pending_ratifications']:
+                  pending['pending_ratifications']['summary'] = {
+                      'total_pending': 0,
+                      'pending_by_type': {'DIVERGENCE': 0}
+                  }
+              pending['pending_ratifications']['summary']['total_pending'] = len(
+                  pending['pending_ratifications']['entries']
+              )
+              pending['pending_ratifications']['summary']['pending_by_type']['DIVERGENCE'] = len(
+                  [e for e in pending['pending_ratifications']['entries'] if e['decision_type'] == 'DIVERGENCE']
+              )
+
+              with open(pending_file, 'w') as f:
+                  yaml.dump(pending, f, default_flow_style=False)
+
+              print(f"✓ Wrote {len(new_entries)} divergence entries to DECISIONS_PENDING.yaml")
+              for entry in new_entries:
+                  print(f"  - {entry['pending_id']}: {entry['title']}")
+
+          PYTHON_EOF
+        env:
+          MATRIX_JSON: ${{ steps.matrix.outputs.matrix_json }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+
+      - name: Alert on divergences
+        if: steps.matrix.outputs.should_alert == 'true'
+        run: |
+          echo "::warning::Consistency matrix detected ${{ steps.matrix.outputs.divergence_count }} divergence(s)"
+          echo ""
+          echo "Divergent repos (out of sync with CNS):"
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+
+          matrix = json.loads(os.environ.get('MATRIX_JSON', '{}'))
+
+          for row in matrix.get('rows', []):
+              if row['status'] == 'DRIFT':
+                  print(f"  - {row['repo']}: {row['divergence']} decision(s) behind")
+              elif row['status'] == 'ERROR':
+                  print(f"  - {row['repo']}: ERROR ({row['note']})")
+
+          print("")
+          print("Admiral action: Review DECISIONS_PENDING.yaml and ratify decisions")
+          print("Next: M3R1 will dispatch ratified decisions at next hourly cycle")
+          PYTHON_EOF
+        env:
+          MATRIX_JSON: ${{ steps.matrix.outputs.matrix_json }}
+
+      - name: Generate markdown report
+        id: report
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import os
+
+          canonical = json.loads(os.environ.get('CANONICAL_JSON', '{}'))
+          matrix = json.loads(os.environ.get('MATRIX_JSON', '{}'))
+
+          report = f"""## Mesh Consistency Matrix
+
+**Generated:** {matrix.get('generated_at', 'unknown')}
+
+### Summary
+- Canonical decisions: {matrix['canonical_decision_count']}
+- Repos queried: {matrix['repos_queried']}
+- Total divergences: {matrix['total_divergences']}
+- Alert threshold: {matrix['alert_threshold']}
+- Status: {'🚨 ALERT' if matrix['should_alert'] else '✅ IN SYNC'}
+
+### Consistency by Repo
+
+| Repo | Status | Applied | Expected | Divergence | Note |
+|------|--------|---------|----------|------------|------|
+"""
+
+          for row in matrix.get('rows', []):
+              status_icon = {
+                  'SYNC': '✅',
+                  'DRIFT': '⚠️',
+                  'INIT': '🔄',
+                  'ERROR': '❌'
+              }.get(row['status'], '?')
+
+              report += f"| {row['repo']} | {status_icon} {row['status']} | {row['decisions_applied']} | {row['decisions_expected']} | {row['divergence']} | {row['note']} |\n"
+
+          report += """
+### Canonical Decisions (CNS Source of Truth)
+
+| Decision | ID | Status | Scope |
+|----------|----|----|-------|
+"""
+
+          for decision_key, decision_data in json.loads(os.environ.get('CANONICAL_JSON', '{}')).items():
+              report += f"| {decision_data['title']} | {decision_data['decision_id']} | {decision_data['status']} | {decision_data['scope']} |\n"
+
+          report += """
+### Interpretation
+
+- **✅ SYNC:** Repo has applied all canonical decisions. No action needed.
+- **⚠️ DRIFT:** Repo is behind (missing decisions). May indicate mesh-sync-listen failure or slow adoption.
+- **🔄 INIT:** First deployment (no state file yet). Expected to sync after first mesh-sync dispatch.
+- **❌ ERROR:** Query failed. Check repo connectivity and mesh_decision_sync.json format.
+
+### Next Steps
+
+If divergences detected:
+1. Check target repo logs (mesh-sync-listen.yml execution)
+2. Verify decision payload was received (GitHub Actions run history)
+3. If failed: re-trigger divergence-detect.yml manually to retry dispatch
+4. If persistent: escalate to Admiral for investigation
+
+"""
+
+          print(report)
+          with open('/tmp/consistency_report.md', 'w') as f:
+              f.write(report)
+
+          print("::set-output name=report::$(cat /tmp/consistency_report.md | base64)")
+          PYTHON_EOF
+        env:
+          CANONICAL_JSON: ${{ steps.load-canonical.outputs.canonical_json }}
+          MATRIX_JSON: ${{ steps.matrix.outputs.matrix_json }}
+
+      - name: Log consistency matrix to registry
+        if: success()
+        run: |
+          python3 << 'PYTHON_EOF'
+          import json
+          import yaml
+          import os
+
+          matrix = json.loads(os.environ.get('MATRIX_JSON', '{}'))
+
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'r') as f:
+              registry = yaml.safe_load(f)
+
+          # Log consistency check result
+          if 'consistency_checks' not in registry:
+              registry['consistency_checks'] = []
+
+          registry['consistency_checks'].append({
+              "check_id": f"CONSISTENCY-{matrix.get('generated_at', 'unknown')[:10]}",
+              "generated_at": matrix.get('generated_at'),
+              "repos_queried": matrix['repos_queried'],
+              "canonical_decisions": matrix['canonical_decision_count'],
+              "divergences": matrix['total_divergences'],
+              "status": "ALERT" if matrix['should_alert'] else "OK",
+              "matrix": matrix
+          })
+
+          # Keep only last 30 days of checks
+          if len(registry['consistency_checks']) > 30:
+              registry['consistency_checks'] = registry['consistency_checks'][-30:]
+
+          with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'w') as f:
+              yaml.dump(registry, f, default_flow_style=False)
+
+          print("✓ Consistency matrix logged to registry")
+          PYTHON_EOF
+        env:
+          MATRIX_JSON: ${{ steps.matrix.outputs.matrix_json }}
+
+      - name: Commit consistency check
+        if: success()
+        run: |
+          git config user.name "Divergence-Detect (M3 Rank 2)"
+          git config user.email "noreply@anthropic.com"
+          git add GOVERNANCE_RATIFICATIONS_REGISTRY.yaml
+          git commit -m "M3 Rank 2: Daily Consistency Check — $(date -u +%Y-%m-%d) — ${{ steps.matrix.outputs.divergence_count }} divergence(s)" || echo "No changes"
+          git push origin main || echo "Push skipped"
+
+      - name: Summary
         if: always()
         run: |
-          mkdir -p .empirica/divergence-logs
-
-          cat > .empirica/divergence-logs/$(date +%Y%m%d-%H%M%S).json <<EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "practice": "humanaios",
-            "local_sha": "${{ steps.check.outputs.local_sha }}",
-            "remote_sha": "${{ steps.check.outputs.remote_sha }}",
-            "diverged": "${{ steps.check.outputs.diverged }}",
-            "commit_data": "${{ steps.check.outputs.commit_count }}"
-          }
-          EOF
-
-  # Alert on divergence
-  alert-on-divergence:
-    name: Alert on Divergence
-    runs-on: ubuntu-latest
-    needs: detect-divergence
-    if: needs.detect-divergence.outputs.diverged == 'true'
-
-    steps:
-      - name: Prepare alert
-        run: |
-          echo "🚨 DIVERGENCE DETECTED"
-          echo "Repository: humanaios (empirica-foundation.carly.humanaios)"
-          echo "Local SHA: ${{ needs.detect-divergence.outputs.local_sha }}"
-          echo "Remote SHA: ${{ needs.detect-divergence.outputs.remote_sha }}"
-          echo "Status: ${{ needs.detect-divergence.outputs.commit_count }}"
+          echo "## M3 Rank 2: Divergence Detection Summary"
           echo ""
-          echo "Action required: Run mesh-sync-batch workflow or manual sync"
-
-      - name: Create issue if severe divergence
-        if: contains(needs.detect-divergence.outputs.commit_count, 'ahead')
-        run: |
-          echo "Divergence detected and persisted for alerting"
-
-  # Periodic cleanup
-  cleanup-old-logs:
-    name: Cleanup Old Divergence Logs
-    runs-on: ubuntu-latest
-    needs: detect-divergence
-    if: always()
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Clean logs older than 7 days
-        run: |
-          if [ -d .empirica/divergence-logs ]; then
-            find .empirica/divergence-logs -type f -mtime +7 -delete
-            echo "✓ Cleaned old divergence logs"
-          fi
+          echo "**Date:** $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "**Repos queried:** ${{ steps.matrix.outputs.repo_states_json }}"
+          echo "**Divergences found:** ${{ steps.matrix.outputs.divergence_count }}"
+          echo "**Alert triggered:** $([ '${{ steps.matrix.outputs.should_alert }}' = 'true' ] && echo 'YES 🚨' || echo 'NO ✅')"
+          echo ""
+          echo "✓ Consistency matrix check complete"

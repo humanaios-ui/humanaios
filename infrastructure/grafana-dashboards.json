@@ -1,0 +1,261 @@
+{
+  "dashboards": [
+    {
+      "id": 1,
+      "uid": "empirica-phase-latency",
+      "title": "Empirica Phase Latency (PREFLIGHT→POSTFLIGHT)",
+      "description": "Transaction phase timing: noetic duration, CHECK gate, praxic duration, POSTFLIGHT overhead",
+      "panels": [
+        {
+          "title": "Transaction Duration by Phase",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, rate(empirica_phase_duration_seconds_bucket[5m]))",
+              "legendFormat": "p95 {{phase}}"
+            }
+          ],
+          "type": "graph"
+        },
+        {
+          "title": "PREFLIGHT→CHECK Duration (Noetic Phase)",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, rate(empirica_noetic_duration_seconds_bucket[5m]))",
+              "legendFormat": "median noetic"
+            }
+          ],
+          "type": "gauge"
+        },
+        {
+          "title": "CHECK→POSTFLIGHT Duration (Praxic Phase)",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, rate(empirica_praxic_duration_seconds_bucket[5m]))",
+              "legendFormat": "median praxic"
+            }
+          ],
+          "type": "gauge"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "uid": "empirica-traces",
+      "title": "Multi-Practice Request Traces (Jaeger)",
+      "description": "Distributed traces across 15 practices: proposal routing, mailbox poll, task execution",
+      "panels": [
+        {
+          "title": "Request Trace Explorer",
+          "type": "jaeger",
+          "targets": [
+            {
+              "query": "service.name:empirica-foundation-evaluator OR service.name:empirica-foundation-autonomy",
+              "legendFormat": "{{service.name}}"
+            }
+          ]
+        },
+        {
+          "title": "Trace Latency by Service",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, rate(jaeger_span_duration_seconds_bucket[5m]))",
+              "legendFormat": "p95 {{service}}"
+            }
+          ],
+          "type": "graph"
+        },
+        {
+          "title": "Error Rate by Span Type",
+          "targets": [
+            {
+              "expr": "rate(jaeger_span_errors_total[5m])",
+              "legendFormat": "{{span_type}}"
+            }
+          ],
+          "type": "graph"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "uid": "empirica-vectors-acat",
+      "title": "Epistemic Vectors (13-Vector ACAT)",
+      "description": "Calibration trajectories: know, do, context, clarity, coherence, signal, density, state, change, completion, impact, engagement, uncertainty",
+      "panels": [
+        {
+          "title": "Vector Trajectory (All 13)",
+          "type": "graph",
+          "targets": [
+            {
+              "expr": "empirica_vector{vector=~\"know|do|context|clarity|coherence|signal|density|state|change|completion|impact|engagement|uncertainty\"}",
+              "legendFormat": "{{vector}}"
+            }
+          ]
+        },
+        {
+          "title": "Know vs Uncertainty (Inverse Relationship)",
+          "type": "graph",
+          "targets": [
+            {
+              "expr": "empirica_vector{vector=\"know\"}",
+              "legendFormat": "know"
+            },
+            {
+              "expr": "1 - empirica_vector{vector=\"uncertainty\"}",
+              "legendFormat": "1-uncertainty"
+            }
+          ]
+        },
+        {
+          "title": "Completion Progress",
+          "type": "gauge",
+          "targets": [
+            {
+              "expr": "empirica_vector{vector=\"completion\"}",
+              "legendFormat": "completion"
+            }
+          ]
+        },
+        {
+          "title": "Confidence Band (Context×Clarity×Coherence)",
+          "type": "graph",
+          "targets": [
+            {
+              "expr": "empirica_vector{vector=\"context\"} * empirica_vector{vector=\"clarity\"} * empirica_vector{vector=\"coherence\"}",
+              "legendFormat": "confidence_band"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "uid": "empirica-ser-health",
+      "title": "SER Coordination Health",
+      "description": "Shared Epistemic Records: state transitions, participant acks, escalation timing",
+      "panels": [
+        {
+          "title": "SER States (open/in_progress/blocked/closed)",
+          "type": "graph",
+          "targets": [
+            {
+              "expr": "empirica_ser_state_total",
+              "legendFormat": "{{state}}"
+            }
+          ]
+        },
+        {
+          "title": "Participant Ack Latency",
+          "type": "gauge",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, rate(empirica_ser_ack_latency_seconds_bucket[5m]))",
+              "legendFormat": "p95 ack_latency"
+            }
+          ]
+        },
+        {
+          "title": "Escalation Trigger Rate",
+          "type": "graph",
+          "targets": [
+            {
+              "expr": "rate(empirica_ser_escalation_triggered_total[5m])",
+              "legendFormat": "escalations/min"
+            }
+          ]
+        },
+        {
+          "title": "Required vs Participating vs Observer Roles",
+          "type": "piechart",
+          "targets": [
+            {
+              "expr": "empirica_ser_participant_role_total",
+              "legendFormat": "{{role}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "uid": "empirica-integration-summary",
+      "title": "Integration Dashboard (System Overview)",
+      "description": "Health check: Loki ingestion, Jaeger traces, vector collection, SER coordination",
+      "panels": [
+        {
+          "title": "Loki Log Ingestion Rate",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "rate(loki_entries_total[5m])",
+              "legendFormat": "entries/sec"
+            }
+          ]
+        },
+        {
+          "title": "Jaeger Span Collection Rate",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "rate(jaeger_spans_total[5m])",
+              "legendFormat": "spans/sec"
+            }
+          ]
+        },
+        {
+          "title": "Vector Update Frequency",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "rate(empirica_vector_updates_total[5m])",
+              "legendFormat": "updates/sec"
+            }
+          ]
+        },
+        {
+          "title": "SER Active Coordination",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "empirica_ser_state_total{state=\"in_progress\"}",
+              "legendFormat": "active_sers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "uid": "empirica-export-archive",
+      "title": "Export & Archive (Data Export)",
+      "description": "Export observability data: CSV/JSON export of transactions, vectors, traces, SER history",
+      "panels": [
+        {
+          "title": "Export Ready (Last 24h)",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "count(increase(empirica_transaction_complete_total[24h]))",
+              "legendFormat": "transactions"
+            }
+          ]
+        },
+        {
+          "title": "Archive Retention (days)",
+          "type": "gauge",
+          "targets": [
+            {
+              "expr": "empirica_data_retention_days",
+              "legendFormat": "retention"
+            }
+          ]
+        },
+        {
+          "title": "Export Format Selector",
+          "type": "text",
+          "content": "Available formats: CSV (vectors/transactions), JSON (full telemetry), JSONL (streaming logs), Parquet (analytics). Export via Grafana export API or CLI."
+        }
+      ]
+    }
+  ]
+}

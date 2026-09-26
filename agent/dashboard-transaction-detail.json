@@ -1,0 +1,229 @@
+{
+  "dashboard": {
+    "title": "Phase 3.6: Transaction Detail — Trace Analysis",
+    "tags": ["empirica", "phase-3.6", "transactions"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 0,
+    "refresh": "30s",
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Transaction Summary (Latest)",
+        "type": "table",
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "topk(10, empirica_transaction_duration_seconds_bucket)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        }
+      },
+      {
+        "id": 2,
+        "title": "Vector Comparison: PREFLIGHT → POSTFLIGHT",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "empirica_know_gauge",
+            "legendDisplayMode": "list"
+          },
+          {
+            "refId": "B",
+            "expr": "empirica_uncertainty_gauge"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "lineWidth": 2
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["min", "max", "mean"],
+            "displayMode": "table",
+            "placement": "right"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Span Execution Timeline (Log)",
+        "type": "logs",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 6
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "{}",
+            "legendDisplayMode": "list"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          }
+        },
+        "options": {
+          "showTime": true,
+          "showLabels": "auto",
+          "wrapLogMessage": false,
+          "prettifyLogMessage": false,
+          "enableLogDetails": true
+        }
+      },
+      {
+        "id": 4,
+        "title": "Completion & Impact Trajectory",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 14
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "empirica_completion_gauge",
+            "legendDisplayMode": "list"
+          },
+          {
+            "refId": "B",
+            "expr": "empirica_impact_gauge"
+          },
+          {
+            "refId": "C",
+            "expr": "empirica_engagement_gauge"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["last"],
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Artifacts Logged by Type",
+        "type": "piechart",
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 14
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "expr": "increase(empirica_artifacts_logged_total[1h])",
+            "legendDisplayMode": "list"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 0,
+            "custom": {
+              "hideFrom": {
+                "tooltip": false,
+                "viz": false,
+                "legend": false
+              }
+            }
+          }
+        },
+        "options": {
+          "legend": {
+            "calcs": ["value"],
+            "displayMode": "table",
+            "placement": "right"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "Trace Explorer (Click to drill into Jaeger)",
+        "type": "nodeGraph",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 20
+        },
+        "targets": [
+          {
+            "refId": "A",
+            "queryType": "trace",
+            "query": "empirica:transaction",
+            "datasource": {
+              "type": "jaeger",
+              "uid": "jaeger-uid"
+            }
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {}
+        },
+        "options": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+{"timestamp": "2026-08-21T16:25:00Z", "event": "validator-deployed", "component": "bin/validate-resource-keyed-artifacts.sh", "result": "PASS", "description": "Temporal framing detection mechanism active"}
+{"timestamp": "2026-08-21T16:25:15Z", "event": "goal-artifact-created", "artifact": "GOAL_PARALLEL_DEPLOYMENT_RESOURCE_KEYED.json", "validation_result": "PASS", "description": "First goal in new model format passes all checks"}
+{"timestamp": "2026-08-21T16:25:30Z", "event": "validator-test-temporal-framing", "test_input": "by Friday", "expected": "REJECT", "actual": "REJECT", "result": "PASS", "description": "Validator correctly rejects temporal language"}
+{"timestamp": "2026-08-21T16:26:00Z", "event": "system-change-committed", "commit_sha": "7b653b4", "description": "Resource-keyed goal model + validator deployed to main branch"}

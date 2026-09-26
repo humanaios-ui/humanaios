@@ -1,0 +1,88 @@
+name: Document Control Validation
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/document-registry.yaml'
+
+jobs:
+  validate-frontmatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate frontmatter schema
+        run: |
+          python3 -c "
+import yaml
+import sys
+import os
+
+required_fields = ['doc_id', 'title', 'revision', 'status', 'owner', 'canonical', 'retention']
+changed_files = [f for f in os.listdir('docs') if f.endswith('.md') and os.path.isfile(f'docs/{f}')]
+
+for file in changed_files:
+    with open(f'docs/{file}') as f:
+        if f.read(3) == '---':
+            f.seek(0)
+            try:
+                doc = yaml.safe_load(f)
+                if doc:
+                    missing = [field for field in required_fields if field not in doc]
+                    if missing:
+                        print(f'ERROR in {file}: missing fields {missing}')
+                        sys.exit(1)
+            except yaml.YAMLError as e:
+                print(f'ERROR in {file}: invalid YAML - {e}')
+                sys.exit(1)
+        else:
+            print(f'ERROR in {file}: missing frontmatter')
+            sys.exit(1)
+
+print('✅ All frontmatter valid')
+          "
+
+  validate-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate registry syntax
+        run: |
+          python3 -c "
+import yaml
+with open('docs/document-registry.yaml') as f:
+    registry = yaml.safe_load(f)
+    print(f'✅ Registry valid: {len(registry.get(\"documents\", []))} documents')
+          "
+
+  validate-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check internal links
+        run: |
+          find docs -name "*.md" -exec grep -H '\[.*\](.*\.md)' {} \; | while read line; do
+            file=$(echo "$line" | cut -d: -f1)
+            link=$(echo "$line" | grep -oP '\(.*\.md\)' | tr -d '()')
+            if [ ! -f "docs/$link" ] && [ ! -f "$link" ]; then
+              echo "ERROR: broken link in $file -> $link"
+              exit 1
+            fi
+          done
+          echo "✅ All links valid"
+
+  approval-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require approval for status:approved
+        run: |
+          if git diff --name-only origin/main HEAD | grep -q '\.md$'; then
+            if git show HEAD:docs/document-registry.yaml | grep -q 'status: approved'; then
+              if ! git log -1 --format=%B | grep -q 'Reviewed-by:'; then
+                echo "ERROR: approved documents require Reviewed-by in commit message"
+                exit 1
+              fi
+            fi
+          fi
+          echo "✅ Approval requirements met"

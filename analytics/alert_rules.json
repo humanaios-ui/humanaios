@@ -1,0 +1,317 @@
+{
+  "alert_rules": [
+    {
+      "id": "latency_critical",
+      "name": "Query Latency Critical",
+      "description": "Query response time exceeds SLA",
+      "type": "query_latency",
+      "severity": "critical",
+      "metric": "loki_query_duration_seconds",
+      "condition": {
+        "quantile": 0.95,
+        "operator": ">",
+        "threshold": 2.0,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "escalation",
+      "message_template": "🔴 CRITICAL: Query latency p95 for {practice} is {current_value:.2f}s (SLA: 2s)"
+    },
+    {
+      "id": "latency_warning",
+      "name": "Query Latency Warning",
+      "description": "Query response time approaching SLA",
+      "type": "query_latency",
+      "severity": "warning",
+      "metric": "loki_query_duration_seconds",
+      "condition": {
+        "quantile": 0.95,
+        "operator": ">",
+        "threshold": 1.0,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: Query latency p95 for {practice} is {current_value:.2f}s (threshold: 1s)"
+    },
+    {
+      "id": "ingestion_drop",
+      "name": "Log Ingestion Rate Drop",
+      "description": "Log ingestion rate dropped significantly",
+      "type": "ingestion_rate",
+      "severity": "warning",
+      "metric": "loki_ingester_chunks_flushed_total",
+      "condition": {
+        "operator": "<",
+        "baseline_pct": 70,
+        "duration": "5m"
+      },
+      "scope": "global",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: Log ingestion rate dropped to {current_value:.2f}/s (baseline: {threshold:.2f}/s)"
+    },
+    {
+      "id": "ingestion_stopped",
+      "name": "Log Ingestion Stopped",
+      "description": "No logs being ingested",
+      "type": "ingestion_rate",
+      "severity": "critical",
+      "metric": "loki_ingester_chunks_flushed_total",
+      "condition": {
+        "operator": "==",
+        "threshold": 0,
+        "duration": "1m"
+      },
+      "scope": "global",
+      "routing": "escalation",
+      "message_template": "🔴 CRITICAL: Log ingestion has stopped - no chunks flushed in 1 minute"
+    },
+    {
+      "id": "coordination_delay",
+      "name": "SER Coordination Delay",
+      "description": "SER decision latency exceeds threshold",
+      "type": "coordination_delay",
+      "severity": "warning",
+      "metric": "ser_decision_latency_seconds",
+      "condition": {
+        "quantile": 0.95,
+        "operator": ">",
+        "threshold": 5.0,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: SER decision latency for {practice} is {current_value:.2f}s (threshold: 5s)"
+    },
+    {
+      "id": "coordination_critical",
+      "name": "SER Coordination Critical",
+      "description": "SER coordination is severely degraded",
+      "type": "coordination_delay",
+      "severity": "critical",
+      "metric": "ser_decision_latency_seconds",
+      "condition": {
+        "quantile": 0.99,
+        "operator": ">",
+        "threshold": 15.0,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "escalation",
+      "message_template": "🔴 CRITICAL: SER coordination for {practice} severely delayed - p99 latency {current_value:.2f}s"
+    },
+    {
+      "id": "vector_divergence",
+      "name": "Vector Calibration Drift",
+      "description": "Epistemic vector divergence from service observations",
+      "type": "vector_drift",
+      "severity": "warning",
+      "metric": "acat_vector_divergence",
+      "condition": {
+        "operator": ">",
+        "threshold": 0.15,
+        "duration": "10m"
+      },
+      "scope": "per_practice_per_vector",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: Vector {vector} divergence for {practice} is {current_value:.2f} (threshold: 0.15)"
+    },
+    {
+      "id": "practice_health",
+      "name": "Practice Health Degradation",
+      "description": "Overall practice health score dropped",
+      "type": "health_degradation",
+      "severity": "warning",
+      "metric": "empirica_practice_health_score",
+      "condition": {
+        "operator": "<",
+        "threshold": 0.7,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: {practice} health score dropped to {current_value:.2f} (threshold: 0.7)"
+    },
+    {
+      "id": "practice_health_critical",
+      "name": "Practice Health Critical",
+      "description": "Practice is in critical health state",
+      "type": "health_degradation",
+      "severity": "critical",
+      "metric": "empirica_practice_health_score",
+      "condition": {
+        "operator": "<",
+        "threshold": 0.5,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "routing": "escalation",
+      "message_template": "🔴 CRITICAL: {practice} in critical health state - score {current_value:.2f}"
+    },
+    {
+      "id": "trace_correlation_failure",
+      "name": "Trace Correlation Failure",
+      "description": "Cross-practice trace correlation rate dropped",
+      "type": "trace_correlation",
+      "severity": "warning",
+      "metric": "empirica_trace_correlation_rate",
+      "condition": {
+        "operator": "<",
+        "threshold": 0.9,
+        "duration": "5m"
+      },
+      "scope": "global",
+      "routing": "alert",
+      "message_template": "🟡 WARNING: Trace correlation rate dropped to {current_value:.2%} (SLA: 90%)"
+    },
+    {
+      "id": "tier1_empirica-foundation-evaluator_query_latency_warning",
+      "name": "Tier 1: Query Latency Warning (empirica-foundation-evaluator)",
+      "description": "Query latency p95 approaching SLA (960ms)",
+      "type": "query_latency",
+      "severity": "warning",
+      "metric": "loki_query_duration_seconds",
+      "condition": {
+        "quantile": 0.95,
+        "operator": ">",
+        "threshold": 0.96,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "practice_filter": "empirica-foundation-evaluator",
+      "routing": "alert",
+      "escalation_minutes": 5,
+      "message_template": "🟡 WARNING: {practice} query latency p95 = {current_value:.3f}s (threshold: 1200ms)"
+    },
+    {
+      "id": "tier1_empirica-foundation-evaluator_query_latency_critical",
+      "name": "Tier 1: Query Latency Critical (empirica-foundation-evaluator)",
+      "description": "Query latency p95 EXCEEDED SLA (1200ms)",
+      "type": "query_latency",
+      "severity": "critical",
+      "metric": "loki_query_duration_seconds",
+      "condition": {
+        "quantile": 0.95,
+        "operator": ">",
+        "threshold": 1.2,
+        "duration": "2m"
+      },
+      "scope": "per_practice",
+      "practice_filter": "empirica-foundation-evaluator",
+      "routing": "escalation",
+      "escalation_minutes": 2,
+      "message_template": "🔴 CRITICAL: {practice} query latency p95 = {current_value:.3f}s - SLA EXCEEDED"
+    },
+    {
+      "id": "tier1_empirica-foundation-evaluator_health_warning",
+      "name": "Tier 1: Health Score Warning (empirica-foundation-evaluator)",
+      "description": "Health score approaching minimum (0.75)",
+      "type": "health_degradation",
+      "severity": "warning",
+      "metric": "empirica_practice_health_score",
+      "condition": {
+        "operator": "<",
+        "threshold": 0.8,
+        "duration": "10m"
+      },
+      "scope": "per_practice",
+      "practice_filter": "empirica-foundation-evaluator",
+      "routing": "alert",
+      "escalation_minutes": 5,
+      "message_template": "🟡 WARNING: {practice} health score = {current_value:.2f} (minimum: 0.75)"
+    },
+    {
+      "id": "tier1_empirica-foundation-evaluator_health_critical",
+      "name": "Tier 1: Health Score Critical (empirica-foundation-evaluator)",
+      "description": "Health score BELOW minimum (0.75)",
+      "type": "health_degradation",
+      "severity": "critical",
+      "metric": "empirica_practice_health_score",
+      "condition": {
+        "operator": "<",
+        "threshold": 0.75,
+        "duration": "5m"
+      },
+      "scope": "per_practice",
+      "practice_filter": "empirica-foundation-evaluator",
+      "routing": "escalation",
+      "escalation_minutes": 2,
+      "message_template": "🔴 CRITICAL: {practice} health CRITICAL - score {current_value:.2f}"
+    },
+    {
+      "id": "tier1_empirica-foundation-evaluator_ingestion_low",
+      "name": "Tier 1: Ingestion Rate Low (empirica-foundation-evaluator)",
+      "description": "Log ingestion rate below minimum",
+      "type": "ingestion_rate",
+      "severity": "warning",
+      "metric": "loki_ingester_chunks_flushed_total",
+      "condition": {
+        "operator": "<",
+        "baseline_pct": 80,
+        "duration": "10m"
+      },
+      "scope": "per_practice",
+      "practice_filter": "empirica-foundation-evaluator",
+      "routing": "alert",
+      "escalation_minutes": 5,
+      "message_template": "🟡 WARNING: {practice} ingestion rate = {current_value}/s (minimum: 15)"
+    }
+  ],
+  "routing_rules": {
+    "escalation": {
+      "actions": [
+        "send_to_mailbox",
+        "trigger_escalation_workflow",
+        "notify_admiral",
+        "create_incident"
+      ],
+      "notify": ["empirica-foundation.carly.empirica-foundation-evaluator"],
+      "escalation_threshold": "5 minutes",
+      "retry_interval": "1 minute"
+    },
+    "alert": {
+      "actions": [
+        "send_to_mailbox",
+        "log_to_audit_trail"
+      ],
+      "notify": ["source_practice"],
+      "batch_interval": "5 minutes"
+    },
+    "info": {
+      "actions": [
+        "log_to_audit_trail"
+      ],
+      "batch_interval": "1 hour"
+    }
+  },
+  "practice_slas": {
+    "empirica-autonomy": {
+      "query_latency_p95_ms": 1000,
+      "ingestion_rate_min_cps": 10,
+      "coordination_latency_p95_s": 5,
+      "health_score_min": 0.75,
+      "trace_correlation_min": 0.95
+    },
+    "empirica-mesh-support": {
+      "query_latency_p95_ms": 1500,
+      "ingestion_rate_min_cps": 20,
+      "coordination_latency_p95_s": 10,
+      "health_score_min": 0.70,
+      "trace_correlation_min": 0.90
+    },
+    "empirica-outreach": {
+      "query_latency_p95_ms": 2000,
+      "ingestion_rate_min_cps": 5,
+      "coordination_latency_p95_s": 15,
+      "health_score_min": 0.70,
+      "trace_correlation_min": 0.90
+    },
+    "default": {
+      "query_latency_p95_ms": 2000,
+      "ingestion_rate_min_cps": 10,
+      "coordination_latency_p95_s": 10,
+      "health_score_min": 0.70,
+      "trace_correlation_min": 0.90
+    }
+  }
+}
