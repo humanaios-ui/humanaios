@@ -5,6 +5,7 @@ Three independent gates enforce transaction discipline:
 - readiness_gates: Verify noetic work complete before praxic
 - resource_guard: Check allocation constraints
 - sentinel_verify: Verify epistemic vectors meet action thresholds
+- system_stance: Summarize opportunities and pre-action verification needs
 
 CLI commands available via: python3 -m src.gates.cli
   - readiness-check: Verify noetic phase completion
@@ -15,6 +16,7 @@ CLI commands available via: python3 -m src.gates.cli
 from .readiness_gates import ReadinessGate, ReadinessLevel, EvidenceRequirement
 from .resource_guard import ResourceGuard, ResourceBudget, ResourceEstimate, ResourceCheckLevel
 from .sentinel_verify import SentinelGate, ActionType, EpistemicVectors, VectorLevel
+from .system_stance import assess_system_stance
 
 __all__ = [
     "ReadinessGate",
@@ -28,4 +30,5 @@ __all__ = [
     "ActionType",
     "EpistemicVectors",
     "VectorLevel",
+    "assess_system_stance",
 ]
