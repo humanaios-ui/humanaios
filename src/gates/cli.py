@@ -5,6 +5,7 @@ Three commands available:
   - readiness-check: Verify noetic phase completion
   - resource-check: Validate resource allocation
   - sentinel-verify: Check epistemic vectors for action
+  - system-stance: Summarize opportunities and pre-action requirements
 """
 
 import json
@@ -15,6 +16,7 @@ from argparse import ArgumentParser, Namespace
 from .readiness_gates import ReadinessGate, ReadinessLevel
 from .resource_guard import ResourceGuard, ResourceBudget, ResourceEstimate, ResourceCheckLevel
 from .sentinel_verify import SentinelGate, ActionType, EpistemicVectors, VectorLevel
+from .system_stance import assess_system_stance
 
 
 def readiness_check(args: Namespace) -> Dict[str, Any]:
@@ -204,6 +206,43 @@ def sentinel_verify(args: Namespace) -> Dict[str, Any]:
     return output
 
 
+def system_stance(args: Namespace) -> Dict[str, Any]:
+    """CLI: summarize opportunities, evidence, confidence, and pre-action checks."""
+    if args.input_file:
+        with open(args.input_file, "r") as f:
+            config = json.load(f)
+    elif args.config:
+        config = json.loads(args.config)
+    else:
+        config = json.load(sys.stdin)
+
+    result = assess_system_stance(config)
+    output = {"command": "system-stance", **result}
+    if args.output == "json":
+        print(json.dumps(output, indent=2))
+    else:
+        print(f"System stance: {'ready' if result['action_ready'] else 'not ready'}")
+        for opportunity in result["opportunities"]:
+            print(f"  Opportunity: {opportunity['title']}")
+            if opportunity["description"]:
+                print(f"    {opportunity['description']}")
+            for proposition in opportunity["propositions"]:
+                print(
+                    f"    Proposition ({proposition['evidence_status']}, "
+                    f"confidence {proposition['confidence']:.2f}): "
+                    f"{proposition['statement']}"
+                )
+                for evidence in proposition["supporting_evidence"]:
+                    print(f"      Supports: {evidence}")
+                for evidence in proposition["contradicting_evidence"]:
+                    print(f"      Contradicts: {evidence}")
+        if result["pre_action_requirements"]:
+            print("  Verify before consequential action:")
+            for requirement in result["pre_action_requirements"]:
+                print(f"    - {requirement}")
+    return output
+
+
 def main():
     """Main CLI entry point."""
     parser = ArgumentParser(description="Sentinel validation gates for transaction discipline")
@@ -229,6 +268,16 @@ def main():
     sentinel_parser.add_argument("--input-file", "-i", help="Input JSON file")
     sentinel_parser.add_argument("--output", "-o", choices=["json", "human"], default="human")
     sentinel_parser.set_defaults(func=sentinel_verify)
+
+    # system-stance
+    stance_parser = subparsers.add_parser(
+        "system-stance",
+        help="Assess opportunities, propositions, evidence, and pre-action requirements",
+    )
+    stance_parser.add_argument("--config", help="JSON config string")
+    stance_parser.add_argument("--input-file", "-i", help="Input JSON file")
+    stance_parser.add_argument("--output", "-o", choices=["json", "human"], default="human")
+    stance_parser.set_defaults(func=system_stance)
 
     args = parser.parse_args()
 
