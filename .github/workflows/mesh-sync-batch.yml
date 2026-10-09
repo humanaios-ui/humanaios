@@ -43,17 +43,25 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install dependencies
+        run: pip install pyyaml
+
       - name: Load decision registry
         id: load-registry
         run: |
           python3 << 'PYTHON_EOF'
           import json
+          import os
           import yaml
           from datetime import datetime
 
           # Load governance ratifications registry (source of truth for pending decisions)
+          # Registry is multi-document YAML (metadata / ratifications / gates / control)
           with open('GOVERNANCE_RATIFICATIONS_REGISTRY.yaml', 'r') as f:
-              registry = yaml.safe_load(f)
+              registry = {}
+              for doc in yaml.safe_load_all(f):
+                  if doc:
+                      registry.update(doc)
 
           # For now, load from decision log files as POC
           # Production: query centralized decision store (database/API)
@@ -80,9 +88,10 @@ jobs:
           # Limit to MAX_DECISIONS_PER_BATCH
           batch_decisions = decisions[:int(os.environ.get('MAX_DECISIONS_PER_BATCH', 10))]
 
-          print(f"::notice::Loaded {len(batch_decisions)} pending decisions (max {MAX_DECISIONS_PER_BATCH})")
-          print(f"::set-output name=decisions_json::{json.dumps(batch_decisions)}")
-          print(f"::set-output name=decision_count::{len(batch_decisions)}")
+          print(f"::notice::Loaded {len(batch_decisions)} pending decisions (max {os.environ.get('MAX_DECISIONS_PER_BATCH', 10)})")
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+              gh_out.write(f"decisions_json={json.dumps(batch_decisions)}\n")
+              gh_out.write(f"decision_count={len(batch_decisions)}\n")
           PYTHON_EOF
         env:
           MAX_DECISIONS_PER_BATCH: ${{ env.MAX_DECISIONS_PER_BATCH }}
@@ -159,8 +168,9 @@ jobs:
           if failed_repos:
               print(f"::warning::Failed repos: {', '.join(failed_repos)}")
 
-          print(f"::set-output name=dispatched_count::{dispatched_count}")
-          print(f"::set-output name=failed_repos::{json.dumps(failed_repos)}")
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+              gh_out.write(f"dispatched_count={dispatched_count}\n")
+              gh_out.write(f"failed_repos={json.dumps(failed_repos)}\n")
           PYTHON_EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
