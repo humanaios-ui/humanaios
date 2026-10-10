@@ -34,6 +34,11 @@ class TestSyntheticReviewerCredentials(unittest.TestCase):
         tampered["proof"]["proofPurpose"] = "authentication"
         self.assertFalse(self.issuer.verify(tampered))
 
+    def test_malformed_proof_value_fails_verification(self):
+        tampered = copy.deepcopy(self.credential)
+        tampered["proof"]["proofValue"] = "not-a-valid-signature-☃"
+        self.assertFalse(self.issuer.verify(tampered))
+
     def test_rejects_non_credential_and_wrong_issuer(self):
         self.assertFalse(self.issuer.verify(None))
         tampered = copy.deepcopy(self.credential)

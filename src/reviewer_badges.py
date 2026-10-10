@@ -111,6 +111,7 @@ class SyntheticCredentialIssuer:
             or proof.get("type") != SYNTHETIC_PROOF_TYPE
             or proof.get("verificationMethod") != f"{self.issuer}#synthetic-key"
             or not isinstance(proof.get("proofValue"), str)
+            or not proof["proofValue"].isascii()
         ):
             return False
         try:
