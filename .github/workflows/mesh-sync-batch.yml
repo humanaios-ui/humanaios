@@ -100,7 +100,7 @@ jobs:
         id: parse-repos
         run: |
           IFS=',' read -ra REPOS <<< "$TARGET_REPOS"
-          echo "repos_json=$(printf '%s\n' "${REPOS[@]}" | jq -R . | jq -s .)" >> $GITHUB_OUTPUT
+          echo "repos_json=$(printf '%s\n' "${REPOS[@]}" | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
           echo "::notice::Target repos: ${#REPOS[@]}"
 
       - name: Dispatch decisions via repository_dispatch
