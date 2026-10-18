@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry-run mode (log only, no dispatch)'
+        description: 'Compatibility input only: live dispatch is disabled until authoritative pending state is integrated'
         required: false
         default: 'true'
       target_repos:
@@ -18,7 +18,8 @@ on:
         default: 'humanaios-ui/operations,humanaios-ui/lasting-light-ai,humanaios-ui/humanaios,LastingLightAI/HAIOSCC'
 
 env:
-  DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
+  # Safety lock: manual inputs cannot enable live dispatch from synthetic pending data.
+  DRY_RUN: 'true'
   TARGET_REPOS: ${{ github.event.inputs.target_repos || 'humanaios-ui/operations,humanaios-ui/lasting-light-ai,humanaios-ui/humanaios,LastingLightAI/HAIOSCC' }}
   MAX_DECISIONS_PER_BATCH: 10
   EXPONENTIAL_BACKOFF_BASE: 2
@@ -30,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      statuses: write
 
     steps:
       - name: Checkout empirica-foundation-evaluator
@@ -63,7 +63,7 @@ jobs:
                   if doc:
                       registry.update(doc)
 
-          # For now, load from decision log files as POC
+          # Synthetic POC data is not authoritative pending state; no dispatch allowed.
           # Production: query centralized decision store (database/API)
           decisions = []
 
@@ -115,7 +115,9 @@ jobs:
 
           decisions = json.loads(os.environ.get('DECISIONS_JSON', '[]'))
           target_repos = json.loads(os.environ.get('REPOS_JSON', '[]'))
-          dry_run = os.environ.get('DRY_RUN', 'true').lower() == 'true'
+          # Fail closed: never dispatch while pending decisions are synthetic.
+          # Do not replace this with an input-derived flag until source validation is admitted.
+          dry_run = True
           backoff_base = int(os.environ.get('EXPONENTIAL_BACKOFF_BASE', 2))
           max_retries = int(os.environ.get('BACKOFF_MAX_RETRIES', 3))
 
