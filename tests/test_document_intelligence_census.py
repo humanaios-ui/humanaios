@@ -1,4 +1,7 @@
 import unittest
+import os
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from scripts.document_intelligence_census import classify, inventory, parse_tree
 
@@ -73,6 +76,26 @@ class CensusTests(unittest.TestCase):
         self.assertEqual(item["review_state"], "metadata-only")
         self.assertIn("not enumerated", item["disposition"])
 
+    def test_explicit_commit_sha_and_hook_environment_isolation(self):
+        commit = "a" * 40
+        tree = b"100644 blob " + b"b" * 40 + b"\tdocs/guide.md\0"
+        with patch.dict(os.environ, {"GIT_DIR": "/tmp/wrong-repo", "GIT_WORK_TREE": "/tmp/wrong-worktree"}):
+            with patch("scripts.document_intelligence_census.subprocess.run", side_effect=[
+                SimpleNamespace(stdout=commit + "\n"),
+                SimpleNamespace(stdout=tree),
+            ]) as run:
+                result = inventory(commit)
+        self.assertEqual(result["tracked_path_count"], 1)
+        self.assertTrue(result["items"][0]["object_access"].startswith("git-blob-unverified"))
+        for call in run.call_args_list:
+            self.assertNotIn("GIT_DIR", call.kwargs["env"])
+            self.assertNotIn("GIT_WORK_TREE", call.kwargs["env"])
+            self.assertEqual(call.kwargs["timeout"], 120)
+
+    def test_moving_refs_rejected(self):
+        with self.assertRaisesRegex(ValueError, "40-character"):
+            inventory("main")
+
     def test_pinned_tree_accounts_for_every_path(self):
         result = inventory("ebe164d2d2170c154a7710d97c4590dbddf31f70")
         paths = [item["path"] for item in result["items"]]
@@ -87,7 +110,7 @@ class CensusTests(unittest.TestCase):
             all(
                 item["object_id"]
                 and item["object_type"]
-                and item["object_access"] == "git-object-available"
+                and item["object_access"].startswith("git-blob-unverified")
                 and item["controlling_doc_id"] == "PENDING"
                 and item["owner"] == "PENDING"
                 for item in result["items"]
