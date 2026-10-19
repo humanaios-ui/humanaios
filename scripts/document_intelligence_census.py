@@ -3,6 +3,8 @@
 
 import argparse
 import json
+import os
+import re
 import subprocess
 from collections import Counter
 from pathlib import Path
@@ -67,12 +69,12 @@ def classify(entry):
         disposition = "excluded-from-following; symlink target not followed"
     elif suffix == ".pyc":
         source_kind = "generated"
-        object_access = "git-object-available"
+        object_access = "git-blob-unverified; tree listing does not confirm local content accessibility"
         review_state = "metadata-only"
         disposition = "excluded-from-text-review; compiled artifact identified by suffix"
     elif suffix in BINARY_SUFFIXES:
         source_kind = "binary-or-media"
-        object_access = "git-object-available"
+        object_access = "git-blob-unverified; tree listing does not confirm local content accessibility"
         review_state = "metadata-only"
         disposition = "excluded-from-text-review; binary/media type inferred from suffix"
     elif suffix in TEXT_SUFFIXES or path.rsplit("/", 1)[-1] in {
@@ -82,12 +84,12 @@ def classify(entry):
         "LICENSE",
     }:
         source_kind = "text-or-source-candidate"
-        object_access = "git-object-available"
+        object_access = "git-blob-unverified; tree listing does not confirm local content accessibility"
         review_state = "pending"
         disposition = "pending-content, owner, and controlling-document review"
     else:
         source_kind = "unclassified"
-        object_access = "git-object-available"
+        object_access = "git-blob-unverified; tree listing does not confirm local content accessibility"
         review_state = "pending"
         disposition = "pending-type, content, owner, and controlling-document review"
 
@@ -111,16 +113,25 @@ def classify(entry):
 
 
 def inventory(commit):
+    # Accept only an immutable object ID; never let a moving ref choose the audit baseline.
+    if not re.fullmatch(r"[0-9a-fA-F]{40}", commit):
+        raise ValueError("Expected a full 40-character commit SHA")
+    # Git hooks can set GIT_DIR/GIT_WORK_TREE for an unrelated repository.
+    clean_env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     resolved = subprocess.run(
         ["git", "rev-parse", "--verify", f"{commit}^{{commit}}"],
         check=True,
         capture_output=True,
+        timeout=120,
+        env=clean_env,
         text=True,
     ).stdout.strip()
     tree = subprocess.run(
         ["git", "ls-tree", "-r", "-z", "--full-tree", resolved],
         check=True,
         capture_output=True,
+        timeout=120,
+        env=clean_env,
     ).stdout
     items = [classify(entry) for entry in parse_tree(tree)]
     return {
