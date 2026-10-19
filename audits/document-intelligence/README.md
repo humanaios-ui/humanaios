@@ -7,7 +7,7 @@ The inventory in [`tracked-files.json`](tracked-files.json) enumerates the compl
 The immutable tree is the census baseline; this is not a census of later PR
 changes.
 
-Every path has its Git mode, object type and object ID. The census script uses
+Every path has its Git mode, object type and object ID. Git tree membership does not prove that the referenced blob is locally readable. The census script uses
 NUL-delimited `git ls-tree` output and does not follow symlinks. It labels
 obvious compiled/binary types from mode, path, or suffix metadata only. This
 classification is a triage hint, not content inspection.
@@ -17,11 +17,11 @@ classification is a triage hint, not content inspection.
 | Inspected/evidence-linked | 0 | No path has completed the requested per-file claim/dependency audit |
 | Pending | 928 | 921 text/source candidates and 7 unclassified files not inspected or linked to an owner/control document |
 | Metadata-only / excluded from content review | 48 | 45 `.pyc` compiled files and 3 binary/media files; exclusions have per-path reasons |
-| Blocked within the pinned Git tree | 0 | All parent-tree Git objects are available; no symlink or submodule entries exist |
+| Blocked within the pinned Git tree | 0 | No blocked objects are established by this metadata-only inventory; local blob accessibility has not been verified |
 
 All records have `controlling_doc_id: PENDING` and `owner: PENDING`; no path is represented as source-linked or fully audited. Sensitivity is unassessed except for 81 path-name heuristic candidates, which still require content review. The path heuristic does not establish that a file is private or contains sensitive data.
 
-The pinned tree contains only blob objects with regular file modes (937
+The pinned tree listing contains only blob references with regular file modes (937
 `100644`, 39 `100755`); no symlink or submodule entries were present.
 
 To resume or create a new snapshot:
