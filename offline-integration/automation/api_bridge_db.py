@@ -251,6 +251,10 @@ class APIBridge:
                 }
             except Exception as e:
                 print("Database state query failed (details withheld)")
+                try:
+                    self.db_session.rollback()
+                except Exception:
+                    pass  # fail closed even when cleanup fails
                 raise RuntimeError("DURABLE_STORE_UNAVAILABLE") from None
         else:
             raise RuntimeError("DURABLE_STORE_UNAVAILABLE")
@@ -344,7 +348,7 @@ def create_app(db_url: str = None, org_id: str = None):
             return jsonify({"error": "route_unavailable"}), 404
         authorization = request.headers.get("Authorization", "")
         if not authorization.startswith("Bearer ") or not hmac.compare_digest(
-            authorization[7:], tokens[name]
+            authorization[7:].encode("utf-8"), tokens[name].encode("utf-8")
         ):
             return jsonify({"error": "not_authorized"}), 401
 
