@@ -53,7 +53,8 @@ if [[ -z "${DATABASE_URL:-}" ]]; then
     exit 2
 fi
 for name in BRIDGE_READ_TOKEN BRIDGE_WRITE_TOKEN BRIDGE_HARNESS_TOKEN; do
-    if [[ -z "${!name:-}" ]] || (( ${#!name} < 32 )); then
+    value="${!name:-}"
+    if (( ${#value} < 32 )); then
         echo "Missing scoped API token: ${name}" >&2
         exit 2
     fi
