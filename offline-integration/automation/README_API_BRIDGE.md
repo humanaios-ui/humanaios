@@ -23,7 +23,7 @@ Measurement Harness & Telemetry
 | File | Purpose |
 |------|---------|
 | `api_bridge.py` | v1: In-memory only (for testing) |
-| `api_bridge_db.py` | v2: Database-integrated (production) |
+| `api_bridge_db.py` | v2: Database-integrated **prototype** (restricted to loopback; not production certified) |
 | `run_api_bridge.sh` | Startup script with database initialization |
 | `cycle2_registry_gate.py` | Registry submission gate (3-outcome routing) |
 | `boundary_and_scorer.py` | Scoring logic for accepted submissions |
@@ -38,12 +38,13 @@ pip install flask sqlalchemy psycopg2-binary
 
 ### 2. Set Up Database Connection
 
-Create a `.env` file in the project root:
+Store credentials in a protected environment/secret manager, then export them to the bridge process. Automatic `.env` evaluation is disabled:
 
 ```bash
-cp .env.example .env
-# Edit .env and set DATABASE_URL to your PostgreSQL connection
-# Example: DATABASE_URL=postgresql://user:password@localhost/empirica
+export DATABASE_URL='<secret-managed-postgresql-url>'
+export BRIDGE_READ_TOKEN='<independent-random-token-at-least-32-chars>'
+export BRIDGE_WRITE_TOKEN='<different-random-token-at-least-32-chars>'
+export BRIDGE_HARNESS_TOKEN='<third-random-token-at-least-32-chars>'
 ```
 
 ### 3. Initialize Database
@@ -71,7 +72,7 @@ This creates:
 ./run_api_bridge.sh --init
 ```
 
-The bridge will start on `http://localhost:5000`
+The bridge binds **127.0.0.1 only**, with debug disabled. Do not reverse-proxy this endpoint to the internet. The three scope tokens are service capabilities, **not personal identities**. Real multi-user authorization requires a separately reviewed authentication integration. Missing tokens or database support prevent startup.
 
 ## Endpoints
 
@@ -219,13 +220,14 @@ All data written to the API bridge is persisted to PostgreSQL:
 4. **Feedback** — Machine-generated rejections and user reports are logged
 5. **Harness Configuration** — Resource allocation mode changes are timestamped
 
-If database connection fails, the bridge falls back to in-memory state but logs a warning. On next startup, in-memory data is lost but the database contains the historical record.
+**Changed safety contract:** requests and reads fail closed when PostgreSQL is unavailable. No accepted registry/harness request may report successful durable storage using RAM-only fallback. A database outage returns 503 or fails startup. Persistence is a code-level claim pending independent runtime receipts; no live operation is attested.
 
 ## Testing
 
 ### Manual Test
 ```bash
 curl -X POST http://localhost:5000/gate/registry \
+  -H "Authorization: Bearer $BRIDGE_WRITE_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Test Record",
@@ -292,5 +294,8 @@ The API bridge integrates with the empirica foundation orchestration:
 ---
 
 **Last Updated:** 2026-08-22  
-**Persistence:** ✅ LIVE (PostgreSQL)  
-**Status:** Production-ready for Phase 3.5.6
+**Persistence:** requires verified PostgreSQL commit; runtime evidence not collected.  
+**Status:** SECURITY-HARDENING DRAFT, restricted to loopback. Not production-admitted; no deployment or break-glass authority.
+
+
+> **Audit scope:** This file documents proposed source behavior only. Independent read-only deployment inventory, credential review, exact-head CI, CodeRabbit and human approval remain required. No user data or production outage tests are authorized by this documentation.
