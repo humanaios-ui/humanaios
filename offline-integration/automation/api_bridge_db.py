@@ -31,18 +31,17 @@ from boundary_and_scorer import scorer, ALLOWED_FIELDS
 
 try:
     from sqlalchemy import (
-        create_engine, Column, String, DateTime, JSONB, Boolean, Integer, Numeric,
+        create_engine, Column, String, DateTime, Boolean, Integer, Numeric,
         ForeignKey, Text, func, select, desc
     )
     from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy.orm import sessionmaker, Session
-    from sqlalchemy.dialects.postgresql import UUID
+    from sqlalchemy.dialects.postgresql import UUID, JSONB
     import uuid
     DB_AVAILABLE = True
 except ImportError:
     DB_AVAILABLE = False
-    print("⚠️  SQLAlchemy not installed. Running in fallback mode (in-memory only).")
-    print("    Install: pip install sqlalchemy psycopg2-binary")
+    raise RuntimeError("SQLAlchemy database dependencies required for durable bridge") from None
 
 Base = declarative_base()
 
@@ -241,7 +240,7 @@ class APIBridge:
                     },
                     "intent": self.state["intent"],
                     "primary": self.state["primary"],
-                    "wip": {"count": len(submissions), "slots": submissions[:3]},
+                    "wip": {"count": len(submissions), "slots": [{"id": str(s.id), "status": s.pipeline_status} for s in submissions[:3]]},
                     "harness": {
                         "human": float(harness.human_allocation) if harness else 0.5,
                         "machine": float(harness.machine_allocation) if harness else 0.3,
@@ -251,10 +250,10 @@ class APIBridge:
                     "feedback_recent": [{"message": f.message, "type": f.type, "severity": f.severity} for f in feedback],
                 }
             except Exception as e:
-                print(f"⚠️  DB query failed: {e}. Returning in-memory state.")
-                return self._fallback_sync_state()
+                print("Database state query failed (details withheld)")
+                raise RuntimeError("DURABLE_STORE_UNAVAILABLE") from None
         else:
-            return self._fallback_sync_state()
+            raise RuntimeError("DURABLE_STORE_UNAVAILABLE")
 
     def _fallback_sync_state(self) -> Dict[str, Any]:
         """In-memory fallback state"""
