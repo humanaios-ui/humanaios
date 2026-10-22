@@ -1,0 +1,20 @@
+name: Synthetic Offline Witness Qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/offline_witness_pilot/**'
+      - '.github/workflows/offline-witness-sandbox.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  read-only-sandbox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Exercise isolated SQLite worker and independent observer process
+        run: |
+          python3 -m unittest discover -s tests/offline_witness_pilot -p 'test_synthetic_offline_witness.py' -v
