@@ -11,7 +11,9 @@ SCRIPT = pathlib.Path(__file__).with_name("synthetic_offline_witness.py")
 class IsolatedWitnessTest(unittest.TestCase):
     def test_denied_then_commit_crash_then_idempotent_replay(self):
         with tempfile.TemporaryDirectory() as tmp:
-            db = str(pathlib.Path(tmp) / "sink.sqlite3")
+            folder = pathlib.Path(tmp) / "sink with ? and spaces"
+            folder.mkdir()
+            db = str(folder / "sink.sqlite3")
             def cmd(op, *args):
                 return subprocess.run([sys.executable, str(SCRIPT), op, db, *args],
                     capture_output=True, text=True, timeout=45)
