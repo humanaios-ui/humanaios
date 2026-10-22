@@ -79,6 +79,26 @@ class BridgeSecurityTests(unittest.TestCase):
                              headers={"Authorization": "Bearer " + SCOPE["BRIDGE_WRITE_TOKEN"]})
         self.assertEqual(result.status_code, 400)
 
+    def test_unicode_bearer_does_not_crash_server(self):
+        client = self.make_client()
+        response = client.get("/state/sync", headers={"Authorization": "Bearer " + chr(233) * 40})
+        self.assertEqual(response.status_code, 401)
+
+    def test_failed_query_rolls_back_transaction(self):
+        class Session:
+            rolled_back = False
+            def query(self, *args):
+                raise RuntimeError("synthetic read failure")
+            def rollback(self):
+                self.rolled_back = True
+        raw = bridge.APIBridge.__new__(bridge.APIBridge)
+        session = Session()
+        raw.db_session = session
+        raw.org_id = "00000000-0000-0000-0000-000000000001"
+        with self.assertRaisesRegex(RuntimeError, "DURABLE_STORE_UNAVAILABLE"):
+            raw.sync_state()
+        self.assertTrue(session.rolled_back)
+
     def test_default_api_bridge_will_not_ack_ram(self):
         raw = bridge.APIBridge.__new__(bridge.APIBridge)
         raw.db_session = None
