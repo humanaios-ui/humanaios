@@ -15,6 +15,7 @@ Endpoints:
 
 import json
 import hashlib
+import hmac
 import sys
 import os
 from typing import Dict, Tuple, Any
@@ -113,7 +114,7 @@ class IntentReconciliation(Base):
 # ============================================================================
 
 class APIBridge:
-    def __init__(self, db_url: str = None, org_id: str = None, fallback_to_memory: bool = True):
+    def __init__(self, db_url: str = None, org_id: str = None, fallback_to_memory: bool = False):
         self.db_url = db_url or os.getenv('DATABASE_URL', 'postgresql://localhost/empirica')
         self.org_id = org_id or os.getenv('ORG_ID', '00000000-0000-0000-0000-000000000001')
         self.db_session = None
@@ -124,9 +125,9 @@ class APIBridge:
                 self.engine = create_engine(self.db_url)
                 Session = sessionmaker(bind=self.engine)
                 self.db_session = Session()
-                print(f"✓ Connected to database: {self.db_url}")
+                print("Database backend initialized (connection details withheld)")
             except Exception as e:
-                print(f"✗ Database connection failed: {e}")
+                print("Database backend unavailable (details withheld)")
                 if fallback_to_memory:
                     print("  Falling back to in-memory state")
                     self.db_session = None
@@ -181,12 +182,13 @@ class APIBridge:
                 self.db_session.add(submission)
                 self.db_session.commit()
             except Exception as e:
-                print(f"⚠️  DB write failed: {e}. Falling back to in-memory.")
+                print("Registry write aborted: durable store unavailable")
                 self.db_session.rollback()
-                self._fallback_registry_submission(record, outcome, reason, score)
+                raise RuntimeError("DURABLE_STORE_UNAVAILABLE") from None
         else:
-            self._fallback_registry_submission(record, outcome, reason, score)
+            raise RuntimeError("DURABLE_STORE_UNAVAILABLE")
 
+        result["durable"] = True
         return result
 
     def _fallback_registry_submission(self, record, outcome, reason, score):
@@ -301,14 +303,17 @@ class APIBridge:
                 self.db_session.add(new_mode)
                 self.db_session.commit()
             except Exception as e:
-                print(f"⚠️  DB write failed: {e}. Updating in-memory only.")
+                print("Harness update aborted: durable store unavailable")
                 self.db_session.rollback()
+                raise RuntimeError("DURABLE_STORE_UNAVAILABLE") from None
 
-        # Update in-memory state
+        if not self.db_session:
+            raise RuntimeError("DURABLE_STORE_UNAVAILABLE")
+        # Cache only after successful DB commit
         self.state["harness_mode"] = mode
         self.state["harness"] = config
 
-        return {"ok": True, "mode": mode, "harness": config}
+        return {"ok": True, "mode": mode, "harness": config, "durable": True}
 
     def _timestamp(self) -> str:
         """ISO 8601 timestamp"""
@@ -323,33 +328,64 @@ def create_app(db_url: str = None, org_id: str = None):
     from flask import Flask, request, jsonify
 
     app = Flask(__name__)
+    app.config["MAX_CONTENT_LENGTH"] = 65536
+    # Separate least-privilege service tokens. No multi-user identity is claimed.
+    scopes = {"sync_state": "BRIDGE_READ_TOKEN",
+              "registry_submission": "BRIDGE_WRITE_TOKEN",
+              "set_harness": "BRIDGE_HARNESS_TOKEN"}
+    tokens = {name: os.getenv(name, "") for name in scopes.values()}
+    if any(len(token) < 32 for token in tokens.values()) or len(set(tokens.values())) != 3:
+        raise RuntimeError("BRIDGE_SCOPE_TOKENS_REQUIRED")
+
+    @app.before_request
+    def check_scope_token():
+        from flask import request, jsonify
+        name = scopes.get(request.endpoint)
+        if name is None:
+            return jsonify({"error": "route_unavailable"}), 404
+        authorization = request.headers.get("Authorization", "")
+        if not authorization.startswith("Bearer ") or not hmac.compare_digest(
+            authorization[7:], tokens[name]
+        ):
+            return jsonify({"error": "not_authorized"}), 401
+
     bridge = APIBridge(db_url=db_url, org_id=org_id)
 
     @app.route("/gate/registry", methods=["POST"])
     def registry_submission():
         """Submit record to registry gate"""
         try:
-            record = request.get_json()
+            record = request.get_json(silent=True)
+            if not isinstance(record, dict):
+                return jsonify({"error": "invalid_input"}), 400
             result = bridge.process_registry_submission(record)
             return jsonify(result), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 400
+        except RuntimeError:
+            return jsonify({"error": "durable_store_unavailable"}), 503
+        except Exception:
+            return jsonify({"error": "invalid_input"}), 400
 
     @app.route("/state/sync", methods=["GET"])
     def sync_state():
         """Get current system state"""
-        return jsonify(bridge.sync_state()), 200
+        try:
+            return jsonify(bridge.sync_state()), 200
+        except RuntimeError:
+            return jsonify({"error": "durable_store_unavailable"}), 503
 
     @app.route("/harness/set", methods=["POST"])
     def set_harness():
         """Set resource harness mode"""
         try:
-            data = request.get_json()
-            mode = data.get("mode")
-            result = bridge.set_harness_mode(mode)
-            return jsonify(result), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 400
+            data = request.get_json(silent=True)
+            if not isinstance(data, dict) or not isinstance(data.get("mode"), str):
+                return jsonify({"error": "invalid_input"}), 400
+            result = bridge.set_harness_mode(data["mode"])
+            return jsonify(result), 400 if "error" in result else 200
+        except RuntimeError:
+            return jsonify({"error": "durable_store_unavailable"}), 503
+        except Exception:
+            return jsonify({"error": "invalid_input"}), 400
 
     return app
 
@@ -365,4 +401,4 @@ if __name__ == "__main__":
     print("  POST /gate/registry       — Submit record to registry gate")
     print("  GET  /state/sync          — Get system state")
     print("  POST /harness/set         — Set resource harness mode")
-    app.run(debug=True, port=5000)
+    app.run(debug=False, host='127.0.0.1', port=5000)
