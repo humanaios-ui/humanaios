@@ -6,6 +6,8 @@ import json
 import os
 import sqlite3
 import sys
+from pathlib import Path
+from urllib.parse import quote
 
 def init(db):
     with sqlite3.connect(db) as c:
@@ -29,7 +31,8 @@ def act(db, task, crash=False):
     return 0
 
 def witness(db, task):
-    c = sqlite3.connect("file:" + db + "?mode=ro", uri=True)
+    db_uri = "file:" + quote(str(Path(db).resolve()), safe="/") + "?mode=ro"
+    c = sqlite3.connect(db_uri, uri=True)
     try:
         rows = c.execute("SELECT task,payload FROM effects ORDER BY task").fetchall()
         approved = c.execute("SELECT approved FROM approvals WHERE task=?", (task,)).fetchone()
