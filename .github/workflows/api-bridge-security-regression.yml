@@ -1,0 +1,31 @@
+name: API Bridge Sandbox Security Regression
+on:
+  pull_request:
+    paths:
+      - 'offline-integration/automation/api_bridge_db.py'
+      - 'offline-integration/automation/run_api_bridge.sh'
+      - 'offline-integration/automation/README_API_BRIDGE.md'
+      - 'tests/test_api_bridge_security.py'
+      - '.github/workflows/api-bridge-security-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.11'
+      - name: Install test-only dependencies
+        run: python3 -m pip install 'Flask>=3,<4' 'SQLAlchemy>=2,<3' 'psycopg2-binary>=2.9,<3'
+      - name: Check shell and Python syntax
+        run: |
+          bash -n offline-integration/automation/run_api_bridge.sh
+          python3 -m py_compile offline-integration/automation/api_bridge_db.py
+      - name: Run isolated synthetic HTTP tests
+        run: python3 -m unittest discover -s tests -p 'test_api_bridge_security.py' -v
