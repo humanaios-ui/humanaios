@@ -36,9 +36,8 @@ classification: internal
 contacts: []
 created_at: '2026-06-26'
 created_by: andersonfamily
-description: "Carly R. Anderson \u2014 empirica-foundation Admiral + first Evaluator\
-  \ seat. Onboarding interview home."
-domain: evaluation
+description: "HumanAIOS core platform (Z-001). Canonical seat empirica-foundation.carly.humanaios."
+domain: software
 domain_config: {}
 edges: []
 engagements: []
@@ -53,7 +52,7 @@ loops:
 mesh_id_prefix: empirica-foundation.carly
 name: empirica-foundation-evaluator
 org_id: org-empirica-foundation
-project_id: 428902a7-19dd-4598-b655-51a4a689934f
+project_id: 72b1e100-aa2b-4cfe-97e9-345eb23b964a
 status: active
 subjects: {}
 tags: []
